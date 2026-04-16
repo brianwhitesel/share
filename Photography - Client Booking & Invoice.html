@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Photography — Client Booking & Invoice</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;
+  --bg2:#0d1120;
+  --card:rgba(255,255,255,0.028);
+  --card-h:rgba(255,255,255,0.05);
+  --border:rgba(255,255,255,0.07);
+  --border-h:rgba(255,255,255,0.13);
+  --text:#e8edf2;
+  --dim:#64748b;
+  --mute:#94a3b8;
+  --green:#4ade80;
+  --blue:#60a5fa;
+  --purple:#c084fc;
+  --amber:#fbbf24;
+  --pink:#f472b6;
+  --red:#f87171;
+  --teal:#2dd4bf;
+}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+body{padding-bottom:env(safe-area-inset-bottom)}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse at 15% 5%,rgba(96,165,250,0.06) 0%,transparent 50%),
+  radial-gradient(ellipse at 85% 80%,rgba(192,132,252,0.04) 0%,transparent 50%),
+  radial-gradient(ellipse at 50% 50%,rgba(74,222,128,0.02) 0%,transparent 70%);
+  pointer-events:none;z-index:0}
+.shell{max-width:680px;margin:0 auto;padding:0 0 80px;position:relative;z-index:1}
+h1,h2,h3,h4,h5{font-family:'Outfit',sans-serif}
+svg{flex-shrink:0}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.site-header{padding:20px 20px 0;text-align:center;margin-bottom:4px}
+.logo-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px}
+.logo-ring{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,rgba(96,165,250,0.18),rgba(192,132,252,0.12));border:1px solid rgba(96,165,250,0.2);display:flex;align-items:center;justify-content:center;color:var(--blue)}
+.site-name{font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:700;color:#fff;letter-spacing:-.01em}
+.site-sub{font-size:.75rem;color:var(--dim);letter-spacing:.04em}
+
+/* ── NAV TABS ────────────────────────────────────────── */
+.nav-wrap{padding:12px 16px 0;position:sticky;top:0;z-index:50;background:var(--bg);background:linear-gradient(to bottom,var(--bg) 85%,transparent)}
+.nav{display:flex;gap:.25rem;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:.3rem;max-width:420px;margin:0 auto 4px}
+.nav-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.7rem .5rem;font-size:.82rem;font-weight:600;color:var(--dim);cursor:pointer;border-radius:11px;transition:all .2s;white-space:nowrap;user-select:none}
+.nav-tab.active{background:var(--card-h);color:var(--text);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)}
+.nav-tab:hover:not(.active){color:var(--mute)}
+.nav-badge{background:rgba(251,191,36,.18);color:var(--amber);font-size:.6rem;font-family:'Inter',sans-serif;font-weight:700;padding:.1rem .4rem;border-radius:99px;line-height:1.4}
+
+/* ── TAB PANELS ──────────────────────────────────────── */
+.tab-panel{display:none;padding:16px 16px 0;animation:fadeUp .35s cubic-bezier(.16,1,.3,1) both}
+.tab-panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── CARDS ───────────────────────────────────────────── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px}
+.card-p{padding:18px}
+
+/* ── BOOKING FLOW ────────────────────────────────────── */
+.progress-wrap{margin-bottom:16px}
+.progress-meta{display:flex;justify-content:space-between;font-size:.7rem;color:var(--dim);margin-bottom:6px;font-family:'Inter',sans-serif}
+.progress-meta .hi{color:var(--blue)}
+.progress-bar{height:4px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:4px;transition:width .5s cubic-bezier(.16,1,.3,1)}
+
+.step{display:none;animation:fadeUp .35s cubic-bezier(.16,1,.3,1) both}
+.step.active{display:block}
+
+.step-h{font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:.2rem;letter-spacing:-.01em}
+.step-s{font-size:.85rem;color:var(--dim);margin-bottom:1.1rem;line-height:1.5}
+
+/* package cards */
+.pkg-grid{display:flex;flex-direction:column;gap:.55rem}
+.pkg-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:.9rem 1rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.85rem;position:relative;overflow:hidden}
+.pkg-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s}
+.pkg-card:hover{border-color:var(--border-h);background:var(--card-h)}
+.pkg-card.selected{border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.04)}
+.pkg-card.selected::before{background:linear-gradient(135deg,rgba(74,222,128,.03),transparent);opacity:1}
+.pkg-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.pkg-info{flex:1;min-width:0}
+.pkg-name{font-weight:600;font-size:.92rem;color:#fff;margin-bottom:.15rem}
+.pkg-desc{font-size:.72rem;color:var(--dim);line-height:1.4}
+.pkg-right{text-align:right;flex-shrink:0}
+.pkg-price{font-weight:700;font-size:1.05rem;color:var(--green);font-variant-numeric:tabular-nums}
+.pkg-dur{font-size:.65rem;color:var(--dim);margin-top:.1rem}
+.pkg-dep{font-size:.6rem;font-weight:600;padding:.12rem .4rem;border-radius:5px;background:rgba(251,191,36,.1);color:var(--amber);margin-top:.2rem;display:inline-block;letter-spacing:.04em}
+.pkg-dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--border-h);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-left:.25rem}
+.pkg-card.selected .pkg-dot{border-color:var(--green);background:var(--green)}
+.pkg-card.selected .pkg-dot svg{opacity:1;color:#000}
+.pkg-dot svg{opacity:0;transition:opacity .2s}
+.pkg-tag{font-size:.58rem;font-family:'Inter',sans-serif;font-weight:700;padding:.1rem .45rem;border-radius:5px;letter-spacing:.04em;margin-bottom:.25rem;display:inline-block}
+.tag-premium{background:rgba(192,132,252,.12);color:var(--purple)}
+.tag-popular{background:rgba(74,222,128,.1);color:var(--green)}
+
+/* date + time */
+.label-sm{font-size:.67rem;color:var(--dim);text-transform:uppercase;letter-spacing:.09em;font-weight:600;margin-bottom:.4rem}
+.date-scroll{display:flex;gap:.45rem;overflow-x:auto;padding-bottom:.4rem;margin-bottom:1rem;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.date-scroll::-webkit-scrollbar{display:none}
+.date-chip{flex:0 0 52px;text-align:center;padding:.55rem .35rem;background:var(--card);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s}
+.date-chip:hover{background:var(--card-h)}
+.date-chip.sel{border-color:var(--blue);background:rgba(96,165,250,.1)}
+.date-chip.today::after{content:'·';display:block;color:var(--teal);font-size:1rem;line-height:.6;margin-top:.1rem}
+.dc-d{font-size:.55rem;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin-bottom:.15rem}
+.dc-n{font-size:1.05rem;font-weight:700;color:var(--text)}
+.date-chip.sel .dc-d{color:var(--blue)}
+.date-chip.sel .dc-n{color:var(--blue)}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-bottom:1rem}
+.time-chip{padding:.65rem .3rem;background:var(--card);border:1px solid var(--border);border-radius:9px;text-align:center;font-size:.8rem;font-variant-numeric:tabular-nums;cursor:pointer;transition:all .2s}
+.time-chip:hover:not(.booked){background:var(--card-h)}
+.time-chip.sel{border-color:var(--blue);background:rgba(96,165,250,.1);color:var(--blue)}
+.time-chip.booked{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+
+/* form */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.fg{margin-bottom:.85rem}
+.fg label{display:block;font-size:.72rem;color:var(--mute);font-weight:500;margin-bottom:.3rem}
+.fg label .req{color:var(--red)}
+.fg input,.fg textarea,.fg select{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:9px;padding:.65rem .8rem;color:var(--text);font-size:.92rem;font-family:'Inter',sans-serif;transition:border-color .2s;outline:none}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--blue)}
+.fg textarea{min-height:72px;resize:vertical;line-height:1.5}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--dim)}
+
+/* summary box */
+.sum-box{background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.15);border-radius:14px;padding:1.1rem;margin-bottom:1rem}
+.sum-eyebrow{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--green);font-weight:700;margin-bottom:.65rem}
+.sum-row{display:flex;justify-content:space-between;padding:.38rem 0;font-size:.87rem;border-bottom:1px dashed rgba(255,255,255,.04)}
+.sum-row:last-child{border-bottom:none}
+.sum-row .k{color:var(--dim)}
+.sum-row .v{color:var(--text);font-weight:500;text-align:right;max-width:60%}
+.sum-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:.7rem;padding-top:.8rem;border-top:1px solid rgba(74,222,128,.15)}
+.sum-total .k{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);font-weight:600}
+.sum-total .v{font-size:1.5rem;font-weight:800;color:var(--green);font-variant-numeric:tabular-nums}
+.sum-dep-note{font-size:.74rem;color:var(--amber);margin-top:.4rem;display:flex;align-items:center;gap:.3rem}
+
+/* success */
+.success-wrap{text-align:center;padding:1.5rem 0}
+.success-ring{width:76px;height:76px;border-radius:50%;background:rgba(74,222,128,.08);border:2px solid rgba(74,222,128,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 1.1rem;color:var(--green);animation:pulse-ring 2s ease-in-out infinite}
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.15)}50%{box-shadow:0 0 0 14px rgba(74,222,128,0)}}
+.success-h{font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:.4rem}
+.success-p{font-size:.88rem;color:var(--dim);line-height:1.6;max-width:360px;margin:0 auto .9rem}
+.ref-pill{display:inline-flex;align-items:center;gap:.4rem;background:var(--card);border:1px solid var(--border);padding:.5rem .9rem;border-radius:9px;font-size:.75rem;color:var(--dim);margin-bottom:1.2rem;font-family:'Inter',sans-serif}
+.ref-pill strong{color:var(--teal)}
+
+/* buttons */
+.btn-row{display:flex;gap:.55rem;margin-top:1.1rem}
+.btn{padding:.8rem 1.1rem;border-radius:11px;border:none;font-size:.9rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:.45rem;transition:all .2s;white-space:nowrap}
+.btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
+.btn-primary{background:linear-gradient(135deg,var(--green),#16a34a);color:#061008;flex:1}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 22px rgba(74,222,128,.2)}
+.btn-ghost{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--card-h)}
+.btn-blue{background:rgba(96,165,250,.12);color:var(--blue);border:1px solid rgba(96,165,250,.2)}
+.btn-blue:hover{background:rgba(96,165,250,.18)}
+.btn-sm{padding:.55rem .85rem;font-size:.78rem;border-radius:8px}
+.btn-full{width:100%;flex:none}
+
+/* ── INVOICE ─────────────────────────────────────────── */
+.inv-load-bar{display:flex;gap:.5rem;align-items:center;margin-bottom:.9rem;flex-wrap:wrap}
+.inv-load-bar select{flex:1;min-width:0;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:9px;padding:.55rem .7rem;color:var(--text);font-size:.82rem;font-family:'Inter',sans-serif;outline:none;cursor:pointer}
+.inv-load-bar select:focus{border-color:var(--blue)}
+
+.invoice{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+.inv-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.inv-brand-name{font-family:'Outfit',sans-serif;font-size:1.35rem;font-weight:800;color:#fff;min-width:150px;border:none;background:transparent;outline:none;font-family:'Outfit',sans-serif;cursor:text}
+.inv-brand-name:focus{border-bottom:1px dashed var(--blue)}
+.inv-brand-sub{font-size:.77rem;color:var(--dim);line-height:1.5;border:none;background:transparent;outline:none;width:100%;resize:none;min-height:52px;cursor:text;margin-top:3px}
+.inv-brand-sub:focus{border-bottom:1px dashed rgba(96,165,250,.3)}
+.inv-num-wrap{text-align:right}
+.inv-number-input{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:700;color:var(--blue);border:none;background:transparent;outline:none;text-align:right;width:130px;cursor:text}
+.inv-number-input:focus{border-bottom:1px dashed var(--blue)}
+.inv-date-row{font-size:.72rem;color:var(--dim);margin-top:4px;display:flex;align-items:center;gap:.4rem;justify-content:flex-end}
+.inv-date-input{background:transparent;border:none;border-bottom:1px dashed rgba(255,255,255,.1);color:var(--dim);font-family:'Inter',sans-serif;font-size:.72rem;outline:none;width:110px;text-align:right;cursor:text}
+.inv-date-input:focus{border-color:var(--blue);color:var(--text)}
+.inv-parties{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.party-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);font-weight:600;margin-bottom:5px}
+.party-name-input{font-family:'Outfit',sans-serif;font-size:.97rem;font-weight:600;color:#fff;border:none;background:transparent;outline:none;width:100%;cursor:text}
+.party-name-input:focus{border-bottom:1px dashed var(--blue)}
+.party-detail-input{font-size:.78rem;color:var(--dim);line-height:1.5;border:none;background:transparent;outline:none;width:100%;resize:none;min-height:56px;cursor:text;margin-top:2px}
+.party-detail-input:focus{border-bottom:1px dashed rgba(96,165,250,.3)}
+
+.items-head{display:grid;grid-template-columns:1fr 48px 80px 80px 28px;gap:5px;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);font-weight:600}
+.item-row{display:grid;grid-template-columns:1fr 48px 80px 80px 28px;gap:5px;padding:.55rem 0;border-bottom:1px solid rgba(255,255,255,.025);align-items:center}
+.item-input{background:rgba(255,255,255,.03);border:1px solid transparent;border-radius:6px;padding:.38rem .5rem;color:var(--text);font-family:'Inter',sans-serif;font-size:.84rem;outline:none;width:100%;transition:border-color .2s}
+.item-input:focus{border-color:var(--blue)}
+.item-input.num{text-align:right;font-variant-numeric:tabular-nums}
+.item-amt{font-size:.84rem;font-weight:600;color:#fff;text-align:right;padding-right:2px;font-variant-numeric:tabular-nums}
+.del-btn{background:none;border:none;color:var(--dim);cursor:pointer;padding:3px;font-size:1rem;transition:color .2s;display:flex;align-items:center;justify-content:center}
+.del-btn:hover{color:var(--red)}
+.add-row-btn{background:rgba(255,255,255,.025);border:1px dashed rgba(255,255,255,.08);border-radius:9px;padding:.65rem;width:100%;text-align:center;color:var(--blue);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;margin:10px 0 16px;font-family:'Inter',sans-serif}
+.add-row-btn:hover{background:rgba(96,165,250,.06);border-color:rgba(96,165,250,.25)}
+.totals-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-top:14px;border-top:1px solid var(--border)}
+.tot-row{display:flex;gap:20px;align-items:center}
+.tot-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);width:100px;text-align:right;font-weight:600}
+.tot-val{font-size:.95rem;font-weight:600;color:#fff;width:100px;text-align:right;font-variant-numeric:tabular-nums}
+.tot-row.deposit-row .tot-val{color:var(--amber)}
+.tot-row.grand .tot-lbl{color:var(--green);font-size:.75rem}
+.tot-row.grand .tot-val{font-size:1.4rem;color:var(--green);font-weight:800}
+.deposit-input-row{display:flex;align-items:center;gap:.4rem;justify-content:flex-end;margin-bottom:2px}
+.deposit-input{background:rgba(0,0,0,.3);border:1px solid rgba(251,191,36,.15);border-radius:7px;padding:.3rem .5rem;color:var(--amber);font-size:.82rem;font-family:'Inter',sans-serif;outline:none;width:90px;text-align:right;font-variant-numeric:tabular-nums}
+.deposit-input:focus{border-color:var(--amber)}
+.tax-row{display:flex;align-items:center;gap:.4rem;justify-content:flex-end;margin-bottom:4px}
+.tax-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);font-weight:600}
+.tax-input{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:7px;padding:.3rem .5rem;color:var(--text);font-size:.8rem;font-family:'Inter',sans-serif;outline:none;width:70px;text-align:right}
+.tax-input:focus{border-color:var(--blue)}
+.inv-notes-wrap{margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.inv-notes-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);font-weight:600;margin-bottom:.4rem}
+.inv-notes-input{width:100%;min-height:54px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:8px;padding:.65rem;color:var(--text);font-family:'Inter',sans-serif;font-size:.82rem;line-height:1.5;outline:none;resize:vertical;transition:border-color .2s}
+.inv-notes-input:focus{border-color:var(--blue)}
+.inv-actions{display:flex;gap:.55rem;flex-wrap:wrap}
+
+/* ── ADMIN ───────────────────────────────────────────── */
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.55rem;margin-bottom:1rem}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:.85rem}
+.kpi-val{font-family:'Outfit',sans-serif;font-size:1.55rem;font-weight:800;line-height:1;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.kpi-val.c-green{color:var(--green)}
+.kpi-val.c-amber{color:var(--amber)}
+.kpi-val.c-blue{color:var(--blue)}
+.kpi-lbl{font-size:.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-top:.3rem}
+.admin-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem}
+.admin-bar h3{font-size:1rem;color:#fff;font-weight:700}
+.b-list{display:flex;flex-direction:column;gap:.45rem}
+.b-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:.9rem;transition:all .2s;cursor:default}
+.b-card:hover{background:var(--card-h);border-color:var(--border-h)}
+.b-top{display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem}
+.b-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.b-dot.pending{background:var(--amber);box-shadow:0 0 8px rgba(251,191,36,.4);animation:blink 2s ease-in-out infinite}
+.b-dot.confirmed{background:var(--green);box-shadow:0 0 8px rgba(74,222,128,.35)}
+.b-dot.completed{background:var(--blue)}
+.b-dot.canceled{background:var(--dim)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+.b-name{font-weight:600;font-size:.9rem;color:#fff;flex:1}
+.b-amount{font-weight:700;font-size:.92rem;color:var(--green);font-variant-numeric:tabular-nums}
+.b-meta{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;font-size:.72rem;color:var(--dim)}
+.b-tag{background:rgba(255,255,255,.04);padding:.1rem .45rem;border-radius:5px;font-size:.65rem;letter-spacing:.03em}
+.b-actions{display:flex;gap:.4rem;align-items:center;margin-top:.55rem;flex-wrap:wrap}
+.status-sel{background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--mute);font-size:.7rem;padding:.25rem .45rem;border-radius:6px;font-family:'Inter',sans-serif;cursor:pointer;outline:none}
+.to-inv-btn{background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.18);color:var(--blue);font-size:.7rem;padding:.25rem .55rem;border-radius:6px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;white-space:nowrap}
+.to-inv-btn:hover{background:rgba(96,165,250,.18)}
+.empty-state{text-align:center;padding:2.5rem 1rem;color:var(--dim)}
+.empty-state svg{margin:0 auto .75rem;display:block;opacity:.35}
+
+/* ── TOAST ───────────────────────────────────────────── */
+.toast{position:fixed;bottom:calc(1rem + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(80px);background:#1a2236;border:1px solid var(--border-h);color:var(--text);padding:.65rem 1rem;border-radius:12px;font-size:.82rem;display:flex;align-items:center;gap:.45rem;box-shadow:0 12px 32px rgba(0,0,0,.5);z-index:1000;transition:transform .3s cubic-bezier(.16,1,.3,1);backdrop-filter:blur(12px);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.green{border-color:rgba(74,222,128,.25);color:var(--green)}
+.toast.red{border-color:rgba(248,113,113,.25);color:var(--red)}
+.toast.blue{border-color:rgba(96,165,250,.25);color:var(--blue)}
+
+/* ── FOOTER ──────────────────────────────────────────── */
+.site-footer{text-align:center;padding:2.5rem 1rem 1rem;font-size:.68rem;color:rgba(100,116,139,.35);letter-spacing:.12em;font-family:'Inter',sans-serif}
+
+/* ── CONFETTI ────────────────────────────────────────── */
+.confetti-bit{position:fixed;width:7px;height:12px;top:-16px;z-index:999;pointer-events:none}
+
+/* ── PRINT ───────────────────────────────────────────── */
+@media print{
+  .site-header,.nav-wrap,.tab-panel:not(#tab-invoice),.inv-load-bar,.inv-actions,.add-row-btn,.del-btn,.site-footer,.toast{display:none!important}
+  #tab-invoice{display:block!important;padding:0}
+  body,html{background:#fff;color:#000}
+  body::before{display:none}
+  .invoice{background:none;border:none;padding:0;border-radius:0}
+  .inv-brand-name,.inv-number-input,.inv-date-input,.inv-brand-sub,.party-name-input,.party-detail-input,.item-input,.inv-notes-input{color:#000;border-color:transparent}
+  .inv-head{border-color:#eee}
+  .items-head,.item-row{border-color:#eee}
+  .totals-wrap,.inv-notes-wrap{border-color:#eee}
+  .tot-val,.item-amt{color:#000}
+  .tot-row.grand .tot-val{color:#1a5c1a}
+  .inv-date-row{color:#555}
+  .party-label,.tot-lbl,.inv-notes-lbl,.items-head{color:#777}
+  .deposit-input,.tax-input{color:#aa6000;border:none;background:none}
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(min-width:520px){
+  .site-header{padding:24px 24px 0}
+  .nav-wrap{padding:14px 20px 0}
+  .tab-panel{padding:18px 20px 0}
+  .time-grid{grid-template-columns:repeat(4,1fr)}
+  .kpi-grid{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:380px){
+  .items-head,.item-row{grid-template-columns:1fr 40px 68px 68px 24px;gap:3px}
+  .item-input{padding:.3rem .35rem;font-size:.78rem}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="site-header">
+  <div class="logo-row">
+    <div class="logo-ring">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+        <circle cx="12" cy="13" r="4"/>
+      </svg>
+    </div>
+    <div class="site-name" contenteditable="true" spellcheck="false">Your Studio Name</div>
+  </div>
+  <div class="site-sub">Client Booking &amp; Invoicing</div>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <div class="nav">
+    <div class="nav-tab active" onclick="switchTab('book')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Book
+    </div>
+    <div class="nav-tab" onclick="switchTab('invoice')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Invoice
+    </div>
+    <div class="nav-tab" onclick="switchTab('admin')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Admin
+      <span class="nav-badge" id="pendingBadge" style="display:none">0</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ BOOK TAB ══════════════ -->
+<div class="tab-panel active" id="tab-book">
+
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span>Step <span id="stepNum">1</span> of 4</span>
+      <span class="hi" id="stepLabel">Choose package</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:25%"></div></div>
+  </div>
+
+  <!-- STEP 1: PACKAGE -->
+  <div class="step active" data-step="1">
+    <div class="step-h">What are we shooting?</div>
+    <div class="step-s">Select a package below. Deposits hold your date — balance is due at the session.</div>
+    <div class="pkg-grid" id="pkgGrid"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="s1next" disabled onclick="goNext()">
+        Continue
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 2: DATE + TIME -->
+  <div class="step" data-step="2">
+    <div class="step-h">Pick your date &amp; time</div>
+    <div class="step-s">Swipe to browse the next three weeks. Slots marked are already booked.</div>
+    <div class="label-sm">Date</div>
+    <div class="date-scroll" id="dateScroll"></div>
+    <div class="label-sm">Time</div>
+    <div class="time-grid" id="timeGrid"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goPrev()">Back</button>
+      <button class="btn btn-primary" id="s2next" disabled onclick="goNext()">
+        Continue
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 3: CLIENT DETAILS -->
+  <div class="step" data-step="3">
+    <div class="step-h">Your details</div>
+    <div class="step-s">I'll send a confirmation email and a reminder before the session.</div>
+    <div class="form-row">
+      <div class="fg"><label>First name <span class="req">*</span></label><input type="text" id="fFirst" autocomplete="given-name" oninput="validateStep3()"></div>
+      <div class="fg"><label>Last name <span class="req">*</span></label><input type="text" id="fLast" autocomplete="family-name" oninput="validateStep3()"></div>
+    </div>
+    <div class="fg"><label>Email <span class="req">*</span></label><input type="email" id="fEmail" autocomplete="email" placeholder="you@example.com" oninput="validateStep3()"></div>
+    <div class="fg"><label>Phone <span class="req">*</span></label><input type="tel" id="fPhone" autocomplete="tel" placeholder="555-867-5309" oninput="validateStep3()"></div>
+    <div class="fg"><label>Location preference</label><input type="text" id="fLocation" placeholder="e.g. Riverside Park, your home, our studio…"></div>
+    <div class="fg"><label>Anything else I should know?</label><textarea id="fNotes" placeholder="Outfit ideas, special requests, milestones to capture, pet names…"></textarea></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goPrev()">Back</button>
+      <button class="btn btn-primary" id="s3next" disabled onclick="goNext()">
+        Review
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 4: CONFIRM -->
+  <div class="step" data-step="4">
+    <div class="step-h">Confirm booking</div>
+    <div class="step-s">Everything look right? Hit confirm to lock in your date.</div>
+    <div id="summaryBox"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goPrev()">Back</button>
+      <button class="btn btn-primary" id="confirmBtn" onclick="confirmBooking()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="confirmLabel">Confirm booking</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 5: SUCCESS -->
+  <div class="step" data-step="5">
+    <div class="success-wrap">
+      <div class="success-ring">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="success-h">You're on the calendar!</div>
+      <div class="success-p">I'll follow up with a confirmation within 24 hours. See you at the session!</div>
+      <div class="ref-pill">Booking ref: <strong id="bookingRef">—</strong></div>
+      <br>
+      <button class="btn btn-ghost" onclick="resetBooking()">Book another session</button>
+    </div>
+  </div>
+
+</div><!-- /tab-book -->
+
+<!-- ══════════════ INVOICE TAB ══════════════ -->
+<div class="tab-panel" id="tab-invoice">
+
+  <div class="inv-load-bar">
+    <select id="invBookingSelect" onchange="loadBookingIntoInvoice()">
+      <option value="">— Start blank or load a booking —</option>
+    </select>
+    <button class="btn btn-ghost btn-sm" onclick="clearInvoice()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.36"/></svg>
+      New
+    </button>
+  </div>
+
+  <div class="invoice" id="invoiceDoc">
+    <div class="inv-head">
+      <div>
+        <input class="inv-brand-name" id="invBrandName" value="Your Studio Name" spellcheck="false">
+        <textarea class="inv-brand-sub" id="invBrandSub" spellcheck="false">hello@yourstudio.com · (555) 000-0000
+yourwebsite.com</textarea>
+      </div>
+      <div class="inv-num-wrap">
+        <input class="inv-number-input" id="invNumber" value="INV-001" spellcheck="false">
+        <div class="inv-date-row">
+          Date: <input class="inv-date-input" id="invDate" type="date">
+        </div>
+        <div class="inv-date-row">
+          Due: <input class="inv-date-input" id="invDue" type="date">
+        </div>
+      </div>
+    </div>
+
+    <div class="inv-parties">
+      <div>
+        <div class="party-label">From</div>
+        <input class="party-name-input" id="invFromName" value="Your Name" spellcheck="false">
+        <textarea class="party-detail-input" id="invFromDetail" spellcheck="false">123 Any Street
+City, State 00000
+hello@yourstudio.com</textarea>
+      </div>
+      <div>
+        <div class="party-label">Bill To</div>
+        <input class="party-name-input" id="invToName" value="Client Name" spellcheck="false">
+        <textarea class="party-detail-input" id="invToDetail" spellcheck="false">Client email
+Client phone</textarea>
+      </div>
+    </div>
+
+    <div class="items-head">
+      <div>Description</div>
+      <div style="text-align:right">Qty</div>
+      <div style="text-align:right">Rate</div>
+      <div style="text-align:right">Amount</div>
+      <div></div>
+    </div>
+    <div id="invLineItems">
+      <div class="item-row">
+        <input class="item-input" value="Portrait Session — 2 hours" oninput="calcTotals()">
+        <input class="item-input num" type="number" value="1" min="0" oninput="calcTotals()">
+        <input class="item-input num" type="number" value="250" min="0" step="0.01" oninput="calcTotals()">
+        <div class="item-amt">$250.00</div>
+        <button class="del-btn" onclick="removeLineItem(this)" title="Remove">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="item-row">
+        <input class="item-input" value="Online Gallery Delivery" oninput="calcTotals()">
+        <input class="item-input num" type="number" value="1" min="0" oninput="calcTotals()">
+        <input class="item-input num" type="number" value="0" min="0" step="0.01" oninput="calcTotals()">
+        <div class="item-amt">$0.00</div>
+        <button class="del-btn" onclick="removeLineItem(this)" title="Remove">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <button class="add-row-btn" onclick="addLineItem()">+ Add line item</button>
+
+    <div class="totals-wrap">
+      <div class="tot-row"><div class="tot-lbl">Subtotal</div><div class="tot-val" id="invSubtotal">$250.00</div></div>
+
+      <div class="tax-row">
+        <div class="tax-lbl">Tax</div>
+        <input class="tax-input" id="taxRate" type="number" value="0" min="0" max="100" step=".1" placeholder="%" oninput="calcTotals()">
+        <span style="font-size:.7rem;color:var(--dim)">%</span>
+        <div class="tot-val" id="invTax" style="width:100px;text-align:right">$0.00</div>
+      </div>
+
+      <div class="deposit-input-row">
+        <div class="tax-lbl">Deposit paid</div>
+        <input class="deposit-input" id="depositPaid" type="number" value="0" min="0" step="0.01" placeholder="$0" oninput="calcTotals()">
+      </div>
+      <div class="tot-row deposit-row"><div class="tot-lbl">Deposit deducted</div><div class="tot-val" id="invDepositLine">— $0.00</div></div>
+
+      <div class="tot-row grand"><div class="tot-lbl">Balance Due</div><div class="tot-val" id="invGrand">$250.00</div></div>
+    </div>
+
+    <div class="inv-notes-wrap">
+      <div class="inv-notes-lbl">Notes &amp; Payment Terms</div>
+      <textarea class="inv-notes-input" id="invNotes">Balance due on or before session date. Deposits are non-refundable within 14 days of session. Gallery delivered within 2–3 weeks. Thank you for booking!</textarea>
+    </div>
+  </div>
+
+  <div class="inv-actions">
+    <button class="btn btn-primary" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print / Save PDF
+    </button>
+    <button class="btn btn-ghost" onclick="bumpInvoiceNumber()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.36"/></svg>
+      Next invoice #
+    </button>
+  </div>
+
+</div><!-- /tab-invoice -->
+
+<!-- ══════════════ ADMIN TAB ══════════════ -->
+<div class="tab-panel" id="tab-admin">
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val c-blue" id="kTotal">0</div><div class="kpi-lbl">Total</div></div>
+    <div class="kpi"><div class="kpi-val c-amber" id="kPending">0</div><div class="kpi-lbl">Pending</div></div>
+    <div class="kpi"><div class="kpi-val c-green" id="kConfirmed">0</div><div class="kpi-lbl">Confirmed</div></div>
+    <div class="kpi"><div class="kpi-val c-green" id="kRevenue">$0</div><div class="kpi-lbl">Revenue</div></div>
+  </div>
+
+  <div class="admin-bar">
+    <h3>Bookings</h3>
+    <div style="display:flex;gap:.4rem">
+      <button class="btn btn-ghost btn-sm" onclick="exportCsv()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        CSV
+      </button>
+    </div>
+  </div>
+
+  <div class="b-list" id="adminList"></div>
+
+</div><!-- /tab-admin -->
+
+<!-- FOOTER -->
+<div class="site-footer">Made with care by Brian</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════
+//  CONFIG
+// ════════════════════════════════════════
+const PACKAGES = [
+  {
+    id:'portrait', name:'Portrait Session',
+    price:250, deposit:75, durationLabel:'2 hours',
+    desc:'20 edited images · online gallery · print-ready files',
+    color:'rgba(96,165,250,.12)', colorAccent:'var(--blue)',
+    tag:null
+  },
+  {
+    id:'family', name:'Family Session',
+    price:350, deposit:100, durationLabel:'2–3 hours',
+    desc:'35 edited images · any location · delivered in 7 days',
+    color:'rgba(74,222,128,.1)', colorAccent:'var(--green)',
+    tag:'popular'
+  },
+  {
+    id:'engagement', name:'Engagement Session',
+    price:450, deposit:100, durationLabel:'3 hours',
+    desc:'40 edited images · two locations · styling consultation',
+    color:'rgba(244,114,182,.1)', colorAccent:'var(--pink)',
+    tag:null
+  },
+  {
+    id:'newborn', name:'Newborn Session',
+    price:325, deposit:75, durationLabel:'2–3 hours',
+    desc:'25 edited images · studio or in-home · 2-week turnaround',
+    color:'rgba(251,191,36,.1)', colorAccent:'var(--amber)',
+    tag:null
+  },
+  {
+    id:'headshots', name:'Headshot Session',
+    price:195, deposit:0, durationLabel:'1 hour',
+    desc:'10 edited images · 3 wardrobe changes · LinkedIn & press ready',
+    color:'rgba(45,212,191,.1)', colorAccent:'var(--teal)',
+    tag:null
+  },
+  {
+    id:'event', name:'Event Coverage',
+    price:150, deposit:0, durationLabel:'Per hour (3 hr min)',
+    desc:'Corporate, galas, parties · delivered in 5 business days',
+    color:'rgba(251,191,36,.08)', colorAccent:'var(--amber)',
+    tag:null
+  },
+  {
+    id:'wedding_ess', name:'Wedding — Essential',
+    price:2400, deposit:500, durationLabel:'8 hours',
+    desc:'400+ edited images · getting ready through first dance · online gallery',
+    color:'rgba(192,132,252,.1)', colorAccent:'var(--purple)',
+    tag:'premium'
+  },
+  {
+    id:'wedding_full', name:'Wedding — Full Day',
+    price:3800, deposit:800, durationLabel:'12 hours',
+    desc:'600+ edited images · full day · engagement session included · two shooters',
+    color:'rgba(192,132,252,.14)', colorAccent:'var(--purple)',
+    tag:'premium'
+  }
+];
+
+const PKG_ICONS = {
+  portrait:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+  family:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  engagement:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+  newborn:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  headshots:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`,
+  event:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+  wedding_ess:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="2"/><circle cx="15" cy="9" r="2"/><path d="M3 10h3M18 10h3"/><path d="M9 11v6l3-3 3 3v-6"/></svg>`,
+  wedding_full:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/><circle cx="12" cy="13" r="1" fill="currentColor"/></svg>`
+};
+
+const HOURS = { start:8, end:19, slotMin:30 };
+
+// ════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════
+const STORAGE_KEY = 'photo-crm-bookings-v1';
+
+const DEMO = [
+  {id:'PH-A1B2C3',createdAt:'2026-04-01T10:00:00Z',packageId:'wedding_ess',packageName:'Wedding — Essential',price:2400,deposit:500,durationLabel:'8 hours',date:'2026-06-14',time:'9:00 am',first:'Sarah',last:'Chen',email:'sarah.chen@email.com',phone:'614-555-0182',location:'The Grand Venue, Columbus',notes:'Ceremony outdoors, reception inside. Please arrive 30 min early.',status:'confirmed'},
+  {id:'PH-D4E5F6',createdAt:'2026-04-05T14:30:00Z',packageId:'portrait',packageName:'Portrait Session',price:250,deposit:75,durationLabel:'2 hours',date:'2026-04-22',time:'10:00 am',first:'Marcus',last:'Rivera',email:'marcus.r@email.com',phone:'614-555-0247',location:'Goodale Park',notes:'Outdoor preferred. Casual wardrobe, earthy tones.',status:'confirmed'},
+  {id:'PH-G7H8I9',createdAt:'2026-04-08T09:15:00Z',packageId:'family',packageName:'Family Session',price:350,deposit:100,durationLabel:'2–3 hours',date:'2026-04-27',time:'4:30 pm',first:'Jenna',last:'Park',email:'jenna.park@email.com',phone:'614-555-0391',location:'Riverfront Park',notes:'3 kids ages 2, 5, and 8. They love the water.',status:'pending'},
+  {id:'PH-J0K1L2',createdAt:'2026-03-20T11:00:00Z',packageId:'headshots',packageName:'Headshot Session',price:195,deposit:0,durationLabel:'1 hour',date:'2026-04-10',time:'11:00 am',first:'David',last:'Thompson',email:'d.thompson@acme.com',phone:'614-555-0128',location:'Studio',notes:'Business casual. LinkedIn + press kit use.',status:'completed'},
+  {id:'PH-M3N4O5',createdAt:'2026-04-10T16:00:00Z',packageId:'engagement',packageName:'Engagement Session',price:450,deposit:100,durationLabel:'3 hours',date:'2026-05-03',time:'5:30 pm',first:'Amy',last:'Zhang',email:'amyzhang@email.com',phone:'614-555-0576',location:'Columbus Museum of Art + Short North',notes:'He proposed at the museum! Would love to shoot there and in the Short North.',status:'pending'}
+];
+
+let bookings = (() => {
+  try {
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    return Array.isArray(stored) && stored.length > 0 ? stored : [...DEMO];
+  } catch { return [...DEMO]; }
+})();
+
+function saveBookings() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings)); } catch {}
+}
+
+let booking = { pkg:null, date:null, time:null };
+let currentStep = 1;
+
+// ════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  renderPackages();
+  renderDates();
+  renderTimes();
+  renderAdmin();
+  initInvoiceDates();
+  updatePendingBadge();
+  syncInvoiceBookingSelect();
+  calcTotals();
+  // Sync studio name between header and invoice
+  const siteName = document.querySelector('.site-name');
+  const invBrand = document.getElementById('invBrandName');
+  siteName.addEventListener('input', () => { invBrand.value = siteName.textContent.trim(); });
+});
+
+// ════════════════════════════════════════
+//  TAB SWITCHING
+// ════════════════════════════════════════
+function switchTab(id) {
+  document.querySelectorAll('.nav-tab').forEach((t, i) => {
+    const ids = ['book','invoice','admin'];
+    t.classList.toggle('active', ids[i] === id);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'tab-'+id);
+  });
+  if (id === 'admin') renderAdmin();
+  if (id === 'invoice') syncInvoiceBookingSelect();
+}
+
+// ════════════════════════════════════════
+//  BOOKING — PACKAGES
+// ════════════════════════════════════════
+function renderPackages() {
+  const g = document.getElementById('pkgGrid');
+  g.innerHTML = PACKAGES.map(p => {
+    const tagHtml = p.tag === 'premium'
+      ? '<span class="pkg-tag tag-premium">Premium</span>'
+      : p.tag === 'popular' ? '<span class="pkg-tag tag-popular">Popular</span>' : '';
+    return `<div class="pkg-card" data-id="${p.id}" onclick="pickPackage('${p.id}')">
+      <div class="pkg-icon" style="background:${p.color};color:${p.colorAccent}">${PKG_ICONS[p.id]||PKG_ICONS.portrait}</div>
+      <div class="pkg-info">
+        ${tagHtml}
+        <div class="pkg-name">${p.name}</div>
+        <div class="pkg-desc">${p.desc}</div>
+      </div>
+      <div class="pkg-right">
+        <div class="pkg-price">$${p.price.toLocaleString()}</div>
+        <div class="pkg-dur">${p.durationLabel}</div>
+        ${p.deposit > 0 ? `<div class="pkg-dep">$${p.deposit} deposit</div>` : ''}
+      </div>
+      <div class="pkg-dot">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function pickPackage(id) {
+  booking.pkg = id;
+  document.querySelectorAll('.pkg-card').forEach(c =>
+    c.classList.toggle('selected', c.dataset.id === id)
+  );
+  document.getElementById('s1next').disabled = false;
+  const p = PACKAGES.find(x => x.id === id);
+  document.getElementById('confirmLabel').textContent =
+    p.deposit > 0 ? `Confirm — $${p.deposit} deposit` : 'Confirm booking';
+}
+
+// ════════════════════════════════════════
+//  BOOKING — DATES
+// ════════════════════════════════════════
+function renderDates() {
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const today = new Date(); today.setHours(0,0,0,0);
+  const out = [];
+  for (let i = 0; i < 21; i++) {
+    const d = new Date(today); d.setDate(today.getDate() + i);
+    const iso = d.toISOString().slice(0,10);
+    const isTod = i === 0;
+    out.push(`<div class="date-chip${isTod?' today':''}" data-date="${iso}" onclick="pickDate('${iso}')">
+      <div class="dc-d">${days[d.getDay()]}</div>
+      <div class="dc-n">${d.getDate()}</div>
+    </div>`);
+  }
+  document.getElementById('dateScroll').innerHTML = out.join('');
+}
+
+function pickDate(iso) {
+  booking.date = iso;
+  booking.time = null;
+  document.querySelectorAll('.date-chip').forEach(c =>
+    c.classList.toggle('sel', c.dataset.date === iso)
+  );
+  renderTimes();
+  validateStep2();
+}
+
+// ════════════════════════════════════════
+//  BOOKING — TIMES
+// ════════════════════════════════════════
+function renderTimes() {
+  const g = document.getElementById('timeGrid');
+  const slots = [];
+  for (let h = HOURS.start; h < HOURS.end; h++) {
+    for (let m = 0; m < 60; m += HOURS.slotMin) slots.push({h,m});
+  }
+  const now = new Date();
+  const isToday = booking.date === now.toISOString().slice(0,10);
+  const taken = new Set(
+    bookings.filter(b => b.date === booking.date && b.status !== 'canceled').map(b => b.time)
+  );
+  g.innerHTML = slots.map(s => {
+    const lbl = fmtTime(s.h, s.m);
+    const past = isToday && (s.h < now.getHours() || (s.h === now.getHours() && s.m <= now.getMinutes()));
+    const busy = taken.has(lbl);
+    const cls = (past || busy) ? 'time-chip booked' : 'time-chip';
+    const click = (past || busy) ? '' : `onclick="pickTime('${lbl}')"`;
+    return `<div class="${cls}" data-t="${lbl}" ${click}>${lbl}</div>`;
+  }).join('');
+  if (booking.time) {
+    const el = g.querySelector(`[data-t="${booking.time}"]`);
+    if (el && !el.classList.contains('booked')) el.classList.add('sel');
+    else { booking.time = null; validateStep2(); }
+  }
+}
+
+function fmtTime(h, m) {
+  const ap = h >= 12 ? 'pm' : 'am';
+  const hr = h % 12 === 0 ? 12 : h % 12;
+  return `${hr}:${String(m).padStart(2,'0')} ${ap}`;
+}
+
+function pickTime(t) {
+  booking.time = t;
+  document.querySelectorAll('.time-chip').forEach(c =>
+    c.classList.toggle('sel', c.dataset.t === t)
+  );
+  validateStep2();
+}
+
+function validateStep2() {
+  document.getElementById('s2next').disabled = !(booking.date && booking.time);
+}
+
+// ════════════════════════════════════════
+//  BOOKING — STEP 3
+// ════════════════════════════════════════
+function validateStep3() {
+  const f = v('fFirst'), l = v('fLast'), e = v('fEmail'), p = v('fPhone');
+  document.getElementById('s3next').disabled = !(f && l && e.includes('@') && p.length >= 7);
+}
+
+// ════════════════════════════════════════
+//  BOOKING — NAVIGATION
+// ════════════════════════════════════════
+function goNext() {
+  if (currentStep < 4) { currentStep++; showStep(); }
+}
+function goPrev() {
+  if (currentStep > 1) { currentStep--; showStep(); }
+}
+function showStep() {
+  document.querySelectorAll('.step').forEach(s =>
+    s.classList.toggle('active', parseInt(s.dataset.step) === currentStep)
+  );
+  document.getElementById('stepNum').textContent = currentStep;
+  const labels = {1:'Choose package',2:'Date & time',3:'Your details',4:'Review & confirm',5:'Booked!'};
+  document.getElementById('stepLabel').textContent = labels[currentStep] || '';
+  const pct = currentStep >= 5 ? 100 : Math.round((currentStep / 4) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  if (currentStep === 4) buildSummary();
+}
+
+// ════════════════════════════════════════
+//  BOOKING — SUMMARY + CONFIRM
+// ════════════════════════════════════════
+function buildSummary() {
+  const pkg = PACKAGES.find(p => p.id === booking.pkg);
+  const d = new Date(booking.date + 'T12:00:00');
+  const dateStr = d.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric', year:'numeric'});
+  const depNote = pkg.deposit > 0
+    ? `<div class="sum-dep-note"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>$${pkg.deposit} deposit to confirm · balance due at session</div>`
+    : `<div class="sum-dep-note" style="color:var(--dim)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No deposit required · full amount due at session</div>`;
+  const loc = v('fLocation');
+  document.getElementById('summaryBox').innerHTML = `
+    <div class="sum-box">
+      <div class="sum-eyebrow">Booking Summary</div>
+      <div class="sum-row"><span class="k">Package</span><span class="v">${pkg.name}</span></div>
+      <div class="sum-row"><span class="k">Date</span><span class="v">${dateStr}</span></div>
+      <div class="sum-row"><span class="k">Time</span><span class="v">${booking.time} · ${pkg.durationLabel}</span></div>
+      <div class="sum-row"><span class="k">Name</span><span class="v">${v('fFirst')} ${v('fLast')}</span></div>
+      <div class="sum-row"><span class="k">Email</span><span class="v">${v('fEmail')}</span></div>
+      ${loc ? `<div class="sum-row"><span class="k">Location</span><span class="v">${loc}</span></div>` : ''}
+      <div class="sum-total"><span class="k">Total</span><span class="v">$${pkg.price.toLocaleString()}</span></div>
+      ${depNote}
+    </div>`;
+}
+
+function confirmBooking() {
+  const pkg = PACKAGES.find(p => p.id === booking.pkg);
+  const b = {
+    id: 'PH-' + Math.random().toString(36).slice(2,8).toUpperCase(),
+    createdAt: new Date().toISOString(),
+    packageId: pkg.id,
+    packageName: pkg.name,
+    price: pkg.price,
+    deposit: pkg.deposit,
+    durationLabel: pkg.durationLabel,
+    date: booking.date,
+    time: booking.time,
+    first: v('fFirst'),
+    last: v('fLast'),
+    email: v('fEmail'),
+    phone: v('fPhone'),
+    location: v('fLocation'),
+    notes: v('fNotes'),
+    status: pkg.deposit > 0 ? 'pending' : 'confirmed'
+  };
+  bookings.unshift(b);
+  saveBookings();
+  document.getElementById('bookingRef').textContent = b.id;
+  currentStep = 5;
+  showStep();
+  fireConfetti();
+  toast('Booking confirmed! Ref ' + b.id, 'green');
+  renderAdmin();
+  updatePendingBadge();
+  syncInvoiceBookingSelect();
+}
+
+function resetBooking() {
+  booking = {pkg:null, date:null, time:null};
+  ['fFirst','fLast','fEmail','fPhone','fLocation','fNotes'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.querySelectorAll('.pkg-card,.date-chip,.time-chip').forEach(c => c.classList.remove('selected','sel'));
+  document.getElementById('s1next').disabled = true;
+  document.getElementById('s2next').disabled = true;
+  document.getElementById('s3next').disabled = true;
+  currentStep = 1;
+  showStep();
+  renderTimes();
+}
+
+// ════════════════════════════════════════
+//  INVOICE
+// ════════════════════════════════════════
+function initInvoiceDates() {
+  const today = new Date();
+  const due = new Date(); due.setDate(today.getDate() + 30);
+  document.getElementById('invDate').value = today.toISOString().slice(0,10);
+  document.getElementById('invDue').value = due.toISOString().slice(0,10);
+}
+
+function addLineItem(desc='', qty=1, rate=0) {
+  const container = document.getElementById('invLineItems');
+  const row = document.createElement('div');
+  row.className = 'item-row';
+  const amt = (qty * rate).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  row.innerHTML = `
+    <input class="item-input" value="${escHtml(desc)}" placeholder="Description" oninput="calcTotals()">
+    <input class="item-input num" type="number" value="${qty}" min="0" oninput="calcTotals()">
+    <input class="item-input num" type="number" value="${rate}" min="0" step="0.01" oninput="calcTotals()">
+    <div class="item-amt">$${amt}</div>
+    <button class="del-btn" onclick="removeLineItem(this)" title="Remove">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>`;
+  container.appendChild(row);
+  calcTotals();
+}
+
+function removeLineItem(btn) {
+  btn.closest('.item-row').remove();
+  calcTotals();
+}
+
+function calcTotals() {
+  const rows = document.querySelectorAll('#invLineItems .item-row');
+  let subtotal = 0;
+  rows.forEach(row => {
+    const inputs = row.querySelectorAll('input.num');
+    const qty = parseFloat(inputs[0].value) || 0;
+    const rate = parseFloat(inputs[1].value) || 0;
+    const amt = qty * rate;
+    subtotal += amt;
+    row.querySelector('.item-amt').textContent = '$' + amt.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  });
+  const taxPct = parseFloat(document.getElementById('taxRate').value) || 0;
+  const tax = subtotal * (taxPct / 100);
+  const depositAmt = parseFloat(document.getElementById('depositPaid').value) || 0;
+  const grand = subtotal + tax - depositAmt;
+  document.getElementById('invSubtotal').textContent = '$' + subtotal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('invTax').textContent = '$' + tax.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('invDepositLine').textContent = depositAmt > 0 ? '— $' + depositAmt.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) : '— $0.00';
+  document.getElementById('invGrand').textContent = '$' + Math.max(0, grand).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function syncInvoiceBookingSelect() {
+  const sel = document.getElementById('invBookingSelect');
+  const prev = sel.value;
+  const active = bookings.filter(b => b.status !== 'canceled');
+  sel.innerHTML = '<option value="">— Start blank or load a booking —</option>' +
+    active.map(b => {
+      const d = new Date(b.date + 'T12:00:00');
+      const ds = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      return `<option value="${b.id}">${b.first} ${b.last} · ${b.packageName} · ${ds}</option>`;
+    }).join('');
+  if (prev) sel.value = prev;
+}
+
+function loadBookingIntoInvoice() {
+  const id = document.getElementById('invBookingSelect').value;
+  if (!id) return;
+  const b = bookings.find(x => x.id === id);
+  if (!b) return;
+
+  // Auto-advance invoice number
+  bumpInvoiceNumber();
+
+  // Party info
+  document.getElementById('invToName').value = b.first + ' ' + b.last;
+  document.getElementById('invToDetail').value = b.email + '\n' + b.phone;
+
+  // Line items
+  const d = new Date(b.date + 'T12:00:00');
+  const ds = d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  document.getElementById('invLineItems').innerHTML = '';
+  addLineItem(`${b.packageName} — ${ds} at ${b.time}`, 1, b.price);
+
+  // Deposit
+  document.getElementById('depositPaid').value = b.deposit || 0;
+
+  calcTotals();
+  toast('Invoice loaded for ' + b.first + ' ' + b.last, 'blue');
+}
+
+function clearInvoice() {
+  document.getElementById('invBookingSelect').value = '';
+  document.getElementById('invToName').value = 'Client Name';
+  document.getElementById('invToDetail').value = 'Client email\nClient phone';
+  document.getElementById('invLineItems').innerHTML = '';
+  addLineItem('Portrait Session — 2 hours', 1, 250);
+  addLineItem('Online Gallery Delivery', 1, 0);
+  document.getElementById('depositPaid').value = 0;
+  document.getElementById('taxRate').value = 0;
+  initInvoiceDates();
+  calcTotals();
+  toast('Invoice cleared', 'blue');
+}
+
+function bumpInvoiceNumber() {
+  const el = document.getElementById('invNumber');
+  const cur = el.value;
+  const m = cur.match(/(\D+)(\d+)$/);
+  if (m) {
+    el.value = m[1] + String(parseInt(m[2]) + 1).padStart(m[2].length, '0');
+  }
+}
+
+// ════════════════════════════════════════
+//  ADMIN
+// ════════════════════════════════════════
+function renderAdmin() {
+  const list = document.getElementById('adminList');
+  const total = bookings.length;
+  const pending = bookings.filter(b => b.status === 'pending').length;
+  const confirmed = bookings.filter(b => b.status === 'confirmed').length;
+  const revenue = bookings
+    .filter(b => b.status === 'completed')
+    .reduce((s, b) => s + (b.price || 0), 0);
+
+  animNum(document.getElementById('kTotal'), total);
+  animNum(document.getElementById('kPending'), pending);
+  animNum(document.getElementById('kConfirmed'), confirmed);
+  document.getElementById('kRevenue').textContent = '$' + revenue.toLocaleString();
+
+  if (!bookings.length) {
+    list.innerHTML = `<div class="empty-state">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      No bookings yet — they'll appear here once clients book.
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = bookings.map(b => {
+    const d = new Date(b.date + 'T12:00:00');
+    const ds = d.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+    const statusOpts = ['pending','confirmed','completed','canceled']
+      .map(s => `<option value="${s}" ${b.status===s?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`)
+      .join('');
+    return `<div class="b-card">
+      <div class="b-top">
+        <div class="b-dot ${b.status}"></div>
+        <div class="b-name">${b.first} ${b.last}</div>
+        <div class="b-amount">$${b.price.toLocaleString()}</div>
+      </div>
+      <div class="b-meta">
+        <span class="b-tag">${b.packageName}</span>
+        <span>${ds} · ${b.time}</span>
+        ${b.location ? `<span>${b.location}</span>` : ''}
+      </div>
+      ${b.notes ? `<div style="font-size:.72rem;color:var(--dim);margin-top:.4rem;line-height:1.4;padding-left:17px">${escHtml(b.notes.slice(0,120))}${b.notes.length>120?'…':''}</div>` : ''}
+      <div class="b-actions">
+        <select class="status-sel" onchange="setStatus('${b.id}',this.value)">${statusOpts}</select>
+        <button class="to-inv-btn" onclick="openInvoiceFor('${b.id}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Invoice
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setStatus(id, s) {
+  const b = bookings.find(x => x.id === id);
+  if (!b) return;
+  b.status = s;
+  saveBookings();
+  renderAdmin();
+  updatePendingBadge();
+  toast(`${b.first} ${b.last} → ${s}`, 'green');
+}
+
+function openInvoiceFor(id) {
+  const sel = document.getElementById('invBookingSelect');
+  syncInvoiceBookingSelect();
+  sel.value = id;
+  loadBookingIntoInvoice();
+  switchTab('invoice');
+}
+
+function exportCsv() {
+  if (!bookings.length) { toast('Nothing to export', 'red'); return; }
+  const cols = ['id','createdAt','packageName','date','time','first','last','email','phone','location','price','deposit','status','notes'];
+  const rows = [cols.join(',')];
+  bookings.forEach(b => rows.push(cols.map(k => JSON.stringify(b[k]||'')).join(',')));
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv'}));
+  a.download = 'bookings-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  toast('CSV exported', 'green');
+}
+
+function updatePendingBadge() {
+  const n = bookings.filter(b => b.status === 'pending').length;
+  const badge = document.getElementById('pendingBadge');
+  badge.textContent = n;
+  badge.style.display = n > 0 ? 'inline' : 'none';
+}
+
+// ════════════════════════════════════════
+//  UTILITIES
+// ════════════════════════════════════════
+function v(id) { return (document.getElementById(id)?.value||'').trim(); }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function animNum(el, target) {
+  const start = parseInt(el.textContent) || 0;
+  if (start === target) return;
+  const dur = 350, t0 = performance.now();
+  const tick = t => {
+    const p = Math.min(1, (t - t0) / dur);
+    el.textContent = Math.round(start + (target - start) * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+function toast(msg, kind) {
+  const t = document.getElementById('toast');
+  const icon = kind === 'red'
+    ? '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'
+    : '<polyline points="20 6 9 17 4 12"/>';
+  t.className = 'toast show ' + (kind || '');
+  t.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${icon}</svg>${msg}`;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function fireConfetti() {
+  const colors = ['#4ade80','#60a5fa','#c084fc','#fbbf24','#f472b6','#2dd4bf'];
+  for (let i = 0; i < 55; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-bit';
+    el.style.cssText = `left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};transform:rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(el);
+    const dur = 1200 + Math.random() * 1000;
+    const drift = (Math.random() - .5) * 180;
+    el.animate([
+      {transform:`translate(0,0) rotate(0deg)`, opacity:1},
+      {transform:`translate(${drift}px,${window.innerHeight+30}px) rotate(${Math.random()*720}deg)`, opacity:0}
+    ], {duration:dur, easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish = () => el.remove();
+  }
+}
+</script>
+</body>
+</html>

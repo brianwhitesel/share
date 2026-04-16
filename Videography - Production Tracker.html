@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Production Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080c14;
+      --bg2: #0d1220;
+      --card: rgba(255,255,255,0.035);
+      --card-hover: rgba(255,255,255,0.055);
+      --border: rgba(255,255,255,0.07);
+      --border-hi: rgba(255,255,255,0.14);
+      --text: rgba(255,255,255,0.92);
+      --text-dim: rgba(255,255,255,0.55);
+      --text-faint: rgba(255,255,255,0.28);
+      --blue: #60a5fa;
+      --green: #4ade80;
+      --purple: #c084fc;
+      --amber: #fbbf24;
+      --rose: #f472b6;
+      --orange: #fb923c;
+      --cyan: #22d3ee;
+      --red: #f87171;
+      --panel-w: 460px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:15px}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 15%,rgba(96,165,250,0.045) 0%,transparent 55%),radial-gradient(ellipse at 85% 85%,rgba(192,132,252,0.035) 0%,transparent 55%);pointer-events:none;z-index:0}
+
+    /* ─── SCROLLBAR ─────────────────────── */
+    ::-webkit-scrollbar{width:5px;height:5px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+
+    /* ─── HEADER ─────────────────────────── */
+    .header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100;background:rgba(8,12,20,0.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+    .logo-wrap{display:flex;align-items:center;gap:10px}
+    .logo-icon{width:34px;height:34px;background:linear-gradient(135deg,#60a5fa,#c084fc);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .logo-text{font-family:'Outfit',sans-serif;font-size:19px;font-weight:700;color:#fff;letter-spacing:-.02em;line-height:1}
+    .logo-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-faint);letter-spacing:.1em;text-transform:uppercase}
+    .header-right{display:flex;align-items:center;gap:8px}
+    .search-wrap{position:relative}
+    .search-input{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:7px 11px 7px 32px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;width:180px;outline:none;transition:all .2s}
+    .search-input::placeholder{color:var(--text-faint)}
+    .search-input:focus{border-color:rgba(96,165,250,.45);background:rgba(96,165,250,.05);width:210px}
+    .search-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--text-faint);pointer-events:none}
+    @media(max-width:540px){.search-wrap{display:none}}
+
+    /* ─── BUTTONS ─────────────────────────── */
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;line-height:1}
+    .btn-primary{background:linear-gradient(135deg,#60a5fa,#818cf8);color:#fff}
+    .btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 20px rgba(96,165,250,.25)}
+    .btn-ghost{background:var(--card);color:var(--text-dim);border:1px solid var(--border)}
+    .btn-ghost:hover{background:var(--card-hover);color:var(--text);border-color:var(--border-hi)}
+    .btn-danger{background:rgba(248,113,113,.08);color:var(--red);border:1px solid rgba(248,113,113,.2)}
+    .btn-danger:hover{background:rgba(248,113,113,.15)}
+    .btn-green{background:rgba(74,222,128,.1);color:var(--green);border:1px solid rgba(74,222,128,.25)}
+    .btn-green:hover{background:rgba(74,222,128,.18)}
+    .icon-btn{width:32px;height:32px;border-radius:8px;background:var(--card);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-dim);transition:all .2s}
+    .icon-btn:hover{background:var(--card-hover);color:var(--text);border-color:var(--border-hi)}
+
+    /* ─── DASHBOARD ───────────────────────── */
+    #app{position:relative;z-index:1}
+    .dashboard{padding:20px;max-width:1200px;margin:0 auto;transition:padding-right .35s cubic-bezier(.4,0,.2,1)}
+    body.panel-open .dashboard{padding-right:calc(var(--panel-w) + 20px)}
+    @media(max-width:767px){body.panel-open .dashboard{padding-right:20px}}
+
+    /* Stats */
+    .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:22px}
+    @media(min-width:580px){.stats{grid-template-columns:repeat(4,1fr)}}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+    .stat-label{font-size:10px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--text-faint);margin-bottom:7px}
+    .stat-val{font-family:'Outfit',sans-serif;font-size:26px;font-weight:700;color:#fff;line-height:1;margin-bottom:3px}
+    .stat-sub{font-size:11px;color:var(--text-dim)}
+
+    /* Filter */
+    .filter-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+    .filter-lbl{font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-right:2px}
+    .filter-btn{padding:4px 11px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text-dim);transition:all .2s;font-family:'Inter',sans-serif}
+    .filter-btn:hover{border-color:var(--border-hi);color:var(--text)}
+    .filter-btn.active{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.4);color:var(--blue)}
+
+    /* Grid */
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:560px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
+    body.panel-open .grid{grid-template-columns:1fr}
+    @media(min-width:900px){body.panel-open .grid{grid-template-columns:repeat(2,1fr)}}
+
+    /* Project Card */
+    .p-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+    .p-card:hover{background:var(--card-hover);border-color:var(--border-hi);transform:translateY(-1px)}
+    .p-card.active{border-color:rgba(96,165,250,.4);background:rgba(96,165,250,.04)}
+    .p-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:14px 0 0 14px;background:var(--tc,var(--blue))}
+    .card-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .type-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;background:var(--tc-bg,rgba(96,165,250,.1));color:var(--tc,var(--blue))}
+    .status-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:500;background:var(--sc-bg);color:var(--sc)}
+    .status-chip .dot{width:5px;height:5px;border-radius:50%;background:var(--sc)}
+    .card-name{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:2px}
+    .card-client{font-size:12px;color:var(--text-dim);margin-bottom:12px;display:flex;align-items:center;gap:5px}
+    /* Phase bar */
+    .phase-bar-wrap{margin-bottom:12px}
+    .phase-bar{display:flex;height:4px;border-radius:2px;overflow:hidden;gap:2px;margin-bottom:5px}
+    .phase-seg{flex:1;border-radius:2px;transition:background .3s}
+    .phase-labels{display:flex;gap:2px}
+    .phase-lbl{flex:1;font-size:9px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .phase-lbl.cur{color:var(--text-dim)}
+    /* Card footer */
+    .card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border)}
+    .card-date{font-size:11px;color:var(--text-dim);display:flex;align-items:center;gap:4px}
+    .card-pay{font-size:11px;font-family:'JetBrains Mono',monospace;font-weight:600}
+
+    /* Empty state */
+    .empty{grid-column:1/-1;text-align:center;padding:56px 24px;color:var(--text-dim)}
+    .empty-icon{opacity:.25;margin-bottom:14px}
+    .empty h3{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px}
+    .empty p{font-size:13px;max-width:280px;margin:0 auto 18px}
+
+    /* ─── DETAIL PANEL ────────────────────── */
+    .panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;backdrop-filter:blur(2px)}
+    .panel-overlay.show{display:block}
+    @media(min-width:768px){.panel-overlay{display:none!important}}
+    .panel{position:fixed;top:0;right:0;bottom:0;width:min(var(--panel-w),100vw);background:#0c1119;border-left:1px solid var(--border);z-index:300;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);overflow:hidden}
+    .panel.open{transform:translateX(0)}
+    .panel-head{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;min-width:0}
+    .panel-back{width:30px;height:30px;border-radius:7px;background:var(--card);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-dim);transition:all .2s;flex-shrink:0}
+    .panel-back:hover{background:var(--card-hover);color:var(--text)}
+    .panel-title-area{flex:1;min-width:0}
+    .panel-title{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+    .panel-subtitle{font-size:11px;color:var(--text-dim)}
+    .panel-actions{display:flex;gap:5px;flex-shrink:0}
+    .panel-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+    .panel-tabs::-webkit-scrollbar{display:none}
+    .tab{padding:11px 14px;font-size:13px;font-weight:500;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif}
+    .tab:hover{color:var(--text)}
+    .tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+    .panel-body{flex:1;overflow-y:auto;padding:18px}
+
+    /* ─── FORM FIELDS ─────────────────────── */
+    .field-group{margin-bottom:14px}
+    .field-label{font-size:10px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--text-faint);margin-bottom:5px;display:block}
+    .field-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:8px 11px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;outline:none;transition:all .2s}
+    .field-input:focus{border-color:rgba(96,165,250,.5);background:rgba(96,165,250,.05)}
+    .field-input::placeholder{color:var(--text-faint)}
+    textarea.field-input{resize:vertical;min-height:72px;line-height:1.5}
+    select.field-input{cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='rgba(255,255,255,0.3)' d='M5 6L0 0h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .section-sep{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--text-faint);margin:20px 0 12px;display:flex;align-items:center;gap:8px}
+    .section-sep::after{content:'';flex:1;height:1px;background:var(--border)}
+
+    /* ─── OVERVIEW TAB ────────────────────── */
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+    .info-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px}
+    .info-card-label{font-size:10px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--text-faint);margin-bottom:5px}
+    .info-card-val{font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;color:#fff;line-height:1.2}
+    .info-card-sub{font-size:11px;color:var(--text-dim);margin-top:2px}
+
+    /* ─── PHASES TAB ──────────────────────── */
+    .phase-block{margin-bottom:20px}
+    .phase-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer}
+    .phase-color-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+    .phase-hdr-name{font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;flex:1}
+    .phase-hdr-count{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-faint)}
+    .phase-mini-bar{height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-bottom:10px}
+    .phase-mini-fill{height:100%;border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+    .tasks-list{display:flex;flex-direction:column;gap:2px;margin-bottom:6px}
+    .task-row{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:7px;transition:background .15s;group:true}
+    .task-row:hover{background:rgba(255,255,255,.03)}
+    .task-check{width:17px;height:17px;border-radius:4px;border:1.5px solid rgba(255,255,255,.2);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .task-check.done{background:var(--green);border-color:var(--green)}
+    .task-txt{flex:1;font-size:13px;cursor:pointer;transition:color .2s;user-select:none}
+    .task-txt.done{text-decoration:line-through;color:var(--text-faint)}
+    .task-del{width:20px;height:20px;border-radius:4px;background:none;border:none;color:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .15s}
+    .task-row:hover .task-del{color:var(--text-faint)}
+    .task-del:hover{color:var(--red)!important}
+    .add-task-row{display:flex;gap:6px}
+    .add-task-input{flex:1;background:rgba(255,255,255,.03);border:1px dashed var(--border);border-radius:7px;padding:6px 9px;color:var(--text);font-family:'Inter',sans-serif;font-size:12px;outline:none;transition:all .2s}
+    .add-task-input:focus{border-color:rgba(96,165,250,.4);border-style:solid;background:rgba(96,165,250,.04)}
+    .add-task-input::placeholder{color:var(--text-faint)}
+    .add-task-btn{padding:6px 11px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);border-radius:7px;color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;white-space:nowrap}
+    .add-task-btn:hover{background:rgba(96,165,250,.18)}
+
+    /* ─── PAYMENTS TAB ────────────────────── */
+    .pay-summary{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px}
+    .pay-summary-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+    .pay-total-lbl{font-size:10px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--text-faint)}
+    .pay-total-val{font-family:'Outfit',sans-serif;font-size:22px;font-weight:700;color:#fff;line-height:1}
+    .pay-outstanding{font-size:12px;font-family:'JetBrains Mono',monospace}
+    .pay-progress-bar{height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;margin:8px 0 8px}
+    .pay-progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#4ade80,#22c55e);transition:width .5s cubic-bezier(.4,0,.2,1)}
+    .pay-amounts{display:flex;justify-content:space-between;font-size:11px}
+    .pay-items{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+    .pay-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;transition:all .2s}
+    .pay-item.paid{background:rgba(74,222,128,.04);border-color:rgba(74,222,128,.18)}
+    .pay-toggle{width:19px;height:19px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .pay-toggle.paid{background:var(--green);border-color:var(--green)}
+    .pay-info{flex:1;min-width:0}
+    .pay-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pay-due{font-size:10px;color:var(--text-dim)}
+    .pay-amt{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text-dim)}
+    .pay-item.paid .pay-amt{color:var(--green)}
+    .pay-del{width:20px;height:20px;border-radius:4px;background:none;border:none;color:var(--text-faint);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .15s}
+    .pay-del:hover{color:var(--red)}
+    .add-pay-form{background:rgba(255,255,255,.02);border:1px dashed var(--border);border-radius:10px;padding:12px}
+    .add-pay-form h5{font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:var(--text-dim);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em}
+    .add-pay-row{display:grid;grid-template-columns:1fr 90px;gap:8px;margin-bottom:8px}
+    .add-pay-row3{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+
+    /* ─── NOTES TAB ───────────────────────── */
+    .notes-area{width:100%;min-height:280px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;line-height:1.7;outline:none;resize:none;transition:border-color .2s}
+    .notes-area:focus{border-color:rgba(96,165,250,.35)}
+    .notes-area::placeholder{color:var(--text-faint)}
+    .notes-hint{font-size:11px;color:var(--text-faint);margin-top:8px;font-family:'JetBrains Mono',monospace}
+
+    /* ─── NEW PROJECT MODAL ───────────────── */
+    .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);z-index:500;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .25s}
+    .modal-bg.show{opacity:1;pointer-events:all}
+    .modal{background:#0f1824;border:1px solid var(--border-hi);border-radius:18px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;transform:translateY(18px) scale(.97);transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+    .modal-bg.show .modal{transform:translateY(0) scale(1)}
+    .modal-head{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .modal-title{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:#fff}
+    .modal-close{width:28px;height:28px;border-radius:7px;background:var(--card);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:16px;transition:all .2s}
+    .modal-close:hover{background:var(--card-hover);color:var(--text)}
+    .modal-body{padding:18px 22px}
+    .modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+    /* Type grid */
+    .type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:4px}
+    .type-opt{padding:10px 7px;border-radius:10px;border:1px solid var(--border);background:transparent;cursor:pointer;text-align:center;transition:all .2s;font-family:'Inter',sans-serif;color:var(--text-dim)}
+    .type-opt:hover{border-color:var(--border-hi);background:var(--card);color:var(--text)}
+    .type-opt.sel{border-color:var(--ts-c,var(--blue));background:var(--ts-bg,rgba(96,165,250,.08));color:var(--ts-c,var(--blue))}
+    .type-opt-ico{font-size:20px;margin-bottom:3px;display:block}
+    .type-opt-lbl{font-size:11px;font-weight:500;line-height:1.2}
+
+    /* ─── CLIENT VIEW ─────────────────────── */
+    .cv-overlay{position:fixed;inset:0;background:#080c14;z-index:600;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s}
+    .cv-overlay.show{opacity:1;pointer-events:all}
+    .cv-top-bar{padding:14px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.02);flex-shrink:0}
+    .cv-top-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-faint)}
+    .cv-top-actions{display:flex;gap:7px}
+    .cv-body{flex:1;overflow-y:auto;padding:32px 20px}
+    .cv-content{max-width:580px;margin:0 auto}
+    .cv-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--tc,var(--blue));margin-bottom:6px;display:flex;align-items:center;gap:6px}
+    .cv-name{font-family:'Outfit',sans-serif;font-size:30px;font-weight:800;color:#fff;line-height:1.2;letter-spacing:-.02em;margin-bottom:4px}
+    .cv-client{font-size:15px;color:var(--text-dim);margin-bottom:24px}
+    .cv-dates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+    .cv-date-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:13px}
+    .cv-date-lbl{font-size:10px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;margin-bottom:5px}
+    .cv-date-val{font-family:'Outfit',sans-serif;font-size:16px;font-weight:600;color:#fff}
+    .cv-sec-title{font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;color:var(--text);margin-bottom:12px}
+    .cv-phases{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+    .cv-phase{display:flex;align-items:center;gap:12px;padding:11px 13px;background:var(--card);border:1px solid var(--border);border-radius:10px}
+    .cv-phase-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .cv-phase-info{flex:1}
+    .cv-phase-name{font-size:13px;font-weight:500;line-height:1.3}
+    .cv-phase-prog{font-size:11px;color:var(--text-dim)}
+    .cv-phase-status{font-size:11px;font-weight:600}
+    .cv-message{background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.18);border-radius:12px;padding:16px;margin-bottom:24px}
+    .cv-message p{font-size:13px;color:rgba(255,255,255,.75);line-height:1.6}
+    .cv-foot{margin-top:36px;padding-top:18px;border-top:1px solid var(--border);text-align:center;font-size:11px;color:var(--text-faint)}
+
+    /* ─── APP FOOTER ──────────────────────── */
+    .app-footer{padding:28px 20px 20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.12);letter-spacing:.12em;text-transform:uppercase}
+
+    /* ─── TOAST ───────────────────────────── */
+    .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(70px);background:rgba(20,30,48,.96);border:1px solid var(--border-hi);border-radius:10px;padding:10px 18px;font-size:13px;color:var(--text);backdrop-filter:blur(20px);z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;display:flex;align-items:center;gap:7px;pointer-events:none}
+    .toast.show{transform:translateX(-50%) translateY(0)}
+
+    /* ─── ANIMATIONS ──────────────────────── */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .card-enter{animation:fadeUp .3s cubic-bezier(.4,0,.2,1) both}
+    @keyframes popIn{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
+    .pop{animation:popIn .25s ease}
+
+    /* ─── DANGER ZONE ─────────────────────── */
+    .danger-zone{margin-top:24px;padding-top:20px;border-top:1px dashed rgba(248,113,113,.2)}
+    .danger-zone-lbl{font-size:10px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:rgba(248,113,113,.5);margin-bottom:10px}
+
+    /* ─── RESPONSIVE ──────────────────────── */
+    @media(max-width:460px){.field-row,.info-grid,.add-pay-row,.add-pay-row3{grid-template-columns:1fr}.cv-dates{grid-template-columns:1fr}}
+    @media print{.cv-overlay{background:#fff}.cv-top-bar,.cv-top-actions{display:none!important}.cv-name,.cv-phase-name{color:#000}.header,.panel,.panel-overlay{display:none!important}}
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo-wrap">
+      <div class="logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+      </div>
+      <div>
+        <div class="logo-text">Production Tracker</div>
+        <div class="logo-eyebrow">Freelance Video</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="search-wrap">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" type="text" placeholder="Search projects…" id="searchInput" oninput="handleSearch(this.value)">
+      </div>
+      <button class="btn btn-primary" onclick="openNewProjectModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Project
+      </button>
+    </div>
+  </header>
+
+  <!-- DASHBOARD -->
+  <main class="dashboard" id="dashboard">
+    <!-- Stats injected by JS -->
+    <div class="stats" id="statsRow"></div>
+    <!-- Filter row -->
+    <div class="filter-row" id="filterRow"></div>
+    <!-- Project grid -->
+    <div class="grid" id="projectGrid"></div>
+  </main>
+
+  <!-- PANEL OVERLAY (mobile) -->
+  <div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
+
+  <!-- DETAIL PANEL -->
+  <aside class="panel" id="detailPanel">
+    <div class="panel-head" id="panelHead"></div>
+    <div class="panel-tabs" id="panelTabs"></div>
+    <div class="panel-body" id="panelBody"></div>
+  </aside>
+
+  <!-- APP FOOTER -->
+  <footer class="app-footer">Made with care by Brian</footer>
+</div>
+
+<!-- NEW PROJECT MODAL -->
+<div class="modal-bg" id="newProjectModal" onclick="handleModalBgClick(event)">
+  <div class="modal" id="newProjectModalInner">
+    <div class="modal-head">
+      <span class="modal-title">New Project</span>
+      <button class="modal-close" onclick="closeNewProjectModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label class="field-label">Project Type</label>
+        <div class="type-grid" id="typeGrid"></div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Project Name</label>
+        <input class="field-input" id="np_name" placeholder="e.g. Smith & Jones Wedding Film" />
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Client Name</label>
+          <input class="field-input" id="np_client" placeholder="Full name or company" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Contract Value</label>
+          <input class="field-input" id="np_value" type="number" placeholder="3500" min="0" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Shoot Date</label>
+          <input class="field-input" id="np_shoot" type="date" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Delivery Date</label>
+          <input class="field-input" id="np_delivery" type="date" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Client Email</label>
+          <input class="field-input" id="np_email" type="email" placeholder="client@email.com" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Client Phone</label>
+          <input class="field-input" id="np_phone" placeholder="(555) 000-0000" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeNewProjectModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitNewProject()">Create Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENT VIEW OVERLAY -->
+<div class="cv-overlay" id="cvOverlay">
+  <div class="cv-top-bar">
+    <span class="cv-top-lbl">Client View Preview</span>
+    <div class="cv-top-actions">
+      <button class="btn btn-ghost" onclick="printClientView()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / PDF
+      </button>
+      <button class="btn btn-ghost" onclick="closeClientView()">← Back</button>
+    </div>
+  </div>
+  <div class="cv-body">
+    <div class="cv-content" id="cvContent"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg">Saved</span>
+</div>
+
+<script>
+// ════════════════════════════════════════════
+// CONSTANTS
+// ════════════════════════════════════════════
+
+const TYPES = {
+  wedding:     { label:'Wedding Film',    icon:'💍', color:'#f472b6', bg:'rgba(244,114,182,.1)' },
+  brand:       { label:'Brand Video',     icon:'📺', color:'#60a5fa', bg:'rgba(96,165,250,.1)' },
+  realestate:  { label:'Real Estate',     icon:'🏡', color:'#4ade80', bg:'rgba(74,222,128,.1)' },
+  event:       { label:'Event Recap',     icon:'🎉', color:'#fbbf24', bg:'rgba(251,191,36,.1)' },
+  music:       { label:'Music Video',     icon:'🎵', color:'#c084fc', bg:'rgba(192,132,252,.1)' },
+  documentary: { label:'Documentary',     icon:'📽️', color:'#22d3ee', bg:'rgba(34,211,238,.1)' }
+};
+
+const STATUSES = {
+  inquiry:        { label:'Inquiry',        color:'#94a3b8', bg:'rgba(148,163,184,.1)' },
+  booked:         { label:'Booked',         color:'#60a5fa', bg:'rgba(96,165,250,.1)' },
+  preprod:        { label:'Pre-Production', color:'#fbbf24', bg:'rgba(251,191,36,.1)' },
+  production:     { label:'In Production',  color:'#fb923c', bg:'rgba(251,146,60,.1)' },
+  postproduction: { label:'Post-Production',color:'#c084fc', bg:'rgba(192,132,252,.1)' },
+  delivered:      { label:'Delivered',      color:'#4ade80', bg:'rgba(74,222,128,.1)' },
+  archived:       { label:'Archived',       color:'#475569', bg:'rgba(71,85,105,.1)' }
+};
+
+const PHASE_COLORS = ['#fbbf24','#fb923c','#c084fc','#4ade80'];
+const PHASE_NAMES  = ['Pre-Production','Shoot Day','Editing','Delivery'];
+
+const DEFAULT_TASKS = {
+  wedding: [
+    ['Contract signed & returned','Booking deposit received','Discovery call completed','Shot list finalized','Timeline confirmed with venue coordinator','Equipment packed & tested','Second shooter confirmed (if applicable)'],
+    ['Ceremony fully filmed','Reception fully filmed','First look & portraits captured','Speeches & toasts recorded','B-roll: rings, flowers, décor, details','Drone footage secured','All footage backed up (2+ copies)'],
+    ['Footage organized & synced','Rough cut assembled','Highlight film edited (3–5 min)','Color grade applied','Audio mixed & music licensed','Client review link sent','Revisions incorporated'],
+    ['Final cut approved by client','Master export (4K H.264)','Cloud link or USB drive prepared','Files delivered to client','Thank you note sent','Google review request sent','Project archived']
+  ],
+  brand: [
+    ['Creative brief approved','Contract signed & deposit received','Storyboard / shot list approved','Location scouted & confirmed','On-camera talent confirmed','Props & wardrobe finalized','Equipment list locked'],
+    ['Hero product / service shots filmed','B-roll package captured','Interview / spokesperson filmed','Behind-the-scenes content shot','Audio levels checked','All footage backed up (2+ copies)'],
+    ['Selects pulled & organized','Rough cut sent for review','Round 1 revisions applied','Color grade applied','Motion graphics & titles added','Music licensed & mixed'],
+    ['Final client approval received','Master file exported (ProRes/H.264)','Social cuts exported (1:1, 9:16, 16:9)','Usage rights confirmed','Files delivered','Project archived']
+  ],
+  realestate: [
+    ['Booking confirmed with agent','Property address & access info received','Staging confirmed','Equipment loaded (drone, gimbal, light kit)','Weather check for drone flight'],
+    ['Interior walkthrough filmed','Exterior filmed (front & back)','Aerial / drone footage secured','Key features highlighted (kitchen, master)','All footage backed up'],
+    ['Walkthrough video assembled','Color grade applied','Background music licensed','Address & property text overlays added','Agent / brokerage branding added'],
+    ['Client review & approval','MLS-ready export (1080p mp4)','Social version exported','Files delivered to agent','Project archived']
+  ],
+  event: [
+    ['Event brief & run-of-show received','Contract signed & deposit received','Venue layout confirmed','Multi-camera plan created','Equipment loaded & tested'],
+    ['Early arrival & setup done','Keynote / main stage fully filmed','Candid attendee coverage captured','Sponsor activations documented','B-roll package captured','All footage backed up'],
+    ['Highlight reel assembled (60–90s)','Extended full-event cut','Social teasers cut (15s, 30s)','Color grade applied','Music licensed & synced','Client review link sent'],
+    ['Final revisions applied','All cuts exported','Social media files packaged','Files delivered','Project archived']
+  ],
+  music: [
+    ['Creative brief & treatment approved','Contract signed & deposit received','Storyboard approved','Locations scouted & permitted','Wardrobe & styling locked','Crew confirmed'],
+    ['Performance shots filmed (all angles)','Narrative / acting scenes filmed','B-roll & atmosphere captured','Multiple takes secured','All footage backed up'],
+    ['Edit synced to final master audio','Rough cut sent to artist','VFX / compositing applied','Color grade applied','YouTube & streaming master exported'],
+    ['Final approval received','Master & streaming versions delivered','Thumbnail stills delivered','Project archived']
+  ],
+  documentary: [
+    ['Story outline & treatment approved','Subjects / interviews confirmed','Shoot schedule created','Location permits secured','Research materials collected'],
+    ['On-camera interviews filmed','B-roll & environment captured','Archival / historical footage sourced','All footage backed up'],
+    ['Assembly cut complete','Story cut (rough)','Fine cut with narration & titles','Color grade applied','Sound mix & licensed music','Partner / client review sent'],
+    ['Final approval received','Broadcast / festival export','Web version exported','Trailer delivered','Project archived']
+  ]
+};
+
+// ════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════
+
+let DATA = { projects: [] };
+let activeId   = null;
+let activeTab  = 'overview';
+let filterType = 'all';
+let searchQ    = '';
+let newProjType = 'wedding';
+
+// ════════════════════════════════════════════
+// DATA HELPERS
+// ════════════════════════════════════════════
+
+function uid() {
+  return 'p_' + Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4);
+}
+
+function saveData() {
+  try { localStorage.setItem('vpt_v2', JSON.stringify(DATA)); } catch(e){}
+}
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem('vpt_v2');
+    if (raw) { DATA = JSON.parse(raw); return; }
+  } catch(e){}
+  DATA = { projects: seedProjects() };
+  saveData();
+}
+
+function getProject(id) {
+  return DATA.projects.find(p => p.id === id);
+}
+
+function updateProject(id, fn) {
+  const p = getProject(id);
+  if (!p) return;
+  fn(p);
+  saveData();
+}
+
+function formatCurrency(n) {
+  if (!n && n !== 0) return '—';
+  return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  const dt = new Date(d + 'T12:00:00');
+  return dt.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
+
+function daysUntil(d) {
+  if (!d) return null;
+  const now = new Date(); now.setHours(0,0,0,0);
+  const then = new Date(d + 'T12:00:00');
+  return Math.round((then - now) / 86400000);
+}
+
+function phaseCompletion(project) {
+  return project.phases.map(ph => {
+    const total = ph.tasks.length;
+    const done  = ph.tasks.filter(t => t.done).length;
+    return total === 0 ? 0 : Math.round(done / total * 100);
+  });
+}
+
+function paymentProgress(project) {
+  const total = project.payments.reduce((s,p) => s + (p.amount||0), 0);
+  const paid  = project.payments.filter(p=>p.paid).reduce((s,p) => s + (p.amount||0), 0);
+  return { total, paid, pct: total > 0 ? paid/total : 0 };
+}
+
+function buildDefaultPhases(type) {
+  const tasks = DEFAULT_TASKS[type] || DEFAULT_TASKS.wedding;
+  return PHASE_NAMES.map((name, i) => ({
+    id: 'ph_' + i,
+    name,
+    color: PHASE_COLORS[i],
+    tasks: (tasks[i] || []).map(t => ({ id: uid(), text: t, done: false }))
+  }));
+}
+
+// ════════════════════════════════════════════
+// SEED DATA (demo)
+// ════════════════════════════════════════════
+
+function seedProjects() {
+  const weddingPhases = buildDefaultPhases('wedding');
+  // Pre-prod: all done, Shoot: all done, Edit: 4 done, Delivery: 0 done
+  weddingPhases[0].tasks.forEach(t => t.done = true);
+  weddingPhases[1].tasks.forEach(t => t.done = true);
+  weddingPhases[2].tasks.slice(0,4).forEach(t => t.done = true);
+
+  const brandPhases = buildDefaultPhases('brand');
+  brandPhases[0].tasks.slice(0,5).forEach(t => t.done = true);
+
+  const rePhases = buildDefaultPhases('realestate');
+  rePhases.forEach(ph => ph.tasks.forEach(t => t.done = true));
+
+  const eventPhases = buildDefaultPhases('event');
+  eventPhases[0].tasks.slice(0,2).forEach(t => t.done = true);
+
+  return [
+    {
+      id: uid(),
+      name: 'Smith & Morrison Wedding Film',
+      type: 'wedding',
+      status: 'postproduction',
+      client: { name:'Emma Morrison & Jake Smith', email:'emma.morrison@gmail.com', phone:'(614) 555-0182', notes:'Referred by the Henderson family. Emma prefers email. Ceremony at St. Mary\'s, reception at The Grand Ballroom.' },
+      shootDate: '2026-06-21',
+      deliveryDate: '2026-07-31',
+      contractValue: 4800,
+      payments: [
+        { id: uid(), label:'Booking Deposit (50%)', amount:2400, due:'2026-02-14', paid:true, paidDate:'2026-02-14' },
+        { id: uid(), label:'Balance Due',           amount:2400, due:'2026-06-21', paid:false, paidDate:null }
+      ],
+      phases: weddingPhases,
+      notes: 'Emma wants a short 2-min Instagram cut in addition to the full film. Jake wants the Coldplay song "Yellow" if licensing clears. Rough cut ETA: July 14.\n\nRemember to include drone footage of the vineyard walk.',
+      createdAt: '2026-01-10'
+    },
+    {
+      id: uid(),
+      name: 'Apex Motors — Spring Campaign',
+      type: 'brand',
+      status: 'preprod',
+      client: { name:'Sarah Chen', email:'schen@apexmotors.com', phone:'(614) 555-0291', notes:'Marketing Director. Very detail-oriented — send all updates via email and CC mark@apexmotors.com.' },
+      shootDate: '2026-04-28',
+      deliveryDate: '2026-05-20',
+      contractValue: 7200,
+      payments: [
+        { id: uid(), label:'Project Deposit (50%)', amount:3600, due:'2026-04-01', paid:true, paidDate:'2026-04-05' },
+        { id: uid(), label:'On Delivery',           amount:3600, due:'2026-05-20', paid:false, paidDate:null }
+      ],
+      phases: brandPhases,
+      notes: 'Three hero cars: the new Apex RS Coupe, the GX-4 SUV, and the EV concept. Locations: garage studio for product shots, warehouse district for street scenes.\n\nDeadline is firm — trade show on May 22nd.',
+      createdAt: '2026-03-18'
+    },
+    {
+      id: uid(),
+      name: '424 Lakeview Drive',
+      type: 'realestate',
+      status: 'delivered',
+      client: { name:'Mike Rosen', email:'mrosen@harborrealty.com', phone:'(614) 555-0347', notes:'Harbor Realty Group. Good repeat client — third listing this year.' },
+      shootDate: '2026-04-08',
+      deliveryDate: '2026-04-10',
+      contractValue: 650,
+      payments: [
+        { id: uid(), label:'Full Project Fee', amount:650, due:'2026-04-10', paid:true, paidDate:'2026-04-10' }
+      ],
+      phases: rePhases,
+      notes: 'Lakefront property, 4BR. Drone was grounded first 20 min due to fog — got great shots once it cleared. Agent wanted extra close-up of the dock.',
+      createdAt: '2026-04-03'
+    },
+    {
+      id: uid(),
+      name: 'Coastal Summerfest 2026',
+      type: 'event',
+      status: 'booked',
+      client: { name:'Dana Park', email:'dpark@coastalevents.co', phone:'(614) 555-0521', notes:'Coastal Events Co. — two-day festival, ~3,000 attendees. Full contact list in email thread.' },
+      shootDate: '2026-05-17',
+      deliveryDate: '2026-05-24',
+      contractValue: 3500,
+      payments: [
+        { id: uid(), label:'Booking Deposit (50%)', amount:1750, due:'2026-04-01', paid:true, paidDate:'2026-04-05' },
+        { id: uid(), label:'Balance on Delivery',   amount:1750, due:'2026-05-24', paid:false, paidDate:null }
+      ],
+      phases: eventPhases,
+      notes: 'Two-day festival. Day 1: mainstage + vendor village. Day 2: afternoon headliner. Need a 90-sec highlight reel for socials PLUS a 5-min full recap.\n\nBring the second camera rig and two lens kits.',
+      createdAt: '2026-03-28'
+    }
+  ];
+}
+
+// ════════════════════════════════════════════
+// RENDERING — DASHBOARD
+// ════════════════════════════════════════════
+
+function renderStats() {
+  const all     = DATA.projects;
+  const active  = all.filter(p => !['delivered','archived'].includes(p.status));
+  const thisMonth = new Date().getMonth();
+  const thisYear  = new Date().getFullYear();
+  const rev = all.reduce((s,p) => {
+    const paid = p.payments.filter(x => x.paid && x.paidDate).reduce((a,x) => {
+      const d = new Date(x.paidDate);
+      return (d.getMonth()===thisMonth && d.getFullYear()===thisYear) ? a+x.amount : a;
+    }, 0);
+    return s + paid;
+  }, 0);
+  const upcoming = all.filter(p => {
+    const d = daysUntil(p.deliveryDate);
+    return d !== null && d >= 0 && d <= 14 && p.status !== 'delivered';
+  }).length;
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Total Projects</div>
+      <div class="stat-val">${all.length}</div>
+      <div class="stat-sub">${active.length} active</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Revenue This Month</div>
+      <div class="stat-val" style="font-size:20px">${formatCurrency(rev)}</div>
+      <div class="stat-sub">payments received</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">In Production</div>
+      <div class="stat-val">${active.length}</div>
+      <div class="stat-sub">ongoing projects</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Due in 14 Days</div>
+      <div class="stat-val" style="color:${upcoming>0?'var(--amber)':'var(--text)'}">${upcoming}</div>
+      <div class="stat-sub">${upcoming===1?'delivery coming':'upcoming deliveries'}</div>
+    </div>
+  `;
+}
+
+function renderFilters() {
+  const counts = { all: DATA.projects.length };
+  Object.keys(TYPES).forEach(t => {
+    counts[t] = DATA.projects.filter(p => p.type === t).length;
+  });
+
+  const types = [['all','All'], ...Object.keys(TYPES).map(t => [t, TYPES[t].label])];
+  document.getElementById('filterRow').innerHTML =
+    `<span class="filter-lbl">Filter</span>` +
+    types.map(([t,l]) => {
+      const c = counts[t] || 0;
+      if (t !== 'all' && c === 0) return '';
+      return `<button class="filter-btn ${filterType===t?'active':''}" onclick="setFilter('${t}')">${l} ${c > 0 && t !== 'all' ? `<span style="opacity:.5">${c}</span>` : ''}</button>`;
+    }).join('');
+}
+
+function filteredProjects() {
+  return DATA.projects.filter(p => {
+    const matchType = filterType === 'all' || p.type === filterType;
+    const q = searchQ.toLowerCase();
+    const matchSearch = !q ||
+      p.name.toLowerCase().includes(q) ||
+      p.client.name.toLowerCase().includes(q) ||
+      (TYPES[p.type]?.label||'').toLowerCase().includes(q);
+    return matchType && matchSearch;
+  });
+}
+
+function renderGrid() {
+  const projects = filteredProjects();
+  const grid = document.getElementById('projectGrid');
+
+  if (projects.length === 0) {
+    grid.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>No projects found</h3>
+        <p>${searchQ ? 'Try a different search term.' : 'Create your first project to get started.'}</p>
+        ${!searchQ ? `<button class="btn btn-primary" onclick="openNewProjectModal()">+ New Project</button>` : ''}
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = projects.map((p, i) => renderProjectCard(p, i)).join('');
+}
+
+function renderProjectCard(p, i) {
+  const tc = TYPES[p.type];
+  const sc = STATUSES[p.status] || STATUSES.inquiry;
+  const completions = phaseCompletion(p);
+  const pp = paymentProgress(p);
+
+  // Phase bar segments
+  const segments = completions.map((c, idx) => {
+    const baseColor = PHASE_COLORS[idx];
+    const bg = c === 100 ? baseColor : c > 0 ? baseColor + '55' : 'rgba(255,255,255,0.06)';
+    return `<div class="phase-seg" style="background:${bg}"></div>`;
+  }).join('');
+
+  // Current phase label highlight
+  let curPhaseIdx = completions.findIndex(c => c < 100);
+  if (curPhaseIdx === -1) curPhaseIdx = 3;
+  const phaseLabels = ['Pre-Prod','Shoot','Editing','Delivery'].map((l,idx) =>
+    `<div class="phase-lbl ${idx===curPhaseIdx?'cur':''}">${l}</div>`
+  ).join('');
+
+  // Payment label
+  let payHtml = '';
+  if (pp.total > 0) {
+    if (pp.pct >= 1) payHtml = `<span class="card-pay" style="color:var(--green)">✓ Paid in Full</span>`;
+    else if (pp.paid > 0) payHtml = `<span class="card-pay" style="color:var(--amber)">${formatCurrency(pp.total - pp.paid)} due</span>`;
+    else payHtml = `<span class="card-pay" style="color:var(--text-faint)">${formatCurrency(pp.total)} contract</span>`;
+  }
+
+  // Date info
+  const days = daysUntil(p.deliveryDate);
+  let dateLabel = '';
+  if (p.status === 'delivered') {
+    dateLabel = `Delivered`;
+  } else if (days !== null) {
+    if (days < 0) dateLabel = `${Math.abs(days)}d overdue`;
+    else if (days === 0) dateLabel = 'Due today!';
+    else if (days <= 7) dateLabel = `${days}d to delivery`;
+    else dateLabel = formatDate(p.shootDate);
+  }
+
+  return `
+    <div class="p-card card-enter ${activeId===p.id?'active':''}"
+         style="--tc:${tc.color};--tc-bg:${tc.bg};animation-delay:${i*0.04}s"
+         onclick="openProject('${p.id}')">
+      <div class="card-row1">
+        <div class="type-pill">${tc.icon} ${tc.label}</div>
+        <div class="status-chip" style="--sc:${sc.color};--sc-bg:${sc.bg}">
+          <div class="dot"></div>${sc.label}
+        </div>
+      </div>
+      <div class="card-name">${p.name}</div>
+      <div class="card-client">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        ${p.client.name}
+      </div>
+      <div class="phase-bar-wrap">
+        <div class="phase-bar">${segments}</div>
+        <div class="phase-labels">${phaseLabels}</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-date">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          ${dateLabel || formatDate(p.deliveryDate)}
+        </div>
+        ${payHtml}
+      </div>
+    </div>`;
+}
+
+function renderDashboard() {
+  renderStats();
+  renderFilters();
+  renderGrid();
+}
+
+// ════════════════════════════════════════════
+// RENDERING — DETAIL PANEL
+// ════════════════════════════════════════════
+
+function renderPanel() {
+  const p = getProject(activeId);
+  if (!p) return;
+  const tc = TYPES[p.type];
+  const sc = STATUSES[p.status] || STATUSES.inquiry;
+  const pp = paymentProgress(p);
+
+  // Head
+  document.getElementById('panelHead').innerHTML = `
+    <button class="panel-back" onclick="closePanel()" title="Back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="panel-title-area">
+      <div class="panel-title">${p.name}</div>
+      <div class="panel-subtitle" style="color:${tc.color}">${tc.icon} ${tc.label}</div>
+    </div>
+    <div class="panel-actions">
+      <button class="icon-btn" title="Client View" onclick="showClientView('${p.id}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>`;
+
+  // Tabs
+  const tabs = [['overview','Overview'],['phases','Workflow'],['payments','Payments'],['notes','Notes']];
+  document.getElementById('panelTabs').innerHTML = tabs.map(([id,label]) =>
+    `<button class="tab ${activeTab===id?'active':''}" onclick="switchTab('${id}')">${label}</button>`
+  ).join('');
+
+  // Body
+  const body = document.getElementById('panelBody');
+  if (activeTab === 'overview')  body.innerHTML = renderOverviewTab(p);
+  if (activeTab === 'phases')    body.innerHTML = renderPhasesTab(p);
+  if (activeTab === 'payments')  body.innerHTML = renderPaymentsTab(p);
+  if (activeTab === 'notes')     body.innerHTML = renderNotesTab(p);
+}
+
+function renderOverviewTab(p) {
+  const tc = TYPES[p.type];
+  const pp = paymentProgress(p);
+  const completions = phaseCompletion(p);
+  const overallPct = Math.round(completions.reduce((s,c)=>s+c,0) / completions.length);
+  const days = daysUntil(p.deliveryDate);
+  let daysLabel = '—';
+  if (days !== null) {
+    if (days < 0) daysLabel = `${Math.abs(days)}d overdue`;
+    else if (days === 0) daysLabel = 'Today!';
+    else daysLabel = `${days} days`;
+  }
+
+  const statusOptions = Object.entries(STATUSES).map(([k,v]) =>
+    `<option value="${k}" ${p.status===k?'selected':''}>${v.label}</option>`
+  ).join('');
+
+  return `
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-label">Workflow Progress</div>
+        <div class="info-card-val">${overallPct}%</div>
+        <div class="info-card-sub">across all phases</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Payment Received</div>
+        <div class="info-card-val" style="color:${pp.pct>=1?'var(--green)':pp.paid>0?'var(--amber)':'var(--text)'}">${Math.round(pp.pct*100)}%</div>
+        <div class="info-card-sub">${formatCurrency(pp.paid)} of ${formatCurrency(pp.total)}</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Delivery In</div>
+        <div class="info-card-val" style="font-size:16px;color:${days!==null&&days<=7&&days>=0?'var(--amber)':''}">${daysLabel}</div>
+        <div class="info-card-sub">${formatDate(p.deliveryDate)}</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Contract Value</div>
+        <div class="info-card-val" style="font-size:16px">${formatCurrency(p.contractValue)}</div>
+        <div class="info-card-sub">total project</div>
+      </div>
+    </div>
+
+    <div class="section-sep">Project Status</div>
+    <div class="field-group">
+      <label class="field-label">Current Status</label>
+      <select class="field-input" onchange="updateField('${p.id}','status',this.value)">
+        ${statusOptions}
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label">Shoot Date</label>
+        <input class="field-input" type="date" value="${p.shootDate||''}" onchange="updateField('${p.id}','shootDate',this.value)" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Delivery Date</label>
+        <input class="field-input" type="date" value="${p.deliveryDate||''}" onchange="updateField('${p.id}','deliveryDate',this.value)" />
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Contract Value ($)</label>
+      <input class="field-input" type="number" value="${p.contractValue||''}" placeholder="0" onchange="updateField('${p.id}','contractValue',parseFloat(this.value)||0)" />
+    </div>
+
+    <div class="section-sep">Client Info</div>
+    <div class="field-group">
+      <label class="field-label">Client Name</label>
+      <input class="field-input" value="${p.client.name||''}" placeholder="Full name or company" onchange="updateClientField('${p.id}','name',this.value)" />
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label">Email</label>
+        <input class="field-input" type="email" value="${p.client.email||''}" placeholder="email@example.com" onchange="updateClientField('${p.id}','email',this.value)" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Phone</label>
+        <input class="field-input" value="${p.client.phone||''}" placeholder="(555) 000-0000" onchange="updateClientField('${p.id}','phone',this.value)" />
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Client Notes</label>
+      <textarea class="field-input" placeholder="Preferences, referral source, special requests…" onchange="updateClientField('${p.id}','notes',this.value)">${p.client.notes||''}</textarea>
+    </div>
+
+    <div class="section-sep">Project Name</div>
+    <div class="field-group">
+      <input class="field-input" value="${p.name||''}" placeholder="Project name" onchange="updateField('${p.id}','name',this.value)" />
+    </div>
+
+    <div class="danger-zone">
+      <div class="danger-zone-lbl">Danger Zone</div>
+      <button class="btn btn-danger" onclick="confirmDelete('${p.id}')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        Delete Project
+      </button>
+    </div>`;
+}
+
+function renderPhasesTab(p) {
+  return p.phases.map((ph, pi) => {
+    const done  = ph.tasks.filter(t => t.done).length;
+    const total = ph.tasks.length;
+    const pct   = total > 0 ? (done/total*100).toFixed(0) : 0;
+    const fillColor = pct == 100 ? ph.color : pct > 0 ? ph.color + '88' : 'rgba(255,255,255,.1)';
+
+    const taskItems = ph.tasks.map((t, ti) => `
+      <div class="task-row">
+        <div class="task-check ${t.done?'done':''}" onclick="toggleTask('${p.id}',${pi},${ti})">
+          ${t.done ? `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>` : ''}
+        </div>
+        <div class="task-txt ${t.done?'done':''}" onclick="toggleTask('${p.id}',${pi},${ti})">${t.text}</div>
+        <button class="task-del" onclick="removeTask('${p.id}',${pi},${ti})" title="Remove task">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>`).join('');
+
+    return `
+      <div class="phase-block">
+        <div class="phase-hdr">
+          <div class="phase-color-dot" style="background:${ph.color}"></div>
+          <div class="phase-hdr-name">${ph.name}</div>
+          <div class="phase-hdr-count">${done}/${total}</div>
+        </div>
+        <div class="phase-mini-bar">
+          <div class="phase-mini-fill" style="width:${pct}%;background:${fillColor}"></div>
+        </div>
+        <div class="tasks-list">${taskItems}</div>
+        <div class="add-task-row">
+          <input class="add-task-input" id="addTask_${pi}" placeholder="Add a task…" onkeydown="if(event.key==='Enter')addTask('${p.id}',${pi})" />
+          <button class="add-task-btn" onclick="addTask('${p.id}',${pi})">Add</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderPaymentsTab(p) {
+  const pp = paymentProgress(p);
+
+  const payItems = p.payments.map((pay, i) => `
+    <div class="pay-item ${pay.paid?'paid':''}">
+      <div class="pay-toggle ${pay.paid?'paid':''}" onclick="togglePayment('${p.id}',${i})">
+        ${pay.paid ? `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>` : ''}
+      </div>
+      <div class="pay-info">
+        <div class="pay-name">${pay.label}</div>
+        <div class="pay-due">${pay.paid ? `Paid ${formatDate(pay.paidDate)}` : `Due ${formatDate(pay.due)}`}</div>
+      </div>
+      <div class="pay-amt">${formatCurrency(pay.amount)}</div>
+      <button class="pay-del" onclick="removePayment('${p.id}',${i})" title="Remove">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>`).join('');
+
+  const paidColor = pp.pct >= 1 ? 'var(--green)' : pp.paid > 0 ? 'var(--amber)' : 'var(--text-faint)';
+  const outstanding = pp.total - pp.paid;
+
+  return `
+    <div class="pay-summary">
+      <div class="pay-summary-top">
+        <div>
+          <div class="pay-total-lbl">Contract Total</div>
+          <div class="pay-total-val">${formatCurrency(pp.total)}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="pay-total-lbl">Outstanding</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:${outstanding>0?'var(--amber)':'var(--green)'}">${outstanding>0?formatCurrency(outstanding):'Paid ✓'}</div>
+        </div>
+      </div>
+      <div class="pay-progress-bar">
+        <div class="pay-progress-fill" style="width:${Math.round(pp.pct*100)}%"></div>
+      </div>
+      <div class="pay-amounts">
+        <span style="color:${paidColor};font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600">${formatCurrency(pp.paid)} received</span>
+        <span style="color:var(--text-faint);font-size:11px">${Math.round(pp.pct*100)}% paid</span>
+      </div>
+    </div>
+
+    <div class="pay-items">${payItems || '<div style="font-size:13px;color:var(--text-faint);padding:8px 0">No payments added yet.</div>'}</div>
+
+    <div class="add-pay-form">
+      <h5>Add Payment</h5>
+      <div class="add-pay-row">
+        <input class="field-input" id="pay_label" placeholder="e.g. Booking Deposit" style="font-size:12px;padding:7px 10px" />
+        <input class="field-input" id="pay_amount" type="number" placeholder="Amount" min="0" style="font-size:12px;padding:7px 10px" />
+      </div>
+      <div class="add-pay-row3">
+        <input class="field-input" id="pay_due" type="date" style="font-size:12px;padding:7px 10px" />
+        <div></div>
+      </div>
+      <button class="btn btn-green" style="font-size:13px;padding:7px 14px;width:100%" onclick="addPayment('${p.id}')">+ Add Payment</button>
+    </div>`;
+}
+
+function renderNotesTab(p) {
+  return `
+    <div style="margin-bottom:10px">
+      <div style="font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Internal Notes</div>
+      <textarea class="notes-area" id="notesArea" placeholder="Shoot details, client preferences, revision notes, equipment list, anything you need to remember…"
+        onchange="updateField('${p.id}','notes',this.value)"
+        oninput="updateField('${p.id}','notes',this.value)">${p.notes||''}</textarea>
+      <div class="notes-hint">Autosaves as you type · Private — not shown in client view</div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════
+// RENDERING — CLIENT VIEW
+// ════════════════════════════════════════════
+
+function renderClientViewContent(p) {
+  const tc = TYPES[p.type];
+  const completions = phaseCompletion(p);
+
+  const phaseBlocks = p.phases.map((ph, i) => {
+    const done  = ph.tasks.filter(t => t.done).length;
+    const total = ph.tasks.length;
+    const pct   = total > 0 ? (done/total*100) : 0;
+    const isComplete = pct === 100;
+    const isActive   = !isComplete && i === completions.findIndex(c=>c<100);
+    let statusLabel = isComplete ? 'Complete' : isActive ? 'In Progress' : 'Upcoming';
+    let statusColor = isComplete ? 'var(--green)' : isActive ? 'var(--amber)' : 'var(--text-faint)';
+    let icoBg = isComplete ? 'rgba(74,222,128,.15)' : isActive ? 'rgba(251,191,36,.1)' : 'rgba(255,255,255,.04)';
+    let icoColor = isComplete ? '#4ade80' : isActive ? '#fbbf24' : '#475569';
+
+    const icons = [
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>',
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+    ];
+
+    return `
+      <div class="cv-phase">
+        <div class="cv-phase-ico" style="background:${icoBg};color:${icoColor}">${icons[i]||icons[0]}</div>
+        <div class="cv-phase-info">
+          <div class="cv-phase-name">${ph.name}</div>
+          <div class="cv-phase-prog">${isComplete?'All steps complete':`${done} of ${total} steps done`}</div>
+        </div>
+        <div class="cv-phase-status" style="color:${statusColor}">${statusLabel}</div>
+      </div>`;
+  }).join('');
+
+  const overall = Math.round(completions.reduce((s,c)=>s+c,0)/completions.length);
+  const sc = STATUSES[p.status] || STATUSES.inquiry;
+
+  return `
+    <div class="cv-top">
+      <div class="cv-eyebrow" style="color:${tc.color}">
+        ${tc.icon}
+        <span>${tc.label}</span>
+      </div>
+      <div class="cv-name">${p.name}</div>
+      <div class="cv-client">${p.client.name}</div>
+    </div>
+
+    <div class="cv-dates">
+      <div class="cv-date-card">
+        <div class="cv-date-lbl">Shoot Date</div>
+        <div class="cv-date-val">${formatDate(p.shootDate)}</div>
+      </div>
+      <div class="cv-date-card">
+        <div class="cv-date-lbl">Delivery Date</div>
+        <div class="cv-date-val">${formatDate(p.deliveryDate)}</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+      <div class="cv-sec-title" style="margin-bottom:0">Project Status</div>
+      <div style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:${sc.bg};color:${sc.color}">
+        <div style="width:5px;height:5px;border-radius:50%;background:${sc.color}"></div>
+        ${sc.label}
+      </div>
+    </div>
+    <div style="margin-bottom:24px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-dim);margin-bottom:6px">
+        <span>Overall progress</span><span style="font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--text)">${overall}%</span>
+      </div>
+      <div style="height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden">
+        <div style="height:100%;width:${overall}%;background:linear-gradient(90deg,${tc.color},${tc.color}aa);border-radius:3px;transition:width .5s"></div>
+      </div>
+    </div>
+
+    <div class="cv-sec-title">Workflow</div>
+    <div class="cv-phases">${phaseBlocks}</div>
+
+    <div class="cv-message">
+      <p>Questions about your project? Reach out anytime — we'll keep you updated as things progress.</p>
+    </div>
+
+    <div class="cv-foot">
+      Prepared with care · ${new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'})}
+      <br><span style="opacity:.5">Made with care by Brian</span>
+    </div>`;
+}
+
+// ════════════════════════════════════════════
+// ACTIONS
+// ════════════════════════════════════════════
+
+function openProject(id) {
+  activeId  = id;
+  activeTab = 'overview';
+  document.body.classList.add('panel-open');
+  document.getElementById('detailPanel').classList.add('open');
+  document.getElementById('panelOverlay').classList.add('show');
+  renderPanel();
+  renderGrid(); // Update active card highlight
+}
+
+function closePanel() {
+  activeId = null;
+  document.body.classList.remove('panel-open');
+  document.getElementById('detailPanel').classList.remove('open');
+  document.getElementById('panelOverlay').classList.remove('show');
+  renderGrid();
+}
+
+function switchTab(tab) {
+  activeTab = tab;
+  renderPanel();
+}
+
+function setFilter(type) {
+  filterType = type;
+  renderDashboard();
+}
+
+function handleSearch(val) {
+  searchQ = val;
+  renderGrid();
+}
+
+function updateField(id, key, value) {
+  updateProject(id, p => { p[key] = value; });
+  renderStats();
+  renderGrid();
+  // Update panel title if name changed
+  if (key === 'name' || key === 'status') renderPanel();
+  showToast('Saved');
+}
+
+function updateClientField(id, key, value) {
+  updateProject(id, p => { p.client[key] = value; });
+  saveData();
+  showToast('Saved');
+}
+
+function toggleTask(id, phaseIdx, taskIdx) {
+  updateProject(id, p => {
+    p.phases[phaseIdx].tasks[taskIdx].done = !p.phases[phaseIdx].tasks[taskIdx].done;
+  });
+  renderPanel();
+  renderGrid();
+  showToast('Updated');
+}
+
+function addTask(id, phaseIdx) {
+  const input = document.getElementById('addTask_' + phaseIdx);
+  const text  = input ? input.value.trim() : '';
+  if (!text) return;
+  updateProject(id, p => {
+    p.phases[phaseIdx].tasks.push({ id: uid(), text, done: false });
+  });
+  renderPanel();
+  renderGrid();
+  showToast('Task added');
+}
+
+function removeTask(id, phaseIdx, taskIdx) {
+  updateProject(id, p => {
+    p.phases[phaseIdx].tasks.splice(taskIdx, 1);
+  });
+  renderPanel();
+  renderGrid();
+  showToast('Task removed');
+}
+
+function togglePayment(id, payIdx) {
+  updateProject(id, p => {
+    const pay = p.payments[payIdx];
+    pay.paid = !pay.paid;
+    pay.paidDate = pay.paid ? new Date().toISOString().slice(0,10) : null;
+  });
+  renderPanel();
+  renderStats();
+  renderGrid();
+  showToast(getProject(id).payments[payIdx].paid ? 'Marked as paid ✓' : 'Marked as unpaid');
+}
+
+function addPayment(id) {
+  const label  = document.getElementById('pay_label')?.value.trim();
+  const amount = parseFloat(document.getElementById('pay_amount')?.value) || 0;
+  const due    = document.getElementById('pay_due')?.value || '';
+  if (!label || amount <= 0) { showToast('Enter a label and amount'); return; }
+  updateProject(id, p => {
+    p.payments.push({ id: uid(), label, amount, due, paid: false, paidDate: null });
+    // Update contract value if needed
+    const total = p.payments.reduce((s,x) => s + x.amount, 0);
+    if (total > (p.contractValue||0)) p.contractValue = total;
+  });
+  renderPanel();
+  renderStats();
+  renderGrid();
+  showToast('Payment added');
+}
+
+function removePayment(id, payIdx) {
+  updateProject(id, p => { p.payments.splice(payIdx, 1); });
+  renderPanel();
+  renderStats();
+  renderGrid();
+  showToast('Payment removed');
+}
+
+function confirmDelete(id) {
+  const p = getProject(id);
+  if (!p) return;
+  if (!confirm(`Delete "${p.name}"? This cannot be undone.`)) return;
+  DATA.projects = DATA.projects.filter(x => x.id !== id);
+  saveData();
+  closePanel();
+  renderDashboard();
+  showToast('Project deleted');
+}
+
+// ════════════════════════════════════════════
+// NEW PROJECT MODAL
+// ════════════════════════════════════════════
+
+function buildTypeGrid() {
+  document.getElementById('typeGrid').innerHTML = Object.entries(TYPES).map(([k,t]) => `
+    <div class="type-opt ${newProjType===k?'sel':''}"
+         style="--ts-c:${t.color};--ts-bg:${t.bg}"
+         onclick="selectType('${k}')">
+      <span class="type-opt-ico">${t.icon}</span>
+      <div class="type-opt-lbl">${t.label}</div>
+    </div>`).join('');
+}
+
+function selectType(type) {
+  newProjType = type;
+  buildTypeGrid();
+}
+
+function openNewProjectModal() {
+  document.getElementById('newProjectModal').classList.add('show');
+  // Pre-fill dates
+  const today = new Date().toISOString().slice(0,10);
+  const future = new Date(Date.now() + 30*86400000).toISOString().slice(0,10);
+  document.getElementById('np_shoot').value = '';
+  document.getElementById('np_delivery').value = '';
+  document.getElementById('np_name').value = '';
+  document.getElementById('np_client').value = '';
+  document.getElementById('np_email').value = '';
+  document.getElementById('np_phone').value = '';
+  document.getElementById('np_value').value = '';
+  buildTypeGrid();
+  setTimeout(() => document.getElementById('np_name').focus(), 300);
+}
+
+function closeNewProjectModal() {
+  document.getElementById('newProjectModal').classList.remove('show');
+}
+
+function handleModalBgClick(e) {
+  if (e.target === document.getElementById('newProjectModal')) closeNewProjectModal();
+}
+
+function submitNewProject() {
+  const name  = document.getElementById('np_name').value.trim();
+  const client = document.getElementById('np_client').value.trim();
+  if (!name)   { document.getElementById('np_name').focus(); return; }
+  if (!client) { document.getElementById('np_client').value = 'Client'; }
+
+  const project = {
+    id: uid(),
+    name,
+    type: newProjType,
+    status: 'booked',
+    client: {
+      name:  document.getElementById('np_client').value.trim() || 'Client',
+      email: document.getElementById('np_email').value.trim(),
+      phone: document.getElementById('np_phone').value.trim(),
+      notes: ''
+    },
+    shootDate:     document.getElementById('np_shoot').value,
+    deliveryDate:  document.getElementById('np_delivery').value,
+    contractValue: parseFloat(document.getElementById('np_value').value) || 0,
+    payments: [],
+    phases: buildDefaultPhases(newProjType),
+    notes: '',
+    createdAt: new Date().toISOString().slice(0,10)
+  };
+
+  DATA.projects.unshift(project);
+  saveData();
+  closeNewProjectModal();
+  renderDashboard();
+  setTimeout(() => openProject(project.id), 100);
+  showToast('Project created!');
+}
+
+// ════════════════════════════════════════════
+// CLIENT VIEW
+// ════════════════════════════════════════════
+
+function showClientView(id) {
+  const p = getProject(id);
+  if (!p) return;
+  const tc = TYPES[p.type];
+  document.getElementById('cvContent').style.setProperty('--tc', tc.color);
+  document.getElementById('cvContent').innerHTML = renderClientViewContent(p);
+  document.getElementById('cvOverlay').classList.add('show');
+}
+
+function closeClientView() {
+  document.getElementById('cvOverlay').classList.remove('show');
+}
+
+function printClientView() {
+  window.print();
+}
+
+// ════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════
+
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+// ════════════════════════════════════════════
+// KEYBOARD SHORTCUTS
+// ════════════════════════════════════════════
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('cvOverlay').classList.contains('show')) {
+      closeClientView();
+    } else if (activeId) {
+      closePanel();
+    } else if (document.getElementById('newProjectModal').classList.contains('show')) {
+      closeNewProjectModal();
+    }
+  }
+  // Cmd/Ctrl+K to focus search
+  if ((e.metaKey||e.ctrlKey) && e.key==='k') {
+    e.preventDefault();
+    const s = document.getElementById('searchInput');
+    if (s) s.focus();
+  }
+});
+
+// ════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════
+
+window.addEventListener('load', () => {
+  loadData();
+  renderDashboard();
+});
+</script>
+</body>
+</html>

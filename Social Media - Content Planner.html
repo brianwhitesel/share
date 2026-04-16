@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#090d15;--surface:#0e1420;
+  --card:rgba(255,255,255,0.032);--card-h:rgba(255,255,255,0.055);
+  --border:rgba(255,255,255,0.07);--border-h:rgba(255,255,255,0.14);
+  --text:#e2e8f0;--muted:#94a3b8;--dim:#475569;
+  --green:#4ade80;--green-d:rgba(74,222,128,0.1);
+  --blue:#60a5fa;--blue-d:rgba(96,165,250,0.1);
+  --purple:#c084fc;--purple-d:rgba(192,132,252,0.1);
+  --amber:#fbbf24;--amber-d:rgba(251,191,36,0.1);
+  --red:#f87171;--red-d:rgba(248,113,113,0.1);
+  --cyan:#22d3ee;--pink:#f472b6;
+  --ig:#e1306c;--ig-d:rgba(225,48,108,0.12);
+  --tt:#69c9d0;--tt-d:rgba(105,201,208,0.12);
+  --yt:#ff4444;--yt-d:rgba(255,68,68,0.1);
+  --li:#0a84c2;--li-d:rgba(10,132,194,0.12);
+  --tw:#1d9bf0;--tw-d:rgba(29,155,240,0.12);
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;padding-bottom:3rem}
+h1,h2,h3,h4{font-family:'Outfit',sans-serif}
+input,select,textarea,button{font-family:'Inter',sans-serif}
+
+/* ── TOPBAR ── */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(9,13,21,0.94);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  padding:.7rem 1.25rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.tb-brand{display:flex;align-items:center;gap:.55rem;flex-shrink:0;text-decoration:none}
+.tb-logo{
+  width:30px;height:30px;border-radius:8px;flex-shrink:0;
+  background:linear-gradient(135deg,#9b59f5,#60a5fa);
+  display:flex;align-items:center;justify-content:center;
+}
+.tb-logo svg{width:14px;height:14px;fill:#fff}
+.tb-name{font-family:'Outfit',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:-.01em;color:var(--text)}
+.tb-tag{font-size:.58rem;background:var(--purple-d);color:var(--purple);border:1px solid rgba(192,132,252,0.2);padding:2px 7px;border-radius:20px;margin-left:.15rem;font-weight:500}
+.tb-nav{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:3px}
+.tnav{
+  padding:.32rem .78rem;border-radius:7px;font-size:.76rem;font-weight:500;
+  cursor:pointer;color:var(--dim);transition:all .2s;display:flex;align-items:center;gap:.35rem;white-space:nowrap;border:none;background:none;
+}
+.tnav svg{width:12px;height:12px;flex-shrink:0}
+.tnav.active{background:rgba(255,255,255,0.07);color:var(--text)}
+.tnav:hover:not(.active){color:var(--muted)}
+.tb-add{
+  display:flex;align-items:center;gap:.4rem;
+  padding:.38rem .9rem;border-radius:8px;border:none;
+  background:linear-gradient(135deg,#9b59f5,#60a5fa);
+  color:#fff;font-size:.78rem;font-weight:600;cursor:pointer;
+  white-space:nowrap;flex-shrink:0;transition:opacity .2s;
+}
+.tb-add:hover{opacity:.85}
+.tb-add svg{width:13px;height:13px}
+.menu-btn{display:none;background:var(--card);border:1px solid var(--border);border-radius:7px;padding:.38rem;color:var(--muted);cursor:pointer;align-items:center;justify-content:center}
+.menu-btn svg{width:18px;height:18px}
+
+/* ── LAYOUT ── */
+.main{max-width:980px;margin:0 auto;padding:1.25rem 1rem}
+.section{display:none}.section.active{display:block}
+
+/* ── UTILITY ── */
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.42rem .88rem;border-radius:8px;border:none;font-size:.79rem;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn svg{width:13px;height:13px;flex-shrink:0}
+.btn-primary{background:linear-gradient(135deg,#9b59f5,#60a5fa);color:#fff}.btn-primary:hover{opacity:.86}
+.btn-ghost{background:var(--card);border:1px solid var(--border);color:var(--muted)}.btn-ghost:hover{border-color:var(--border-h);color:var(--text)}
+.btn-green{background:var(--green-d);color:var(--green);border:1px solid rgba(74,222,128,0.2)}
+.btn-blue{background:var(--blue-d);color:var(--blue);border:1px solid rgba(96,165,250,0.2)}
+.btn-danger{background:var(--red-d);color:var(--red);border:1px solid rgba(248,113,113,0.2)}
+.btn-sm{padding:.28rem .6rem;font-size:.7rem;border-radius:6px}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:7px;background:var(--card);border:1px solid var(--border);color:var(--dim);cursor:pointer;transition:all .2s;flex-shrink:0}
+.icon-btn:hover{border-color:var(--border-h);color:var(--text)}
+.icon-btn svg{width:13px;height:13px}
+.row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.sec-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.sec-title{font-size:1.2rem;font-weight:700;letter-spacing:-.02em}
+.sub-label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(148,163,184,0.4);margin:1.25rem 0 .65rem;padding-bottom:.45rem;border-bottom:1px solid var(--border)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;transition:border-color .2s}
+.card:hover{border-color:var(--border-h)}
+.card-p{padding:1.1rem 1.25rem}
+
+/* Platform badges */
+.pb{display:inline-flex;align-items:center;gap:.25rem;font-size:.62rem;font-weight:600;padding:2px 7px;border-radius:20px;font-family:'JetBrains Mono',monospace;letter-spacing:.01em}
+.pb svg{width:9px;height:9px}
+.pb-ig{background:var(--ig-d);color:var(--ig)}.pb-tt{background:var(--tt-d);color:var(--tt)}
+.pb-yt{background:var(--yt-d);color:var(--yt)}.pb-li{background:var(--li-d);color:var(--li)}
+.pb-tw{background:var(--tw-d);color:var(--tw)}
+
+/* Status badges */
+.sb{display:inline-flex;align-items:center;font-size:.6rem;font-weight:500;padding:2px 7px;border-radius:20px;font-family:'JetBrains Mono',monospace}
+.sb-idea{background:rgba(148,163,184,0.08);color:var(--muted)}
+.sb-draft{background:var(--amber-d);color:var(--amber)}
+.sb-scheduled{background:var(--blue-d);color:var(--blue)}
+.sb-published{background:var(--green-d);color:var(--green)}
+
+/* ── STATS ROW ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;position:relative;overflow:hidden;transition:border-color .2s}
+.stat-card:hover{border-color:var(--border-h)}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent,transparent)}
+.sc-label{font-size:.63rem;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem;font-family:'JetBrains Mono',monospace}
+.sc-val{font-family:'Outfit',sans-serif;font-size:1.55rem;font-weight:700;line-height:1;color:var(--av,var(--text))}
+.sc-sub{font-size:.68rem;color:var(--dim);margin-top:.3rem;font-family:'JetBrains Mono',monospace}
+.sc-sub.up{color:var(--green)}.sc-sub.dn{color:var(--red)}
+
+/* ── OVERVIEW ── */
+.greeting{margin-bottom:1.25rem}
+.greeting h2{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:.25rem}
+.greeting h2 .hi{background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.greeting p{color:var(--muted);font-size:.85rem}
+
+.client-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:1.25rem}
+.client-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;position:relative;overflow:hidden;cursor:pointer;transition:border-color .2s}
+.client-card:hover{border-color:var(--border-h)}
+.client-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--cc)}
+.cc-name{font-weight:600;font-size:.88rem;margin-bottom:.3rem;padding-left:.45rem}
+.cc-plats{display:flex;gap:.3rem;padding-left:.45rem;flex-wrap:wrap}
+.cc-stat{font-size:.65rem;color:var(--dim);padding-left:.45rem;margin-top:.3rem;font-family:'JetBrains Mono',monospace}
+
+.two-col{display:grid;grid-template-columns:1.5fr 1fr;gap:1rem;margin-bottom:1.25rem}
+
+.next-up-list{display:flex;flex-direction:column;gap:5px}
+.nuc{display:flex;align-items:center;gap:.7rem;padding:.65rem .9rem;background:var(--card);border:1px solid var(--border);border-radius:10px;transition:border-color .2s;cursor:pointer}
+.nuc:hover{border-color:var(--border-h)}
+.nuc-date{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--dim);min-width:36px;text-align:center;flex-shrink:0;line-height:1.25}
+.nuc-date .dn{font-size:.95rem;font-weight:700;color:var(--text);display:block}
+.nuc-bar{width:3px;height:32px;border-radius:2px;flex-shrink:0}
+.nuc-info{flex:1;min-width:0}
+.nuc-title{font-size:.82rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:.2rem}
+.nuc-meta{display:flex;gap:.35rem;align-items:center;flex-wrap:wrap}
+
+.mini-week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.mw-day{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.45rem .3rem;text-align:center;min-height:70px}
+.mw-day.today{border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.04)}
+.mw-label{font-size:.55rem;color:var(--dim);text-transform:uppercase;letter-spacing:.04em;font-family:'JetBrains Mono',monospace}
+.mw-num{font-size:.78rem;font-weight:600;margin:.15rem 0 .35rem;color:var(--text)}
+.mw-dots{display:flex;flex-direction:column;gap:2px;align-items:center}
+.mw-dot{width:14px;height:4px;border-radius:2px}
+
+/* ── CALENDAR ── */
+.cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem}
+.cal-nav h3{font-size:1rem;font-weight:600;letter-spacing:-.01em}
+.cal-legend{display:flex;gap:.65rem;flex-wrap:wrap;margin-bottom:.7rem}
+.cl-item{display:flex;align-items:center;gap:.3rem;font-size:.66rem;color:var(--dim)}
+.cl-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.cal-head{background:var(--surface);padding:.35rem 0;text-align:center;font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--border)}
+.cal-day{background:var(--bg);border-right:1px solid var(--border);border-bottom:1px solid var(--border);min-height:80px;padding:3px 2px;cursor:pointer;transition:background .15s;display:flex;flex-direction:column}
+.cal-day:hover{background:rgba(255,255,255,0.014)}
+.cal-day.other-mo{opacity:.28}
+.cal-day.is-today{background:rgba(96,165,250,0.042)}
+.cal-day.is-today .cdn{color:var(--blue);font-weight:700}
+.cdn{font-size:.6rem;color:var(--dim);padding:2px 3px;font-family:'JetBrains Mono',monospace;line-height:1}
+.cal-evs{flex:1;display:flex;flex-direction:column;gap:1px;margin-top:2px;overflow:hidden}
+.cal-ev{padding:1px 3px;border-radius:2px;font-size:.5rem;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#fff;font-weight:500;cursor:pointer;transition:opacity .15s}
+.cal-ev:hover{opacity:.82}
+.cal-more{font-size:.5rem;color:var(--dim);padding:0 3px;cursor:pointer}
+
+/* ── QUEUE ── */
+.queue-filters{display:flex;gap:.35rem;margin-bottom:.9rem;flex-wrap:wrap;align-items:center}
+.qf{padding:.28rem .7rem;border-radius:20px;font-size:.72rem;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.3rem}
+.qf.active{border-color:var(--blue);color:var(--blue);background:var(--blue-d)}
+.qf .qfd{width:6px;height:6px;border-radius:50%}
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem}
+.k-col{background:rgba(255,255,255,0.015);border:1px solid var(--border);border-radius:12px;padding:.7rem;min-width:0}
+.k-col-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem;padding-bottom:.45rem;border-bottom:1px solid var(--border)}
+.k-col-title{font-size:.76rem;font-weight:600;display:flex;align-items:center;gap:.35rem;color:var(--muted)}
+.k-col-title svg{width:12px;height:12px}
+.k-count{font-size:.58rem;background:rgba(255,255,255,0.07);padding:1px 7px;border-radius:10px;font-family:'JetBrains Mono',monospace;color:var(--dim)}
+.post-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.7rem;margin-bottom:.45rem;cursor:pointer;transition:border-color .2s,box-shadow .2s;position:relative}
+.post-card:hover{border-color:var(--border-h);box-shadow:0 4px 18px rgba(0,0,0,.32)}
+.pc-title{font-size:.8rem;font-weight:500;line-height:1.35;margin-bottom:.45rem;color:var(--text)}
+.pc-meta{display:flex;flex-wrap:wrap;gap:.28rem;align-items:center}
+.pillar-tag{font-size:.57rem;background:rgba(255,255,255,0.05);color:var(--dim);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace}
+.date-tag{font-size:.6rem;color:var(--dim);font-family:'JetBrains Mono',monospace}
+.pc-actions{display:flex;gap:.3rem;margin-top:.5rem;padding-top:.45rem;border-top:1px solid var(--border)}
+.status-mobile-tabs{display:none;gap:.3rem;margin-bottom:.75rem;overflow-x:auto;padding-bottom:.2rem}
+.smt{padding:.3rem .75rem;border-radius:20px;font-size:.72rem;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;white-space:nowrap;transition:all .2s}
+.smt.active{background:var(--blue-d);border-color:var(--blue);color:var(--blue)}
+
+/* ── ANALYTICS ── */
+.plat-tabs{display:flex;gap:.3rem;margin-bottom:1.1rem;flex-wrap:wrap}
+.ptab{padding:.38rem .85rem;border-radius:8px;border:1px solid var(--border);background:var(--card);font-size:.76rem;font-weight:500;cursor:pointer;transition:all .2s;color:var(--dim);display:flex;align-items:center;gap:.38rem}
+.ptab svg{width:12px;height:12px}
+.ptab.active{color:var(--ptc,var(--text));border-color:var(--ptc,var(--border));background:rgba(255,255,255,0.04)}
+.ptab:hover:not(.active){color:var(--muted)}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem}
+.chart-title{font-size:.82rem;font-weight:600;margin-bottom:.85rem;color:var(--muted)}
+.bar-chart{display:flex;align-items:flex-end;gap:3px;height:90px;padding:0 2px}
+.bg{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%}
+.bw{flex:1;display:flex;align-items:flex-end;width:100%}
+.b{width:100%;border-radius:3px 3px 0 0;min-height:3px;transition:height .6s cubic-bezier(.16,1,.3,1);cursor:pointer}
+.b:hover{opacity:.8}
+.bl{font-size:.49rem;color:var(--dim);font-family:'JetBrains Mono',monospace}
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1rem}
+.tp-card{display:flex;align-items:flex-start;gap:.7rem;padding:.7rem .85rem;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:.4rem;transition:border-color .2s}
+.tp-card:hover{border-color:var(--border-h)}
+.tp-rank{font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;color:var(--dim);width:18px;flex-shrink:0;text-align:center;padding-top:2px}
+.tp-info{flex:1;min-width:0}
+.tp-title{font-size:.82rem;font-weight:500;margin-bottom:.3rem;line-height:1.3}
+.tp-stats{display:flex;gap:.65rem;flex-wrap:wrap}
+.tp-stat{font-size:.67rem;color:var(--dim);display:flex;align-items:center;gap:.22rem;font-family:'JetBrains Mono',monospace}
+.tp-stat svg{width:10px;height:10px;flex-shrink:0}
+.tp-eng{font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:2px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+.eng-hi{background:var(--green-d);color:var(--green)}.eng-mid{background:var(--amber-d);color:var(--amber)}.eng-lo{background:var(--red-d);color:var(--red)}
+.dist-row{height:18px;display:flex;border-radius:6px;overflow:hidden;gap:1px;margin-bottom:.6rem}
+.dist-leg{display:flex;flex-wrap:wrap;gap:.55rem}
+.dist-li{display:flex;align-items:center;gap:.3rem;font-size:.65rem;color:var(--dim)}
+.dist-dot{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+
+/* ── CAPTION LAB ── */
+.caption-layout{display:grid;grid-template-columns:1.2fr 1fr;gap:1rem}
+.cap-plat-row{display:flex;gap:.35rem;margin-bottom:.7rem;flex-wrap:wrap}
+.cap-plat{padding:.32rem .7rem;border-radius:7px;border:1px solid var(--border);background:transparent;font-size:.74rem;cursor:pointer;color:var(--dim);transition:all .2s;display:flex;align-items:center;gap:.3rem}
+.cap-plat svg{width:11px;height:11px}
+.cap-plat.active{color:#fff;border-color:transparent}
+.caption-box{width:100%;min-height:160px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:12px;padding:.85rem;color:var(--text);font-size:.88rem;font-family:'Inter',sans-serif;line-height:1.65;resize:vertical;transition:border-color .2s}
+.caption-box:focus{outline:none;border-color:var(--purple)}
+.char-bar{height:3px;border-radius:2px;background:rgba(255,255,255,0.07);overflow:hidden;margin:.35rem 0 .2rem}
+.char-fill{height:100%;border-radius:2px;transition:width .3s,background .3s;background:var(--green)}
+.char-info{font-size:.65rem;font-family:'JetBrains Mono',monospace;color:var(--dim);text-align:right}
+.cap-actions{display:flex;gap:.4rem;margin-top:.65rem;flex-wrap:wrap}
+.ht-group{margin-bottom:.85rem}
+.ht-group-title{font-size:.68rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem}
+.ht-cloud{display:flex;flex-wrap:wrap;gap:.3rem}
+.ht-chip{font-size:.68rem;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;font-family:'JetBrains Mono',monospace}
+.ht-chip:hover{background:var(--purple-d);border-color:rgba(192,132,252,0.3);color:var(--purple)}
+.ht-chip.added{background:var(--purple-d);border-color:rgba(192,132,252,0.3);color:var(--purple)}
+.cap-preview-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.6rem .85rem;margin-bottom:.45rem}
+.cpv-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem}
+.cpv-hdr strong{font-size:.68rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:.3rem}
+.cpv-hdr strong svg{width:10px;height:10px}
+.cpv-lim{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--dim)}
+.cpv-lim.warn{color:var(--amber)}.cpv-lim.over{color:var(--red)}
+.niche-row{display:flex;gap:.3rem;margin-bottom:.7rem;flex-wrap:wrap}
+.niche-btn{padding:.28rem .65rem;border-radius:6px;border:1px solid var(--border);background:transparent;font-size:.7rem;color:var(--dim);cursor:pointer;transition:all .2s}
+.niche-btn.active{background:var(--purple-d);border-color:rgba(192,132,252,0.3);color:var(--purple)}
+
+/* ── MODAL ── */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
+.modal-ov.show{display:flex}
+.modal{background:#0e1420;border:1px solid rgba(255,255,255,0.1);border-radius:16px;width:94%;max-width:500px;max-height:92vh;overflow-y:auto;padding:1.5rem;box-shadow:0 28px 90px rgba(0,0,0,.65)}
+.modal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem}
+.modal-hdr h3{font-size:1.05rem;font-weight:700}
+.modal-x{background:none;border:none;color:var(--dim);cursor:pointer;padding:.2rem;transition:color .2s;display:flex}
+.modal-x:hover{color:var(--text)}
+.modal-x svg{width:20px;height:20px}
+.fg{margin-bottom:.8rem}
+.fl{display:block;font-size:.73rem;color:var(--muted);margin-bottom:.28rem}
+.fi,.fs,.ft{width:100%;background:rgba(0,0,0,0.38);border:1px solid var(--border);border-radius:9px;padding:.48rem .72rem;color:var(--text);font-size:.84rem;transition:border-color .2s}
+.fi:focus,.fs:focus,.ft:focus{outline:none;border-color:var(--purple)}
+.ft{min-height:72px;resize:vertical;line-height:1.55}
+.fs option{background:#0e1420}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.modal-footer{display:flex;gap:.45rem;justify-content:flex-end;margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#1a2232;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:.6rem 1rem;font-size:.78rem;color:var(--text);box-shadow:0 8px 36px rgba(0,0,0,.55);transform:translateY(72px);opacity:0;transition:all .3s cubic-bezier(.16,1,.3,1);z-index:300;display:flex;align-items:center;gap:.5rem}
+.toast.show{transform:translateY(0);opacity:1}
+.toast svg{width:14px;height:14px;flex-shrink:0;color:var(--green)}
+
+/* ── FOOTER ── */
+.footer{text-align:center;padding:2rem 0 1rem;color:var(--dim);font-size:.68rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:2rem;letter-spacing:.01em}
+.footer .heart{color:var(--pink);opacity:1}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:2rem;color:var(--dim);font-size:.82rem}
+.empty svg{width:32px;height:32px;opacity:.2;margin-bottom:.5rem;display:block;margin-left:auto;margin-right:auto}
+
+/* ── RESPONSIVE ── */
+@media(max-width:840px){
+  .kanban{grid-template-columns:repeat(2,1fr)}
+  .two-col{grid-template-columns:1fr}
+  .caption-layout{grid-template-columns:1fr}
+  .analytics-grid{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .topbar{padding:.6rem .85rem}
+  .tb-tag{display:none}
+  .tb-nav{display:none}
+  .menu-btn{display:flex}
+  .tb-add span{display:none}
+  .tb-add{padding:.38rem .5rem}
+  .main{padding:.75rem .8rem}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:6px}
+  .sc-val{font-size:1.3rem}
+  .client-grid{grid-template-columns:1fr 1fr}
+  .kanban{grid-template-columns:1fr;display:none}
+  .kanban.mobile-show{display:grid}
+  .status-mobile-tabs{display:flex}
+  .greeting h2{font-size:1.3rem}
+}
+@media(max-width:420px){
+  .client-grid{grid-template-columns:1fr}
+  .stats-row{gap:5px}
+  .tb-name{display:none}
+}
+/* mobile nav drawer */
+.tb-nav.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(9,13,21,.98);border-bottom:1px solid var(--border);padding:.5rem .85rem;border-radius:0 0 12px 12px;z-index:99}
+.tb-nav.open .tnav{padding:.55rem .75rem;border-radius:8px}
+.tb-nav.open .tnav.active{background:rgba(255,255,255,.06)}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar" id="topbar">
+  <a class="tb-brand" href="#">
+    <div class="tb-logo">
+      <svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zm11 0h7v7h-7zM3 14h7v7H3zm14 3a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg>
+    </div>
+    <span class="tb-name">Content Planner</span>
+    <span class="tb-tag">Pro</span>
+  </a>
+
+  <div class="tb-nav" id="tnav">
+    <button class="tnav active" data-tab="overview" onclick="switchTab('overview',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Overview
+    </button>
+    <button class="tnav" data-tab="calendar" onclick="switchTab('calendar',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Calendar
+    </button>
+    <button class="tnav" data-tab="queue" onclick="switchTab('queue',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+      Queue
+    </button>
+    <button class="tnav" data-tab="analytics" onclick="switchTab('analytics',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      Analytics
+    </button>
+    <button class="tnav" data-tab="caption" onclick="switchTab('caption',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 5.8H20l-5 3.6 1.9 5.8L12 15l-5 3.4 1.9-5.8L4 8.8h6.1z"/></svg>
+      Caption Lab
+    </button>
+  </div>
+
+  <button class="tb-add" onclick="openModal()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+    <span>New Post</span>
+  </button>
+
+  <button class="menu-btn" onclick="toggleMobileNav()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- ══════════════════════════════════════
+       SECTION: OVERVIEW
+  ══════════════════════════════════════ -->
+  <div class="section active" id="s-overview">
+    <div class="greeting">
+      <h2><span class="hi" id="greeting-word">Hey there</span>, Creator</h2>
+      <p id="greeting-sub">Loading your content dashboard...</p>
+    </div>
+
+    <!-- Stats row -->
+    <div class="stats-row" id="overview-stats"></div>
+
+    <!-- Clients + Next Up -->
+    <div class="two-col">
+      <div>
+        <div class="sub-label">Active Clients</div>
+        <div class="client-grid" id="client-grid"></div>
+      </div>
+      <div>
+        <div class="sub-label">Up Next</div>
+        <div class="next-up-list" id="next-up"></div>
+      </div>
+    </div>
+
+    <!-- Mini week -->
+    <div class="sub-label">This Week</div>
+    <div class="mini-week" id="mini-week"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SECTION: CALENDAR
+  ══════════════════════════════════════ -->
+  <div class="section" id="s-calendar">
+    <div class="sec-hdr">
+      <span class="sec-title">Content Calendar</span>
+      <button class="btn btn-primary" onclick="openModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Add Post
+      </button>
+    </div>
+
+    <div class="cal-nav">
+      <button class="btn btn-ghost btn-sm" onclick="calNav(-1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        Prev
+      </button>
+      <h3 id="cal-label">April 2026</h3>
+      <button class="btn btn-ghost btn-sm" onclick="calNav(1)">
+        Next
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+
+    <div class="cal-legend" id="cal-legend"></div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SECTION: QUEUE
+  ══════════════════════════════════════ -->
+  <div class="section" id="s-queue">
+    <div class="sec-hdr">
+      <span class="sec-title">Content Queue</span>
+      <button class="btn btn-primary" onclick="openModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Add Post
+      </button>
+    </div>
+
+    <div class="queue-filters" id="queue-filters"></div>
+
+    <!-- Mobile status tabs -->
+    <div class="status-mobile-tabs" id="mobile-status-tabs">
+      <button class="smt active" onclick="setMobileStatus('all',this)">All</button>
+      <button class="smt" onclick="setMobileStatus('idea',this)">💡 Ideas</button>
+      <button class="smt" onclick="setMobileStatus('draft',this)">✏️ Drafts</button>
+      <button class="smt" onclick="setMobileStatus('scheduled',this)">📅 Scheduled</button>
+      <button class="smt" onclick="setMobileStatus('published',this)">✅ Published</button>
+    </div>
+
+    <div class="kanban" id="kanban"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SECTION: ANALYTICS
+  ══════════════════════════════════════ -->
+  <div class="section" id="s-analytics">
+    <div class="sec-hdr">
+      <span class="sec-title">Analytics</span>
+      <span style="font-size:.75rem;color:var(--dim);font-family:'JetBrains Mono',monospace">Last 30 days</span>
+    </div>
+
+    <div class="plat-tabs" id="plat-tabs"></div>
+    <div class="stats-row" id="analytics-stats"></div>
+
+    <div class="analytics-grid">
+      <div class="chart-card">
+        <div class="chart-title">7-Day Engagement</div>
+        <div class="bar-chart" id="eng-chart"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Follower Growth</div>
+        <div class="bar-chart" id="grow-chart"></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Top Performing Posts</div>
+    <div id="top-posts"></div>
+
+    <div class="sub-label">Audience Overview</div>
+    <div class="analytics-grid">
+      <div class="chart-card">
+        <div class="chart-title">Age Distribution</div>
+        <div class="dist-row" id="age-dist"></div>
+        <div class="dist-leg" id="age-leg"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Top Locations</div>
+        <div id="locations"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SECTION: CAPTION LAB
+  ══════════════════════════════════════ -->
+  <div class="section" id="s-caption">
+    <div class="sec-hdr">
+      <span class="sec-title">Caption Lab</span>
+      <span style="font-size:.78rem;color:var(--dim)">Write, build, and copy captions for every platform</span>
+    </div>
+
+    <div class="caption-layout">
+      <!-- Left: editor -->
+      <div>
+        <div class="cap-plat-row" id="cap-plat-row"></div>
+        <textarea class="caption-box" id="caption-box" placeholder="Start writing your caption here. Click hashtags on the right to add them instantly..." oninput="onCaptionInput()"></textarea>
+        <div class="char-bar"><div class="char-fill" id="char-fill" style="width:0%"></div></div>
+        <div class="char-info" id="char-info">0 characters</div>
+        <div class="cap-actions">
+          <button class="btn btn-primary" onclick="copyCaption()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy Caption
+          </button>
+          <button class="btn btn-ghost" onclick="clearCaption()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6l-1 14H6L5 6M10 11v6M14 11v6M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/></svg>
+            Clear
+          </button>
+        </div>
+
+        <div class="sub-label" style="margin-top:1.1rem">Platform Previews</div>
+        <div id="cap-previews"></div>
+      </div>
+
+      <!-- Right: hashtags -->
+      <div>
+        <div class="sub-label" style="margin-top:0">Hashtag Packs</div>
+        <div class="niche-row" id="niche-row"></div>
+        <div id="hashtag-area"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>Made with</span> <span class="heart">♥</span> <span>by Brian</span>
+</div>
+
+<!-- ADD/EDIT POST MODAL -->
+<div class="modal-ov" id="modal-ov">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3 id="modal-title">New Post</h3>
+      <button class="modal-x" onclick="closeModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="fg"><label class="fl">Title / Content Idea</label><input class="fi" type="text" id="m-title" placeholder="What's this post about?"></div>
+    <div class="f-row">
+      <div class="fg"><label class="fl">Client</label>
+        <select class="fs" id="m-client">
+          <option value="luna">Luna Wellness</option>
+          <option value="techgear">TechGear Co</option>
+          <option value="cafemara">Café Mara</option>
+          <option value="own" selected>My Brand</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Platform</label>
+        <select class="fs" id="m-platform">
+          <option value="instagram">Instagram</option>
+          <option value="tiktok">TikTok</option>
+          <option value="youtube">YouTube</option>
+          <option value="linkedin">LinkedIn</option>
+          <option value="twitter">Twitter/X</option>
+        </select>
+      </div>
+    </div>
+    <div class="f-row">
+      <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="m-date"></div>
+      <div class="fg"><label class="fl">Status</label>
+        <select class="fs" id="m-status">
+          <option value="idea">💡 Idea</option>
+          <option value="draft">✏️ Draft</option>
+          <option value="scheduled">📅 Scheduled</option>
+          <option value="published">✅ Published</option>
+        </select>
+      </div>
+    </div>
+    <div class="f-row">
+      <div class="fg"><label class="fl">Content Pillar</label>
+        <select class="fs" id="m-pillar">
+          <option value="Education">Education</option>
+          <option value="Inspiration">Inspiration</option>
+          <option value="BTS">Behind the Scenes</option>
+          <option value="Product">Product</option>
+          <option value="Community">Community</option>
+          <option value="Review">Review</option>
+          <option value="Tutorial">Tutorial</option>
+          <option value="Personal">Personal</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Time</label><input class="fi" type="time" id="m-time" value="10:00"></div>
+    </div>
+    <div class="fg"><label class="fl">Caption / Notes</label><textarea class="ft" id="m-notes" placeholder="Caption draft, hashtags, key points, visual notes..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger btn-sm" id="m-delete" onclick="deletePost()" style="display:none">Delete</button>
+      <button class="btn btn-primary" onclick="savePost()">Save Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toast-msg">Saved!</span>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// SVG ICONS
+// ══════════════════════════════════════════
+const ICONS = {
+  ig: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>`,
+  tt: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.33 6.34 6.34 6.34 0 0 0 6.33 6.34 6.34 6.34 0 0 0 6.34-6.34V8.69a8.27 8.27 0 0 0 4.84 1.56V6.81a4.85 4.85 0 0 1-1.07-.12z"/></svg>`,
+  yt: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.56 3.5 12 3.5 12 3.5s-7.56 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.02 0 12 0 12s0 3.98.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.82.55 9.38.55 9.38.55s7.56 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.98 24 12 24 12s0-3.98-.5-5.81zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/></svg>`,
+  li: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67h-3.55V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.35-1.85 3.58 0 4.25 2.36 4.25 5.42v6.32zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45z"/></svg>`,
+  tw: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.257 5.631 5.907-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+  heart: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53L12 21.35z"/></svg>`,
+  comment: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+  share: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
+  eye: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
+  edit: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+  trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6l-1 14H6L5 6M10 11v6M14 11v6M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/></svg>`,
+  move: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>`,
+  idea: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21h6M12 3a6 6 0 0 1 6 6c0 2.22-1.21 4.16-3 5.2V17a1 1 0 0 1-1 1H10a1 1 0 0 1-1-1v-2.8C7.21 13.16 6 11.22 6 9a6 6 0 0 1 6-6z"/></svg>`,
+  draft: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+  sched: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
+  pub: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 19-7z"/></svg>`,
+};
+
+// ══════════════════════════════════════════
+// DATA CONSTANTS
+// ══════════════════════════════════════════
+const CLIENTS = {
+  luna:     { name: 'Luna Wellness',  color: '#c084fc', platforms: ['instagram','tiktok'], desc: 'Wellness & mindfulness brand' },
+  techgear: { name: 'TechGear Co',    color: '#60a5fa', platforms: ['youtube','tiktok','linkedin'], desc: 'Tech accessories & reviews' },
+  cafemara: { name: 'Café Mara',      color: '#fbbf24', platforms: ['instagram','tiktok'], desc: 'Specialty coffee & community' },
+  own:      { name: 'My Brand',       color: '#4ade80', platforms: ['instagram','youtube','twitter','linkedin'], desc: 'Personal brand & education' },
+};
+
+const PLATFORMS = {
+  instagram: { label: 'Instagram', color: '#e1306c', abbr: 'IG',  charLimit: 2200 },
+  tiktok:    { label: 'TikTok',    color: '#69c9d0', abbr: 'TT',  charLimit: 2200 },
+  youtube:   { label: 'YouTube',   color: '#ff4444', abbr: 'YT',  charLimit: 5000 },
+  linkedin:  { label: 'LinkedIn',  color: '#0a84c2', abbr: 'LI',  charLimit: 3000 },
+  twitter:   { label: 'Twitter/X', color: '#1d9bf0', abbr: 'TW',  charLimit: 280 },
+};
+
+const ANALYTICS_DATA = {
+  all:       { followers:'54.6K', fGrowth:'+1,842', engagement:'5.8%', eChange:'+0.4%', reach:'186K', posts:'41',
+    daily:[{d:'Mon',e:1820,r:22000},{d:'Tue',e:2140,r:26000},{d:'Wed',e:2380,r:28000},{d:'Thu',e:1650,r:19000},{d:'Fri',e:2920,r:35000},{d:'Sat',e:3400,r:42000},{d:'Sun',e:2680,r:33000}],
+    monthly:[{m:'Nov',f:48200},{m:'Dec',f:49500},{m:'Jan',f:50800},{m:'Feb',f:52100},{m:'Mar',f:53200},{m:'Apr',f:54600}] },
+  instagram: { followers:'18.4K', fGrowth:'+612', engagement:'5.2%', eChange:'+0.3%', reach:'68K', posts:'18',
+    daily:[{d:'Mon',e:680,r:8200},{d:'Tue',e:820,r:9800},{d:'Wed',e:940,r:11200},{d:'Thu',e:610,r:7400},{d:'Fri',e:1100,r:13000},{d:'Sat',e:1380,r:16200},{d:'Sun',e:1020,r:12400}],
+    monthly:[{m:'Nov',f:16200},{m:'Dec',f:16800},{m:'Jan',f:17100},{m:'Feb',f:17600},{m:'Mar',f:18000},{m:'Apr',f:18400}] },
+  tiktok:    { followers:'22.1K', fGrowth:'+980', engagement:'8.4%', eChange:'+1.1%', reach:'74K', posts:'14',
+    daily:[{d:'Mon',e:780,r:9100},{d:'Tue',e:920,r:10800},{d:'Wed',e:1040,r:12000},{d:'Thu',e:720,r:8200},{d:'Fri',e:1280,r:15000},{d:'Sat',e:1520,r:18000},{d:'Sun',e:1140,r:13200}],
+    monthly:[{m:'Nov',f:17900},{m:'Dec',f:18600},{m:'Jan',f:19400},{m:'Feb',f:20200},{m:'Mar',f:21200},{m:'Apr',f:22100}] },
+  youtube:   { followers:'9.2K', fGrowth:'+182', engagement:'6.1%', eChange:'+0.5%', reach:'28K', posts:'6',
+    daily:[{d:'Mon',e:220,r:2800},{d:'Tue',e:280,r:3400},{d:'Wed',e:310,r:3800},{d:'Thu',e:190,r:2400},{d:'Fri',e:380,r:4600},{d:'Sat',e:420,r:5200},{d:'Sun',e:350,r:4400}],
+    monthly:[{m:'Nov',f:8100},{m:'Dec',f:8300},{m:'Jan',f:8500},{m:'Feb',f:8700},{m:'Mar',f:9000},{m:'Apr',f:9200}] },
+  linkedin:  { followers:'4.9K', fGrowth:'+68', engagement:'3.8%', eChange:'+0.2%', reach:'16K', posts:'3',
+    daily:[{d:'Mon',e:140,r:900},{d:'Tue',e:120,r:1000},{d:'Wed',e:90,r:800},{d:'Thu',e:130,r:1100},{d:'Fri',e:160,r:1200},{d:'Sat',e:80,r:600},{d:'Sun',e:60,r:500}],
+    monthly:[{m:'Nov',f:4300},{m:'Dec',f:4400},{m:'Jan',f:4500},{m:'Feb',f:4650},{m:'Mar',f:4800},{m:'Apr',f:4900}] },
+};
+
+const TOP_POSTS = [
+  { title:'Pilates Morning Routine (30-Day Challenge)', platform:'tiktok', client:'luna', date:'Apr 8', likes:4820, comments:312, shares:891, views:'84K', eng:11.2 },
+  { title:'Cold Plunge at-Home Setup — Full Guide', platform:'youtube', client:'techgear', date:'Apr 3', likes:1240, comments:188, shares:94, views:'28K', eng:9.4 },
+  { title:'5 Morning Rituals for High Performers', platform:'instagram', client:'own', date:'Apr 11', likes:2180, comments:144, shares:286, views:'41K', eng:7.8 },
+  { title:'Café Mara Spring Menu Drop', platform:'instagram', client:'cafemara', date:'Apr 5', likes:1650, comments:98, shares:120, views:'32K', eng:6.9 },
+  { title:'I Tried Every Budget Mic Under $100', platform:'youtube', client:'techgear', date:'Mar 28', likes:980, comments:142, shares:67, views:'22K', eng:6.1 },
+];
+
+const HASHTAG_PACKS = {
+  Wellness: {
+    'Core': ['#wellness','#selfcare','#mindfulness','#wellnessjourney','#healthylifestyle','#holistichealth','#wellnesscoach','#selfcareroutine','#mindfuliving','#innerpeace'],
+    'Lifestyle': ['#morningroutine','#healthymind','#moveyourbody','#restoreandrecharge','#cleanliving','#gratitude','#breathwork','#somatichealing','#nervous systemreset','#slowliving'],
+  },
+  Tech: {
+    'Core': ['#techreview','#technology','#gadgets','#techtips','#technews','#innovation','#techlife','#productreview','#gadgetreview','#techgear'],
+    'Creator': ['#buildinpublic','#creatoreconomy','#contentcreator','#solopreneur','#digitalnomad','#remotework','#producthunt','#makerlog','#indiedev','#startuplife'],
+  },
+  Food: {
+    'Core': ['#coffeelover','#cafelife','#latteart','#coffeetime','#morningcoffee','#espresso','#specialtycoffee','#coffeegram','#baristalife','#coffeeart'],
+    'Community': ['#drinklocal','#cafeaesthetic','#smallbusiness','#supportlocal','#coffeeaddict','#coffeecommunity','#barista','#coffeeshop','#coffeenation','#coffeebreak'],
+  },
+  Creator: {
+    'Core': ['#contentcreator','#socialmedia','#digitalmarketing','#contentmarketing','#socialmediamarketing','#brandstrategy','#contentwriting','#creatoreconomy','#personalbranding','#buildyourbrand'],
+    'Growth': ['#growthhacking','#communitybuilding','#engagementtips','#instagramgrowth','#tiktokgrowth','#audiencegrowth','#organicgrowth','#contentideas','#socialmediatips','#creatortips'],
+  },
+  General: {
+    'Trending': ['#instagood','#photooftheday','#explore','#viral','#trending','#repost','#fyp','#foryou','#foryoupage','#xyzbca'],
+    'Days': ['#mondaymotivation','#tuesdaytips','#wednesdaywisdom','#thursdaythoughts','#fridayvibes','#weekendvibes','#sundayreset'],
+  },
+};
+
+// ══════════════════════════════════════════
+// APP STATE
+// ══════════════════════════════════════════
+let posts = JSON.parse(localStorage.getItem('cp-posts') || '[]');
+let calYear, calMonth, editId = null;
+let activePlatformFilter = 'all';
+let activeClientFilter = 'all';
+let activeMobileStatus = 'all';
+let activeAnalyticsPlatform = 'all';
+let activeCapPlatform = 'instagram';
+let activeNiche = 'Wellness';
+
+const now = new Date();
+calYear = now.getFullYear();
+calMonth = now.getMonth();
+
+// ── SEED DEMO DATA ──
+function seedDemoData() {
+  const y = calYear;
+  const m = calMonth + 1;
+  const pad = n => String(n).padStart(2,'0');
+  posts = [
+    // Published posts
+    { id:1, title:'Pilates Morning Routine (30-Day Challenge)', client:'luna', platform:'tiktok', date:`${y}-${pad(m)}-03`, time:'08:00', status:'published', pillar:'Tutorial', notes:'Hook: "Your body changes in 30 days. Here\'s proof." Trending sound, 60s format.' },
+    { id:2, title:'Cold Plunge Setup Guide — Budget vs. Premium', client:'techgear', platform:'youtube', date:`${y}-${pad(m)}-05`, time:'14:00', status:'published', pillar:'Review', notes:'Full 12-min video, includes affiliate links in description.' },
+    { id:3, title:'Café Mara Spring Menu Drop', client:'cafemara', platform:'instagram', date:`${y}-${pad(m)}-06`, time:'11:00', status:'published', pillar:'Product', notes:'Carousel 8 slides, pastel color palette, include Reels teaser.' },
+    { id:4, title:'5 Morning Rituals for High Performers', client:'own', platform:'instagram', date:`${y}-${pad(m)}-08`, time:'09:00', status:'published', pillar:'Education', notes:'Reel format, 30s, B-roll of sunrise, desk, journaling.' },
+    { id:5, title:'I Tried Every Budget Mic Under $100', client:'techgear', platform:'youtube', date:`${y}-${pad(m)}-10`, time:'14:00', status:'published', pillar:'Review', notes:'9 mics tested. Thumbnail: all mics laid flat with prices.' },
+    { id:6, title:'The Truth About Burnout Nobody Talks About', client:'own', platform:'linkedin', date:`${y}-${pad(m)}-12`, time:'08:00', status:'published', pillar:'Personal', notes:'Long-form post. Vulnerable angle. End with a question for engagement.' },
+    // Scheduled posts
+    { id:7, title:'Self-Care Sunday Routine Collab', client:'luna', platform:'tiktok', date:`${y}-${pad(m)}-16`, time:'10:00', status:'scheduled', pillar:'BTS', notes:'Collab with @wellnesswithsam. Stitch format works well.' },
+    { id:8, title:'The Best Wireless Earbuds for Creators', client:'techgear', platform:'tiktok', date:`${y}-${pad(m)}-17`, time:'12:00', status:'scheduled', pillar:'Review', notes:'3 options at different price points. Quick cuts, text on screen.' },
+    { id:9, title:'Monday Morning at the Café BTS Reel', client:'cafemara', platform:'instagram', date:`${y}-${pad(m)}-21`, time:'07:30', status:'scheduled', pillar:'BTS', notes:'Behind the scenes opening routine. Warm cinematic color grade.' },
+    { id:10, title:'How I Plan Content for 4 Clients Weekly', client:'own', platform:'youtube', date:`${y}-${pad(m)}-22`, time:'14:00', status:'scheduled', pillar:'Tutorial', notes:'Screen share + voiceover. Show Notion setup, content pillars, batching.' },
+    { id:11, title:'LinkedIn Content That Actually Gets Reach', client:'own', platform:'linkedin', date:`${y}-${pad(m)}-25`, time:'08:00', status:'scheduled', pillar:'Education', notes:'Thread format. Data-backed. Include a carousel PDF as lead magnet.' },
+    // Drafts
+    { id:12, title:'Gut Health 101 — The Beginner\'s Guide', client:'luna', platform:'instagram', date:`${y}-${pad(m)}-19`, time:'09:00', status:'draft', pillar:'Education', notes:'6-slide carousel. Use food photography. CTA: "Save this!"' },
+    { id:13, title:'Desk Setup Under $500 — Creator Edition', client:'techgear', platform:'youtube', date:`${y}-${pad(m)}-24`, time:'14:00', status:'draft', pillar:'Tutorial', notes:'Need to film B-roll. Script is done. Edit deadline: Apr 22.' },
+    { id:14, title:'Barista Secrets: The Perfect Latte at Home', client:'cafemara', platform:'tiktok', date:`${y}-${pad(m)}-20`, time:'12:00', status:'draft', pillar:'Tutorial', notes:'Need voiceover + captions. Shoot in café before 9am for best light.' },
+    // Ideas
+    { id:15, title:'Cycle Syncing for Productivity', client:'luna', platform:'tiktok', date:`${y}-${pad(m)}-28`, time:'10:00', status:'idea', pillar:'Education', notes:'Trending topic. Research needed. Partner with a women\'s health expert?' },
+    { id:16, title:'AI Tools I Actually Use as a Content Creator', client:'own', platform:'youtube', date:`${y}-${pad(m)}-29`, time:'14:00', status:'idea', pillar:'Education', notes:'Could do a multi-part series. Cover: writing, image, video, scheduling.' },
+    { id:17, title:'Monthly Coffee Subscription Unboxing', client:'cafemara', platform:'instagram', date:`${y}-${pad(m)}-30`, time:'11:00', status:'idea', pillar:'Product', notes:'Partner with beans supplier? Could do a collab giveaway too.' },
+    { id:18, title:'I Took a Social Media Break for 7 Days', client:'own', platform:'instagram', date:`${y}-${pad(m)}-27`, time:'09:00', status:'idea', pillar:'Personal', notes:'Authentic reflection piece. High potential for saves + shares.' },
+    { id:19, title:'Budget Podcast Mic Comparison 2026', client:'techgear', platform:'linkedin', date:`${y}-${pad(m)}-26`, time:'08:00', status:'idea', pillar:'Review', notes:'B2B angle. Target podcasters and remote workers.' },
+  ];
+  save();
+}
+
+if (posts.length === 0) seedDemoData();
+
+function save() {
+  localStorage.setItem('cp-posts', JSON.stringify(posts));
+}
+
+// ══════════════════════════════════════════
+// TAB NAVIGATION
+// ══════════════════════════════════════════
+function switchTab(tab, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tnav').forEach(t => t.classList.remove('active'));
+  document.getElementById('s-' + tab).classList.add('active');
+  document.querySelectorAll(`[data-tab="${tab}"]`).forEach(t => t.classList.add('active'));
+  // close mobile nav
+  document.getElementById('tnav').classList.remove('open');
+  // render section
+  if (tab === 'overview') renderOverview();
+  else if (tab === 'calendar') renderCalendar();
+  else if (tab === 'queue') renderQueue();
+  else if (tab === 'analytics') renderAnalytics();
+  else if (tab === 'caption') renderCaption();
+}
+
+function toggleMobileNav() {
+  document.getElementById('tnav').classList.toggle('open');
+}
+
+// ══════════════════════════════════════════
+// OVERVIEW
+// ══════════════════════════════════════════
+function renderOverview() {
+  const d = new Date();
+  const hours = d.getHours();
+  const greetWord = hours < 12 ? 'Good morning' : hours < 17 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('greeting-word').textContent = greetWord;
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const monNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('greeting-sub').textContent = `${dayNames[d.getDay()]}, ${monNames[d.getMonth()]} ${d.getDate()} — here's your content overview`;
+
+  // Stats
+  const total = posts.length;
+  const pub = posts.filter(p => p.status === 'published').length;
+  const sched = posts.filter(p => p.status === 'scheduled').length;
+  const ideas = posts.filter(p => p.status === 'idea').length;
+  const drafts = posts.filter(p => p.status === 'draft').length;
+  document.getElementById('overview-stats').innerHTML = `
+    <div class="stat-card" style="--accent:var(--purple)">
+      <div class="sc-label">Total Posts</div>
+      <div class="sc-val">${total}</div>
+      <div class="sc-sub">Across all clients</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--green);--av:var(--green)">
+      <div class="sc-label">Published</div>
+      <div class="sc-val">${pub}</div>
+      <div class="sc-sub up">This month</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--blue);--av:var(--blue)">
+      <div class="sc-label">Scheduled</div>
+      <div class="sc-val">${sched}</div>
+      <div class="sc-sub">Ready to go</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--amber);--av:var(--amber)">
+      <div class="sc-label">In Pipeline</div>
+      <div class="sc-val">${drafts + ideas}</div>
+      <div class="sc-sub">${ideas} ideas · ${drafts} drafts</div>
+    </div>
+  `;
+
+  // Clients
+  const cg = document.getElementById('client-grid');
+  cg.innerHTML = Object.entries(CLIENTS).map(([id, c]) => {
+    const clientPosts = posts.filter(p => p.client === id);
+    const pubCount = clientPosts.filter(p => p.status === 'published').length;
+    return `<div class="client-card" style="--cc:${c.color}" onclick="filterToClient('${id}')">
+      <div class="cc-name">${c.name}</div>
+      <div class="cc-plats">${c.platforms.map(p => `<span class="pb pb-${p}">${ICONS[p]}${PLATFORMS[p].abbr}</span>`).join('')}</div>
+      <div class="cc-stat">${clientPosts.length} posts · ${pubCount} published</div>
+    </div>`;
+  }).join('');
+
+  // Next Up
+  const today = fmtDate(new Date());
+  const upcoming = posts
+    .filter(p => (p.status === 'scheduled' || p.status === 'draft') && p.date >= today)
+    .sort((a,b) => a.date.localeCompare(b.date)).slice(0, 5);
+  const nu = document.getElementById('next-up');
+  if (upcoming.length === 0) {
+    nu.innerHTML = `<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>No upcoming posts</div>`;
+  } else {
+    nu.innerHTML = upcoming.map(p => {
+      const dt = new Date(p.date + 'T12:00:00');
+      const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()];
+      const c = CLIENTS[p.client];
+      return `<div class="nuc" onclick="editPost(${p.id})">
+        <div class="nuc-date"><span class="dn">${dt.getDate()}</span>${mon}</div>
+        <div class="nuc-bar" style="background:${PLATFORMS[p.platform].color}"></div>
+        <div class="nuc-info">
+          <div class="nuc-title">${esc(p.title)}</div>
+          <div class="nuc-meta">
+            <span class="pb pb-${p.platform}">${ICONS[p.platform]}${PLATFORMS[p.platform].abbr}</span>
+            <span class="sb sb-${p.status}">${p.status}</span>
+            <span style="font-size:.62rem;color:var(--dim);font-family:'JetBrains Mono',monospace">${c.name}</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Mini week
+  const week = document.getElementById('mini-week');
+  const dayAbbr = ['S','M','T','W','T','F','S'];
+  const weekStart = new Date(d);
+  weekStart.setDate(d.getDate() - d.getDay());
+  week.innerHTML = Array.from({length:7}, (_,i) => {
+    const day = new Date(weekStart);
+    day.setDate(weekStart.getDate() + i);
+    const ds = fmtDate(day);
+    const dayPosts = posts.filter(p => p.date === ds);
+    const isToday = ds === today;
+    const dots = dayPosts.slice(0,4).map(p => `<div class="mw-dot" style="background:${PLATFORMS[p.platform]?.color||'#555'}"></div>`).join('');
+    return `<div class="mw-day${isToday?' today':''}">
+      <div class="mw-label">${dayAbbr[day.getDay()]}</div>
+      <div class="mw-num" style="${isToday?'color:var(--blue)':''}">${day.getDate()}</div>
+      <div class="mw-dots">${dots}</div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// CALENDAR
+// ══════════════════════════════════════════
+function renderCalendar() {
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-label').textContent = `${monthNames[calMonth]} ${calYear}`;
+
+  // Legend
+  const legend = document.getElementById('cal-legend');
+  legend.innerHTML = Object.entries(PLATFORMS).map(([k,p]) =>
+    `<div class="cl-item"><div class="cl-dot" style="background:${p.color}"></div>${p.label}</div>`
+  ).join('');
+
+  // Grid
+  const grid = document.getElementById('cal-grid');
+  const today = fmtDate(new Date());
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let html = days.map(d => `<div class="cal-head">${d}</div>`).join('');
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const daysInPrev = new Date(calYear, calMonth, 0).getDate();
+  const MAX_EV = 3;
+
+  // Previous month padding
+  for (let i = firstDay - 1; i >= 0; i--) {
+    html += `<div class="cal-day other-mo"><div class="cdn">${daysInPrev - i}</div></div>`;
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const ds = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const dayPosts = posts.filter(p => p.date === ds);
+    const isToday = ds === today;
+    let evHtml = '';
+    dayPosts.slice(0, MAX_EV).forEach(p => {
+      const col = PLATFORMS[p.platform]?.color || '#555';
+      evHtml += `<div class="cal-ev" style="background:${col}" onclick="event.stopPropagation();editPost(${p.id})" title="${esc(p.title)}">${esc(p.title)}</div>`;
+    });
+    if (dayPosts.length > MAX_EV) {
+      evHtml += `<div class="cal-more">+${dayPosts.length - MAX_EV} more</div>`;
+    }
+    html += `<div class="cal-day${isToday?' is-today':''}" onclick="openModalWithDate('${ds}')">
+      <div class="cdn">${day}</div>
+      <div class="cal-evs">${evHtml}</div>
+    </div>`;
+  }
+
+  // Fill remaining cells
+  const total = firstDay + daysInMonth;
+  const remainder = total % 7 === 0 ? 0 : 7 - (total % 7);
+  for (let i = 1; i <= remainder; i++) {
+    html += `<div class="cal-day other-mo"><div class="cdn">${i}</div></div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+function calNav(dir) {
+  calMonth += dir;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+}
+
+// ══════════════════════════════════════════
+// QUEUE
+// ══════════════════════════════════════════
+function renderQueue() {
+  // Filters
+  const filters = document.getElementById('queue-filters');
+  const clientFilters = [
+    { id:'all', label:'All Clients', color:'var(--blue)' },
+    ...Object.entries(CLIENTS).map(([id,c]) => ({ id, label:c.name, color:c.color }))
+  ];
+  filters.innerHTML = clientFilters.map(f =>
+    `<button class="qf${activeClientFilter===f.id?' active':''}" onclick="setClientFilter('${f.id}')">
+      <span class="qfd" style="background:${f.color}"></span>${f.label}
+    </button>`
+  ).join('') + `<div style="margin-left:auto;display:flex;gap:.3rem;flex-wrap:wrap">` +
+    Object.entries(PLATFORMS).map(([id,p]) =>
+      `<button class="qf${activePlatformFilter===id?' active':''}" onclick="setPlatformFilter('${id}')">
+        ${ICONS[id]}<span style="font-size:.62rem">${p.abbr}</span>
+      </button>`
+    ).join('') +
+    `<button class="qf${activePlatformFilter==='all'?' active':''}" onclick="setPlatformFilter('all')">All</button></div>`;
+
+  let filtered = posts.slice();
+  if (activeClientFilter !== 'all') filtered = filtered.filter(p => p.client === activeClientFilter);
+  if (activePlatformFilter !== 'all') filtered = filtered.filter(p => p.platform === activePlatformFilter);
+
+  const statuses = ['idea','draft','scheduled','published'];
+  const statusConfig = {
+    idea:      { label:'Ideas',     icon: ICONS.idea, color:'var(--muted)' },
+    draft:     { label:'Drafts',    icon: ICONS.draft, color:'var(--amber)' },
+    scheduled: { label:'Scheduled', icon: ICONS.sched, color:'var(--blue)' },
+    published: { label:'Published', icon: ICONS.pub,   color:'var(--green)' },
+  };
+
+  const kanban = document.getElementById('kanban');
+
+  // On mobile, filter by activeMobileStatus
+  const isMobile = window.innerWidth < 640;
+  const visibleStatuses = (isMobile && activeMobileStatus !== 'all')
+    ? [activeMobileStatus]
+    : statuses;
+
+  kanban.innerHTML = visibleStatuses.map(status => {
+    const col = statusConfig[status];
+    const colPosts = filtered.filter(p => p.status === status).sort((a,b) => a.date.localeCompare(b.date));
+    const cards = colPosts.length === 0
+      ? `<div class="empty" style="padding:1rem">${col.label === 'Ideas' ? 'Start brainstorming!' : 'None here yet.'}</div>`
+      : colPosts.map(p => {
+          const client = CLIENTS[p.client];
+          const dt = p.date ? new Date(p.date+'T12:00:00') : null;
+          const dateStr = dt ? `${dt.getDate()} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()]}` : '';
+          const nextStatus = statuses[statuses.indexOf(status)+1];
+          return `<div class="post-card" onclick="editPost(${p.id})">
+            <div class="pc-title">${esc(p.title)}</div>
+            <div class="pc-meta">
+              <span class="pb pb-${p.platform}">${ICONS[p.platform]}${PLATFORMS[p.platform].abbr}</span>
+              <span class="pillar-tag">${esc(p.pillar||'')}</span>
+              ${dateStr ? `<span class="date-tag">${dateStr}</span>` : ''}
+              <span style="display:inline-flex;align-items:center;gap:.25rem;font-size:.6rem;color:var(--dim)"><span class="mw-dot" style="width:6px;height:6px;border-radius:50%;display:inline-block;background:${client.color}"></span>${client.name}</span>
+            </div>
+            <div class="pc-actions" onclick="event.stopPropagation()">
+              <button class="icon-btn" title="Edit" onclick="editPost(${p.id})">${ICONS.edit}</button>
+              ${nextStatus ? `<button class="icon-btn" title="Move to ${statusConfig[nextStatus].label}" onclick="advanceStatus(${p.id})" style="color:var(--green)">${ICONS.move}</button>` : ''}
+              <button class="icon-btn" title="Delete" onclick="confirmDelete(${p.id})" style="margin-left:auto;color:var(--red)">${ICONS.trash}</button>
+            </div>
+          </div>`;
+        }).join('');
+
+    return `<div class="k-col">
+      <div class="k-col-hdr">
+        <div class="k-col-title" style="color:${col.color}">${col.icon}${col.label}</div>
+        <div class="k-count">${colPosts.length}</div>
+      </div>
+      ${cards}
+    </div>`;
+  }).join('');
+
+  if (isMobile) {
+    kanban.classList.add('mobile-show');
+  }
+}
+
+function setClientFilter(id) {
+  activeClientFilter = id;
+  renderQueue();
+}
+function setPlatformFilter(id) {
+  activePlatformFilter = id;
+  renderQueue();
+}
+function setMobileStatus(s, btn) {
+  activeMobileStatus = s;
+  document.querySelectorAll('.smt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQueue();
+}
+function advanceStatus(id) {
+  const statuses = ['idea','draft','scheduled','published'];
+  const p = posts.find(x => x.id === id);
+  if (!p) return;
+  const idx = statuses.indexOf(p.status);
+  if (idx < statuses.length - 1) {
+    p.status = statuses[idx + 1];
+    save();
+    renderQueue();
+    showToast(`Moved to ${p.status}`);
+  }
+}
+function confirmDelete(id) {
+  if (confirm('Delete this post?')) {
+    posts = posts.filter(p => p.id !== id);
+    save();
+    renderQueue();
+    showToast('Post deleted');
+  }
+}
+function filterToClient(id) {
+  activeClientFilter = id;
+  switchTab('queue', document.querySelector('[data-tab="queue"]'));
+}
+
+// ══════════════════════════════════════════
+// ANALYTICS
+// ══════════════════════════════════════════
+function renderAnalytics() {
+  // Platform tabs
+  const platTabsEl = document.getElementById('plat-tabs');
+  const allPlatTabs = [
+    { id:'all', label:'All Platforms', color:'var(--text)', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>` },
+    { id:'instagram', label:'Instagram', color:'var(--ig)', icon: ICONS.ig },
+    { id:'tiktok',    label:'TikTok',    color:'var(--tt)', icon: ICONS.tt },
+    { id:'youtube',   label:'YouTube',   color:'var(--yt)', icon: ICONS.yt },
+    { id:'linkedin',  label:'LinkedIn',  color:'var(--li)', icon: ICONS.li },
+  ];
+  platTabsEl.innerHTML = allPlatTabs.map(t =>
+    `<button class="ptab${activeAnalyticsPlatform===t.id?' active':''}" style="--ptc:${t.color}" onclick="setAnalyticsPlatform('${t.id}')">${t.icon}${t.label}</button>`
+  ).join('');
+
+  const d = ANALYTICS_DATA[activeAnalyticsPlatform];
+
+  // Stats
+  document.getElementById('analytics-stats').innerHTML = `
+    <div class="stat-card" style="--accent:var(--blue)">
+      <div class="sc-label">Followers</div>
+      <div class="sc-val" style="color:var(--blue)">${d.followers}</div>
+      <div class="sc-sub up">${d.fGrowth} this month</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--green)">
+      <div class="sc-label">Engagement Rate</div>
+      <div class="sc-val" style="color:var(--green)">${d.engagement}</div>
+      <div class="sc-sub up">${d.eChange} vs last month</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--purple)">
+      <div class="sc-label">Monthly Reach</div>
+      <div class="sc-val" style="color:var(--purple)">${d.reach}</div>
+      <div class="sc-sub">Unique accounts</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--amber)">
+      <div class="sc-label">Posts Published</div>
+      <div class="sc-val" style="color:var(--amber)">${d.posts}</div>
+      <div class="sc-sub">This month</div>
+    </div>
+  `;
+
+  // Charts
+  const maxE = Math.max(...d.daily.map(x=>x.e));
+  document.getElementById('eng-chart').innerHTML = d.daily.map(x => {
+    const h = Math.round((x.e/maxE)*100);
+    const col = activeAnalyticsPlatform === 'all' ? '#9b59f5' : PLATFORMS[activeAnalyticsPlatform]?.color || '#9b59f5';
+    return `<div class="bg"><div class="bw"><div class="b" style="height:${h}%;background:${col};opacity:.85"></div></div><div class="bl">${x.d}</div></div>`;
+  }).join('');
+
+  const maxM = Math.max(...d.monthly.map(x=>x.f));
+  const minM = Math.min(...d.monthly.map(x=>x.f));
+  document.getElementById('grow-chart').innerHTML = d.monthly.map(x => {
+    const h = Math.round(((x.f - minM*0.95)/(maxM*1.05 - minM*0.95))*100);
+    return `<div class="bg"><div class="bw"><div class="b" style="height:${Math.max(h,5)}%;background:var(--cyan);opacity:.75"></div></div><div class="bl">${x.m}</div></div>`;
+  }).join('');
+
+  // Top posts
+  const filtered = activeAnalyticsPlatform === 'all' ? TOP_POSTS : TOP_POSTS.filter(p => p.platform === activeAnalyticsPlatform);
+  const tp = document.getElementById('top-posts');
+  if (filtered.length === 0) {
+    tp.innerHTML = `<div class="empty">No top posts for this platform yet</div>`;
+  } else {
+    tp.innerHTML = filtered.map((p, i) => {
+      const engClass = p.eng > 8 ? 'eng-hi' : p.eng > 5 ? 'eng-mid' : 'eng-lo';
+      const client = CLIENTS[p.client];
+      return `<div class="tp-card">
+        <div class="tp-rank">${i+1}</div>
+        <div class="tp-info">
+          <div class="tp-title">${esc(p.title)}</div>
+          <div class="tp-stats">
+            <span class="tp-stat">${ICONS.heart}${fmtNum(p.likes)}</span>
+            <span class="tp-stat">${ICONS.comment}${fmtNum(p.comments)}</span>
+            <span class="tp-stat">${ICONS.share}${fmtNum(p.shares)}</span>
+            <span class="tp-stat">${ICONS.eye}${p.views}</span>
+            <span class="pb pb-${p.platform}">${ICONS[p.platform]}${PLATFORMS[p.platform].abbr}</span>
+            <span style="font-size:.62rem;color:var(--dim)">${p.date}</span>
+          </div>
+        </div>
+        <div class="tp-eng ${engClass}">${p.eng}% eng</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Audience breakdown
+  const ageBands = [
+    { label:'18–24', pct:28, color:'#c084fc' },
+    { label:'25–34', pct:42, color:'#60a5fa' },
+    { label:'35–44', pct:18, color:'#4ade80' },
+    { label:'45+',   pct:12, color:'#fbbf24' },
+  ];
+  document.getElementById('age-dist').innerHTML = ageBands.map(a =>
+    `<div style="width:${a.pct}%;background:${a.color};border-radius:0"></div>`
+  ).join('');
+  document.getElementById('age-leg').innerHTML = ageBands.map(a =>
+    `<div class="dist-li"><div class="dist-dot" style="background:${a.color}"></div>${a.label} · ${a.pct}%</div>`
+  ).join('');
+
+  const locs = [
+    { city:'United States', pct:48 },
+    { city:'United Kingdom', pct:14 },
+    { city:'Canada', pct:11 },
+    { city:'Australia', pct:9 },
+    { city:'Germany', pct:6 },
+  ];
+  document.getElementById('locations').innerHTML = locs.map(l =>
+    `<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem">
+      <span style="font-size:.78rem;flex:1;color:var(--muted)">${l.city}</span>
+      <div style="flex:2;height:5px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden">
+        <div style="width:${l.pct}%;height:100%;background:var(--blue);border-radius:3px;opacity:.7"></div>
+      </div>
+      <span style="font-size:.68rem;color:var(--dim);font-family:'JetBrains Mono',monospace;min-width:28px;text-align:right">${l.pct}%</span>
+    </div>`
+  ).join('');
+}
+
+function setAnalyticsPlatform(id) {
+  activeAnalyticsPlatform = id;
+  renderAnalytics();
+}
+
+// ══════════════════════════════════════════
+// CAPTION LAB
+// ══════════════════════════════════════════
+function renderCaption() {
+  // Platform selector
+  const capPlatRow = document.getElementById('cap-plat-row');
+  capPlatRow.innerHTML = Object.entries(PLATFORMS).map(([id, p]) => {
+    const isActive = activeCapPlatform === id;
+    return `<button class="cap-plat${isActive?' active':''}" style="${isActive?`background:${p.color};border-color:${p.color}`:''}" onclick="setCapPlatform('${id}')">
+      ${ICONS[id]}${p.label}
+    </button>`;
+  }).join('');
+
+  // Niche row
+  const niches = Object.keys(HASHTAG_PACKS);
+  document.getElementById('niche-row').innerHTML = niches.map(n =>
+    `<button class="niche-btn${activeNiche===n?' active':''}" onclick="setNiche('${n}')">${n}</button>`
+  ).join('');
+
+  // Hashtag area
+  const packs = HASHTAG_PACKS[activeNiche];
+  const captionText = document.getElementById('caption-box').value;
+  document.getElementById('hashtag-area').innerHTML = Object.entries(packs).map(([group, tags]) =>
+    `<div class="ht-group">
+      <div class="ht-group-title">${group}</div>
+      <div class="ht-cloud">${tags.map(t => {
+        const isAdded = captionText.includes(t);
+        return `<span class="ht-chip${isAdded?' added':''}" onclick="addHashtag('${t}')">${t}</span>`;
+      }).join('')}</div>
+    </div>`
+  ).join('');
+
+  updateCapPreviews();
+  onCaptionInput();
+}
+
+function setCapPlatform(id) {
+  activeCapPlatform = id;
+  renderCaption();
+}
+function setNiche(n) {
+  activeNiche = n;
+  renderCaption();
+}
+
+function onCaptionInput() {
+  const text = document.getElementById('caption-box').value;
+  const len = text.length;
+  const limit = PLATFORMS[activeCapPlatform]?.charLimit || 2200;
+  const pct = Math.min((len / limit) * 100, 100);
+  const fill = document.getElementById('char-fill');
+  fill.style.width = pct + '%';
+  fill.style.background = pct > 90 ? 'var(--red)' : pct > 70 ? 'var(--amber)' : 'var(--green)';
+  document.getElementById('char-info').textContent = `${len.toLocaleString()} / ${limit.toLocaleString()} characters`;
+  updateCapPreviews();
+  // Update hashtag chip states
+  const chips = document.querySelectorAll('.ht-chip');
+  chips.forEach(chip => {
+    const tag = chip.textContent.trim();
+    chip.classList.toggle('added', text.includes(tag));
+  });
+}
+
+function updateCapPreviews() {
+  const text = document.getElementById('caption-box').value;
+  const platforms = [
+    { id:'instagram', label:'Instagram', limit:2200 },
+    { id:'tiktok',    label:'TikTok',    limit:2200 },
+    { id:'twitter',   label:'Twitter/X', limit:280 },
+    { id:'linkedin',  label:'LinkedIn',  limit:3000 },
+  ];
+  document.getElementById('cap-previews').innerHTML = platforms.map(p => {
+    const over = text.length > p.limit;
+    const warn = !over && text.length > p.limit * 0.8;
+    const limClass = over ? 'over' : warn ? 'warn' : '';
+    const displayText = text ? (text.length > 120 ? text.slice(0,120)+'…' : text) : `Caption preview will appear here…`;
+    return `<div class="cap-preview-card">
+      <div class="cpv-hdr">
+        <strong>${ICONS[p.id]}${p.label}</strong>
+        <span class="cpv-lim ${limClass}">${text.length}/${p.limit}</span>
+      </div>
+      <div style="font-size:.78rem;line-height:1.55;color:${text?'var(--muted)':'var(--dim)'}">${esc(displayText)}</div>
+    </div>`;
+  }).join('');
+}
+
+function addHashtag(tag) {
+  const box = document.getElementById('caption-box');
+  const val = box.value;
+  const sep = val.length > 0 && !val.endsWith(' ') && !val.endsWith('\n') ? ' ' : '';
+  box.value = val + sep + tag;
+  box.dispatchEvent(new Event('input'));
+  box.focus();
+}
+
+function copyCaption() {
+  const text = document.getElementById('caption-box').value;
+  if (!text) { showToast('Nothing to copy yet!'); return; }
+  navigator.clipboard.writeText(text).then(() => showToast('Caption copied!')).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('Caption copied!');
+  });
+}
+
+function clearCaption() {
+  document.getElementById('caption-box').value = '';
+  document.getElementById('caption-box').dispatchEvent(new Event('input'));
+}
+
+// ══════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════
+function openModal() {
+  editId = null;
+  document.getElementById('modal-title').textContent = 'New Post';
+  document.getElementById('m-title').value = '';
+  document.getElementById('m-client').value = 'own';
+  document.getElementById('m-platform').value = 'instagram';
+  document.getElementById('m-date').value = fmtDate(new Date());
+  document.getElementById('m-status').value = 'idea';
+  document.getElementById('m-pillar').value = 'Education';
+  document.getElementById('m-time').value = '10:00';
+  document.getElementById('m-notes').value = '';
+  document.getElementById('m-delete').style.display = 'none';
+  document.getElementById('modal-ov').classList.add('show');
+  setTimeout(() => document.getElementById('m-title').focus(), 50);
+}
+
+function openModalWithDate(date) {
+  openModal();
+  document.getElementById('m-date').value = date;
+  document.getElementById('m-status').value = 'scheduled';
+}
+
+function editPost(id) {
+  const p = posts.find(x => x.id === id);
+  if (!p) return;
+  editId = id;
+  document.getElementById('modal-title').textContent = 'Edit Post';
+  document.getElementById('m-title').value = p.title || '';
+  document.getElementById('m-client').value = p.client || 'own';
+  document.getElementById('m-platform').value = p.platform || 'instagram';
+  document.getElementById('m-date').value = p.date || fmtDate(new Date());
+  document.getElementById('m-status').value = p.status || 'idea';
+  document.getElementById('m-pillar').value = p.pillar || 'Education';
+  document.getElementById('m-time').value = p.time || '10:00';
+  document.getElementById('m-notes').value = p.notes || '';
+  document.getElementById('m-delete').style.display = 'inline-flex';
+  document.getElementById('modal-ov').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal-ov').classList.remove('show');
+  editId = null;
+}
+
+function savePost() {
+  const title = document.getElementById('m-title').value.trim();
+  if (!title) { document.getElementById('m-title').focus(); return; }
+  const post = {
+    id: editId || (Date.now()),
+    title,
+    client:   document.getElementById('m-client').value,
+    platform: document.getElementById('m-platform').value,
+    date:     document.getElementById('m-date').value,
+    time:     document.getElementById('m-time').value,
+    status:   document.getElementById('m-status').value,
+    pillar:   document.getElementById('m-pillar').value,
+    notes:    document.getElementById('m-notes').value.trim(),
+  };
+  if (editId) {
+    const idx = posts.findIndex(p => p.id === editId);
+    posts[idx] = post;
+  } else {
+    posts.push(post);
+  }
+  save();
+  closeModal();
+  showToast(editId ? 'Post updated!' : 'Post added!');
+  const active = document.querySelector('.tnav.active')?.dataset.tab;
+  if (active === 'calendar') renderCalendar();
+  else if (active === 'queue') renderQueue();
+  else renderOverview();
+}
+
+function deletePost() {
+  if (!editId) return;
+  posts = posts.filter(p => p.id !== editId);
+  save();
+  closeModal();
+  showToast('Post deleted');
+  const active = document.querySelector('.tnav.active')?.dataset.tab;
+  if (active === 'calendar') renderCalendar();
+  else if (active === 'queue') renderQueue();
+  else renderOverview();
+}
+
+// Close modal on overlay click
+document.getElementById('modal-ov').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function fmtDate(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function fmtNum(n) {
+  if (n >= 1000) return (n/1000).toFixed(1).replace(/\.0$/,'') + 'K';
+  return n.toString();
+}
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ══════════════════════════════════════════
+// KEYBOARD SHORTCUT
+// ══════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if ((e.ctrlKey || e.metaKey) && e.key === 'n') { e.preventDefault(); openModal(); }
+});
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+renderOverview();
+</script>
+</body>
+</html>
