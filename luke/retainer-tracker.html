@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retainer Tracker — Luke Carmichael</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: #07080d;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(245,158,11,0.12) 0%, transparent 65%),
+                radial-gradient(ellipse 50% 40% at 85% 85%, rgba(168,85,247,0.09) 0%, transparent 60%);
+            font-family: 'Inter','Outfit',sans-serif;
+            color: #e2e8f0;
+            padding: 0 0 80px;
+        }
+
+        .topbar {
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 14px 24px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(16px);
+        }
+        .topbar-brand { display: flex; align-items: center; gap: 10px; }
+        .topbar-logo {
+            width: 32px; height: 32px; border-radius: 8px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            display: flex; align-items: center; justify-content: center; color: #07080d;
+        }
+        .topbar-name { font-family: 'Outfit',sans-serif; font-size: 0.9rem; font-weight: 600; color: #f1f5f9; }
+        .topbar-sub { font-size: 0.75rem; color: #475569; }
+        .back-link { font-size: 0.8rem; color: #475569; text-decoration: none; display: flex; align-items: center; gap: 5px; transition: color 0.2s; }
+        .back-link:hover { color: #94a3b8; }
+
+        .container { max-width: 820px; margin: 0 auto; padding: 40px 20px 0; }
+
+        .page-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600;
+            letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 14px;
+            background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); color: #fbbf24;
+        }
+        h1 { font-family: 'Outfit',sans-serif; font-size: clamp(1.7rem,5vw,2.2rem); font-weight: 700; color: #f1f5f9; letter-spacing: -0.02em; margin-bottom: 8px; }
+        .page-desc { font-size: 0.9rem; color: #64748b; line-height: 1.6; margin-bottom: 32px; }
+
+        /* Stats */
+        .stats-row { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+        .stat-chip {
+            flex: 1; min-width: 100px;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 12px; padding: 14px 16px;
+        }
+        .stat-num { font-family: 'Outfit',sans-serif; font-size: 1.5rem; font-weight: 700; color: #fbbf24; margin-bottom: 2px; }
+        .stat-label { font-size: 0.72rem; color: #475569; text-transform: uppercase; letter-spacing: 0.07em; }
+
+        /* Actions */
+        .actions-row { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
+        .btn-primary {
+            flex: 1; min-width: 140px;
+            display: flex; align-items: center; justify-content: center; gap: 7px;
+            padding: 11px 18px; background: linear-gradient(135deg, #f59e0b, #d97706);
+            border: none; border-radius: 10px; color: #07080d;
+            font-family: 'Outfit',sans-serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: opacity 0.2s;
+        }
+        .btn-primary:hover { opacity: 0.88; }
+        .btn-secondary {
+            display: flex; align-items: center; gap: 7px;
+            padding: 11px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px; color: #94a3b8; font-family: 'Outfit',sans-serif; font-size: 0.85rem; cursor: pointer;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.09); }
+
+        /* Filter chips */
+        .filter-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .filter-chip {
+            padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 500;
+            cursor: pointer; border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.04);
+            color: #64748b; transition: all 0.15s;
+        }
+        .filter-chip.active { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.3); color: #fbbf24; }
+
+        /* Client cards */
+        .client-grid { display: flex; flex-direction: column; gap: 12px; }
+
+        .client-card {
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px; padding: 20px; transition: border-color 0.2s;
+        }
+        .client-card:hover { border-color: rgba(245,158,11,0.2); }
+        .client-card.status-active { border-left: 3px solid #f59e0b; }
+        .client-card.status-prospect { border-left: 3px solid #a855f7; }
+        .client-card.status-paused { border-left: 3px solid #475569; }
+        .client-card.status-completed { border-left: 3px solid #2dd4bf; }
+
+        .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+        .card-left { flex: 1; min-width: 0; }
+        .client-name { font-family: 'Outfit',sans-serif; font-size: 1.05rem; font-weight: 600; color: #f1f5f9; margin-bottom: 3px; }
+        .client-type { font-size: 0.8rem; color: #64748b; }
+
+        .status-badge {
+            padding: 4px 10px; border-radius: 6px; font-size: 0.72rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.05em; flex-shrink: 0;
+        }
+        .badge-active { background: rgba(245,158,11,0.12); color: #fbbf24; }
+        .badge-prospect { background: rgba(168,85,247,0.12); color: #c084fc; }
+        .badge-paused { background: rgba(71,85,105,0.3); color: #64748b; }
+        .badge-completed { background: rgba(20,184,166,0.12); color: #2dd4bf; }
+
+        .card-meta { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; }
+        .meta-item { display: flex; flex-direction: column; gap: 2px; }
+        .meta-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: #334155; }
+        .meta-value { font-family: 'JetBrains Mono',monospace; font-size: 0.85rem; color: #e2e8f0; }
+        .meta-value.gold { color: #fbbf24; }
+
+        .card-deliverable {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px; padding: 10px 14px; margin-bottom: 12px;
+        }
+        .deliverable-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: #334155; margin-bottom: 4px; }
+        .deliverable-text { font-size: 0.85rem; color: #94a3b8; }
+
+        .card-notes { font-size: 0.82rem; color: #475569; line-height: 1.55; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-bottom: 10px; }
+
+        .card-actions { display: flex; gap: 8px; }
+        .card-btn {
+            padding: 6px 12px; border-radius: 7px; font-size: 0.78rem; font-weight: 500;
+            cursor: pointer; border: none; display: flex; align-items: center; gap: 5px; transition: opacity 0.2s;
+        }
+        .card-btn:hover { opacity: 0.8; }
+        .btn-edit { background: rgba(245,158,11,0.12); color: #fbbf24; }
+        .btn-del { background: rgba(239,68,68,0.1); color: #f87171; }
+        .btn-log { background: rgba(168,85,247,0.12); color: #c084fc; }
+
+        /* Empty */
+        .empty-state { text-align: center; padding: 60px 20px; color: #334155; }
+        .empty-state h3 { font-family: 'Outfit',sans-serif; font-size: 1.1rem; color: #475569; margin-bottom: 6px; margin-top: 16px; }
+        .empty-state p { font-size: 0.85rem; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); z-index: 200; align-items: flex-start; justify-content: center; padding: 20px; overflow-y: auto; }
+        .modal-overlay.open { display: flex; }
+        .modal { background: #0e1118; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 28px; width: 100%; max-width: 580px; margin-top: 20px; }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+        .modal-title { font-family: 'Outfit',sans-serif; font-size: 1.1rem; font-weight: 700; color: #f1f5f9; }
+        .modal-close { background: rgba(255,255,255,0.07); border: none; border-radius: 8px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: #94a3b8; cursor: pointer; }
+        .modal-close:hover { background: rgba(255,255,255,0.12); }
+
+        .form-section-label { font-family: 'Outfit',sans-serif; font-size: 0.7rem; font-weight: 600; color: #f59e0b; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; margin-top: 20px; }
+        .form-section-label:first-child { margin-top: 0; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { font-size: 0.78rem; font-weight: 500; color: #64748b; }
+        .form-input, .form-select, .form-textarea {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 9px; padding: 9px 13px; color: #e2e8f0;
+            font-family: 'Inter',sans-serif; font-size: 0.87rem; outline: none; transition: border-color 0.2s; width: 100%;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: rgba(245,158,11,0.4); }
+        .form-input::placeholder, .form-textarea::placeholder { color: #334155; }
+        .form-select option { background: #0e1118; }
+        .form-textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
+
+        .modal-footer { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-save { flex: 1; padding: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; border-radius: 10px; color: #07080d; font-family: 'Outfit',sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
+        .btn-cancel { padding: 12px 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: #94a3b8; font-family: 'Outfit',sans-serif; font-size: 0.9rem; cursor: pointer; }
+
+        @media (max-width: 500px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .card-meta { gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="topbar-brand">
+            <div class="topbar-logo">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div>
+                <div class="topbar-name">Luke Carmichael</div>
+                <div class="topbar-sub">Retainer Client Tracker</div>
+            </div>
+        </div>
+        <a href="index.html" class="back-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="page-badge">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+            Columbus Pipeline
+        </div>
+        <h1>Retainer Clients</h1>
+        <p class="page-desc">Track every client you're building or pitching in Columbus — retainer value, deliverables, next action, and notes.</p>
+
+        <div class="stats-row">
+            <div class="stat-chip"><div class="stat-num" id="statActive">0</div><div class="stat-label">Active Retainers</div></div>
+            <div class="stat-chip"><div class="stat-num" id="statMonthly">$0</div><div class="stat-label">Monthly Revenue</div></div>
+            <div class="stat-chip"><div class="stat-num" id="statProspects">0</div><div class="stat-label">In Pipeline</div></div>
+            <div class="stat-chip"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Total Clients</div></div>
+        </div>
+
+        <div class="actions-row">
+            <button class="btn-primary" onclick="openModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Client
+            </button>
+            <button class="btn-secondary" onclick="exportCSV()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export
+            </button>
+        </div>
+
+        <div class="filter-row">
+            <span class="filter-chip active" data-filter="all" onclick="setFilter(this)">All</span>
+            <span class="filter-chip" data-filter="active" onclick="setFilter(this)">Active</span>
+            <span class="filter-chip" data-filter="prospect" onclick="setFilter(this)">Prospects</span>
+            <span class="filter-chip" data-filter="paused" onclick="setFilter(this)">Paused</span>
+            <span class="filter-chip" data-filter="completed" onclick="setFilter(this)">Completed</span>
+        </div>
+
+        <div class="client-grid" id="clientGrid"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">Add Client</span>
+                <button class="modal-close" onclick="closeModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <div class="form-section-label">Client Info</div>
+            <div class="form-grid">
+                <div class="form-group"><label class="form-label">Client / Business Name *</label><input class="form-input" id="fName" placeholder="e.g. Bloom Floral Co."></div>
+                <div class="form-group"><label class="form-label">Industry / Type</label><input class="form-input" id="fType" placeholder="e.g. Wedding venue, Brand"></div>
+                <div class="form-group"><label class="form-label">Contact Name</label><input class="form-input" id="fContact" placeholder="e.g. Sarah K."></div>
+                <div class="form-group"><label class="form-label">Phone / Email</label><input class="form-input" id="fContactInfo" placeholder="phone or email"></div>
+                <div class="form-group"><label class="form-label">Status</label>
+                    <select class="form-select" id="fStatus">
+                        <option value="prospect">Prospect</option>
+                        <option value="active">Active Retainer</option>
+                        <option value="paused">Paused</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="form-group"><label class="form-label">Source / How You Met</label><input class="form-input" id="fSource" placeholder="e.g. Instagram, referral"></div>
+            </div>
+
+            <div class="form-section-label">Deal Details</div>
+            <div class="form-grid">
+                <div class="form-group"><label class="form-label">Monthly Retainer ($)</label><input class="form-input" id="fMonthly" type="number" placeholder="e.g. 500"></div>
+                <div class="form-group"><label class="form-label">Billing Cycle</label>
+                    <select class="form-select" id="fBilling">
+                        <option value="monthly">Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="project">Per Project</option>
+                        <option value="tbd">TBD</option>
+                    </select>
+                </div>
+                <div class="form-group"><label class="form-label">Start Date</label><input class="form-input" id="fStart" type="date"></div>
+                <div class="form-group"><label class="form-label">Renewal / Review Date</label><input class="form-input" id="fRenew" type="date"></div>
+                <div class="form-group full"><label class="form-label">Services / Deliverables</label><input class="form-input" id="fDeliverables" placeholder="e.g. 4 short-form reels/mo, 1 brand video/quarter"></div>
+                <div class="form-group full"><label class="form-label">Next Action</label><input class="form-input" id="fNextAction" placeholder="e.g. Send proposal by Friday"></div>
+                <div class="form-group full"><label class="form-label">Notes</label><textarea class="form-textarea" id="fNotes" placeholder="Anything about the client, vibe, what they care about…"></textarea></div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-save" onclick="saveClient()">Save Client</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const KEY = 'luke_retainer_clients';
+        let clients = [];
+        let editingId = null;
+        let activeFilter = 'all';
+
+        function load() { try { clients = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e) { clients = []; } }
+        function save() { localStorage.setItem(KEY, JSON.stringify(clients)); }
+
+        function updateStats() {
+            const active = clients.filter(c => c.status === 'active');
+            const monthly = active.reduce((s,c) => s + (parseFloat(c.monthly)||0), 0);
+            document.getElementById('statActive').textContent = active.length;
+            document.getElementById('statMonthly').textContent = '$' + monthly.toLocaleString();
+            document.getElementById('statProspects').textContent = clients.filter(c => c.status === 'prospect').length;
+            document.getElementById('statTotal').textContent = clients.length;
+        }
+
+        function setFilter(el) {
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            activeFilter = el.dataset.filter;
+            render();
+        }
+
+        function render() {
+            const grid = document.getElementById('clientGrid');
+            const list = activeFilter === 'all' ? clients : clients.filter(c => c.status === activeFilter);
+
+            if (!list.length) {
+                const msg = activeFilter === 'all' ? 'No clients yet — add your first one.' : `No ${activeFilter} clients yet.`;
+                grid.innerHTML = `<div class="empty-state">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <h3>${msg}</h3><p>Track retainers, prospects, and deliverables.</p></div>`;
+                return;
+            }
+
+            const statusMap = {
+                active: ['Active', 'badge-active', 'status-active'],
+                prospect: ['Prospect', 'badge-prospect', 'status-prospect'],
+                paused: ['Paused', 'badge-paused', 'status-paused'],
+                completed: ['Done', 'badge-completed', 'status-completed']
+            };
+
+            grid.innerHTML = list.map(c => {
+                const [slabel, sbadge, scard] = statusMap[c.status] || statusMap.prospect;
+                const monthlyDisp = c.monthly ? `$${parseFloat(c.monthly).toLocaleString()}` : '—';
+                const billingMap = { monthly: '/mo', quarterly: '/qtr', project: '/project', tbd: '' };
+                const billingTag = billingMap[c.billing] || '';
+
+                return `
+                <div class="client-card ${scard}">
+                    <div class="card-top">
+                        <div class="card-left">
+                            <div class="client-name">${esc(c.name)}</div>
+                            <div class="client-type">${esc(c.type || '')}${c.contact ? ' · ' + esc(c.contact) : ''}</div>
+                        </div>
+                        <span class="status-badge ${sbadge}">${slabel}</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item"><div class="meta-label">Value</div><div class="meta-value gold">${monthlyDisp}${billingTag}</div></div>
+                        ${c.start ? `<div class="meta-item"><div class="meta-label">Started</div><div class="meta-value">${fmtDate(c.start)}</div></div>` : ''}
+                        ${c.renew ? `<div class="meta-item"><div class="meta-label">Renewal</div><div class="meta-value">${fmtDate(c.renew)}</div></div>` : ''}
+                        ${c.source ? `<div class="meta-item"><div class="meta-label">Source</div><div class="meta-value">${esc(c.source)}</div></div>` : ''}
+                    </div>
+                    ${c.deliverables ? `<div class="card-deliverable"><div class="deliverable-label">Deliverables</div><div class="deliverable-text">${esc(c.deliverables)}</div></div>` : ''}
+                    ${c.nextAction ? `<div class="card-deliverable" style="border-color:rgba(168,85,247,0.2);background:rgba(168,85,247,0.05)"><div class="deliverable-label" style="color:#7c3aed">Next Action</div><div class="deliverable-text" style="color:#c084fc">${esc(c.nextAction)}</div></div>` : ''}
+                    ${c.notes ? `<div class="card-notes">${esc(c.notes)}</div>` : ''}
+                    <div class="card-actions">
+                        <button class="card-btn btn-edit" onclick="openModal('${c.id}')">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            Edit
+                        </button>
+                        <button class="card-btn btn-del" onclick="deleteClient('${c.id}')">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                            Delete
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function openModal(id) {
+            editingId = id || null;
+            document.getElementById('modalTitle').textContent = id ? 'Edit Client' : 'Add Client';
+            const fields = ['fName','fType','fContact','fContactInfo','fMonthly','fDeliverables','fNextAction','fNotes','fSource'];
+            fields.forEach(f => { const el = document.getElementById(f); if(el) el.value = ''; });
+            document.getElementById('fStatus').value = 'prospect';
+            document.getElementById('fBilling').value = 'monthly';
+            document.getElementById('fStart').value = '';
+            document.getElementById('fRenew').value = '';
+
+            if (id) {
+                const c = clients.find(x => x.id === id);
+                if (c) {
+                    document.getElementById('fName').value = c.name || '';
+                    document.getElementById('fType').value = c.type || '';
+                    document.getElementById('fContact').value = c.contact || '';
+                    document.getElementById('fContactInfo').value = c.contactInfo || '';
+                    document.getElementById('fMonthly').value = c.monthly || '';
+                    document.getElementById('fBilling').value = c.billing || 'monthly';
+                    document.getElementById('fStart').value = c.start || '';
+                    document.getElementById('fRenew').value = c.renew || '';
+                    document.getElementById('fDeliverables').value = c.deliverables || '';
+                    document.getElementById('fNextAction').value = c.nextAction || '';
+                    document.getElementById('fNotes').value = c.notes || '';
+                    document.getElementById('fStatus').value = c.status || 'prospect';
+                    document.getElementById('fSource').value = c.source || '';
+                }
+            }
+            document.getElementById('modalOverlay').classList.add('open');
+        }
+
+        function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+        function saveClient() {
+            const name = document.getElementById('fName').value.trim();
+            if (!name) { alert('Client name is required.'); return; }
+            const data = {
+                id: editingId || 'c_' + Date.now(),
+                name, type: document.getElementById('fType').value.trim(),
+                contact: document.getElementById('fContact').value.trim(),
+                contactInfo: document.getElementById('fContactInfo').value.trim(),
+                status: document.getElementById('fStatus').value,
+                monthly: document.getElementById('fMonthly').value,
+                billing: document.getElementById('fBilling').value,
+                start: document.getElementById('fStart').value,
+                renew: document.getElementById('fRenew').value,
+                deliverables: document.getElementById('fDeliverables').value.trim(),
+                nextAction: document.getElementById('fNextAction').value.trim(),
+                notes: document.getElementById('fNotes').value.trim(),
+                source: document.getElementById('fSource').value.trim(),
+                updatedAt: new Date().toISOString()
+            };
+            if (editingId) {
+                const i = clients.findIndex(x => x.id === editingId);
+                if (i > -1) clients[i] = data;
+            } else {
+                data.createdAt = data.updatedAt;
+                clients.unshift(data);
+            }
+            save(); closeModal(); render(); updateStats();
+        }
+
+        function deleteClient(id) {
+            if (!confirm('Delete this client?')) return;
+            clients = clients.filter(c => c.id !== id);
+            save(); render(); updateStats();
+        }
+
+        function exportCSV() {
+            if (!clients.length) { alert('No clients to export.'); return; }
+            const h = ['Name','Type','Contact','Status','Monthly','Billing','Start','Renewal','Deliverables','Next Action','Notes'];
+            const rows = clients.map(c => [c.name,c.type,c.contact,c.status,c.monthly,c.billing,c.start,c.renew,c.deliverables,c.nextAction,c.notes].map(v => `"${(v||'').replace(/"/g,'""')}"`));
+            const csv = [h.join(','), ...rows.map(r => r.join(','))].join('\n');
+            const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([csv],{type:'text/csv'})), download: 'retainer_clients.csv' });
+            a.click();
+        }
+
+        function fmtDate(d) { if(!d) return ''; const [y,m,day]=d.split('-'); return `${parseInt(m)}/${parseInt(day)}/${y}`; }
+        function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+        load(); render(); updateStats();
+    </script>
+</body>
+</html>

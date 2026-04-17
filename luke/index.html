@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luke Carmichael</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: #07080d;
+            background-image:
+                radial-gradient(ellipse 80% 60% at 50% -10%, rgba(168,85,247,0.15) 0%, transparent 65%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(245,158,11,0.10) 0%, transparent 60%);
+            font-family: 'Inter','Outfit',sans-serif;
+            color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px 80px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+            max-width: 540px;
+            width: 100%;
+        }
+
+        .badge {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 6px 14px; border-radius: 20px; font-size: 0.72rem;
+            letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 24px;
+            background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25); color: #c084fc;
+        }
+
+        h1 {
+            font-family: 'Outfit',sans-serif;
+            font-size: clamp(2.2rem,8vw,3.4rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #f1f5f9;
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+        h1 .name {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-image: linear-gradient(135deg, #f59e0b 10%, #a855f7 90%);
+        }
+
+        .message {
+            font-size: 1rem; color: #94a3b8; line-height: 1.75;
+            max-width: 440px; margin: 0 auto;
+        }
+
+        .divider { width: 36px; height: 2px; background: linear-gradient(90deg, #a855f7, #f59e0b); border-radius: 2px; margin: 28px auto; opacity: 0.45; }
+
+        .sub-message { font-size: 0.875rem; color: #475569; line-height: 1.65; }
+
+        .section-label {
+            font-family: 'Outfit',sans-serif; font-size: 0.68rem; color: #c084fc;
+            text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px;
+            text-align: center; opacity: 0.7;
+        }
+
+        .card-wrap { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 12px; }
+
+        .tool-card {
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 18px; padding: 22px 24px; backdrop-filter: blur(12px);
+            display: flex; align-items: center; gap: 18px;
+            text-decoration: none; transition: background 0.2s, border-color 0.2s, transform 0.15s;
+        }
+        .tool-card:hover {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(168,85,247,0.25);
+            transform: translateY(-1px);
+        }
+
+        .tool-icon {
+            width: 50px; height: 50px; border-radius: 13px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .icon-gold { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.15)); border: 1px solid rgba(245,158,11,0.25); color: #fbbf24; }
+        .icon-purple { background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(124,58,237,0.15)); border: 1px solid rgba(168,85,247,0.25); color: #c084fc; }
+
+        .tool-text { flex: 1; min-width: 0; }
+        .tool-title { font-family: 'Outfit',sans-serif; font-size: 1.05rem; font-weight: 600; color: #f1f5f9; margin-bottom: 4px; }
+        .tool-desc { font-size: 0.82rem; color: #64748b; line-height: 1.5; }
+        .tool-arrow { color: #334155; flex-shrink: 0; transition: color 0.2s, transform 0.2s; }
+        .tool-card:hover .tool-arrow { color: #c084fc; transform: translateX(3px); }
+
+        .note-card {
+            width: 100%; max-width: 480px;
+            background: rgba(168,85,247,0.06); border: 1px solid rgba(168,85,247,0.14);
+            border-radius: 14px; padding: 18px 22px; margin-top: 8px;
+            font-size: 0.85rem; color: #7c3aed; line-height: 1.65;
+        }
+        .note-card strong { color: #a855f7; }
+
+        .contact-card {
+            width: 100%; max-width: 480px; margin-top: 8px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px; padding: 18px 22px; display: flex; align-items: center; gap: 16px;
+        }
+        .contact-avatar {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: linear-gradient(135deg, #a855f7, #f59e0b);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Outfit',sans-serif; font-size: 18px; font-weight: 700; color: #fff; flex-shrink: 0;
+        }
+        .contact-name { font-family: 'Outfit',sans-serif; font-size: 0.9rem; font-weight: 600; color: #e2e8f0; }
+        .contact-sub { font-size: 0.78rem; color: #475569; margin-top: 2px; }
+
+        footer { margin-top: 56px; text-align: center; }
+        .signature { font-family: 'Outfit',sans-serif; font-size: 0.88rem; color: #2a2d3a; line-height: 1.8; }
+        .signature strong { color: #3d3f52; font-weight: 600; }
+
+        @media (max-width: 480px) {
+            body { padding: 44px 16px 64px; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="badge">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+            From Brian, for Luke
+        </div>
+        <h1>Hey <span class="name">Luke</span>.</h1>
+        <p class="message">Built you a couple of tools — one to help track the retainer clients you're building in Columbus, and one for planning shoots. Use them however they help.</p>
+        <div class="divider"></div>
+        <p class="sub-message">Nothing to install, no account needed. Everything saves to your browser.</p>
+    </header>
+
+    <div class="section-label">Your Tools</div>
+
+    <div class="card-wrap">
+        <a class="tool-card" href="retainer-tracker.html">
+            <div class="tool-icon icon-gold">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="tool-text">
+                <div class="tool-title">Retainer Client Tracker</div>
+                <div class="tool-desc">Track every client you're building in Columbus — status, monthly value, deliverables, and next action. See your pipeline at a glance.</div>
+            </div>
+            <div class="tool-arrow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+        </a>
+
+        <a class="tool-card" href="shoot-planner.html">
+            <div class="tool-icon icon-purple">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+            </div>
+            <div class="tool-text">
+                <div class="tool-title">Shoot Planner</div>
+                <div class="tool-desc">Build shot lists for weddings, brand work, and content days. Organize by section, check off shots as you go, print day-of.</div>
+            </div>
+            <div class="tool-arrow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+        </a>
+    </div>
+
+    <div class="note-card">
+        <strong>Couple weddings this year</strong> — we should use the shoot planner for those. I'll add the dates once they're locked.
+    </div>
+
+    <div class="contact-card">
+        <div class="contact-avatar">B</div>
+        <div>
+            <div class="contact-name">Brian Whitesel</div>
+            <div class="contact-sub">brianwhitesel@gmail.com</div>
+        </div>
+    </div>
+
+    <footer>
+        <p class="signature">— <strong>Brian Whitesel</strong></p>
+    </footer>
+</body>
+</html>

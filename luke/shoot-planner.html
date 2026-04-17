@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoot Planner — Luke Carmichael</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: #07080d;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168,85,247,0.12) 0%, transparent 65%),
+                radial-gradient(ellipse 50% 40% at 85% 85%, rgba(245,158,11,0.08) 0%, transparent 60%);
+            font-family: 'Inter','Outfit',sans-serif;
+            color: #e2e8f0;
+            padding: 0 0 80px;
+        }
+
+        .topbar {
+            background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(16px);
+        }
+        .topbar-brand { display: flex; align-items: center; gap: 10px; }
+        .topbar-logo { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #a855f7, #7c3aed); display: flex; align-items: center; justify-content: center; color: #fff; }
+        .topbar-name { font-family: 'Outfit',sans-serif; font-size: 0.9rem; font-weight: 600; color: #f1f5f9; }
+        .topbar-sub { font-size: 0.75rem; color: #475569; }
+        .back-link { font-size: 0.8rem; color: #475569; text-decoration: none; display: flex; align-items: center; gap: 5px; }
+        .back-link:hover { color: #94a3b8; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px 0; }
+
+        .page-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 14px; background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25); color: #c084fc; }
+        h1 { font-family: 'Outfit',sans-serif; font-size: clamp(1.7rem,5vw,2.2rem); font-weight: 700; color: #f1f5f9; letter-spacing: -0.02em; margin-bottom: 8px; }
+        .page-desc { font-size: 0.9rem; color: #64748b; line-height: 1.6; margin-bottom: 32px; }
+
+        .layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; align-items: start; }
+
+        /* Shoot list panel */
+        .shoots-panel { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; overflow: hidden; }
+        .shoots-header { padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; }
+        .shoots-title { font-family: 'Outfit',sans-serif; font-size: 0.8rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
+        .btn-new-shoot { display: flex; align-items: center; gap: 5px; padding: 6px 12px; background: linear-gradient(135deg, #a855f7, #7c3aed); border: none; border-radius: 7px; color: #fff; font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: 'Outfit',sans-serif; }
+
+        .shoot-item { padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer; transition: background 0.15s; }
+        .shoot-item:hover { background: rgba(255,255,255,0.04); }
+        .shoot-item.active { background: rgba(168,85,247,0.08); border-right: 2px solid #a855f7; }
+        .shoot-item:last-child { border-bottom: none; }
+        .shoot-item-name { font-family: 'Outfit',sans-serif; font-size: 0.9rem; font-weight: 600; color: #f1f5f9; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .shoot-item-meta { font-size: 0.75rem; color: #475569; display: flex; align-items: center; gap: 6px; }
+        .shoot-type-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+        .shoots-empty { padding: 32px 20px; text-align: center; color: #334155; font-size: 0.85rem; }
+
+        /* Shot list panel */
+        .shotlist-panel { display: flex; flex-direction: column; gap: 14px; }
+
+        .shoot-detail-header { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 20px 24px; }
+        .shoot-detail-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+        .shoot-detail-name { font-family: 'Outfit',sans-serif; font-size: 1.2rem; font-weight: 700; color: #f1f5f9; }
+        .shoot-detail-meta { font-size: 0.82rem; color: #64748b; margin-top: 3px; }
+        .shoot-detail-actions { display: flex; gap: 8px; flex-shrink: 0; }
+        .btn-small { padding: 6px 11px; border-radius: 7px; font-size: 0.78rem; font-weight: 500; cursor: pointer; border: none; display: flex; align-items: center; gap: 5px; }
+        .btn-edit-shoot { background: rgba(245,158,11,0.12); color: #fbbf24; }
+        .btn-del-shoot { background: rgba(239,68,68,0.1); color: #f87171; }
+        .btn-print { background: rgba(168,85,247,0.12); color: #c084fc; }
+
+        .shoot-progress { display: flex; align-items: center; gap: 12px; }
+        .progress-bar { flex: 1; height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #a855f7, #f59e0b); border-radius: 3px; transition: width 0.3s; }
+        .progress-text { font-family: 'JetBrains Mono',monospace; font-size: 0.78rem; color: #475569; white-space: nowrap; }
+
+        /* Shot groups */
+        .shot-group { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; overflow: hidden; }
+        .group-header { padding: 12px 18px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; }
+        .group-name { font-family: 'Outfit',sans-serif; font-size: 0.82rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
+        .btn-add-shot { display: flex; align-items: center; gap: 5px; padding: 4px 10px; background: rgba(168,85,247,0.1); border: none; border-radius: 6px; color: #c084fc; font-size: 0.75rem; cursor: pointer; }
+
+        .shot-row { display: flex; align-items: center; gap: 12px; padding: 11px 18px; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.15s; }
+        .shot-row:last-child { border-bottom: none; }
+        .shot-row:hover { background: rgba(255,255,255,0.03); }
+        .shot-row.done { opacity: 0.5; }
+
+        .shot-check { width: 20px; height: 20px; border-radius: 5px; border: 2px solid rgba(255,255,255,0.15); background: transparent; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+        .shot-check.checked { background: #a855f7; border-color: #a855f7; }
+        .shot-check.checked svg { display: block; }
+        .shot-check svg { display: none; color: #fff; }
+
+        .shot-info { flex: 1; min-width: 0; }
+        .shot-desc { font-size: 0.87rem; color: #e2e8f0; line-height: 1.4; }
+        .shot-desc.struck { text-decoration: line-through; color: #475569; }
+        .shot-notes-text { font-size: 0.75rem; color: #475569; margin-top: 2px; }
+
+        .shot-type-badge { padding: 2px 8px; border-radius: 5px; font-size: 0.68rem; font-weight: 600; flex-shrink: 0; }
+
+        .shot-del { background: none; border: none; color: #334155; cursor: pointer; padding: 4px; border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.15s; flex-shrink: 0; }
+        .shot-del:hover { color: #f87171; }
+
+        .add-shot-form { padding: 12px 18px; background: rgba(168,85,247,0.05); border-top: 1px solid rgba(168,85,247,0.1); display: none; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .add-shot-form.visible { display: flex; }
+        .shot-input { flex: 1; min-width: 180px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 7px; padding: 7px 11px; color: #e2e8f0; font-size: 0.85rem; outline: none; }
+        .shot-input:focus { border-color: rgba(168,85,247,0.4); }
+        .shot-type-select { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 7px; padding: 7px 10px; color: #e2e8f0; font-size: 0.82rem; outline: none; }
+        .shot-type-select option { background: #0e1118; }
+        .btn-add-confirm { padding: 7px 14px; background: #a855f7; border: none; border-radius: 7px; color: #fff; font-size: 0.82rem; font-weight: 600; cursor: pointer; font-family: 'Outfit',sans-serif; }
+        .btn-add-cancel { padding: 7px 10px; background: none; border: none; color: #475569; font-size: 0.82rem; cursor: pointer; }
+
+        .no-shoot-selected { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 60px 20px; text-align: center; color: #334155; }
+        .no-shoot-selected h3 { font-family: 'Outfit',sans-serif; font-size: 1rem; color: #475569; margin-top: 14px; margin-bottom: 6px; }
+
+        /* Add group */
+        .btn-add-group { display: flex; align-items: center; gap: 7px; padding: 10px 16px; background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px; color: #475569; font-size: 0.85rem; cursor: pointer; width: 100%; justify-content: center; transition: all 0.15s; }
+        .btn-add-group:hover { background: rgba(168,85,247,0.06); border-color: rgba(168,85,247,0.2); color: #c084fc; }
+
+        /* Shoot modal */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); z-index: 200; align-items: flex-start; justify-content: center; padding: 20px; overflow-y: auto; }
+        .modal-overlay.open { display: flex; }
+        .modal { background: #0e1118; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 26px; width: 100%; max-width: 520px; margin-top: 20px; }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .modal-title { font-family: 'Outfit',sans-serif; font-size: 1.1rem; font-weight: 700; color: #f1f5f9; }
+        .modal-close { background: rgba(255,255,255,0.07); border: none; border-radius: 8px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: #94a3b8; cursor: pointer; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+        .form-label { font-size: 0.78rem; font-weight: 500; color: #64748b; }
+        .form-input, .form-select, .form-textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 9px; padding: 9px 13px; color: #e2e8f0; font-family: 'Inter',sans-serif; font-size: 0.87rem; outline: none; width: 100%; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: rgba(168,85,247,0.4); }
+        .form-input::placeholder { color: #334155; }
+        .form-select option { background: #0e1118; }
+        .form-textarea { resize: vertical; min-height: 60px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .modal-footer { display: flex; gap: 10px; margin-top: 6px; }
+        .btn-save { flex: 1; padding: 12px; background: linear-gradient(135deg, #a855f7, #7c3aed); border: none; border-radius: 10px; color: #fff; font-family: 'Outfit',sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+        .btn-cancel { padding: 12px 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: #94a3b8; font-family: 'Outfit',sans-serif; font-size: 0.9rem; cursor: pointer; }
+
+        .type-colors { 'wide': '#60a5fa', 'medium': '#34d399', 'close': '#f472b6', 'detail': '#fbbf24', 'movement': '#c084fc', 'broll': '#94a3b8' }
+
+        @media (max-width: 680px) {
+            .layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="topbar-brand">
+            <div class="topbar-logo">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+            </div>
+            <div>
+                <div class="topbar-name">Luke Carmichael</div>
+                <div class="topbar-sub">Shoot Planner</div>
+            </div>
+        </div>
+        <a href="index.html" class="back-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="page-badge">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+            Shot Lists
+        </div>
+        <h1>Shoot Planner</h1>
+        <p class="page-desc">Plan every shoot — weddings, brand work, retainer content. Build shot lists, check off as you go, print day-of.</p>
+
+        <div class="layout">
+            <!-- Shoots sidebar -->
+            <div>
+                <div class="shoots-panel">
+                    <div class="shoots-header">
+                        <span class="shoots-title">Shoots (<span id="shootCount">0</span>)</span>
+                        <button class="btn-new-shoot" onclick="openShootModal()">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            New
+                        </button>
+                    </div>
+                    <div id="shootsList">
+                        <div class="shoots-empty">No shoots yet.<br>Create your first one.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shot list -->
+            <div class="shotlist-panel" id="shotlistPanel">
+                <div class="no-shoot-selected">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                    <h3>Select a shoot</h3>
+                    <p>Or create a new one to start building your shot list.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shoot modal -->
+    <div class="modal-overlay" id="shootModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title" id="shootModalTitle">New Shoot</span>
+                <button class="modal-close" onclick="closeShootModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="form-group"><label class="form-label">Shoot Name *</label><input class="form-input" id="sfName" placeholder="e.g. Sullivan Wedding, Bloom Co. Brand Shoot"></div>
+            <div class="form-row">
+                <div class="form-group"><label class="form-label">Type</label>
+                    <select class="form-select" id="sfType">
+                        <option value="wedding">Wedding</option>
+                        <option value="brand">Brand / Commercial</option>
+                        <option value="event">Event</option>
+                        <option value="portrait">Portrait / Headshots</option>
+                        <option value="content">Content Day</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="sfDate" type="date"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label class="form-label">Location</label><input class="form-input" id="sfLocation" placeholder="Venue or address"></div>
+                <div class="form-group"><label class="form-label">Client</label><input class="form-input" id="sfClient" placeholder="e.g. The Sullivans"></div>
+            </div>
+            <div class="form-group"><label class="form-label">Notes</label><textarea class="form-textarea" id="sfNotes" placeholder="Call time, parking, special requests, gear to bring…"></textarea></div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeShootModal()">Cancel</button>
+                <button class="btn-save" onclick="saveShoot()">Save Shoot</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const KEY = 'luke_shoots';
+        let shoots = [];
+        let activeShootId = null;
+        let editingShootId = null;
+
+        const TYPE_COLORS = {
+            wedding: '#f472b6', brand: '#60a5fa', event: '#34d399',
+            portrait: '#fbbf24', content: '#c084fc', other: '#94a3b8'
+        };
+
+        const SHOT_TYPE_STYLES = {
+            wide: { color: '#60a5fa', bg: 'rgba(96,165,250,0.12)' },
+            medium: { color: '#34d399', bg: 'rgba(52,211,153,0.12)' },
+            close: { color: '#f472b6', bg: 'rgba(244,114,182,0.12)' },
+            detail: { color: '#fbbf24', bg: 'rgba(251,191,36,0.12)' },
+            movement: { color: '#c084fc', bg: 'rgba(192,132,252,0.12)' },
+            broll: { color: '#94a3b8', bg: 'rgba(148,163,184,0.1)' }
+        };
+
+        function load() { try { shoots = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e) { shoots = []; } }
+        function save() { localStorage.setItem(KEY, JSON.stringify(shoots)); }
+
+        function getShoot(id) { return shoots.find(s => s.id === id); }
+
+        function renderShootsList() {
+            const list = document.getElementById('shootsList');
+            document.getElementById('shootCount').textContent = shoots.length;
+            if (!shoots.length) {
+                list.innerHTML = '<div class="shoots-empty">No shoots yet.<br>Create your first one.</div>';
+                return;
+            }
+            list.innerHTML = shoots.map(s => {
+                const color = TYPE_COLORS[s.type] || '#94a3b8';
+                const total = (s.groups || []).reduce((a,g) => a + (g.shots||[]).length, 0);
+                const done = (s.groups || []).reduce((a,g) => a + (g.shots||[]).filter(sh => sh.done).length, 0);
+                const dateStr = s.date ? fmtDate(s.date) : '';
+                return `<div class="shoot-item ${s.id === activeShootId ? 'active' : ''}" onclick="selectShoot('${s.id}')">
+                    <div class="shoot-item-name">${esc(s.name)}</div>
+                    <div class="shoot-item-meta">
+                        <span class="shoot-type-dot" style="background:${color}"></span>
+                        ${dateStr ? dateStr + ' · ' : ''}${done}/${total} shots
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function selectShoot(id) {
+            activeShootId = id;
+            renderShootsList();
+            renderShotList();
+        }
+
+        function renderShotList() {
+            const panel = document.getElementById('shotlistPanel');
+            if (!activeShootId) {
+                panel.innerHTML = `<div class="no-shoot-selected">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                    <h3>Select a shoot</h3><p>Or create a new one to start building your shot list.</p></div>`;
+                return;
+            }
+            const shoot = getShoot(activeShootId);
+            if (!shoot) return;
+
+            const groups = shoot.groups || [];
+            const total = groups.reduce((a,g) => a + (g.shots||[]).length, 0);
+            const done = groups.reduce((a,g) => a + (g.shots||[]).filter(sh => sh.done).length, 0);
+            const pct = total ? Math.round((done/total)*100) : 0;
+            const color = TYPE_COLORS[shoot.type] || '#94a3b8';
+
+            let html = `
+                <div class="shoot-detail-header">
+                    <div class="shoot-detail-top">
+                        <div>
+                            <div class="shoot-detail-name">${esc(shoot.name)}</div>
+                            <div class="shoot-detail-meta">${shoot.type ? shoot.type.charAt(0).toUpperCase()+shoot.type.slice(1) : ''}${shoot.date ? ' · ' + fmtDate(shoot.date) : ''}${shoot.client ? ' · ' + esc(shoot.client) : ''}${shoot.location ? ' · ' + esc(shoot.location) : ''}</div>
+                            ${shoot.notes ? `<div class="shoot-detail-meta" style="margin-top:5px;color:#475569">${esc(shoot.notes)}</div>` : ''}
+                        </div>
+                        <div class="shoot-detail-actions">
+                            <button class="btn-small btn-print" onclick="printShoot()">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                                Print
+                            </button>
+                            <button class="btn-small btn-edit-shoot" onclick="openShootModal('${shoot.id}')">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                Edit
+                            </button>
+                            <button class="btn-small btn-del-shoot" onclick="deleteShoot('${shoot.id}')">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="shoot-progress">
+                        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+                        <span class="progress-text">${done}/${total} shots · ${pct}%</span>
+                    </div>
+                </div>`;
+
+            groups.forEach((group, gi) => {
+                html += `<div class="shot-group">
+                    <div class="group-header">
+                        <span class="group-name">${esc(group.name)}</span>
+                        <button class="btn-add-shot" onclick="toggleAddForm('form_${gi}')">+ Shot</button>
+                    </div>
+                    <div id="shots_${gi}">`;
+
+                (group.shots || []).forEach((shot, si) => {
+                    const ts = SHOT_TYPE_STYLES[shot.type] || SHOT_TYPE_STYLES.broll;
+                    html += `<div class="shot-row ${shot.done ? 'done' : ''}">
+                        <div class="shot-check ${shot.done ? 'checked' : ''}" onclick="toggleShot(${gi},${si})">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="shot-info">
+                            <div class="shot-desc ${shot.done ? 'struck' : ''}">${esc(shot.desc)}</div>
+                            ${shot.notes ? `<div class="shot-notes-text">${esc(shot.notes)}</div>` : ''}
+                        </div>
+                        ${shot.type ? `<span class="shot-type-badge" style="background:${ts.bg};color:${ts.color}">${shot.type}</span>` : ''}
+                        <button class="shot-del" onclick="deleteShot(${gi},${si})">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>`;
+                });
+
+                html += `</div>
+                    <div class="add-shot-form" id="form_${gi}">
+                        <input class="shot-input" id="shotInput_${gi}" placeholder="Describe the shot…" onkeydown="if(event.key==='Enter')confirmAddShot(${gi})">
+                        <select class="shot-type-select" id="shotType_${gi}">
+                            <option value="">Type</option>
+                            <option value="wide">Wide</option>
+                            <option value="medium">Medium</option>
+                            <option value="close">Close-up</option>
+                            <option value="detail">Detail</option>
+                            <option value="movement">Movement</option>
+                            <option value="broll">B-Roll</option>
+                        </select>
+                        <button class="btn-add-confirm" onclick="confirmAddShot(${gi})">Add</button>
+                        <button class="btn-add-cancel" onclick="toggleAddForm('form_${gi}')">Cancel</button>
+                    </div>
+                </div>`;
+            });
+
+            html += `<button class="btn-add-group" onclick="addGroup()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Section
+            </button>`;
+
+            panel.innerHTML = html;
+        }
+
+        function toggleAddForm(id) {
+            const form = document.getElementById(id);
+            if (!form) return;
+            form.classList.toggle('visible');
+            if (form.classList.contains('visible')) {
+                const input = form.querySelector('.shot-input');
+                if (input) input.focus();
+            }
+        }
+
+        function confirmAddShot(gi) {
+            const input = document.getElementById(`shotInput_${gi}`);
+            const typeEl = document.getElementById(`shotType_${gi}`);
+            if (!input || !input.value.trim()) return;
+            const shoot = getShoot(activeShootId);
+            if (!shoot || !shoot.groups[gi]) return;
+            shoot.groups[gi].shots.push({ id: 's_'+Date.now(), desc: input.value.trim(), type: typeEl ? typeEl.value : '', done: false });
+            save(); renderShotList(); renderShootsList();
+        }
+
+        function toggleShot(gi, si) {
+            const shoot = getShoot(activeShootId);
+            if (!shoot || !shoot.groups[gi] || !shoot.groups[gi].shots[si]) return;
+            shoot.groups[gi].shots[si].done = !shoot.groups[gi].shots[si].done;
+            save(); renderShotList(); renderShootsList();
+        }
+
+        function deleteShot(gi, si) {
+            const shoot = getShoot(activeShootId);
+            if (!shoot) return;
+            shoot.groups[gi].shots.splice(si, 1);
+            save(); renderShotList(); renderShootsList();
+        }
+
+        function addGroup() {
+            const name = prompt('Section name (e.g. "Getting Ready", "Ceremony", "Reception"):');
+            if (!name || !name.trim()) return;
+            const shoot = getShoot(activeShootId);
+            if (!shoot) return;
+            if (!shoot.groups) shoot.groups = [];
+            shoot.groups.push({ id: 'g_'+Date.now(), name: name.trim(), shots: [] });
+            save(); renderShotList();
+        }
+
+        function openShootModal(id) {
+            editingShootId = id || null;
+            document.getElementById('shootModalTitle').textContent = id ? 'Edit Shoot' : 'New Shoot';
+            ['sfName','sfLocation','sfClient','sfNotes'].forEach(f => { const el=document.getElementById(f); if(el) el.value=''; });
+            document.getElementById('sfType').value = 'wedding';
+            document.getElementById('sfDate').value = '';
+            if (id) {
+                const s = getShoot(id);
+                if (s) {
+                    document.getElementById('sfName').value = s.name || '';
+                    document.getElementById('sfType').value = s.type || 'wedding';
+                    document.getElementById('sfDate').value = s.date || '';
+                    document.getElementById('sfLocation').value = s.location || '';
+                    document.getElementById('sfClient').value = s.client || '';
+                    document.getElementById('sfNotes').value = s.notes || '';
+                }
+            }
+            document.getElementById('shootModal').classList.add('open');
+        }
+
+        function closeShootModal() { document.getElementById('shootModal').classList.remove('open'); }
+
+        function saveShoot() {
+            const name = document.getElementById('sfName').value.trim();
+            if (!name) { alert('Shoot name is required.'); return; }
+            const data = {
+                id: editingShootId || 'shoot_' + Date.now(),
+                name, type: document.getElementById('sfType').value,
+                date: document.getElementById('sfDate').value,
+                location: document.getElementById('sfLocation').value.trim(),
+                client: document.getElementById('sfClient').value.trim(),
+                notes: document.getElementById('sfNotes').value.trim(),
+                groups: editingShootId ? (getShoot(editingShootId)||{}).groups || [] : [
+                    { id: 'g1', name: 'Key Shots', shots: [] },
+                    { id: 'g2', name: 'B-Roll', shots: [] }
+                ]
+            };
+            if (editingShootId) {
+                const i = shoots.findIndex(x => x.id === editingShootId);
+                if (i > -1) shoots[i] = data;
+            } else {
+                shoots.unshift(data);
+                activeShootId = data.id;
+            }
+            save(); closeShootModal(); renderShootsList(); renderShotList();
+        }
+
+        function deleteShoot(id) {
+            if (!confirm('Delete this shoot and all its shot lists?')) return;
+            shoots = shoots.filter(s => s.id !== id);
+            if (activeShootId === id) activeShootId = null;
+            save(); renderShootsList(); renderShotList();
+        }
+
+        function printShoot() { window.print(); }
+
+        function fmtDate(d) { if(!d) return ''; const [y,m,day]=d.split('-'); return `${parseInt(m)}/${parseInt(day)}/${y}`; }
+        function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+        load(); renderShootsList(); renderShotList();
+    </script>
+</body>
+</html>
