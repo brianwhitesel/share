@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Client Profiles — Wash Wiggle & Wag</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: #080c12;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(20,184,166,0.14) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 85% 80%, rgba(6,182,212,0.10) 0%, transparent 60%);
+            font-family: 'Inter','Outfit',sans-serif;
+            color: #e2e8f0;
+            padding: 0 0 80px;
+        }
+
+        .topbar {
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+        }
+
+        .topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .topbar-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .topbar-sub {
+            font-size: 0.75rem;
+            color: #475569;
+        }
+
+        .back-link {
+            font-size: 0.8rem;
+            color: #475569;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: #94a3b8; }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 20px 0;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            background: rgba(20,184,166,0.12);
+            border: 1px solid rgba(20,184,166,0.25);
+            color: #2dd4bf;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.7rem, 5vw, 2.2rem);
+            font-weight: 700;
+            color: #f1f5f9;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .page-desc {
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .stat-chip {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 10px;
+            padding: 10px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .stat-num {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2dd4bf;
+        }
+
+        .stat-label {
+            font-size: 0.73rem;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .actions-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            flex: 1;
+            min-width: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 11px 18px;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-primary:hover { opacity: 0.88; }
+
+        .btn-secondary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 11px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            color: #94a3b8;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.09); }
+
+        .search-wrap {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #475569;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 11px 14px 11px 40px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 10px;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-input:focus { border-color: rgba(20,184,166,0.35); }
+        .search-input::placeholder { color: #334155; }
+
+        .profile-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .profile-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            position: relative;
+        }
+        .profile-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(20,184,166,0.2);
+        }
+
+        .profile-card-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .pet-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(20,184,166,0.2), rgba(6,182,212,0.2));
+            border: 1px solid rgba(20,184,166,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .profile-names {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pet-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 2px;
+        }
+
+        .owner-name {
+            font-size: 0.82rem;
+            color: #64748b;
+        }
+
+        .profile-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .meta-chip {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.73rem;
+            font-weight: 500;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.07);
+            color: #94a3b8;
+        }
+
+        .meta-chip.teal {
+            background: rgba(20,184,166,0.1);
+            border-color: rgba(20,184,166,0.2);
+            color: #2dd4bf;
+        }
+
+        .profile-notes {
+            margin-top: 10px;
+            font-size: 0.82rem;
+            color: #475569;
+            line-height: 1.55;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 10px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .card-btn {
+            padding: 6px 12px;
+            border-radius: 7px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: opacity 0.2s;
+        }
+        .card-btn:hover { opacity: 0.8; }
+
+        .card-btn-edit {
+            background: rgba(20,184,166,0.12);
+            color: #2dd4bf;
+        }
+
+        .card-btn-delete {
+            background: rgba(239,68,68,0.1);
+            color: #f87171;
+        }
+
+        .card-btn-appt {
+            background: rgba(99,102,241,0.12);
+            color: #a5b4fc;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #334155;
+        }
+
+        .empty-state svg { margin-bottom: 16px; opacity: 0.4; }
+        .empty-state h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #475569; margin-bottom: 6px; }
+        .empty-state p { font-size: 0.85rem; }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: #0f1520;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 28px;
+            width: 100%;
+            max-width: 560px;
+            margin-top: 20px;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .modal-close {
+            background: rgba(255,255,255,0.07);
+            border: none;
+            border-radius: 8px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .modal-close:hover { background: rgba(255,255,255,0.12); }
+
+        .form-section {
+            margin-bottom: 24px;
+        }
+
+        .form-section-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #14b8a6;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full { grid-column: 1 / -1; }
+
+        .form-label {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 9px;
+            padding: 9px 13px;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.87rem;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: rgba(20,184,166,0.4);
+        }
+        .form-input::placeholder, .form-textarea::placeholder { color: #334155; }
+        .form-select option { background: #0f1520; }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+            line-height: 1.5;
+        }
+
+        .breed-emoji-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .emoji-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            background: rgba(255,255,255,0.04);
+            border: 2px solid rgba(255,255,255,0.07);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s;
+        }
+        .emoji-btn.selected {
+            border-color: #14b8a6;
+            background: rgba(20,184,166,0.12);
+        }
+
+        .checkbox-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .check-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .check-chip input { display: none; }
+        .check-chip.checked {
+            background: rgba(20,184,166,0.1);
+            border-color: rgba(20,184,166,0.3);
+            color: #2dd4bf;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .btn-save {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-save:hover { opacity: 0.88; }
+
+        .btn-cancel {
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            color: #94a3b8;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 500px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .stats-row { gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="topbar-brand">
+            <div class="topbar-logo">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V7a2 2 0 0 0-2-2h-4l-2-2H8L6 5H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10"/><circle cx="18" cy="18" r="4"/><path d="M18 16v2l1 1"/></svg>
+            </div>
+            <div>
+                <div class="topbar-name">Wash Wiggle & Wag</div>
+                <div class="topbar-sub">Pet Client Profiles</div>
+            </div>
+        </div>
+        <a href="index.html" class="back-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <div class="page-badge">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+                Client Manager
+            </div>
+            <h1>Pet Profiles</h1>
+            <p class="page-desc">Every dog, every owner — all in one place. Add notes, track breeds, flag allergies.</p>
+        </div>
+
+        <div class="stats-row" id="statsRow">
+            <div class="stat-chip">
+                <span class="stat-num" id="statTotal">0</span>
+                <span class="stat-label">Total Pets</span>
+            </div>
+            <div class="stat-chip">
+                <span class="stat-num" id="statOwners">0</span>
+                <span class="stat-label">Owners</span>
+            </div>
+            <div class="stat-chip">
+                <span class="stat-num" id="statAlerts">0</span>
+                <span class="stat-label">Allergy Alerts</span>
+            </div>
+        </div>
+
+        <div class="actions-row">
+            <button class="btn-primary" onclick="openModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add New Client
+            </button>
+            <button class="btn-secondary" onclick="exportCSV()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export
+            </button>
+        </div>
+
+        <div class="search-wrap">
+            <div class="search-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search by dog name, owner, or breed…" oninput="renderProfiles()">
+        </div>
+
+        <div class="profile-list" id="profileList"></div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">Add New Client</span>
+                <button class="modal-close" onclick="closeModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-label">Pick a Dog Icon</div>
+                <div class="breed-emoji-row" id="emojiRow">
+                    <button class="emoji-btn selected" data-emoji="🐕" onclick="selectEmoji(this)">🐕</button>
+                    <button class="emoji-btn" data-emoji="🐩" onclick="selectEmoji(this)">🐩</button>
+                    <button class="emoji-btn" data-emoji="🦮" onclick="selectEmoji(this)">🦮</button>
+                    <button class="emoji-btn" data-emoji="🐕‍🦺" onclick="selectEmoji(this)">🐕‍🦺</button>
+                    <button class="emoji-btn" data-emoji="🐾" onclick="selectEmoji(this)">🐾</button>
+                    <button class="emoji-btn" data-emoji="🐶" onclick="selectEmoji(this)">🐶</button>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-label">Dog Info</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Dog's Name *</label>
+                        <input class="form-input" id="fieldDogName" placeholder="e.g. Biscuit" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Breed</label>
+                        <input class="form-input" id="fieldBreed" placeholder="e.g. Golden Retriever">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Age</label>
+                        <input class="form-input" id="fieldAge" placeholder="e.g. 3 years">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Size</label>
+                        <select class="form-select" id="fieldSize">
+                            <option value="">Select size</option>
+                            <option>Small (under 25 lbs)</option>
+                            <option>Medium (25–60 lbs)</option>
+                            <option>Large (60–90 lbs)</option>
+                            <option>Extra Large (90+ lbs)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Coat Type</label>
+                        <select class="form-select" id="fieldCoat">
+                            <option value="">Select coat</option>
+                            <option>Short / smooth</option>
+                            <option>Medium</option>
+                            <option>Long / fluffy</option>
+                            <option>Curly / wavy</option>
+                            <option>Double coat</option>
+                            <option>Wire / rough</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Temperament</label>
+                        <select class="form-select" id="fieldTemperament">
+                            <option value="">Select</option>
+                            <option>😊 Calm & Easy</option>
+                            <option>⚡ Energetic</option>
+                            <option>😰 Anxious / Nervous</option>
+                            <option>😤 Stubborn</option>
+                            <option>😡 Reactive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-label">Owner Info</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Owner Name *</label>
+                        <input class="form-input" id="fieldOwnerName" placeholder="e.g. Sarah M.">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input class="form-input" id="fieldPhone" placeholder="(614) 555-0000" type="tel">
+                    </div>
+                    <div class="form-group full">
+                        <label class="form-label">Email</label>
+                        <input class="form-input" id="fieldEmail" placeholder="email@example.com" type="email">
+                    </div>
+                    <div class="form-group full">
+                        <label class="form-label">Address / Area</label>
+                        <input class="form-input" id="fieldAddress" placeholder="e.g. 123 Oak St, Centerburg OH">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-label">Health & Special Notes</div>
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label class="form-label">Allergies / Sensitivities</label>
+                        <input class="form-input" id="fieldAllergies" placeholder="e.g. fragrance-sensitive, flea product reaction">
+                    </div>
+                    <div class="form-group full">
+                        <label class="form-label">Services Usually Gets</label>
+                        <div class="checkbox-row" id="servicesRow">
+                            <label class="check-chip"><input type="checkbox" value="Bath & Dry"> Bath & Dry</label>
+                            <label class="check-chip"><input type="checkbox" value="Full Groom"> Full Groom</label>
+                            <label class="check-chip"><input type="checkbox" value="Nail Trim"> Nail Trim</label>
+                            <label class="check-chip"><input type="checkbox" value="Ear Cleaning"> Ear Cleaning</label>
+                            <label class="check-chip"><input type="checkbox" value="Teeth Brush"> Teeth Brush</label>
+                            <label class="check-chip"><input type="checkbox" value="De-shed"> De-shed</label>
+                            <label class="check-chip"><input type="checkbox" value="Flea Treatment"> Flea Treatment</label>
+                        </div>
+                    </div>
+                    <div class="form-group full">
+                        <label class="form-label">Groomer Notes</label>
+                        <textarea class="form-textarea" id="fieldNotes" placeholder="Anything Dustin should know — handling tips, product preferences, past issues, etc."></textarea>
+                    </div>
+                    <div class="form-group full">
+                        <label class="form-label">How They Found WWW</label>
+                        <select class="form-select" id="fieldSource">
+                            <option value="">Select</option>
+                            <option>Word of mouth</option>
+                            <option>Facebook</option>
+                            <option>Instagram</option>
+                            <option>Google Search</option>
+                            <option>Nextdoor</option>
+                            <option>Returning client</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-save" onclick="saveProfile()">Save Profile</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'www_pet_profiles';
+        let profiles = [];
+        let editingId = null;
+        let selectedEmoji = '🐕';
+
+        function loadProfiles() {
+            try { profiles = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) { profiles = []; }
+        }
+
+        function saveProfiles() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(profiles));
+        }
+
+        function getUniqueOwners() {
+            return new Set(profiles.map(p => p.ownerName).filter(Boolean)).size;
+        }
+
+        function getAllergyCount() {
+            return profiles.filter(p => p.allergies && p.allergies.trim()).length;
+        }
+
+        function updateStats() {
+            document.getElementById('statTotal').textContent = profiles.length;
+            document.getElementById('statOwners').textContent = getUniqueOwners();
+            document.getElementById('statAlerts').textContent = getAllergyCount();
+        }
+
+        function selectEmoji(btn) {
+            document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedEmoji = btn.dataset.emoji;
+        }
+
+        function renderProfiles() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const list = document.getElementById('profileList');
+            const filtered = profiles.filter(p =>
+                (p.dogName||'').toLowerCase().includes(query) ||
+                (p.ownerName||'').toLowerCase().includes(query) ||
+                (p.breed||'').toLowerCase().includes(query)
+            );
+
+            if (filtered.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        <h3>${query ? 'No matches found' : 'No clients yet'}</h3>
+                        <p>${query ? 'Try a different search term.' : 'Tap "Add New Client" to add your first dog.'}</p>
+                    </div>`;
+                return;
+            }
+
+            list.innerHTML = filtered.map(p => {
+                const services = (p.services||[]).map(s => `<span class="meta-chip teal">${s}</span>`).join('');
+                const chips = [
+                    p.breed ? `<span class="meta-chip">${p.breed}</span>` : '',
+                    p.size ? `<span class="meta-chip">${p.size.split(' ')[0]}</span>` : '',
+                    p.temperament ? `<span class="meta-chip">${p.temperament}</span>` : '',
+                    p.allergies ? `<span class="meta-chip" style="color:#fb7185;border-color:rgba(251,113,133,0.25);background:rgba(251,113,133,0.08)">⚠ Allergy alert</span>` : ''
+                ].filter(Boolean).join('');
+
+                return `
+                <div class="profile-card">
+                    <div class="profile-card-top">
+                        <div class="pet-avatar">${p.emoji || '🐕'}</div>
+                        <div class="profile-names">
+                            <div class="pet-name">${escHtml(p.dogName)}</div>
+                            <div class="owner-name">Owner: ${escHtml(p.ownerName)} ${p.phone ? '· '+escHtml(p.phone) : ''}</div>
+                        </div>
+                    </div>
+                    <div class="profile-meta">${chips}${services}</div>
+                    ${p.notes ? `<div class="profile-notes">${escHtml(p.notes)}</div>` : ''}
+                    ${p.allergies ? `<div class="profile-notes" style="color:#fb7185">Allergies/Sensitivities: ${escHtml(p.allergies)}</div>` : ''}
+                    <div class="card-actions">
+                        <button class="card-btn card-btn-edit" onclick="editProfile('${p.id}')">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            Edit
+                        </button>
+                        <button class="card-btn card-btn-appt" onclick="bookAppointment('${p.id}')">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Book Appt
+                        </button>
+                        <button class="card-btn card-btn-delete" onclick="deleteProfile('${p.id}')">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                            Delete
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // Wire up service checkboxes (they're static labels now, not needed to re-wire)
+        }
+
+        function openModal(id) {
+            editingId = id || null;
+            const modal = document.getElementById('modalOverlay');
+            document.getElementById('modalTitle').textContent = id ? 'Edit Profile' : 'Add New Client';
+
+            // Reset form
+            ['fieldDogName','fieldBreed','fieldAge','fieldOwnerName','fieldPhone','fieldEmail','fieldAddress','fieldAllergies','fieldNotes'].forEach(f => {
+                const el = document.getElementById(f);
+                if(el) el.value = '';
+            });
+            ['fieldSize','fieldCoat','fieldTemperament','fieldSource'].forEach(f => {
+                const el = document.getElementById(f);
+                if(el) el.value = '';
+            });
+            document.querySelectorAll('#servicesRow .check-chip').forEach(chip => {
+                chip.classList.remove('checked');
+                chip.querySelector('input').checked = false;
+            });
+            selectedEmoji = '🐕';
+            document.querySelectorAll('.emoji-btn').forEach(b => {
+                b.classList.toggle('selected', b.dataset.emoji === '🐕');
+            });
+
+            if (id) {
+                const p = profiles.find(x => x.id === id);
+                if (p) {
+                    document.getElementById('fieldDogName').value = p.dogName || '';
+                    document.getElementById('fieldBreed').value = p.breed || '';
+                    document.getElementById('fieldAge').value = p.age || '';
+                    document.getElementById('fieldSize').value = p.size || '';
+                    document.getElementById('fieldCoat').value = p.coat || '';
+                    document.getElementById('fieldTemperament').value = p.temperament || '';
+                    document.getElementById('fieldOwnerName').value = p.ownerName || '';
+                    document.getElementById('fieldPhone').value = p.phone || '';
+                    document.getElementById('fieldEmail').value = p.email || '';
+                    document.getElementById('fieldAddress').value = p.address || '';
+                    document.getElementById('fieldAllergies').value = p.allergies || '';
+                    document.getElementById('fieldNotes').value = p.notes || '';
+                    document.getElementById('fieldSource').value = p.source || '';
+                    selectedEmoji = p.emoji || '🐕';
+                    document.querySelectorAll('.emoji-btn').forEach(b => {
+                        b.classList.toggle('selected', b.dataset.emoji === selectedEmoji);
+                    });
+                    if (p.services) {
+                        document.querySelectorAll('#servicesRow .check-chip').forEach(chip => {
+                            const val = chip.querySelector('input').value;
+                            if (p.services.includes(val)) {
+                                chip.classList.add('checked');
+                                chip.querySelector('input').checked = true;
+                            }
+                        });
+                    }
+                }
+            }
+
+            modal.classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('open');
+        }
+
+        function editProfile(id) { openModal(id); }
+
+        function bookAppointment(id) {
+            const p = profiles.find(x => x.id === id);
+            if (p) {
+                localStorage.setItem('www_prefill_appt', JSON.stringify({ dogName: p.dogName, ownerName: p.ownerName, phone: p.phone, services: p.services }));
+                window.location.href = 'booking-invoice.html';
+            }
+        }
+
+        function deleteProfile(id) {
+            if (!confirm('Delete this profile? This cannot be undone.')) return;
+            profiles = profiles.filter(p => p.id !== id);
+            saveProfiles();
+            renderProfiles();
+            updateStats();
+        }
+
+        function saveProfile() {
+            const dogName = document.getElementById('fieldDogName').value.trim();
+            const ownerName = document.getElementById('fieldOwnerName').value.trim();
+            if (!dogName || !ownerName) {
+                alert('Dog name and owner name are required.');
+                return;
+            }
+
+            const services = [];
+            document.querySelectorAll('#servicesRow .check-chip input:checked').forEach(cb => services.push(cb.value));
+
+            const data = {
+                id: editingId || 'p_' + Date.now(),
+                emoji: selectedEmoji,
+                dogName,
+                breed: document.getElementById('fieldBreed').value.trim(),
+                age: document.getElementById('fieldAge').value.trim(),
+                size: document.getElementById('fieldSize').value,
+                coat: document.getElementById('fieldCoat').value,
+                temperament: document.getElementById('fieldTemperament').value,
+                ownerName,
+                phone: document.getElementById('fieldPhone').value.trim(),
+                email: document.getElementById('fieldEmail').value.trim(),
+                address: document.getElementById('fieldAddress').value.trim(),
+                allergies: document.getElementById('fieldAllergies').value.trim(),
+                notes: document.getElementById('fieldNotes').value.trim(),
+                source: document.getElementById('fieldSource').value,
+                services,
+                updatedAt: new Date().toISOString()
+            };
+
+            if (editingId) {
+                const idx = profiles.findIndex(p => p.id === editingId);
+                if (idx > -1) profiles[idx] = data;
+            } else {
+                data.createdAt = data.updatedAt;
+                profiles.unshift(data);
+            }
+
+            saveProfiles();
+            closeModal();
+            renderProfiles();
+            updateStats();
+        }
+
+        function exportCSV() {
+            if (!profiles.length) { alert('No profiles to export yet.'); return; }
+            const headers = ['Dog Name','Breed','Age','Size','Owner','Phone','Email','Address','Allergies','Services','Notes'];
+            const rows = profiles.map(p => [
+                p.dogName, p.breed, p.age, p.size,
+                p.ownerName, p.phone, p.email, p.address,
+                p.allergies, (p.services||[]).join('; '), p.notes
+            ].map(v => `"${(v||'').replace(/"/g,'""')}"`));
+            const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'www_clients_' + new Date().toISOString().slice(0,10) + '.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function escHtml(str) {
+            return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        // Service checkbox toggle behavior
+        document.addEventListener('click', function(e) {
+            const chip = e.target.closest('.check-chip');
+            if (!chip) return;
+            const cb = chip.querySelector('input');
+            if (!cb) return;
+            cb.checked = !cb.checked;
+            chip.classList.toggle('checked', cb.checked);
+        });
+
+        // Initialize
+        loadProfiles();
+        renderProfiles();
+        updateStats();
+    </script>
+</body>
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Request Generator — Wash Wiggle & Wag</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: #080c12;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(20,184,166,0.13) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 85% 80%, rgba(250,204,21,0.07) 0%, transparent 60%);
+            font-family: 'Inter','Outfit',sans-serif;
+            color: #e2e8f0;
+            padding: 0 0 80px;
+        }
+
+        .topbar {
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+        }
+
+        .topbar-brand { display: flex; align-items: center; gap: 10px; }
+        .topbar-logo {
+            width: 32px; height: 32px; border-radius: 8px;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            display: flex; align-items: center; justify-content: center; color: #fff;
+        }
+        .topbar-name { font-family: 'Outfit',sans-serif; font-size: 0.9rem; font-weight: 600; color: #f1f5f9; }
+        .topbar-sub { font-size: 0.75rem; color: #475569; }
+        .back-link { font-size: 0.8rem; color: #475569; text-decoration: none; display: flex; align-items: center; gap: 5px; }
+        .back-link:hover { color: #94a3b8; }
+
+        .container { max-width: 680px; margin: 0 auto; padding: 40px 20px 0; }
+
+        .page-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600;
+            letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 14px;
+            background: rgba(250,204,21,0.10); border: 1px solid rgba(250,204,21,0.22); color: #facc15;
+        }
+
+        h1 { font-family: 'Outfit',sans-serif; font-size: clamp(1.7rem,5vw,2.2rem); font-weight: 700; color: #f1f5f9; letter-spacing: -0.02em; margin-bottom: 8px; }
+        .page-desc { font-size: 0.9rem; color: #64748b; line-height: 1.6; margin-bottom: 32px; }
+
+        .panel {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .panel-title {
+            font-family: 'Outfit',sans-serif; font-size: 0.72rem; font-weight: 600;
+            color: #14b8a6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 18px;
+        }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+        .form-group.no-margin { margin-bottom: 0; }
+        .form-label { font-size: 0.78rem; font-weight: 500; color: #64748b; }
+        .form-input, .form-select {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 9px; padding: 9px 13px; color: #e2e8f0;
+            font-family: 'Inter',sans-serif; font-size: 0.87rem; outline: none;
+            transition: border-color 0.2s; width: 100%;
+        }
+        .form-input:focus, .form-select:focus { border-color: rgba(20,184,166,0.4); }
+        .form-input::placeholder { color: #334155; }
+        .form-select option { background: #0f1520; }
+
+        /* Tone selector */
+        .tone-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .tone-card {
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.04);
+            border: 2px solid rgba(255,255,255,0.07);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s;
+        }
+        .tone-card.selected {
+            border-color: #14b8a6;
+            background: rgba(20,184,166,0.1);
+        }
+        .tone-emoji { font-size: 22px; margin-bottom: 4px; }
+        .tone-label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; }
+        .tone-card.selected .tone-label { color: #2dd4bf; }
+
+        /* Platform chips */
+        .platform-grid {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;
+        }
+
+        .platform-chip {
+            padding: 7px 14px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 2px solid rgba(255,255,255,0.07);
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #64748b;
+            display: flex; align-items: center; gap: 6px;
+            transition: all 0.15s;
+        }
+        .platform-chip.selected {
+            border-color: #14b8a6;
+            background: rgba(20,184,166,0.1);
+            color: #2dd4bf;
+        }
+
+        /* Generated message */
+        .message-output {
+            background: rgba(20,184,166,0.06);
+            border: 1px solid rgba(20,184,166,0.2);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 16px;
+        }
+
+        .message-output-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+        }
+
+        .message-output-label {
+            font-family: 'Outfit',sans-serif; font-size: 0.72rem; font-weight: 600;
+            color: #14b8a6; text-transform: uppercase; letter-spacing: 0.1em;
+        }
+
+        .copy-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 6px 14px;
+            background: rgba(20,184,166,0.14);
+            border: 1px solid rgba(20,184,166,0.3);
+            border-radius: 7px;
+            color: #2dd4bf;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .copy-btn:hover { background: rgba(20,184,166,0.22); }
+        .copy-btn.copied { background: rgba(20,184,166,0.3); }
+
+        .message-text {
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: #cbd5e1;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .send-options {
+            display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;
+        }
+
+        .send-btn {
+            flex: 1; min-width: 130px;
+            display: flex; align-items: center; justify-content: center; gap: 7px;
+            padding: 11px 16px;
+            border-radius: 10px;
+            font-family: 'Outfit',sans-serif; font-size: 0.88rem; font-weight: 600;
+            cursor: pointer; transition: opacity 0.2s; border: none;
+        }
+        .send-btn:hover { opacity: 0.85; }
+        .send-btn-sms { background: linear-gradient(135deg, #14b8a6, #06b6d4); color: #fff; }
+        .send-btn-fb { background: linear-gradient(135deg, #1877f2, #4299e1); color: #fff; }
+        .send-btn-google { background: linear-gradient(135deg, #ea4335, #fbbc05); color: #fff; }
+
+        /* History */
+        .history-item {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px; padding: 13px 16px; margin-bottom: 8px;
+        }
+        .history-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .history-name { font-size: 0.88rem; font-weight: 500; color: #e2e8f0; }
+        .history-date { font-size: 0.75rem; color: #475569; }
+        .history-preview { font-size: 0.8rem; color: #475569; line-height: 1.4; }
+
+        .btn-generate {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            border: none; border-radius: 10px;
+            color: #fff; font-family: 'Outfit',sans-serif; font-size: 0.95rem; font-weight: 600;
+            cursor: pointer; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 4px;
+        }
+        .btn-generate:hover { opacity: 0.88; }
+
+        .star-rating {
+            display: flex; gap: 6px; justify-content: center; margin: 10px 0;
+        }
+        .star {
+            font-size: 24px; cursor: pointer; opacity: 0.3; transition: opacity 0.15s, transform 0.15s;
+        }
+        .star.active, .star:hover { opacity: 1; transform: scale(1.15); }
+        .star-label { font-size: 0.8rem; color: #475569; text-align: center; margin-top: 4px; }
+
+        @media (max-width: 480px) {
+            .form-row { grid-template-columns: 1fr; }
+            .tone-grid { grid-template-columns: 1fr 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="topbar-brand">
+            <div class="topbar-logo">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div>
+                <div class="topbar-name">Wash Wiggle & Wag</div>
+                <div class="topbar-sub">Review Request Generator</div>
+            </div>
+        </div>
+        <a href="index.html" class="back-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="page-badge">
+            ⭐ Review Engine
+        </div>
+        <h1>Review Requests</h1>
+        <p class="page-desc">Send a personalized review request right after each appointment. More reviews, more bookings.</p>
+
+        <div class="panel">
+            <div class="panel-title">Client Details</div>
+            <div class="form-row">
+                <div class="form-group no-margin">
+                    <label class="form-label">Owner's Name *</label>
+                    <input class="form-input" id="fOwner" placeholder="e.g. Sarah" oninput="updatePreview()">
+                </div>
+                <div class="form-group no-margin">
+                    <label class="form-label">Dog's Name *</label>
+                    <input class="form-input" id="fDog" placeholder="e.g. Biscuit" oninput="updatePreview()">
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom:0">
+                <div class="form-group no-margin">
+                    <label class="form-label">Phone (for SMS link)</label>
+                    <input class="form-input" id="fPhone" placeholder="(614) 555-0000" type="tel">
+                </div>
+                <div class="form-group no-margin">
+                    <label class="form-label">Service Performed</label>
+                    <select class="form-select" id="fService" onchange="updatePreview()">
+                        <option value="grooming appointment">Grooming Appointment</option>
+                        <option value="bath and dry">Bath & Dry</option>
+                        <option value="full groom">Full Groom</option>
+                        <option value="nail trim">Nail Trim</option>
+                        <option value="bath, groom, and nail trim">Bath + Groom + Nails</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">Message Tone</div>
+            <div class="tone-grid">
+                <div class="tone-card selected" data-tone="warm" onclick="selectTone(this)">
+                    <div class="tone-emoji">😊</div>
+                    <div class="tone-label">Warm</div>
+                </div>
+                <div class="tone-card" data-tone="casual" onclick="selectTone(this)">
+                    <div class="tone-emoji">👋</div>
+                    <div class="tone-label">Casual</div>
+                </div>
+                <div class="tone-card" data-tone="brief" onclick="selectTone(this)">
+                    <div class="tone-emoji">⚡</div>
+                    <div class="tone-label">Quick</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">Review Platform</div>
+            <div class="platform-grid">
+                <div class="platform-chip selected" data-platform="Google" data-url="https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review" onclick="selectPlatform(this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    Google
+                </div>
+                <div class="platform-chip" data-platform="Facebook" data-url="https://www.facebook.com/YOUR_PAGE/reviews" onclick="selectPlatform(this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                    Facebook
+                </div>
+                <div class="platform-chip" data-platform="Nextdoor" data-url="https://nextdoor.com/pages/YOUR_PAGE/recommend/" onclick="selectPlatform(this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                    Nextdoor
+                </div>
+            </div>
+            <div class="form-group" style="margin-top:12px;margin-bottom:0">
+                <label class="form-label">Review Link URL <span style="color:#334155">(paste your actual link)</span></label>
+                <input class="form-input" id="fReviewUrl" placeholder="https://g.page/r/..." oninput="updatePreview()">
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">How'd the appointment go?</div>
+            <div class="star-rating" id="starRating">
+                <span class="star active" data-val="1" onclick="rateStar(1)">⭐</span>
+                <span class="star active" data-val="2" onclick="rateStar(2)">⭐</span>
+                <span class="star active" data-val="3" onclick="rateStar(3)">⭐</span>
+                <span class="star active" data-val="4" onclick="rateStar(4)">⭐</span>
+                <span class="star active" data-val="5" onclick="rateStar(5)">⭐</span>
+            </div>
+            <div class="star-label" id="starLabel">5 stars — send the review request!</div>
+        </div>
+
+        <button class="btn-generate" onclick="generateMessage()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Generate Message
+        </button>
+
+        <!-- Output -->
+        <div class="message-output" id="outputSection" style="display:none;margin-top:16px">
+            <div class="message-output-header">
+                <span class="message-output-label">Ready to Send</span>
+                <button class="copy-btn" id="copyBtn" onclick="copyMessage()">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    Copy
+                </button>
+            </div>
+            <div class="message-text" id="messageText"></div>
+        </div>
+
+        <div class="send-options" id="sendOptions" style="display:none">
+            <button class="send-btn send-btn-sms" onclick="sendSMS()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Text Client
+            </button>
+            <button class="send-btn send-btn-google" onclick="logSent()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Mark as Sent
+            </button>
+        </div>
+
+        <!-- History -->
+        <div style="margin-top:32px">
+            <div class="panel-title" style="font-family:'Outfit',sans-serif;font-size:0.72rem;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">
+                Sent History (<span id="historyCount">0</span>)
+            </div>
+            <div id="historyList">
+                <div style="font-size:0.82rem;color:#334155;">No requests sent yet.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const HISTORY_KEY = 'www_review_history';
+        let history = [];
+        let currentTone = 'warm';
+        let currentPlatform = 'Google';
+        let currentReviewUrl = '';
+        let currentRating = 5;
+        let generatedMessage = '';
+
+        function loadHistory() {
+            try { history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch(e) { history = []; }
+        }
+
+        function saveHistory() { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); }
+
+        function selectTone(el) {
+            document.querySelectorAll('.tone-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            currentTone = el.dataset.tone;
+        }
+
+        function selectPlatform(el) {
+            document.querySelectorAll('.platform-chip').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            currentPlatform = el.dataset.platform;
+            const urlInput = document.getElementById('fReviewUrl');
+            if (!urlInput.value) urlInput.value = el.dataset.url;
+        }
+
+        function rateStar(val) {
+            currentRating = val;
+            document.querySelectorAll('.star').forEach(s => {
+                s.classList.toggle('active', parseInt(s.dataset.val) <= val);
+            });
+            const labels = {
+                1: "1 star — consider following up personally before asking for a review.",
+                2: "2 stars — reach out to fix it first, then ask for a review.",
+                3: "3 stars — decent visit. Review request is optional.",
+                4: "4 stars — great! Go ahead and ask.",
+                5: "5 stars — send the review request!"
+            };
+            document.getElementById('starLabel').textContent = labels[val];
+        }
+
+        function buildMessage(owner, dog, service, tone, platform, url) {
+            const firstName = owner.split(' ')[0];
+            const reviewUrl = url || '[Review Link]';
+
+            const templates = {
+                warm: `Hey ${firstName}! 👋 It was so great getting to spend time with ${dog} today — ${dog} did awesome during the ${service} and looked absolutely adorable leaving. 🐾
+
+If you have a moment, it would mean the world to Wash Wiggle & Wag if you left us a quick review on ${platform}. It only takes a minute and helps other pet parents find us!
+
+${reviewUrl}
+
+Thanks so much — give ${dog} some extra treats from us! 🐶`,
+
+                casual: `Hey ${firstName}! Hope ${dog} is settling back in after their ${service} today 😄 We had a blast.
+
+Quick favor — would you mind dropping us a ${platform} review? Takes like 30 seconds and honestly helps us out a ton.
+
+${reviewUrl}
+
+Thanks a million! 🙌`,
+
+                brief: `Hi ${firstName}, thanks for bringing ${dog} in today! We'd love a quick ${platform} review if you get a chance — it really helps us grow.
+
+${reviewUrl}
+
+Appreciate you! — Dustin @ Wash Wiggle & Wag 🐾`
+            };
+
+            return templates[tone] || templates.warm;
+        }
+
+        function generateMessage() {
+            const owner = document.getElementById('fOwner').value.trim();
+            const dog = document.getElementById('fDog').value.trim();
+            if (!owner || !dog) { alert('Please enter an owner name and dog name.'); return; }
+
+            const service = document.getElementById('fService').value;
+            const url = document.getElementById('fReviewUrl').value.trim();
+
+            if (currentRating <= 2) {
+                if (!confirm(`Rating is ${currentRating} stars. It's usually better to resolve any concerns before requesting a review. Continue anyway?`)) return;
+            }
+
+            generatedMessage = buildMessage(owner, dog, service, currentTone, currentPlatform, url);
+
+            document.getElementById('messageText').textContent = generatedMessage;
+            document.getElementById('outputSection').style.display = 'block';
+            document.getElementById('sendOptions').style.display = 'flex';
+            document.getElementById('copyBtn').classList.remove('copied');
+            document.getElementById('copyBtn').textContent = 'Copy';
+
+            // Re-add the copy icon
+            document.getElementById('copyBtn').innerHTML = `
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy`;
+
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function copyMessage() {
+            if (!generatedMessage) return;
+            navigator.clipboard.writeText(generatedMessage).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.innerHTML = `
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Copied!`;
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = `
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        Copy`;
+                    btn.classList.remove('copied');
+                }, 2500);
+            });
+        }
+
+        function sendSMS() {
+            const phone = document.getElementById('fPhone').value.trim().replace(/\D/g,'');
+            if (!generatedMessage) { alert('Generate a message first.'); return; }
+            if (phone) {
+                const encoded = encodeURIComponent(generatedMessage);
+                window.open(`sms:${phone}?body=${encoded}`, '_blank');
+            } else {
+                // Just copy and note
+                navigator.clipboard.writeText(generatedMessage);
+                alert('Message copied to clipboard — paste it into your messages app.');
+            }
+            logSent(true);
+        }
+
+        function logSent(fromSMS) {
+            const owner = document.getElementById('fOwner').value.trim();
+            const dog = document.getElementById('fDog').value.trim();
+            const entry = {
+                id: 'rv_' + Date.now(),
+                owner, dog,
+                platform: currentPlatform,
+                tone: currentTone,
+                rating: currentRating,
+                sentAt: new Date().toISOString(),
+                message: generatedMessage
+            };
+            history.unshift(entry);
+            saveHistory();
+            renderHistory();
+            if (!fromSMS) alert('✓ Logged as sent.');
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            document.getElementById('historyCount').textContent = history.length;
+            if (!history.length) {
+                list.innerHTML = '<div style="font-size:0.82rem;color:#334155;">No requests sent yet.</div>';
+                return;
+            }
+            list.innerHTML = history.slice(0, 15).map(h => {
+                const d = new Date(h.sentAt);
+                const dateStr = `${d.getMonth()+1}/${d.getDate()} at ${d.getHours() > 12 ? d.getHours()-12 : d.getHours()||12}:${String(d.getMinutes()).padStart(2,'0')} ${d.getHours() >= 12 ? 'PM' : 'AM'}`;
+                const preview = h.message.slice(0, 90).replace(/\n/g, ' ') + '…';
+                return `
+                    <div class="history-item">
+                        <div class="history-top">
+                            <span class="history-name">${escHtml(h.dog)} (${escHtml(h.owner)})</span>
+                            <span class="history-date">${dateStr}</span>
+                        </div>
+                        <div class="history-preview">${h.platform} · ${'⭐'.repeat(h.rating)} · ${escHtml(preview)}</div>
+                    </div>`;
+            }).join('');
+        }
+
+        function updatePreview() {
+            // Live preview could go here — skipped for performance
+        }
+
+        function escHtml(str) {
+            return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        // Check prefill from booking tool
+        function checkPrefill() {
+            const raw = localStorage.getItem('www_review_prefill');
+            if (!raw) return;
+            try {
+                const data = JSON.parse(raw);
+                if (data.owner) document.getElementById('fOwner').value = data.owner;
+                if (data.dog) document.getElementById('fDog').value = data.dog;
+                if (data.phone) document.getElementById('fPhone').value = data.phone;
+                localStorage.removeItem('www_review_prefill');
+            } catch(e) {}
+        }
+
+        loadHistory();
+        checkPrefill();
+        renderHistory();
+    </script>
+</body>
+</html>
