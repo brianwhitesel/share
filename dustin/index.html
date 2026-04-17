@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dustin Whitesel — Wash Wiggle & Wag</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0d0f14;
+            background-image: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.18) 0%, transparent 70%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(168,85,247,0.12) 0%, transparent 60%);
+            font-family: 'Inter','Outfit',sans-serif;
+            color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px 80px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 52px;
+            max-width: 540px;
+            width: 100%;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            background: rgba(251,191,36,0.10);
+            border: 1px solid rgba(251,191,36,0.22);
+            color: #fbbf24;
+        }
+
+        h1 {
+            font-family: 'Outfit',sans-serif;
+            font-size: clamp(2.2rem,8vw,3.4rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #f1f5f9;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        h1 .name {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-image: linear-gradient(135deg, #fbbf24 10%, #fb923c 90%);
+        }
+
+        .message {
+            font-size: 1rem;
+            color: #94a3b8;
+            line-height: 1.75;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        .divider {
+            width: 36px;
+            height: 2px;
+            background: linear-gradient(90deg,#6366f1,#a855f7);
+            border-radius: 2px;
+            margin: 28px auto;
+            opacity: 0.4;
+        }
+
+        .sub-message {
+            font-size: 0.875rem;
+            color: #64748b;
+            line-height: 1.65;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'Outfit',sans-serif;
+            font-size: 0.68rem;
+            color: #334155;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 14px;
+            text-align: center;
+            margin-top: 48px;
+        }
+
+        .card-wrap {
+            width: 100%;
+            max-width: 460px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 18px;
+            padding: 28px;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        .card-icon-wrap {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: linear-gradient(135deg,rgba(96,165,250,0.12),rgba(192,132,252,0.12));
+            border: 1px solid rgba(96,165,250,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #93c5fd;
+        }
+
+        .card-title {
+            font-family: 'Outfit',sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .card-desc {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            line-height: 1.65;
+        }
+
+        .card-status {
+            font-family: 'Outfit',sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .contact-card {
+            margin-top: 32px;
+            width: 100%;
+            max-width: 460px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .contact-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .contact-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .contact-email {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        footer {
+            margin-top: 64px;
+            text-align: center;
+        }
+
+        .signature {
+            font-family: 'Outfit',sans-serif;
+            font-size: 0.9rem;
+            color: #334155;
+            line-height: 1.8;
+        }
+
+        .signature strong {
+            color: #475569;
+            font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 44px 16px 64px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            Wash Wiggle & Wag
+        </div>
+        <h1>Hey <span class="name">Dustin</span>.</h1>
+        <p class="message">Your workspace is being set up. I'm putting together some tools specifically built for Wash Wiggle & Wag — the kind of thing that'll make running the business a little smoother.</p>
+        <div class="divider"></div>
+        <p class="sub-message">More details coming soon. In the meantime, you know where to find me.</p>
+    </header>
+
+    <div class="section-label">Coming soon</div>
+
+    <div class="card-wrap">
+        <div class="card">
+            <div class="card-icon-wrap">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="card-title">Onboarding & Business Docs</div>
+            <div class="card-desc">Custom documents and templates for getting Wash Wiggle & Wag organized. In progress.</div>
+            <div class="card-status">Coming soon</div>
+        </div>
+    </div>
+
+    <div class="card-wrap">
+        <div class="contact-card">
+            <div class="contact-avatar">B</div>
+            <div class="contact-info">
+                <div class="contact-name">Brian Whitesel</div>
+                <div class="contact-email">brianwhitesel@gmail.com</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p class="signature">Talk soon, Dustin.<br>— <strong>Brian Whitesel</strong></p>
+    </footer>
+</body>
+</html>

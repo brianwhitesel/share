@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For Reese — from Brian</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #0d0f14;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99, 102, 241, 0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(168, 85, 247, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 10% 60%, rgba(96, 165, 250, 0.06) 0%, transparent 60%);
+      font-family: 'Inter', 'Outfit', sans-serif;
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px 80px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 52px;
+      max-width: 540px;
+      width: 100%;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(251, 191, 36, 0.12);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      font-size: 0.72rem;
+      color: #fbbf24;
+      letter-spacing: 0.06em;
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .badge svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.2rem, 8vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #f1f5f9;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    h1 .name {
+      background: linear-gradient(135deg, #fbbf24 10%, #f97316 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .message {
+      font-size: 1rem;
+      color: #94a3b8;
+      line-height: 1.75;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    .divider {
+      width: 36px;
+      height: 2px;
+      background: linear-gradient(90deg, #6366f1, #a855f7);
+      border-radius: 2px;
+      margin: 28px auto;
+      opacity: 0.4;
+    }
+
+    .sub-message {
+      font-size: 0.875rem;
+      color: #64748b;
+      line-height: 1.65;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .card-wrap {
+      width: 100%;
+      max-width: 460px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 18px;
+      padding: 28px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99, 102, 241, 0.38);
+      box-shadow: 0 20px 56px rgba(0, 0, 0, 0.38);
+    }
+
+    .card-icon-wrap {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(96, 165, 250, 0.12), rgba(192, 132, 252, 0.12));
+      border: 1px solid rgba(96, 165, 250, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #93c5fd;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.875rem;
+      color: #94a3b8;
+      line-height: 1.65;
+    }
+
+    .card-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .card-feature {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: #7c93b0;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .card-feature::before {
+      content: '✓';
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+
+    .card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #a5b4fc;
+      padding-top: 4px;
+    }
+
+    .card-cta svg {
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+    }
+
+    .card:hover .card-cta svg {
+      transform: translateX(4px);
+    }
+
+    footer {
+      margin-top: 64px;
+      text-align: center;
+    }
+
+    .signature {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      color: #334155;
+      line-height: 1.8;
+    }
+
+    .signature strong {
+      color: #475569;
+      font-weight: 600;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 44px 16px 64px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+        <circle cx="12" cy="13" r="4"/>
+      </svg>
+      Built for you
+    </div>
+    <h1>Hey <span class="name">Reese</span>.</h1>
+    <p class="message">You shoot, you edit, you post, you manage clients, you do it all — and somehow you make it look easy. I built these because you're the person who actually deserves tools that keep up with you. Two of them. You're the only one getting two.</p>
+    <div class="divider"></div>
+    <p class="sub-message">No logins. No subscriptions. Everything runs in your browser and saves automatically. Open them, use them, make them yours.</p>
+  </header>
+
+  <div class="section-label">Made for you</div>
+
+  <div class="card-wrap">
+    <a href="../Photography - Client Booking & Invoice.html" class="card">
+      <div class="card-icon-wrap">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+          <circle cx="12" cy="13" r="4"/>
+        </svg>
+      </div>
+      <div class="card-title">Photography — Client Booking & Invoice</div>
+      <div class="card-desc">Book sessions, send invoices, and track payments without the chaos. Made for photographers who are serious about the business side, not just the creative side.</div>
+      <div class="card-features">
+        <div class="card-feature">Client management</div>
+        <div class="card-feature">Invoice tracking</div>
+        <div class="card-feature">Package builder</div>
+        <div class="card-feature">Saves locally</div>
+      </div>
+      <div class="card-cta">
+        Open the tool
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
+    <a href="../Social Media - Content Planner.html" class="card">
+      <div class="card-icon-wrap">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+      </div>
+      <div class="card-title">Social Media — Content Planner</div>
+      <div class="card-desc">Plan posts, track what's scheduled, and keep your content calendar from being a mess. One place for every platform, every idea, every deadline.</div>
+      <div class="card-features">
+        <div class="card-feature">Multi-platform</div>
+        <div class="card-feature">Post scheduling</div>
+        <div class="card-feature">Content calendar</div>
+        <div class="card-feature">Saves locally</div>
+      </div>
+      <div class="card-cta">
+        Open the planner
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+  </div>
+
+  <footer>
+    <p class="signature">Built for you, Reese.<br>— <strong>Brian</strong></p>
+  </footer>
+</body>
+</html>
