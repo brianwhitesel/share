@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wash Wiggle & Wag — Book a Grooming Appointment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --teal: #0d9488;
+            --teal-light: #14b8a6;
+            --teal-pale: #f0fdfa;
+            --teal-soft: #ccfbf1;
+            --sky: #0ea5e9;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --border-soft: #f1f5f9;
+            --text: #0f172a;
+            --text-2: #475569;
+            --text-3: #94a3b8;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.05);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.07);
+        }
+
+        html, body { width: 100%; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .nav-inner {
+            max-width: 700px;
+            margin: 0 auto;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--teal);
+            letter-spacing: -0.02em;
+        }
+        .nav-logo span { color: var(--text); }
+        .nav-phone {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--teal);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(160deg, #f0fdfa 0%, #e0f2fe 60%, #f8fafc 100%);
+            padding: 56px 24px 48px;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: white;
+            border: 1px solid var(--teal-soft);
+            border-radius: 20px;
+            padding: 5px 14px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 20px;
+        }
+        .hero-badge-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--teal-light);
+        }
+        .hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2rem, 8vw, 3rem);
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.035em;
+            line-height: 1.1;
+            margin-bottom: 14px;
+        }
+        .hero h1 em {
+            font-style: normal;
+            color: var(--teal);
+        }
+        .hero-sub {
+            font-size: 1rem;
+            color: var(--text-2);
+            max-width: 420px;
+            margin: 0 auto 28px;
+            line-height: 1.7;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--teal);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 14px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+            border: none;
+            cursor: pointer;
+        }
+        .hero-cta:hover { background: #0f766e; transform: translateY(-1px); }
+        .hero-trust {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .trust-pill {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.78rem;
+            color: var(--text-2);
+            font-weight: 500;
+        }
+        .trust-icon {
+            width: 16px; height: 16px;
+            color: var(--teal);
+            flex-shrink: 0;
+        }
+
+        /* ── SECTION WRAPPER ── */
+        .section {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+        .section-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--teal);
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+        .section-sub {
+            font-size: 0.9rem;
+            color: var(--text-2);
+            margin-bottom: 24px;
+        }
+
+        /* ── SERVICES ── */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .service-card {
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 16px;
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+            position: relative;
+        }
+        .service-card:hover {
+            border-color: var(--teal-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        .service-card.selected {
+            border-color: var(--teal);
+            background: var(--teal-pale);
+            box-shadow: 0 0 0 3px rgba(13,148,136,0.12);
+        }
+        .service-card.selected .service-check { opacity: 1; }
+        .service-check {
+            position: absolute;
+            top: 12px; right: 12px;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            background: var(--teal);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .service-check svg { width: 11px; height: 11px; color: white; }
+        .service-icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            background: var(--teal-pale);
+            border: 1px solid var(--teal-soft);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 10px;
+            color: var(--teal);
+        }
+        .service-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 3px;
+        }
+        .service-desc { font-size: 0.75rem; color: var(--text-2); line-height: 1.5; }
+        .service-price {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--teal);
+        }
+
+        /* ── BOOKING FORM ── */
+        .form-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+        .form-group label .req { color: var(--teal); margin-left: 2px; }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            -webkit-appearance: none;
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder { color: var(--text-3); }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(13,148,136,0.1);
+            background: white;
+        }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .form-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 32px;
+            cursor: pointer;
+        }
+        .submit-btn {
+            width: 100%;
+            background: var(--teal);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .submit-btn:hover { background: #0f766e; transform: translateY(-1px); }
+        .form-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-3);
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        /* ── WHY US ── */
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .why-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 16px;
+        }
+        .why-icon {
+            width: 36px; height: 36px;
+            border-radius: 9px;
+            background: var(--teal-pale);
+            border: 1px solid var(--teal-soft);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--teal);
+            margin-bottom: 10px;
+        }
+        .why-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .why-text { font-size: 0.78rem; color: var(--text-2); line-height: 1.55; }
+
+        /* ── DIVIDER ── */
+        .divider { border: none; border-top: 1px solid var(--border-soft); }
+
+        /* ── CONFIRMATION ── */
+        .confirm-screen {
+            display: none;
+            text-align: center;
+            padding: 32px 0;
+        }
+        .confirm-circle {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            background: var(--teal-pale);
+            border: 2px solid var(--teal-soft);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px;
+            color: var(--teal);
+        }
+        .confirm-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        .confirm-sub { font-size: 0.9rem; color: var(--text-2); }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--white);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 28px 24px;
+        }
+        .footer-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--teal);
+            margin-bottom: 4px;
+        }
+        .footer-sub { font-size: 0.8rem; color: var(--text-3); }
+        .footer-links { margin-top: 12px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .footer-links a { font-size: 0.8rem; color: var(--text-2); text-decoration: none; }
+        .footer-links a:hover { color: var(--teal); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 540px) {
+            .form-row { grid-template-columns: 1fr; }
+            .hero { padding: 44px 20px 36px; }
+            .section { padding: 32px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav>
+        <div class="nav-inner">
+            <div class="nav-logo">Wash Wiggle <span>&</span> Wag</div>
+            <a class="nav-phone" href="tel:+1-555-000-0000">
+                <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91A16 16 0 0 0 15 15.91l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+                Call Us
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-badge">
+            <div class="hero-badge-dot"></div>
+            Mobile Dog Grooming · Centerburg, OH
+        </div>
+        <h1>Your dog deserves<br>a <em>spa day</em>.</h1>
+        <p class="hero-sub">Professional mobile grooming — we come to your driveway. No crates, no strangers, no stress. Just a happy, clean pup.</p>
+        <a class="hero-cta" href="#book" onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'}); return false;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Book an Appointment
+        </a>
+        <div class="hero-trust">
+            <div class="trust-pill">
+                <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                We come to you
+            </div>
+            <div class="trust-pill">
+                <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Flexible scheduling
+            </div>
+            <div class="trust-pill">
+                <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                Stress-free for your pup
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <div class="section">
+        <div class="section-label">Services</div>
+        <div class="section-title">What does your dog need?</div>
+        <p class="section-sub">Tap to select a service before booking.</p>
+
+        <div class="services-grid" id="servicesGrid">
+
+            <div class="service-card" onclick="selectService(this, 'Bath & Brush')">
+                <div class="service-check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="service-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v6a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4"/><line x1="2" y1="4" x2="22" y2="4"/></svg>
+                </div>
+                <div class="service-name">Bath & Brush</div>
+                <div class="service-desc">Shampoo, conditioner, blow-dry, and full brush-out.</div>
+                <div class="service-price">Starting at $45</div>
+            </div>
+
+            <div class="service-card" onclick="selectService(this, 'Full Groom')">
+                <div class="service-check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="service-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M15 6H6"/><path d="M18 18V9"/></svg>
+                </div>
+                <div class="service-name">Full Groom</div>
+                <div class="service-desc">Bath, haircut, ear cleaning, nail trim, and finishing spritz.</div>
+                <div class="service-price">Starting at $65</div>
+            </div>
+
+            <div class="service-card" onclick="selectService(this, 'Nail Trim')">
+                <div class="service-check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="service-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </div>
+                <div class="service-name">Nail Trim</div>
+                <div class="service-desc">Quick, stress-free nail trim and file.</div>
+                <div class="service-price">Starting at $20</div>
+            </div>
+
+            <div class="service-card" onclick="selectService(this, 'Puppy First Groom')">
+                <div class="service-check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="service-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+                <div class="service-name">Puppy First Groom</div>
+                <div class="service-desc">Gentle intro grooming for first-timers. Low-stress, goes at their pace.</div>
+                <div class="service-price">Starting at $40</div>
+            </div>
+
+            <div class="service-card" onclick="selectService(this, 'De-Shedding Treatment')">
+                <div class="service-check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="service-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.49-8.49L23 10"/></svg>
+                </div>
+                <div class="service-name">De-Shedding Treatment</div>
+                <div class="service-desc">Specialized shampoo and blow-out to reduce shedding significantly.</div>
+                <div class="service-price">Starting at $55</div>
+            </div>
+
+            <div class="service-card" onclick="selectService(this, 'Not Sure Yet')">
+                <div class="service-check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="service-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <div class="service-name">Not Sure Yet</div>
+                <div class="service-desc">Just get us on the calendar — we'll recommend the right service.</div>
+                <div class="service-price">Ask us</div>
+            </div>
+
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Booking Form -->
+    <div class="section" id="book">
+        <div class="section-label">Book Now</div>
+        <div class="section-title">Request an appointment</div>
+        <p class="section-sub">We'll confirm your time within 24 hours and send a reminder the day before.</p>
+
+        <div class="form-card">
+            <div id="bookingForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Your Name <span class="req">*</span></label>
+                        <input type="text" id="ownerName" placeholder="Jane Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number <span class="req">*</span></label>
+                        <input type="tel" id="ownerPhone" placeholder="(614) 555-0000" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Dog's Name <span class="req">*</span></label>
+                        <input type="text" id="dogName" placeholder="Buddy" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Breed</label>
+                        <input type="text" id="dogBreed" placeholder="Golden Retriever">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Service <span class="req">*</span></label>
+                        <select id="serviceSelect" required>
+                            <option value="">Select a service...</option>
+                            <option>Bath &amp; Brush</option>
+                            <option>Full Groom</option>
+                            <option>Nail Trim</option>
+                            <option>Puppy First Groom</option>
+                            <option>De-Shedding Treatment</option>
+                            <option>Not Sure Yet</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Date</label>
+                        <input type="date" id="prefDate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Your Address / Service Location <span class="req">*</span></label>
+                    <input type="text" id="address" placeholder="123 Main St, Centerburg, OH" required>
+                </div>
+                <div class="form-group">
+                    <label>Notes for Dustin</label>
+                    <textarea id="notes" placeholder="Anything we should know — behavior, health, special requests..."></textarea>
+                </div>
+                <button class="submit-btn" onclick="submitBooking()">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Request Appointment
+                </button>
+                <p class="form-note">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Your info stays private. We never share or sell customer data.
+                </p>
+            </div>
+
+            <div class="confirm-screen" id="confirmScreen">
+                <div class="confirm-circle">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="confirm-title">Request sent!</div>
+                <p class="confirm-sub">Thanks — Dustin will reach out within 24 hours to confirm your appointment and give you an exact price based on your dog's breed and coat.</p>
+                <p class="confirm-sub" style="margin-top:12px;font-size:0.8rem;color:#94a3b8;" id="confirmDetails"></p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Why Us -->
+    <div class="section">
+        <div class="section-label">Why Mobile Grooming</div>
+        <div class="section-title">Better for your dog, easier for you.</div>
+        <p class="section-sub" style="margin-bottom:20px;">Most dogs are calmer one-on-one outside of a salon environment.</p>
+        <div class="why-grid">
+            <div class="why-card">
+                <div class="why-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                </div>
+                <div class="why-title">We Come to You</div>
+                <div class="why-text">No driving, no waiting rooms. We show up at your door at the scheduled time.</div>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="why-title">One-on-One Attention</div>
+                <div class="why-text">Your dog is the only client in the van. No other dogs, no distractions, no stress.</div>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div class="why-title">In and Out Fast</div>
+                <div class="why-text">Most appointments take 1–2 hours. No drop-off and pick-up — we're done when we leave.</div>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+                <div class="why-title">You'll Love the Results</div>
+                <div class="why-text">Clean, fresh, and happy — every time. Most clients book recurring monthly visits.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-name">Wash Wiggle & Wag</div>
+        <div class="footer-sub">Mobile Dog Grooming · Serving Centerburg, OH and surrounding areas</div>
+        <div class="footer-links">
+            <a href="#book" onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'}); return false;">Book Now</a>
+            <a href="tel:+1-555-000-0000">Call Us</a>
+            <a href="mailto:dustin@washwiggleandwag.com">Email</a>
+        </div>
+        <div style="margin-top:16px;font-size:0.72rem;color:#cbd5e1;">© 2026 Wash Wiggle & Wag · Built by Brian Whitesel</div>
+    </footer>
+
+    <script>
+        let selectedService = '';
+
+        function selectService(card, name) {
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedService = name;
+            const sel = document.getElementById('serviceSelect');
+            if (sel) sel.value = name;
+        }
+
+        function submitBooking() {
+            const owner = document.getElementById('ownerName').value.trim();
+            const phone = document.getElementById('ownerPhone').value.trim();
+            const dog = document.getElementById('dogName').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const service = document.getElementById('serviceSelect').value;
+
+            if (!owner || !phone || !dog || !address || !service) {
+                alert('Please fill in the required fields (name, phone, dog\'s name, address, and service).');
+                return;
+            }
+
+            // Save to localStorage so Dustin can see requests
+            const req = {
+                id: Date.now(),
+                owner, phone, dog,
+                breed: document.getElementById('dogBreed').value.trim(),
+                service,
+                date: document.getElementById('prefDate').value,
+                address,
+                notes: document.getElementById('notes').value.trim(),
+                submitted: new Date().toISOString()
+            };
+            const reqs = JSON.parse(localStorage.getItem('www_booking_requests') || '[]');
+            reqs.push(req);
+            localStorage.setItem('www_booking_requests', JSON.stringify(reqs));
+
+            document.getElementById('bookingForm').style.display = 'none';
+            document.getElementById('confirmScreen').style.display = 'block';
+            document.getElementById('confirmDetails').textContent =
+                dog + ' · ' + service + (req.date ? ' · ' + new Date(req.date + 'T12:00:00').toLocaleDateString('en-US', {month:'long', day:'numeric'}) : '');
+        }
+
+        // Set min date on date picker to today
+        const pd = document.getElementById('prefDate');
+        if (pd) {
+            const today = new Date();
+            pd.min = today.toISOString().split('T')[0];
+        }
+    </script>
+</body>
+</html>

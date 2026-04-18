@@ -6,7 +6,7 @@
     <title>Luke Carmichael</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -14,177 +14,246 @@
             min-height: 100vh;
             background: #07080d;
             background-image:
-                radial-gradient(ellipse 80% 60% at 50% -10%, rgba(168,85,247,0.15) 0%, transparent 65%),
-                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(245,158,11,0.10) 0%, transparent 60%);
-            font-family: 'Inter','Outfit',sans-serif;
+                radial-gradient(ellipse 90% 55% at 50% -8%, rgba(217,119,6,0.18) 0%, transparent 68%),
+                radial-gradient(ellipse 55% 40% at 88% 78%, rgba(180,83,9,0.10) 0%, transparent 60%);
+            font-family: 'Inter', 'Outfit', sans-serif;
             color: #e2e8f0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 60px 20px 80px;
+            padding: 56px 20px 80px;
         }
 
+        /* ── Header ── */
         header {
             text-align: center;
-            margin-bottom: 48px;
-            max-width: 540px;
+            margin-bottom: 52px;
+            max-width: 520px;
             width: 100%;
         }
 
-        .badge {
+        .eyebrow {
             display: inline-flex; align-items: center; gap: 7px;
-            padding: 6px 14px; border-radius: 20px; font-size: 0.72rem;
-            letter-spacing: 0.06em; font-weight: 600; text-transform: uppercase; margin-bottom: 24px;
-            background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25); color: #c084fc;
+            padding: 5px 14px; border-radius: 20px;
+            font-size: 0.68rem; letter-spacing: 0.09em; font-weight: 600; text-transform: uppercase;
+            margin-bottom: 28px;
+            background: rgba(217,119,6,0.12); border: 1px solid rgba(217,119,6,0.28); color: #f59e0b;
         }
 
         h1 {
-            font-family: 'Outfit',sans-serif;
-            font-size: clamp(2.2rem,8vw,3.4rem);
-            font-weight: 700;
-            letter-spacing: -0.03em;
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2.4rem, 9vw, 3.6rem);
+            font-weight: 800;
+            letter-spacing: -0.035em;
             color: #f1f5f9;
-            line-height: 1.15;
-            margin-bottom: 18px;
+            line-height: 1.1;
+            margin-bottom: 20px;
         }
 
-        h1 .name {
+        h1 .accent {
+            background: linear-gradient(125deg, #fbbf24 0%, #f59e0b 40%, #d97706 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            background-image: linear-gradient(135deg, #f59e0b 10%, #a855f7 90%);
         }
 
         .message {
-            font-size: 1rem; color: #94a3b8; line-height: 1.75;
-            max-width: 440px; margin: 0 auto;
+            font-size: 0.95rem;
+            color: #64748b;
+            line-height: 1.8;
+            max-width: 420px;
+            margin: 0 auto;
         }
 
-        .divider { width: 36px; height: 2px; background: linear-gradient(90deg, #a855f7, #f59e0b); border-radius: 2px; margin: 28px auto; opacity: 0.45; }
+        /* ── Divider ── */
+        .divider {
+            width: 40px; height: 2px;
+            background: linear-gradient(90deg, #f59e0b, rgba(217,119,6,0.2));
+            border-radius: 2px; margin: 30px auto; opacity: 0.6;
+        }
 
-        .sub-message { font-size: 0.875rem; color: #475569; line-height: 1.65; }
+        /* ── Dates strip ── */
+        .dates-strip {
+            width: 100%; max-width: 480px;
+            background: rgba(217,119,6,0.07);
+            border: 1px solid rgba(217,119,6,0.18);
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+        }
+        .dates-label {
+            font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.09em; color: #d97706; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .dates-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px;
+        }
+        .date-chip {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px; padding: 7px 11px;
+            font-size: 0.78rem; color: #94a3b8;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .date-chip-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #f59e0b; flex-shrink: 0;
+        }
 
+        /* ── Section label ── */
         .section-label {
-            font-family: 'Outfit',sans-serif; font-size: 0.68rem; color: #c084fc;
-            text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px;
-            text-align: center; opacity: 0.7;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.65rem; color: #f59e0b;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            margin-bottom: 12px; text-align: center; opacity: 0.7;
         }
 
-        .card-wrap { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 12px; }
+        /* ── Tool cards ── */
+        .card-wrap { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 10px; }
 
         .tool-card {
-            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 18px; padding: 22px 24px; backdrop-filter: blur(12px);
-            display: flex; align-items: center; gap: 18px;
-            text-decoration: none; transition: background 0.2s, border-color 0.2s, transform 0.15s;
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px; padding: 20px 22px;
+            backdrop-filter: blur(12px);
+            display: flex; align-items: center; gap: 16px;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
         }
         .tool-card:hover {
-            background: rgba(255,255,255,0.07);
-            border-color: rgba(168,85,247,0.25);
+            background: rgba(217,119,6,0.07);
+            border-color: rgba(217,119,6,0.28);
             transform: translateY(-1px);
         }
 
         .tool-icon {
-            width: 50px; height: 50px; border-radius: 13px;
+            width: 46px; height: 46px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .icon-gold { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.15)); border: 1px solid rgba(245,158,11,0.25); color: #fbbf24; }
-        .icon-purple { background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(124,58,237,0.15)); border: 1px solid rgba(168,85,247,0.25); color: #c084fc; }
+        .icon-amber {
+            background: rgba(217,119,6,0.15);
+            border: 1px solid rgba(245,158,11,0.28);
+            color: #fbbf24;
+        }
+        .icon-warm {
+            background: rgba(180,83,9,0.14);
+            border: 1px solid rgba(180,83,9,0.25);
+            color: #fb923c;
+        }
 
         .tool-text { flex: 1; min-width: 0; }
-        .tool-title { font-family: 'Outfit',sans-serif; font-size: 1.05rem; font-weight: 600; color: #f1f5f9; margin-bottom: 4px; }
-        .tool-desc { font-size: 0.82rem; color: #64748b; line-height: 1.5; }
-        .tool-arrow { color: #334155; flex-shrink: 0; transition: color 0.2s, transform 0.2s; }
-        .tool-card:hover .tool-arrow { color: #c084fc; transform: translateX(3px); }
-
-        .note-card {
-            width: 100%; max-width: 480px;
-            background: rgba(168,85,247,0.06); border: 1px solid rgba(168,85,247,0.14);
-            border-radius: 14px; padding: 18px 22px; margin-top: 8px;
-            font-size: 0.85rem; color: #7c3aed; line-height: 1.65;
+        .tool-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem; font-weight: 600; color: #f1f5f9; margin-bottom: 3px;
         }
-        .note-card strong { color: #a855f7; }
+        .tool-sub {
+            font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.07em; color: #f59e0b; opacity: 0.8; margin-bottom: 4px;
+        }
+        .tool-desc { font-size: 0.8rem; color: #475569; line-height: 1.55; }
+        .tool-arrow { color: #2d3340; flex-shrink: 0; transition: color 0.2s, transform 0.2s; }
+        .tool-card:hover .tool-arrow { color: #f59e0b; transform: translateX(3px); }
 
+        /* ── Contact card ── */
         .contact-card {
-            width: 100%; max-width: 480px; margin-top: 8px;
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 14px; padding: 18px 22px; display: flex; align-items: center; gap: 16px;
+            width: 100%; max-width: 480px; margin-top: 10px;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px; padding: 16px 20px;
+            display: flex; align-items: center; gap: 14px;
         }
         .contact-avatar {
-            width: 42px; height: 42px; border-radius: 50%;
-            background: linear-gradient(135deg, #a855f7, #f59e0b);
+            width: 40px; height: 40px; border-radius: 50%;
+            background: linear-gradient(135deg, #d97706, #92400e);
             display: flex; align-items: center; justify-content: center;
-            font-family: 'Outfit',sans-serif; font-size: 18px; font-weight: 700; color: #fff; flex-shrink: 0;
+            font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 700;
+            color: #fff; flex-shrink: 0;
         }
-        .contact-name { font-family: 'Outfit',sans-serif; font-size: 0.9rem; font-weight: 600; color: #e2e8f0; }
-        .contact-sub { font-size: 0.78rem; color: #475569; margin-top: 2px; }
+        .contact-name { font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 600; color: #e2e8f0; }
+        .contact-sub { font-size: 0.75rem; color: #475569; margin-top: 2px; }
 
-        footer { margin-top: 56px; text-align: center; }
-        .signature { font-family: 'Outfit',sans-serif; font-size: 0.88rem; color: #2a2d3a; line-height: 1.8; }
-        .signature strong { color: #3d3f52; font-weight: 600; }
+        footer { margin-top: 48px; text-align: center; }
+        .signature { font-family: 'Outfit', sans-serif; font-size: 0.85rem; color: #1e2130; line-height: 1.8; }
+        .signature strong { color: #2a2d3a; }
 
         @media (max-width: 480px) {
-            body { padding: 44px 16px 64px; }
-            h1 { font-size: 2rem; }
+            body { padding: 40px 16px 64px; }
+            h1 { font-size: 2.2rem; }
+            .dates-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+
     <header>
-        <div class="badge">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+        <div class="eyebrow">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
             From Brian, for Luke
         </div>
-        <h1>Hey <span class="name">Luke</span>.</h1>
-        <p class="message">Built you a couple of tools — one to help track the retainer clients you're building in Columbus, and one for planning shoots. Use them however they help.</p>
-        <div class="divider"></div>
-        <p class="sub-message">Nothing to install, no account needed. Everything saves to your browser.</p>
+        <h1>Hey <span class="accent">Luke</span>.</h1>
+        <p class="message">Built you a couple tools — one for Black Elm Creative to track your retainer pipeline, and one for ALC Productions shoot planning. Use them on your phone, everything saves to your browser.</p>
     </header>
 
-    <div class="section-label">Your Tools</div>
+    <!-- Wedding dates -->
+    <div class="dates-strip">
+        <div class="dates-label">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Weddings we're shooting together
+        </div>
+        <div class="dates-grid">
+            <div class="date-chip"><div class="date-chip-dot"></div>August 22, 2026</div>
+            <div class="date-chip"><div class="date-chip-dot"></div>September 5, 2026</div>
+            <div class="date-chip"><div class="date-chip-dot"></div>October 3, 2026</div>
+            <div class="date-chip"><div class="date-chip-dot"></div>October 17, 2026</div>
+        </div>
+    </div>
+
+    <div class="section-label">Your tools</div>
 
     <div class="card-wrap">
+
         <a class="tool-card" href="retainer-tracker.html">
-            <div class="tool-icon icon-gold">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <div class="tool-icon icon-amber">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
             </div>
             <div class="tool-text">
+                <div class="tool-sub">Black Elm Creative</div>
                 <div class="tool-title">Retainer Client Tracker</div>
-                <div class="tool-desc">Track every client you're building in Columbus — status, monthly value, deliverables, and next action. See your pipeline at a glance.</div>
+                <div class="tool-desc">Track every retainer client — status, monthly value, deliverables, next actions. See the full pipeline at a glance.</div>
             </div>
             <div class="tool-arrow">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
         </a>
 
         <a class="tool-card" href="shoot-planner.html">
-            <div class="tool-icon icon-purple">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+            <div class="tool-icon icon-warm">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
             </div>
             <div class="tool-text">
+                <div class="tool-sub">ALC Productions</div>
                 <div class="tool-title">Shoot Planner</div>
-                <div class="tool-desc">Build shot lists for weddings, brand work, and content days. Organize by section, check off shots as you go, print day-of.</div>
+                <div class="tool-desc">Build shot lists for weddings and brand days. Organize by section, check off as you go, print day-of. Pre-loaded with our 4 wedding dates.</div>
             </div>
             <div class="tool-arrow">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
         </a>
-    </div>
 
-    <div class="note-card">
-        <strong>Couple weddings this year</strong> — we should use the shoot planner for those. I'll add the dates once they're locked.
     </div>
 
     <div class="contact-card">
         <div class="contact-avatar">B</div>
         <div>
             <div class="contact-name">Brian Whitesel</div>
-            <div class="contact-sub">brianwhitesel@gmail.com</div>
+            <div class="contact-sub">Built this for you · brianwhitesel@gmail.com · (614) 935-8958</div>
         </div>
     </div>
 
     <footer>
         <p class="signature">— <strong>Brian Whitesel</strong></p>
     </footer>
+
 </body>
 </html>
