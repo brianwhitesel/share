@@ -79,21 +79,38 @@
         .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
         .form-label { font-size: 0.78rem; font-weight: 500; color: #64748b; }
         .form-input, .form-select, .form-textarea {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 9px;
             padding: 9px 13px;
             color: #e2e8f0;
             font-family: 'Inter',sans-serif;
             font-size: 0.87rem;
             outline: none;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, background 0.2s;
             width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            color-scheme: dark;
         }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: rgba(20,184,166,0.4); }
-        .form-input::placeholder { color: #334155; }
-        .form-select option { background: #0f1520; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: rgba(20,184,166,0.5);
+            background: rgba(255,255,255,0.09);
+        }
+        .form-input::placeholder { color: #475569; }
+        .form-select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 32px;
+            cursor: pointer;
+        }
+        .form-select option { background: #0f1520; color: #e2e8f0; }
         .form-textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.6);
+            cursor: pointer;
+        }
 
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
