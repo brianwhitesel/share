@@ -5,6 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Files from Brian Whitesel</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <script>
+  /* ════════════════════════════════════════════════════════════
+     SHARE SITE CONFIG — add/edit entries here, page auto-updates
+     ════════════════════════════════════════════════════════════
+
+     Sections render in the order they appear below.
+     To add a new person or page: copy any entry and fill in the fields.
+     href is relative to this file (e.g. "elevator/index.html")
+
+     tag options: "tool" | "friend" | "client" | "prospect" | "disc-golf"
+  */
+  const SITE = {
+
+    tools: [
+      { href: "Photography - Client Booking & Invoice.html", icon: "📷", title: "Photography — Client Booking & Invoice", desc: "Track client sessions, packages, and payments in one clean tool.", tag: "tool" },
+      { href: "Videography - Production Tracker.html",       icon: "🎬", title: "Videography — Production Tracker",        desc: "Manage shoots, deliverables, and billing for video projects.",   tag: "tool" },
+      { href: "Social Media - Content Planner.html",         icon: "📱", title: "Social Media — Content Planner",          desc: "Plan, schedule, and track posts across platforms.",               tag: "tool" },
+    ],
+
+    friends: [
+      { href: "reese/index.html",      name: "Reese White",           role: "Videographer & photographer",  tag: "friend" },
+      { href: "dylan/index.html",      name: "Dylan Miracle",         role: "Editor — Card Collector 2",    tag: "friend" },
+      { href: "connor/index.html",     name: "Connor McGovern",       role: "Video & social media",         tag: "friend" },
+      { href: "paige/index.html",      name: "Paige Tinnel",          role: "Photographer",                 tag: "friend" },
+      { href: "jacobmanken/index.html",name: "Jacob Manken",          role: "Disc golf · shared tools",     tag: "friend" },
+      { href: "abby/index.html",       name: "Abby",                  role: "Personal page",                tag: "friend" },
+      { href: "luke/index.html",       name: "Luke",                  role: "Photography tools",            tag: "friend" },
+    ],
+
+    clients: [
+      { href: "chase/index.html",      name: "Chase Geddis",          role: "Geddis Soccer Training",       tag: "client" },
+      { href: "dustin/index.html",     name: "Dustin Whitesel",       role: "Wash Wiggle & Wag",            tag: "client" },
+      { href: "dmd/index.html",        name: "Derek — DMD Renovation",role: "Renovation & construction",    tag: "client" },
+      { href: "designery/index.html",  name: "The Designery Columbus", role: "Design studio",               tag: "client" },
+      { href: "kollin/index.html",     name: "Kollin McKee",          role: "Prospect",                     tag: "client" },
+      { href: "sam/index.html",        name: "Sam Townsend",          role: "Prospect",                     tag: "client" },
+    ],
+
+    // ── BREWERY & NICHE OUTREACH ─────────────────────────────────
+    // Add new brewery/prospect preview pages here
+    outreach: [
+      { href: "elevator/index.html",   name: "The Elevator",          role: "Brewery · Columbus · outreach sent Apr 19", tag: "prospect" },
+      { href: "land-grant/index.html", name: "Land-Grant Brewing",    role: "Brewery · Columbus · outreach sent Apr 19", tag: "prospect" },
+      // { href: "seventh-son/index.html", name: "Seventh Son", role: "Brewery · Columbus", tag: "prospect" },
+      // { href: "north-high/index.html",  name: "North High Brewing", role: "Brewery · Columbus", tag: "prospect" },
+    ],
+
+  };
+  /* ════════════════════════════════════════════════════════════
+     END CONFIG — don't edit below unless changing the design
+  */
+  </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -22,23 +76,13 @@
       padding: 48px 20px 80px;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 56px;
-    }
+    header { text-align: center; margin-bottom: 56px; }
 
     .avatar {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
+      width: 72px; height: 72px; border-radius: 50%;
       background: linear-gradient(135deg, #6366f1, #a855f7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Outfit', sans-serif;
-      font-size: 28px;
-      font-weight: 700;
-      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 700; color: #fff;
       margin: 0 auto 20px;
       box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
     }
@@ -46,161 +90,74 @@
     h1 {
       font-family: 'Outfit', sans-serif;
       font-size: clamp(1.6rem, 5vw, 2.2rem);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: #f1f5f9;
-      margin-bottom: 10px;
+      font-weight: 600; letter-spacing: -0.02em; color: #f1f5f9; margin-bottom: 10px;
     }
 
-    .subtitle {
-      font-size: 0.95rem;
-      color: #94a3b8;
-      font-weight: 400;
-      line-height: 1.5;
-    }
+    .subtitle { font-size: 0.95rem; color: #94a3b8; font-weight: 400; line-height: 1.5; }
 
-    /* ── Section Headers ── */
-    .section-block {
-      width: 100%;
-      max-width: 860px;
-      margin-bottom: 48px;
-    }
+    .section-block { width: 100%; max-width: 860px; margin-bottom: 48px; }
 
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
 
     .section-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.7rem;
-      color: #334155;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 500;
+      font-family: 'Outfit', sans-serif; font-size: 0.7rem; color: #334155;
+      text-transform: uppercase; letter-spacing: 0.12em; font-weight: 500;
+      white-space: nowrap;
     }
 
-    .section-line {
-      flex: 1;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.05);
-    }
+    .section-line { flex: 1; height: 1px; background: rgba(255,255,255,0.05); }
 
-    /* ── Tools Grid ── */
     .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px;
-      width: 100%;
-      max-width: 860px;
-      margin-bottom: 48px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px; width: 100%;
     }
 
-    /* ── Person Grid ── */
     .person-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 14px;
-      width: 100%;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px; width: 100%;
     }
 
-    /* ── Cards ── */
     .card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 22px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 22px;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      text-decoration: none;
-      color: inherit;
+      display: flex; flex-direction: column; gap: 10px;
+      text-decoration: none; color: inherit;
     }
 
     .card:hover {
       transform: translateY(-3px);
-      border-color: rgba(99, 102, 241, 0.4);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+      border-color: rgba(99,102,241,0.4);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
     }
 
-    .card-icon {
-      font-size: 1.6rem;
-      line-height: 1;
-    }
+    .card-icon { font-size: 1.6rem; line-height: 1; }
 
     .card-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #f1f5f9;
-      line-height: 1.3;
+      font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 600;
+      color: #f1f5f9; line-height: 1.3;
     }
 
-    .card-desc {
-      font-size: 0.82rem;
-      color: #94a3b8;
-      line-height: 1.55;
-    }
+    .card-desc { font-size: 0.82rem; color: #94a3b8; line-height: 1.55; }
 
     .card-tag {
-      display: inline-block;
-      padding: 3px 9px;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      width: fit-content;
-      margin-top: auto;
+      display: inline-block; padding: 3px 9px; border-radius: 20px;
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.03em;
+      text-transform: uppercase; width: fit-content; margin-top: auto;
     }
 
-    .tag-tool {
-      background: rgba(99, 102, 241, 0.15);
-      color: #a5b4fc;
-      border: 1px solid rgba(99, 102, 241, 0.2);
-    }
+    .tag-tool     { background: rgba(99,102,241,0.15);  color: #a5b4fc; border: 1px solid rgba(99,102,241,0.2); }
+    .tag-friend   { background: rgba(168,85,247,0.12);  color: #c084fc; border: 1px solid rgba(168,85,247,0.2); }
+    .tag-client   { background: rgba(96,165,250,0.10);  color: #93c5fd; border: 1px solid rgba(96,165,250,0.18); }
+    .tag-prospect { background: rgba(245,158,11,0.12);  color: #fbbf24; border: 1px solid rgba(245,158,11,0.2); }
+    .tag-disc-golf{ background: rgba(52,211,105,0.12);  color: #6ee7b7; border: 1px solid rgba(52,211,105,0.2); }
 
-    .tag-friend {
-      background: rgba(168, 85, 247, 0.12);
-      color: #c084fc;
-      border: 1px solid rgba(168, 85, 247, 0.2);
-    }
+    .person-card { padding: 18px 20px; }
+    .person-name  { font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 600; color: #f1f5f9; }
+    .person-role  { font-size: 0.78rem; color: #64748b; line-height: 1.4; }
 
-    .tag-client {
-      background: rgba(96, 165, 250, 0.10);
-      color: #93c5fd;
-      border: 1px solid rgba(96, 165, 250, 0.18);
-    }
-
-    /* Person card variant — smaller, name-focused */
-    .person-card {
-      padding: 18px 20px;
-    }
-
-    .person-name {
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #f1f5f9;
-    }
-
-    .person-role {
-      font-size: 0.78rem;
-      color: #64748b;
-      line-height: 1.4;
-    }
-
-    footer {
-      margin-top: 40px;
-      text-align: center;
-      color: #334155;
-      font-size: 0.78rem;
-    }
+    footer { margin-top: 40px; text-align: center; color: #334155; font-size: 0.78rem; }
   </style>
 </head>
 <body>
@@ -211,139 +168,56 @@
     <p class="subtitle">Tools, templates, and personal pages — shared with you directly.</p>
   </header>
 
-  <!-- Tools -->
-  <div class="section-block">
-    <div class="section-header">
-      <span class="section-title">Tools</span>
-      <div class="section-line"></div>
-    </div>
-    <div class="tools-grid">
-
-      <a href="Photography - Client Booking &amp; Invoice.html" class="card">
-        <div class="card-icon">📷</div>
-        <div class="card-title">Photography — Client Booking &amp; Invoice</div>
-        <div class="card-desc">Track client sessions, packages, and payments in one clean tool.</div>
-        <span class="card-tag tag-tool">Gift Template</span>
-      </a>
-
-      <a href="Videography - Production Tracker.html" class="card">
-        <div class="card-icon">🎬</div>
-        <div class="card-title">Videography — Production Tracker</div>
-        <div class="card-desc">Manage shoots, deliverables, and billing for video projects.</div>
-        <span class="card-tag tag-tool">Gift Template</span>
-      </a>
-
-      <a href="Social Media - Content Planner.html" class="card">
-        <div class="card-icon">📱</div>
-        <div class="card-title">Social Media — Content Planner</div>
-        <div class="card-desc">Plan, schedule, and track posts across platforms.</div>
-        <span class="card-tag tag-tool">Gift Template</span>
-      </a>
-
-    </div>
-  </div>
-
-  <!-- Friends -->
-  <div class="section-block">
-    <div class="section-header">
-      <span class="section-title">Friends</span>
-      <div class="section-line"></div>
-    </div>
-    <div class="person-grid">
-
-      <a href="reese/index.html" class="card person-card">
-        <div class="person-name">Reese White</div>
-        <div class="person-role">Videographer &amp; photographer</div>
-        <span class="card-tag tag-friend">Personal</span>
-      </a>
-
-      <a href="dylan/index.html" class="card person-card">
-        <div class="person-name">Dylan Miracle</div>
-        <div class="person-role">Editor — Card Collector 2</div>
-        <span class="card-tag tag-friend">Personal</span>
-      </a>
-
-      <a href="connor/index.html" class="card person-card">
-        <div class="person-name">Connor McGovern</div>
-        <div class="person-role">Video &amp; social media</div>
-        <span class="card-tag tag-friend">Personal</span>
-      </a>
-
-      <a href="paige/index.html" class="card person-card">
-        <div class="person-name">Paige Tinnel</div>
-        <div class="person-role">Photographer</div>
-        <span class="card-tag tag-friend">Personal</span>
-      </a>
-
-      <a href="jacobmanken/index.html" class="card person-card">
-        <div class="person-name">Jacob Manken</div>
-        <div class="person-role">Disc golf · shared tools</div>
-        <span class="card-tag tag-friend">Personal</span>
-      </a>
-
-      <a href="abby/index.html" class="card person-card">
-        <div class="person-name">Abby</div>
-        <div class="person-role">Personal page</div>
-        <span class="card-tag tag-friend">Personal</span>
-      </a>
-
-      <a href="luke/index.html" class="card person-card">
-        <div class="person-name">Luke</div>
-        <div class="person-role">Photography tools</div>
-        <span class="card-tag tag-friend">Personal</span>
-      </a>
-
-    </div>
-  </div>
-
-  <!-- Clients -->
-  <div class="section-block">
-    <div class="section-header">
-      <span class="section-title">Clients</span>
-      <div class="section-line"></div>
-    </div>
-    <div class="person-grid">
-
-      <a href="chase/index.html" class="card person-card">
-        <div class="person-name">Chase Geddis</div>
-        <div class="person-role">Geddis Soccer Training</div>
-        <span class="card-tag tag-client">Client</span>
-      </a>
-
-      <a href="dustin/index.html" class="card person-card">
-        <div class="person-name">Dustin Whitesel</div>
-        <div class="person-role">Wash Wiggle &amp; Wag</div>
-        <span class="card-tag tag-client">Client</span>
-      </a>
-
-      <a href="dmd/index.html" class="card person-card">
-        <div class="person-name">Derek — DMD Renovation</div>
-        <div class="person-role">Renovation &amp; construction</div>
-        <span class="card-tag tag-client">Client</span>
-      </a>
-
-      <a href="designery/index.html" class="card person-card">
-        <div class="person-name">The Designery Columbus</div>
-        <div class="person-role">Design studio</div>
-        <span class="card-tag tag-client">Client</span>
-      </a>
-
-      <a href="kollin/index.html" class="card person-card">
-        <div class="person-name">Kollin McKee</div>
-        <div class="person-role">Prospect</div>
-        <span class="card-tag tag-client">Client</span>
-      </a>
-
-      <a href="sam/index.html" class="card person-card">
-        <div class="person-name">Sam Townsend</div>
-        <div class="person-role">Prospect</div>
-        <span class="card-tag tag-client">Client</span>
-      </a>
-
-    </div>
-  </div>
+  <div id="site-content"></div>
 
   <footer>brianwhitesel.github.io/share</footer>
+
+  <script>
+  (function() {
+    const s = SITE;
+    const root = document.getElementById('site-content');
+
+    function tagLabel(tag) {
+      return { tool: 'Gift Template', friend: 'Personal', client: 'Client', prospect: 'Outreach', 'disc-golf': 'Disc Golf' }[tag] || tag;
+    }
+
+    function toolCard(item) {
+      return `<a href="${item.href}" class="card">
+        <div class="card-icon">${item.icon}</div>
+        <div class="card-title">${item.title}</div>
+        <div class="card-desc">${item.desc}</div>
+        <span class="card-tag tag-${item.tag}">${tagLabel(item.tag)}</span>
+      </a>`;
+    }
+
+    function personCard(item) {
+      return `<a href="${item.href}" class="card person-card">
+        <div class="person-name">${item.name}</div>
+        <div class="person-role">${item.role}</div>
+        <span class="card-tag tag-${item.tag}">${tagLabel(item.tag)}</span>
+      </a>`;
+    }
+
+    function section(title, gridClass, items, cardFn) {
+      if (!items || items.length === 0) return '';
+      return `<div class="section-block">
+        <div class="section-header">
+          <span class="section-title">${title}</span>
+          <div class="section-line"></div>
+        </div>
+        <div class="${gridClass}">
+          ${items.map(cardFn).join('')}
+        </div>
+      </div>`;
+    }
+
+    root.innerHTML =
+      section('Tools',    'tools-grid',  s.tools,    toolCard) +
+      section('Friends',  'person-grid', s.friends,  personCard) +
+      section('Clients',  'person-grid', s.clients,  personCard) +
+      section('Outreach', 'person-grid', s.outreach, personCard);
+  })();
+  </script>
 
 </body>
 </html>
