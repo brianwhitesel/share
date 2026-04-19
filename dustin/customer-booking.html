@@ -233,15 +233,16 @@
 
         /* ── FOOTER ── */
         footer {
-            background: var(--text);
-            color: rgba(255,255,255,0.5);
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            color: var(--text3);
             text-align: center;
             padding: 28px 20px;
             font-size: 0.78rem;
             line-height: 1.8;
         }
-        footer strong { color: rgba(255,255,255,0.85); }
-        footer a { color: var(--teal-light); text-decoration: none; }
+        footer strong { color: var(--text2); }
+        footer a { color: var(--teal); text-decoration: none; }
 
         @media (max-width: 420px) {
             .form-row-2 { grid-template-columns: 1fr; }

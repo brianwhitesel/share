@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Built Something for [Brewery] — Brian's Visuals</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script>
+/* ════════════════════════════════════════════════════
+   BREWERY PROSPECT CONFIG — fill this in per prospect
+   ════════════════════════════════════════════════════ */
+const PROSPECT = {
+
+  /* ── BASICS ── */
+  name:        "Brewery Name",           // e.g. "Land-Grant Brewing"
+  shortName:   "Brewery Name",           // for hero (can be same or shorter)
+  city:        "Columbus",
+  yearsOpen:   10,                       // how long they've been open
+  heroLine:    "10 years of great beer.", // first line of hero headline
+  heroSub:     "One sentence about what makes them a Columbus staple — craft, atmosphere, location, etc.",
+
+  /* ── LOCATIONS ── */
+  // Remove the second entry if single location (set twoLocations: false below)
+  locations: [
+    { label: "Main Taproom",    address: "123 N Main St" },
+    { label: "Second Location", address: "456 N 2nd St"  }
+  ],
+
+  /* ── INSTAGRAM ACCOUNTS ──
+     Add up to 3. Status: "active" | "dead"
+     For dead accounts, set lastPost to the year they stopped (e.g. "2019")
+     For active, set lastPost to "active"                                     */
+  instagram: [
+    { handle: "@handle1", followers: 2000, lastPost: "active", status: "active"  },
+    { handle: "@handle2", followers: 1500, lastPost: "2020",   status: "dead"    },
+    // { handle: "@handle3", followers: 800, lastPost: "2018", status: "dead" },  // uncomment if 3rd account
+  ],
+
+  /* ── FACEBOOK ── */
+  facebook: { followers: 3000 },  // set to 0 to hide
+
+  /* ── FINDINGS — toggle which cards appear ── */
+  findings: {
+    splitAccounts:    true,   // multiple Instagram accounts (uses instagram array above)
+    lowFollowers:     true,   // low count for age/size of business
+    noContentSystem:  true,   // inconsistent or sparse posting
+    twoLocations:     true,   // two locations not cross-promoted (set false if single location)
+    strongProduct:    true,   // always true — the positive finding
+  },
+
+  /* ── CUSTOM COPY for findings ── */
+  // lowFollowers finding — what makes it surprising given their size
+  lowFollowersNote: "A Columbus brewery open for [X] years, with a taproom and loyal regulars, should have a much stronger digital audience.",
+
+  // noContentSystem — what they're missing specifically
+  contentNote: "Craft beer and a High Street location is a visually rich story. Without consistent photo/video, seasonal drops, and event coverage, that story isn't growing an audience.",
+
+  // twoLocations — describe the two experiences
+  locationNote: "The [first location] and [second location] are two distinct experiences that could drive traffic to each other constantly. Right now they barely reference one another.",
+
+  // strongProduct — what's already excellent
+  strengthNote: "The product, the atmosphere, and the years of trust are already there. They don't need to reinvent themselves — they need a digital presence that matches what's happening inside.",
+
+  /* ── OPPORTUNITIES — customize the 3 action items ── */
+  opp1: {
+    title: "Consolidate the Instagram accounts",
+    body:  "Merge or archive the dormant accounts and build one unified presence. Every post hits the full audience instead of a fraction of it.",
+    before: "Multiple accounts, split followers, some dormant for years",
+    after:  "One account, unified brand voice, every follower sees every post",
+  },
+  opp2: {
+    title: "Monthly content calendar built around the beer",
+    body:  "Seasonal releases, new tap announcements, brewery behind-the-scenes, bartender spotlights, event coverage — planned a month out and shot in a half-day.",
+    before: "Ad hoc posts, no visual system, audience isn't growing",
+    after:  "Planned monthly shoots, consistent style, engaged following",
+  },
+  opp3: {
+    title: "Cross-promote the two locations as one story",
+    body:  "Two unique Columbus experiences told as one brand narrative. Reels, stories, and posts that drive traffic to both locations and give people a reason to visit again.",
+    before: "Two locations operating in digital silos",
+    after:  "One brand, two experiences, each driving traffic to the other",
+  },
+
+  /* ── CTA ── */
+  ctaLine: "I'd love to come in, grab a beer, and show you what a month-one content plan would actually look like. No pitch deck — just a real conversation.",
+
+};
+/* ════════════════════════════════════════════════════
+   END CONFIG — don't edit below unless changing design
+   ════════════════════════════════════════════════════ */
+</script>
+
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+        --bg: #0c0d0f;
+        --bg2: #111315;
+        --surface: rgba(255,255,255,0.04);
+        --surface2: rgba(255,255,255,0.07);
+        --border: rgba(255,255,255,0.08);
+        --text: #f1f5f9;
+        --text2: #94a3b8;
+        --text3: #475569;
+        --amber: #f59e0b;
+        --amber-dim: rgba(245,158,11,0.1);
+        --amber-border: rgba(245,158,11,0.22);
+        --red: #ef4444;
+        --red-dim: rgba(239,68,68,0.1);
+        --green: #4ade80;
+        --green-dim: rgba(74,222,128,0.1);
+    }
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+        content: '';
+        position: fixed; top: -10%; left: -10%;
+        width: 60vw; height: 60vw;
+        background: radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 65%);
+        pointer-events: none; z-index: 0;
+    }
+
+    /* ── HERO ── */
+    .hero {
+        position: relative; z-index: 1;
+        padding: 64px 24px 56px;
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .hero-from {
+        display: inline-flex; align-items: center; gap: 7px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 5px 13px;
+        font-size: 0.7rem;
+        color: var(--text3);
+        letter-spacing: 0.07em;
+        font-weight: 500;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+    }
+    .hero-from span { color: var(--amber); }
+    .hero-eyebrow {
+        font-size: 0.72rem;
+        color: var(--amber);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 14px;
+        font-family: 'JetBrains Mono', monospace;
+    }
+    .hero h1 {
+        font-family: 'Outfit', sans-serif;
+        font-size: clamp(2rem, 7vw, 3rem);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        color: var(--text);
+        margin-bottom: 18px;
+    }
+    .hero h1 em {
+        font-style: normal;
+        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .hero-sub {
+        font-size: 0.95rem;
+        color: var(--text2);
+        line-height: 1.7;
+        max-width: 460px;
+        margin: 0 auto;
+    }
+
+    /* ── CONTAINER ── */
+    .container { max-width: 600px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+    /* ── DIVIDER ── */
+    .divider {
+        width: 32px; height: 2px;
+        background: linear-gradient(90deg, var(--amber), transparent);
+        border-radius: 2px;
+        margin: 32px auto;
+        opacity: 0.5;
+    }
+
+    /* ── SECTION HEADER ── */
+    .sh {
+        font-size: 0.67rem;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-family: 'JetBrains Mono', monospace;
+        margin-bottom: 16px;
+    }
+
+    /* ── STAT CARD STRIP ── */
+    .stat-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+    .stat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px 12px;
+        text-align: center;
+    }
+    .stat-val {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text);
+        line-height: 1;
+        margin-bottom: 4px;
+    }
+    .stat-val.warn { color: var(--amber); }
+    .stat-val.bad  { color: var(--red); }
+    .stat-label { font-size: 0.67rem; color: var(--text3); line-height: 1.4; }
+
+    /* ── FINDING CARDS ── */
+    .finding {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 12px;
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+    }
+    .finding.bad  { border-color: rgba(239,68,68,0.2);   background: var(--red-dim);   }
+    .finding.warn { border-color: var(--amber-border);   background: var(--amber-dim); }
+    .finding.good { border-color: rgba(74,222,128,0.2);  background: var(--green-dim); }
+    .finding-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+    .finding-body h4 { font-family: 'Outfit', sans-serif; font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+    .finding-body p  { font-size: 0.82rem; color: var(--text2); line-height: 1.6; }
+    .finding-tag {
+        display: inline-block;
+        font-size: 0.63rem; font-weight: 600;
+        letter-spacing: 0.07em; text-transform: uppercase;
+        padding: 2px 7px; border-radius: 4px; margin-top: 7px;
+    }
+    .finding-tag.fix      { background: rgba(239,68,68,0.15);  color: #f87171; }
+    .finding-tag.improve  { background: rgba(245,158,11,0.15); color: var(--amber); }
+    .finding-tag.strength { background: rgba(74,222,128,0.15); color: var(--green); }
+
+    /* ── OPPORTUNITY CARDS ── */
+    .opportunity-card {
+        background: var(--surface);
+        border: 1px solid var(--amber-border);
+        border-radius: 18px;
+        padding: 24px 22px;
+        margin-bottom: 12px;
+    }
+    .opp-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .opp-num {
+        width: 28px; height: 28px; border-radius: 50%;
+        background: var(--amber-dim); border: 1px solid var(--amber-border);
+        color: var(--amber);
+        display: flex; align-items: center; justify-content: center;
+        font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.82rem;
+        flex-shrink: 0;
+    }
+    .opp-title { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text); }
+    .opp-body  { font-size: 0.85rem; color: var(--text2); line-height: 1.7; }
+    .opp-before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    .opp-col { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 12px 14px; }
+    .opp-col-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 6px; }
+    .opp-col-label.before { color: var(--red); }
+    .opp-col-label.after  { color: var(--green); }
+    .opp-col-text { font-size: 0.78rem; color: var(--text2); line-height: 1.55; }
+
+    /* ── SERVICE LIST ── */
+    .service-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .service-list li {
+        display: flex; align-items: flex-start; gap: 10px;
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 12px; padding: 14px 16px;
+        font-size: 0.85rem; color: var(--text2); line-height: 1.55;
+    }
+    .service-list li svg { flex-shrink: 0; margin-top: 2px; color: var(--amber); }
+    .service-list li strong { color: var(--text); }
+
+    /* ── CTA ── */
+    .cta-block {
+        background: linear-gradient(135deg, rgba(245,158,11,0.08) 0%, rgba(251,191,36,0.04) 100%);
+        border: 1px solid var(--amber-border);
+        border-radius: 20px; padding: 32px 24px;
+        text-align: center; margin-bottom: 48px;
+    }
+    .cta-title { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+    .cta-sub   { font-size: 0.88rem; color: var(--text2); line-height: 1.65; margin-bottom: 24px; max-width: 380px; margin-left: auto; margin-right: auto; }
+    .cta-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: var(--amber); color: #0c0d0f;
+        font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.95rem;
+        padding: 14px 28px; border-radius: 12px;
+        text-decoration: none; transition: opacity 0.2s, transform 0.15s;
+    }
+    .cta-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .cta-note { font-size: 0.72rem; color: var(--text3); margin-top: 12px; }
+
+    /* ── FOOTER ── */
+    footer {
+        border-top: 1px solid var(--border);
+        padding: 24px 20px; text-align: center;
+        font-size: 0.75rem; color: var(--text3); line-height: 1.8;
+    }
+    footer strong { color: var(--text2); }
+
+    .hidden { display: none; }
+
+    @media (max-width: 420px) {
+        .stat-strip { grid-template-columns: 1fr 1fr; }
+        .opp-before-after { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-from">From <span>Brian's Visuals</span> · Columbus, OH</div>
+    <div class="hero-eyebrow" id="hero-eyebrow">Built for Brewery Name</div>
+    <h1 id="hero-h1">Loading...<br><em>placeholder</em></h1>
+    <p class="hero-sub" id="hero-sub">Loading...</p>
+</div>
+
+<div class="container">
+
+    <!-- STATS -->
+    <div class="sh">What the numbers show</div>
+    <div class="stat-strip" id="stat-strip">
+        <!-- populated by JS -->
+    </div>
+
+    <!-- FINDINGS -->
+    <div class="sh">What I found</div>
+
+    <!-- Split accounts finding -->
+    <div class="finding bad" id="finding-split">
+        <div class="finding-icon">⚠️</div>
+        <div class="finding-body">
+            <h4 id="split-title">Split Instagram presence</h4>
+            <p id="split-body">Loading...</p>
+            <div class="finding-tag fix">Needs fixing</div>
+        </div>
+    </div>
+
+    <!-- Low followers finding -->
+    <div class="finding bad" id="finding-lowfollowers">
+        <div class="finding-icon">📉</div>
+        <div class="finding-body">
+            <h4>Low follower count for years in business</h4>
+            <p id="lowfollowers-body">Loading...</p>
+            <div class="finding-tag fix">Needs fixing</div>
+        </div>
+    </div>
+
+    <!-- No content system -->
+    <div class="finding warn" id="finding-content">
+        <div class="finding-icon">📸</div>
+        <div class="finding-body">
+            <h4>Content is inconsistent — no visual system</h4>
+            <p id="content-body">Loading...</p>
+            <div class="finding-tag improve">Room to grow</div>
+        </div>
+    </div>
+
+    <!-- Two locations -->
+    <div class="finding warn" id="finding-locations">
+        <div class="finding-icon">📍</div>
+        <div class="finding-body">
+            <h4>Two locations, one story — not being told together</h4>
+            <p id="locations-body">Loading...</p>
+            <div class="finding-tag improve">Opportunity</div>
+        </div>
+    </div>
+
+    <!-- Strong product -->
+    <div class="finding good" id="finding-strength">
+        <div class="finding-icon">✅</div>
+        <div class="finding-body">
+            <h4>The product and the location are already excellent</h4>
+            <p id="strength-body">Loading...</p>
+            <div class="finding-tag strength">Strong foundation</div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- OPPORTUNITIES -->
+    <div class="sh">What I'd do differently</div>
+
+    <div class="opportunity-card">
+        <div class="opp-header">
+            <div class="opp-num">1</div>
+            <div class="opp-title" id="opp1-title">Loading...</div>
+        </div>
+        <div class="opp-body" id="opp1-body">Loading...</div>
+        <div class="opp-before-after">
+            <div class="opp-col">
+                <div class="opp-col-label before">Before</div>
+                <div class="opp-col-text" id="opp1-before">Loading...</div>
+            </div>
+            <div class="opp-col">
+                <div class="opp-col-label after">After</div>
+                <div class="opp-col-text" id="opp1-after">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="opportunity-card">
+        <div class="opp-header">
+            <div class="opp-num">2</div>
+            <div class="opp-title" id="opp2-title">Loading...</div>
+        </div>
+        <div class="opp-body" id="opp2-body">Loading...</div>
+        <div class="opp-before-after">
+            <div class="opp-col">
+                <div class="opp-col-label before">Before</div>
+                <div class="opp-col-text" id="opp2-before">Loading...</div>
+            </div>
+            <div class="opp-col">
+                <div class="opp-col-label after">After</div>
+                <div class="opp-col-text" id="opp2-after">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="opportunity-card" id="opp3-card">
+        <div class="opp-header">
+            <div class="opp-num">3</div>
+            <div class="opp-title" id="opp3-title">Loading...</div>
+        </div>
+        <div class="opp-body" id="opp3-body">Loading...</div>
+        <div class="opp-before-after">
+            <div class="opp-col">
+                <div class="opp-col-label before">Before</div>
+                <div class="opp-col-text" id="opp3-before">Loading...</div>
+            </div>
+            <div class="opp-col">
+                <div class="opp-col-label after">After</div>
+                <div class="opp-col-text" id="opp3-after">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- WHAT I DO -->
+    <div class="sh">What I'd handle</div>
+    <ul class="service-list">
+        <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <div><strong>Monthly content shoots</strong> — photo and video at your location(s), built around your schedule. Seasonal beers, new releases, atmosphere, staff.</div>
+        </li>
+        <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <div><strong>Social strategy + posting</strong> — one unified account, consistent brand voice, content calendar planned a month ahead. You don't think about it.</div>
+        </li>
+        <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <div><strong>Reels and short-form video</strong> — the highest-reach format right now. Tap pours, behind-the-scenes brewery shots, event coverage. Built to perform.</div>
+        </li>
+        <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <div><strong>Event coverage</strong> — tap takeovers, live music, seasonal releases. Real content from real moments that drives future visits.</div>
+        </li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <!-- CTA -->
+    <div class="cta-block">
+        <div class="cta-title">Ready to talk?</div>
+        <div class="cta-sub" id="cta-sub">Loading...</div>
+        <a id="cta-btn" href="mailto:brianwhitesel@gmail.com" class="cta-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Get in touch
+        </a>
+        <div class="cta-note">brianwhitesel@gmail.com · Brian's Visuals · Columbus, OH</div>
+    </div>
+
+</div>
+
+<footer id="footer-text">
+    <strong>Brian's Visuals</strong> · Columbus, OH<br>
+    Built specifically for <span id="footer-name">Brewery Name</span>
+</footer>
+
+<script>
+/* ── RENDER ENGINE — populates page from PROSPECT config ── */
+(function() {
+    const p = PROSPECT;
+
+    // Page title + eyebrow
+    document.getElementById('page-title').textContent = `Built Something for ${p.name} — Brian's Visuals`;
+    document.getElementById('hero-eyebrow').textContent = `Built for ${p.shortName}`;
+    document.getElementById('footer-name').textContent = p.name;
+
+    // Hero headline
+    document.getElementById('hero-h1').innerHTML = `${p.heroLine}<br><em>The digital doesn't match.</em>`;
+    document.getElementById('hero-sub').textContent = `${p.name} has been a Columbus landmark for ${p.yearsOpen} years. ${p.heroSub}`;
+
+    // ── STATS STRIP ──
+    const activeAccounts = p.instagram.filter(i => i.status === 'active');
+    const deadAccounts   = p.instagram.filter(i => i.status === 'dead');
+    const totalFollowers = p.instagram.reduce((sum, i) => sum + i.followers, 0);
+    const activeFollowers = activeAccounts.reduce((sum, i) => sum + i.followers, 0);
+    const deadFollowers   = deadAccounts.reduce((sum, i) => sum + i.followers, 0);
+    const totalIG = p.instagram.length;
+
+    let statsHTML = '';
+    if (deadAccounts.length > 0) {
+        statsHTML += `
+            <div class="stat-card">
+                <div class="stat-val bad">${totalIG}</div>
+                <div class="stat-label">Instagram account${totalIG > 1 ? 's' : ''} — only ${activeAccounts.length} still active</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val bad">${deadAccounts.length}</div>
+                <div class="stat-label">Abandoned account${deadAccounts.length > 1 ? 's' : ''} — ${deadAccounts.map(d => 'last posted ' + d.lastPost).join(', ')}</div>
+            </div>`;
+    } else {
+        statsHTML += `
+            <div class="stat-card">
+                <div class="stat-val warn">${totalIG}</div>
+                <div class="stat-label">Instagram account${totalIG > 1 ? 's' : ''}, split audience</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val bad">${totalFollowers.toLocaleString()}</div>
+                <div class="stat-label">Total followers across all accounts</div>
+            </div>`;
+    }
+    statsHTML += `
+        <div class="stat-card">
+            <div class="stat-val warn">${p.yearsOpen}+</div>
+            <div class="stat-label">Years in business with no unified brand voice online</div>
+        </div>`;
+    document.getElementById('stat-strip').innerHTML = statsHTML;
+
+    // ── FINDINGS ──
+    // Split accounts
+    if (!p.findings.splitAccounts || totalIG <= 1) {
+        document.getElementById('finding-split').classList.add('hidden');
+    } else {
+        if (deadAccounts.length > 0) {
+            const deadList = deadAccounts.map(d => `${d.handle} (${d.followers.toLocaleString()} followers) hasn't posted since ${d.lastPost}`).join('. ');
+            const activeList = activeAccounts.map(a => `${a.handle} (${a.followers.toLocaleString()} followers)`).join(', ');
+            document.getElementById('split-title').textContent = `${totalIG} Instagram accounts — ${deadAccounts.length} abandoned`;
+            document.getElementById('split-body').textContent = `${activeList} is the active account. ${deadList}. Anyone who followed those older accounts stopped seeing ${p.shortName} in their feed — and probably doesn't know you're still posting.`;
+        } else {
+            const handles = p.instagram.map(i => `${i.handle} (${i.followers.toLocaleString()})`).join(' and ');
+            document.getElementById('split-title').textContent = 'Split Instagram presence is hurting reach';
+            document.getElementById('split-body').textContent = `${handles} are posting independently. Every post reaches a fraction of the audience it should — and neither account is building toward the same goal.`;
+        }
+    }
+
+    // Low followers
+    if (!p.findings.lowFollowers) {
+        document.getElementById('finding-lowfollowers').classList.add('hidden');
+    } else {
+        document.getElementById('lowfollowers-body').textContent = p.lowFollowersNote;
+    }
+
+    // No content system
+    if (!p.findings.noContentSystem) {
+        document.getElementById('finding-content').classList.add('hidden');
+    } else {
+        document.getElementById('content-body').textContent = p.contentNote;
+    }
+
+    // Two locations
+    if (!p.findings.twoLocations) {
+        document.getElementById('finding-locations').classList.add('hidden');
+    } else {
+        document.getElementById('locations-body').textContent = p.locationNote;
+    }
+
+    // Strength
+    if (!p.findings.strongProduct) {
+        document.getElementById('finding-strength').classList.add('hidden');
+    } else {
+        document.getElementById('strength-body').textContent = p.strengthNote;
+    }
+
+    // ── OPPORTUNITIES ──
+    document.getElementById('opp1-title').textContent  = p.opp1.title;
+    document.getElementById('opp1-body').textContent   = p.opp1.body;
+    document.getElementById('opp1-before').textContent = p.opp1.before;
+    document.getElementById('opp1-after').textContent  = p.opp1.after;
+
+    document.getElementById('opp2-title').textContent  = p.opp2.title;
+    document.getElementById('opp2-body').textContent   = p.opp2.body;
+    document.getElementById('opp2-before').textContent = p.opp2.before;
+    document.getElementById('opp2-after').textContent  = p.opp2.after;
+
+    if (!p.findings.twoLocations) {
+        document.getElementById('opp3-card').classList.add('hidden');
+    } else {
+        document.getElementById('opp3-title').textContent  = p.opp3.title;
+        document.getElementById('opp3-body').textContent   = p.opp3.body;
+        document.getElementById('opp3-before').textContent = p.opp3.before;
+        document.getElementById('opp3-after').textContent  = p.opp3.after;
+    }
+
+    // ── CTA ──
+    document.getElementById('cta-sub').textContent = p.ctaLine;
+    document.getElementById('cta-btn').href = `mailto:brianwhitesel@gmail.com?subject=${encodeURIComponent(p.name + ' — Let\'s Talk')}`;
+
+})();
+</script>
+</body>
+</html>
