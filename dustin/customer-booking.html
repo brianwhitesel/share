@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wash, Wiggle & Wag — Mobile Dog Grooming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --teal: #0d9488;
+            --teal-light: #14b8a6;
+            --teal-dim: rgba(13,148,136,0.1);
+            --teal-border: rgba(13,148,136,0.2);
+            --warm: #fef3c7;
+            --bg: #f8fafc;
+            --bg2: #ffffff;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text2: #475569;
+            --text3: #94a3b8;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(160deg, #0f766e 0%, #0d9488 50%, #14b8a6 100%);
+            padding: 56px 24px 64px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .hero-paw {
+            font-size: 2.8rem;
+            margin-bottom: 16px;
+            display: block;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2));
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 20px;
+            padding: 5px 13px;
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.9);
+            letter-spacing: 0.06em;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2rem, 7vw, 3rem);
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+        }
+        .hero-sub {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.82);
+            line-height: 1.65;
+            max-width: 360px;
+            margin: 0 auto 28px;
+        }
+        .hero-cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #ffffff;
+            color: var(--teal);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 15px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.25); }
+        .hero-trust {
+            margin-top: 20px;
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.65);
+            display: flex; align-items: center; justify-content: center; gap: 16px;
+        }
+        .hero-trust-item { display: flex; align-items: center; gap: 5px; }
+
+        /* ── SECTION ── */
+        .section { padding: 48px 20px; max-width: 560px; margin: 0 auto; }
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        .section-sub { font-size: 0.9rem; color: var(--text2); line-height: 1.6; margin-bottom: 28px; }
+
+        /* ── HOW IT WORKS ── */
+        .steps { display: flex; flex-direction: column; gap: 0; }
+        .step {
+            display: flex; gap: 16px; align-items: flex-start;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .step:last-child { border-bottom: none; }
+        .step-num {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--teal);
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800; font-size: 0.9rem;
+            flex-shrink: 0; margin-top: 2px;
+        }
+        .step-content h4 { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .step-content p { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+
+        /* ── SERVICES ── */
+        .services-bg { background: #f1faf9; }
+        .service-cards { display: flex; flex-direction: column; gap: 12px; }
+        .service-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex; align-items: center; gap: 16px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .service-card:hover { border-color: var(--teal-border); box-shadow: 0 4px 16px rgba(13,148,136,0.08); }
+        .service-icon {
+            width: 48px; height: 48px; border-radius: 12px;
+            background: var(--teal-dim);
+            border: 1px solid var(--teal-border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; flex-shrink: 0;
+        }
+        .service-info { flex: 1; }
+        .service-name { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 3px; }
+        .service-desc { font-size: 0.8rem; color: var(--text2); line-height: 1.5; }
+        .service-price { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.05rem; color: var(--teal); text-align: right; white-space: nowrap; }
+        .service-price .from { font-size: 0.68rem; font-weight: 500; color: var(--text3); display: block; text-align: right; }
+
+        /* ── BOOKING FORM ── */
+        .booking-form {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px 24px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+        .form-title { font-family: 'Outfit', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+        .form-sub { font-size: 0.82rem; color: var(--text2); margin-bottom: 24px; }
+        .form-row { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text); margin-bottom: 6px; letter-spacing: 0.02em; }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            appearance: none;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(13,148,136,0.12);
+        }
+        .form-textarea { min-height: 80px; resize: vertical; }
+        .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--teal);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            margin-top: 8px;
+        }
+        .submit-btn:hover { background: #0f766e; transform: translateY(-1px); }
+        .submit-btn:active { transform: translateY(0); }
+        .form-note { font-size: 0.72rem; color: var(--text3); text-align: center; margin-top: 10px; line-height: 1.5; }
+
+        /* ── SUCCESS STATE ── */
+        .success-state {
+            display: none;
+            text-align: center;
+            padding: 32px 16px;
+        }
+        .success-icon { font-size: 3rem; margin-bottom: 16px; }
+        .success-title { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--teal); margin-bottom: 8px; }
+        .success-sub { font-size: 0.88rem; color: var(--text2); line-height: 1.65; }
+
+        /* ── WHY US ── */
+        .perks { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .perk {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 16px;
+            text-align: center;
+        }
+        .perk-icon { font-size: 1.6rem; margin-bottom: 8px; display: block; }
+        .perk-title { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.88rem; color: var(--text); margin-bottom: 4px; }
+        .perk-desc { font-size: 0.75rem; color: var(--text2); line-height: 1.5; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--text);
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 28px 20px;
+            font-size: 0.78rem;
+            line-height: 1.8;
+        }
+        footer strong { color: rgba(255,255,255,0.85); }
+        footer a { color: var(--teal-light); text-decoration: none; }
+
+        @media (max-width: 420px) {
+            .form-row-2 { grid-template-columns: 1fr; }
+            .perks { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <span class="hero-paw">🐾</span>
+    <div class="hero-badge">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Mobile Grooming · We Come to You
+    </div>
+    <h1>Wash, Wiggle<br>& Wag</h1>
+    <p class="hero-sub">Professional mobile dog grooming that comes right to your door. No kennels, no stress — just a happy, clean pup.</p>
+    <a href="#book" class="hero-cta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Book an Appointment
+    </a>
+    <div class="hero-trust">
+        <div class="hero-trust-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Centerburg, OH
+        </div>
+        <div class="hero-trust-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            All breeds welcome
+        </div>
+        <div class="hero-trust-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Stress-free
+        </div>
+    </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section">
+    <div class="section-title">How it works</div>
+    <div class="section-sub">Three easy steps — your dog barely has to leave the yard.</div>
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <h4>Book right here</h4>
+                <p>Pick your service, tell us about your dog, and choose a date that works for you. Easy as that.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <h4>We pull up to your door</h4>
+                <p>Our fully-equipped mobile grooming van arrives right at your home. No driving, no waiting rooms, no stress for your pup.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <h4>Pick up a happy, clean dog</h4>
+                <p>We bring your freshly groomed dog right back to you — usually in 1–2 hours, depending on the service.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SERVICES -->
+<div class="services-bg">
+    <div class="section">
+        <div class="section-title">Services & pricing</div>
+        <div class="section-sub">All services include a fresh-scent finish and lots of treats.</div>
+        <div class="service-cards">
+
+            <div class="service-card">
+                <div class="service-icon">🛁</div>
+                <div class="service-info">
+                    <div class="service-name">Bath & Brush</div>
+                    <div class="service-desc">Shampoo, blow dry, brush out, ear cleaning, and nail trim.</div>
+                </div>
+                <div class="service-price">
+                    <span class="from">starting at</span>
+                    $45
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">✂️</div>
+                <div class="service-info">
+                    <div class="service-name">Full Groom</div>
+                    <div class="service-desc">Everything in Bath & Brush plus a full haircut to your style preference.</div>
+                </div>
+                <div class="service-price">
+                    <span class="from">starting at</span>
+                    $65
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🌟</div>
+                <div class="service-info">
+                    <div class="service-name">Spa Package</div>
+                    <div class="service-desc">Full groom + teeth brushing, paw balm, and bandana or bow.</div>
+                </div>
+                <div class="service-price">
+                    <span class="from">starting at</span>
+                    $85
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🐾</div>
+                <div class="service-info">
+                    <div class="service-name">Puppy's First Groom</div>
+                    <div class="service-desc">Gentle intro groom for puppies. Easy, calm, and fun for young pups.</div>
+                </div>
+                <div class="service-price">
+                    <span class="from">starting at</span>
+                    $50
+                </div>
+            </div>
+
+        </div>
+        <p style="font-size:0.75rem;color:var(--text3);margin-top:14px;text-align:center;line-height:1.6;">Prices vary by breed, size, and coat condition. Final quote given at booking.</p>
+    </div>
+</div>
+
+<!-- WHY MOBILE -->
+<div class="section">
+    <div class="section-title">Why mobile grooming?</div>
+    <div class="section-sub">Your dog gets one-on-one attention the whole time — no cages, no other animals, no waiting.</div>
+    <div class="perks">
+        <div class="perk">
+            <span class="perk-icon">🏠</span>
+            <div class="perk-title">We come to you</div>
+            <div class="perk-desc">No drop-off, no pick-up. We pull right up to your home.</div>
+        </div>
+        <div class="perk">
+            <span class="perk-icon">😌</span>
+            <div class="perk-title">Less stress</div>
+            <div class="perk-desc">No kennels, no other animals. Your dog stays calm and comfortable.</div>
+        </div>
+        <div class="perk">
+            <span class="perk-icon">⏱️</span>
+            <div class="perk-title">Faster service</div>
+            <div class="perk-desc">One dog at a time means quicker turnaround — usually 1–2 hours.</div>
+        </div>
+        <div class="perk">
+            <span class="perk-icon">🔧</span>
+            <div class="perk-title">Fully equipped</div>
+            <div class="perk-desc">Our van has everything — water, power, tools, and treats.</div>
+        </div>
+    </div>
+</div>
+
+<!-- BOOKING FORM -->
+<div class="section" id="book" style="padding-top:0;">
+    <div class="booking-form" id="bookingForm">
+        <div class="form-title">Book an appointment</div>
+        <div class="form-sub">We'll confirm your spot within 24 hours.</div>
+
+        <div class="form-row">
+            <label class="form-label">Your name</label>
+            <input type="text" class="form-input" placeholder="Jane Smith" id="fName">
+        </div>
+        <div class="form-row-2">
+            <div class="form-row" style="margin-bottom:0;">
+                <label class="form-label">Phone number</label>
+                <input type="tel" class="form-input" placeholder="(555) 000-0000" id="fPhone">
+            </div>
+            <div class="form-row" style="margin-bottom:0;">
+                <label class="form-label">ZIP code</label>
+                <input type="text" class="form-input" placeholder="43011" id="fZip">
+            </div>
+        </div>
+        <div class="form-row" style="margin-top:16px;">
+            <label class="form-label">Service</label>
+            <select class="form-select" id="fService">
+                <option value="">Select a service...</option>
+                <option>Bath & Brush — starting at $45</option>
+                <option>Full Groom — starting at $65</option>
+                <option>Spa Package — starting at $85</option>
+                <option>Puppy's First Groom — starting at $50</option>
+                <option>Not sure — help me pick</option>
+            </select>
+        </div>
+        <div class="form-row-2">
+            <div class="form-row" style="margin-bottom:0;">
+                <label class="form-label">Dog's name</label>
+                <input type="text" class="form-input" placeholder="Buddy" id="fDogName">
+            </div>
+            <div class="form-row" style="margin-bottom:0;">
+                <label class="form-label">Breed / size</label>
+                <input type="text" class="form-input" placeholder="Goldendoodle, large" id="fBreed">
+            </div>
+        </div>
+        <div class="form-row" style="margin-top:16px;">
+            <label class="form-label">Preferred date & any notes</label>
+            <textarea class="form-textarea" placeholder="e.g. Available Tuesdays or Thursdays, dog is nervous around loud dryers..." id="fNotes"></textarea>
+        </div>
+        <button class="submit-btn" onclick="submitBooking()">
+            Request Appointment →
+        </button>
+        <p class="form-note">We'll reach out to confirm your time slot. No payment required to request.</p>
+    </div>
+    <div class="success-state" id="successState">
+        <div class="success-icon">🐾</div>
+        <div class="success-title">Request received!</div>
+        <div class="success-sub">Thanks — we'll text or call you within 24 hours to confirm your appointment.<br><br>We can't wait to meet your pup.</div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <strong>Wash, Wiggle & Wag</strong><br>
+    Mobile Dog Grooming · Centerburg, OH
+</footer>
+
+<script>
+    // Smooth scroll
+    document.querySelectorAll('a[href="#book"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            document.getElementById('book').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // Form submission
+    function submitBooking() {
+        const name = document.getElementById('fName').value.trim();
+        const phone = document.getElementById('fPhone').value.trim();
+        const service = document.getElementById('fService').value;
+        if (!name || !phone || !service) {
+            alert('Please fill in your name, phone, and service selection.');
+            return;
+        }
+
+        // Save locally (in real version, this would post to a backend or email)
+        const booking = {
+            name, phone,
+            zip: document.getElementById('fZip').value,
+            service,
+            dogName: document.getElementById('fDogName').value,
+            breed: document.getElementById('fBreed').value,
+            notes: document.getElementById('fNotes').value,
+            submitted: new Date().toLocaleString()
+        };
+        try {
+            const existing = JSON.parse(localStorage.getItem('www_bookings') || '[]');
+            existing.push(booking);
+            localStorage.setItem('www_bookings', JSON.stringify(existing));
+        } catch(e) {}
+
+        document.getElementById('bookingForm').style.display = 'none';
+        document.getElementById('successState').style.display = 'block';
+        document.getElementById('book').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
