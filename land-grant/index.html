@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Built Something for Land-Grant — Brian's Visuals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #0c0d0f;
+            --bg2: #111315;
+            --surface: rgba(255,255,255,0.04);
+            --surface2: rgba(255,255,255,0.07);
+            --border: rgba(255,255,255,0.08);
+            --text: #f1f5f9;
+            --text2: #94a3b8;
+            --text3: #475569;
+            --gold: #eab308;
+            --gold-dim: rgba(234,179,8,0.1);
+            --gold-border: rgba(234,179,8,0.22);
+            --green: #4ade80;
+            --green-dim: rgba(74,222,128,0.08);
+            --green-border: rgba(74,222,128,0.2);
+            --amber: #f59e0b;
+            --amber-dim: rgba(245,158,11,0.1);
+            --amber-border: rgba(245,158,11,0.22);
+            --blue: #60a5fa;
+            --blue-dim: rgba(96,165,250,0.08);
+            --blue-border: rgba(96,165,250,0.2);
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        body::before {
+            content: '';
+            position: fixed; top: -10%; left: -10%;
+            width: 60vw; height: 60vw;
+            background: radial-gradient(circle, rgba(234,179,8,0.05) 0%, transparent 65%);
+            pointer-events: none; z-index: 0;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative; z-index: 1;
+            padding: 64px 24px 56px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .hero-from {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 5px 13px;
+            font-size: 0.7rem;
+            color: var(--text3);
+            letter-spacing: 0.07em;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+        .hero-from span { color: var(--gold); }
+        .hero-eyebrow {
+            font-size: 0.72rem;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 14px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2rem, 7vw, 3rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            margin-bottom: 18px;
+        }
+        .hero h1 em {
+            font-style: normal;
+            background: linear-gradient(135deg, #eab308 0%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: 0.95rem;
+            color: var(--text2);
+            line-height: 1.7;
+            max-width: 460px;
+            margin: 0 auto;
+        }
+
+        /* ── CONTAINER ── */
+        .container { max-width: 600px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+        /* ── DIVIDER ── */
+        .divider {
+            width: 32px; height: 2px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+            border-radius: 2px;
+            margin: 32px auto;
+            opacity: 0.5;
+        }
+
+        /* ── SECTION HEADER ── */
+        .sh {
+            font-size: 0.67rem;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 16px;
+        }
+
+        /* ── STAT STRIP ── */
+        .stat-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 12px;
+            text-align: center;
+        }
+        .stat-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .stat-val.good  { color: var(--green); }
+        .stat-val.build { color: var(--gold); }
+        .stat-label { font-size: 0.67rem; color: var(--text3); line-height: 1.4; }
+
+        /* ── OBSERVATION CARDS ── */
+        .obs {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+        .obs.working  { border-color: var(--green-border);  background: var(--green-dim);  }
+        .obs.build    { border-color: var(--amber-border);  background: var(--amber-dim);  }
+        .obs.teaser   { border-color: var(--blue-border);   background: var(--blue-dim);   }
+        .obs-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+        .obs-body h4 { font-family: 'Outfit', sans-serif; font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+        .obs-body p  { font-size: 0.82rem; color: var(--text2); line-height: 1.6; }
+        .obs-tag {
+            display: inline-block;
+            font-size: 0.63rem; font-weight: 600;
+            letter-spacing: 0.07em; text-transform: uppercase;
+            padding: 2px 7px; border-radius: 4px; margin-top: 7px;
+        }
+        .obs-tag.solid   { background: rgba(74,222,128,0.15);  color: var(--green); }
+        .obs-tag.next    { background: rgba(245,158,11,0.15);  color: var(--amber); }
+        .obs-tag.unlock  { background: rgba(96,165,250,0.15);  color: var(--blue);  }
+
+        /* ── OPPORTUNITY CARDS ── */
+        .opportunity-card {
+            background: var(--surface);
+            border: 1px solid var(--gold-border);
+            border-radius: 18px;
+            padding: 24px 22px;
+            margin-bottom: 12px;
+        }
+        .opp-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .opp-num {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--gold-dim); border: 1px solid var(--gold-border);
+            color: var(--gold);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.82rem;
+            flex-shrink: 0;
+        }
+        .opp-title { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text); }
+        .opp-body  { font-size: 0.85rem; color: var(--text2); line-height: 1.7; }
+        .opp-before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+        .opp-col { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 12px 14px; }
+        .opp-col-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 6px; }
+        .opp-col-label.now  { color: var(--text3); }
+        .opp-col-label.next { color: var(--green); }
+        .opp-col-text { font-size: 0.78rem; color: var(--text2); line-height: 1.55; }
+
+        /* ── TEASER CARD ── */
+        .teaser-card {
+            background: linear-gradient(135deg, rgba(96,165,250,0.06) 0%, rgba(234,179,8,0.04) 100%);
+            border: 1px solid rgba(96,165,250,0.18);
+            border-radius: 18px;
+            padding: 28px 24px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .teaser-icon { font-size: 2rem; margin-bottom: 12px; }
+        .teaser-title { font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+        .teaser-body  { font-size: 0.85rem; color: var(--text2); line-height: 1.7; max-width: 400px; margin: 0 auto; }
+        .teaser-note  { font-size: 0.72rem; color: var(--text3); margin-top: 14px; font-family: 'JetBrains Mono', monospace; }
+
+        /* ── CTA ── */
+        .cta-block {
+            background: linear-gradient(135deg, rgba(234,179,8,0.08) 0%, rgba(245,158,11,0.04) 100%);
+            border: 1px solid var(--gold-border);
+            border-radius: 20px; padding: 32px 24px;
+            text-align: center; margin-bottom: 48px;
+        }
+        .cta-title { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+        .cta-sub   { font-size: 0.88rem; color: var(--text2); line-height: 1.65; margin-bottom: 24px; max-width: 380px; margin-left: auto; margin-right: auto; }
+        .cta-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--gold); color: #0c0d0f;
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.95rem;
+            padding: 14px 28px; border-radius: 12px;
+            text-decoration: none; transition: opacity 0.2s, transform 0.15s;
+        }
+        .cta-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .cta-note { font-size: 0.72rem; color: var(--text3); margin-top: 12px; }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 20px; text-align: center;
+            font-size: 0.75rem; color: var(--text3); line-height: 1.8;
+        }
+        footer strong { color: var(--text2); }
+
+        @media (max-width: 420px) {
+            .stat-strip { grid-template-columns: 1fr 1fr; }
+            .opp-before-after { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-from">From <span>Brian's Visuals</span> · Columbus, OH</div>
+    <div class="hero-eyebrow">Built for Land-Grant Brewing</div>
+    <h1>54K followers.<br><em>Here's the ceiling.</em></h1>
+    <p class="hero-sub">Land-Grant is one of Columbus's best brewery stories — Franklinton roots, a beer garden that gets packed, and a social presence that's genuinely ahead of most. I looked closer. There's more here.</p>
+</div>
+
+<div class="container">
+
+    <!-- STATS -->
+    <div class="sh">Where you're at</div>
+    <div class="stat-strip">
+        <div class="stat-card">
+            <div class="stat-val good">54.3K</div>
+            <div class="stat-label">Instagram followers — strong for a Columbus brewery</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val good">2x+</div>
+            <div class="stat-label">Posts per week — consistent schedule, good cadence</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val build">↑</div>
+            <div class="stat-label">A few specific moves that could push this significantly higher</div>
+        </div>
+    </div>
+
+    <!-- OBSERVATIONS -->
+    <div class="sh">What I noticed</div>
+
+    <div class="obs working">
+        <div class="obs-icon">✅</div>
+        <div class="obs-body">
+            <h4>The consistency is already there</h4>
+            <p>Posting 2+ times a week with real production quality is something most businesses never get right. Land-Grant has it. That's the hardest part — and it's already done.</p>
+            <div class="obs-tag solid">Working well</div>
+        </div>
+    </div>
+
+    <div class="obs working">
+        <div class="obs-icon">✅</div>
+        <div class="obs-body">
+            <h4>The local collab instinct is right</h4>
+            <p>The Jenny's Strawberry Jam event on May 24 is exactly the kind of move that builds community and cross-audience reach. Partnering with other Columbus names is smart — and it's clearly already in the playbook.</p>
+            <div class="obs-tag solid">Strong instinct</div>
+        </div>
+    </div>
+
+    <div class="obs build">
+        <div class="obs-icon">🎬</div>
+        <div class="obs-body">
+            <h4>Events are being announced — not recapped</h4>
+            <p>The graphics for the Jenny's collab are clean. But after the event happens, where's the video? A 45–60 second recap reel of that night — the crowd, the pour, the energy — lives on the page forever, gets shared by Jenny's audience, and gives people a reason to show up to the next one.</p>
+            <div class="obs-tag next">Easy win</div>
+        </div>
+    </div>
+
+    <div class="obs build">
+        <div class="obs-icon">📱</div>
+        <div class="obs-body">
+            <h4>The reel creative has room to grow</h4>
+            <p>The posting frequency is solid. Some of the reel concepts don't quite match the quality of the graphics work — they feel templated rather than cinematic. The brand deserves video that feels as intentional as the still content does.</p>
+            <div class="obs-tag next">Opportunity</div>
+        </div>
+    </div>
+
+    <div class="obs teaser">
+        <div class="obs-icon">💡</div>
+        <div class="obs-body">
+            <h4>There's a content format you're not using yet</h4>
+            <p>There's a specific style of video content that's starting to dominate engagement across every niche — and almost no Columbus brewery has touched it. It fits Land-Grant's brand and story particularly well. It's the kind of thing that's easier to show than describe.</p>
+            <div class="obs-tag unlock">Worth a conversation</div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- OPPORTUNITIES -->
+    <div class="sh">What I'd bring to the table</div>
+
+    <div class="opportunity-card">
+        <div class="opp-header">
+            <div class="opp-num">1</div>
+            <div class="opp-title">Turn every event into a content moment</div>
+        </div>
+        <div class="opp-body">The Jenny's collab is a perfect example. You've got a great event, great brand partner, great setting. The announcement graphic is there — now build the before, during, and after content system around it. One event becomes 4–6 pieces of content that compound over time.</div>
+        <div class="opp-before-after">
+            <div class="opp-col">
+                <div class="opp-col-label now">Now</div>
+                <div class="opp-col-text">Event announced with a graphic. Night happens. Next post moves on.</div>
+            </div>
+            <div class="opp-col">
+                <div class="opp-col-label next">Next</div>
+                <div class="opp-col-text">Teaser → event night recap reel → follow-up post → partner cross-post. Each event builds the next one.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="opportunity-card">
+        <div class="opp-header">
+            <div class="opp-num">2</div>
+            <div class="opp-title">Level up the reel creative — same schedule, better ideas</div>
+        </div>
+        <div class="opp-body">You don't need to post more. You need reel concepts that match the quality of everything else on the page. I bring the ideas — your team executes. The goal is content that feels like it belongs to Land-Grant specifically, not a brewery template.</div>
+        <div class="opp-before-after">
+            <div class="opp-col">
+                <div class="opp-col-label now">Now</div>
+                <div class="opp-col-text">Consistent reels, some feel templated or off-brand</div>
+            </div>
+            <div class="opp-col">
+                <div class="opp-col-label next">Next</div>
+                <div class="opp-col-text">Creative direction that's specific to Land-Grant — the Franklinton story, the beer garden, the brand voice</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEASER CARD -->
+    <div class="teaser-card">
+        <div class="teaser-icon">🔒</div>
+        <div class="teaser-title">There's a third thing I'd rather show you in person.</div>
+        <div class="teaser-body">It's a content approach that's currently underused in the brewery space — and it fits Land-Grant's story better than most. The kind of thing that's easier to show with an example than explain in a paragraph. Come grab a beer and I'll walk you through it.</div>
+        <div class="teaser-note">// better shown than written</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- CTA -->
+    <div class="cta-block">
+        <div class="cta-title">You have the team. I have the ideas.</div>
+        <div class="cta-sub">I'm not here to replace what's working — I'm here to push it further. Let's sit down, I'll buy the first round, and I'll show you what I'm thinking.</div>
+        <a href="mailto:brianwhitesel@gmail.com?subject=Land-Grant%20%E2%80%94%20Let%27s%20Talk" class="cta-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Get in touch
+        </a>
+        <div class="cta-note">brianwhitesel@gmail.com · Brian's Visuals · Columbus, OH</div>
+    </div>
+
+</div>
+
+<footer>
+    <strong>Brian's Visuals</strong> · Columbus, OH<br>
+    Built specifically for Land-Grant Brewing Company · 424 W Town St, Columbus OH 43215
+</footer>
+
+</body>
+</html>
