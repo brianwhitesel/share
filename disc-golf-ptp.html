@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disc Golf Scorecard</title>
+    <title>Disc Golf — Pass the Phone</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -16,9 +16,9 @@
             --text: #f1f5f9;
             --text2: #94a3b8;
             --text3: #475569;
-            --accent: #818cf8;
-            --accent-dim: rgba(129,140,248,0.1);
-            --accent-border: rgba(129,140,248,0.25);
+            --accent: #fb923c;
+            --accent-dim: rgba(251,146,60,0.1);
+            --accent-border: rgba(251,146,60,0.28);
             --green: #4ade80;
             --green-dim: rgba(74,222,128,0.12);
             --green-border: rgba(74,222,128,0.3);
@@ -422,23 +422,61 @@
         }
 
         .setup-label { font-size: 0.7rem; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+        .setup-avatar { width:40px;height:40px;border-radius:50%;border:2px solid;flex-shrink:0;cursor:pointer;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);-webkit-tap-highlight-color:transparent;transition:transform 0.12s; }
+        .setup-avatar:active { transform:scale(0.9); }
+        .setup-avatar img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%; }
+        .setup-avatar-cam { position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:0.45rem;background:rgba(0,0,0,0.5);padding:2px 0;line-height:1.2;pointer-events:none; }
 
-        /* ── SETUP AVATARS ── */
-        .setup-avatar {
-            width: 40px; height: 40px; border-radius: 50%;
-            border: 2px solid; flex-shrink: 0; cursor: pointer;
-            position: relative; overflow: hidden;
+        /* ── PTP PHASES ── */
+        .ptp-phase { width: 100%; }
+        .ptp-player-orb {
+            width: 76px; height: 76px; border-radius: 50%;
+            margin: 0 auto 16px;
             display: flex; align-items: center; justify-content: center;
-            background: rgba(255,255,255,0.04);
-            -webkit-tap-highlight-color: transparent;
-            transition: transform 0.12s;
+            font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 800;
         }
-        .setup-avatar:active { transform: scale(0.9); }
-        .setup-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-        .setup-avatar-cam {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            text-align: center; font-size: 0.45rem; background: rgba(0,0,0,0.5);
-            padding: 2px 0; line-height: 1.2; pointer-events: none;
+        .ptp-handoff-name {
+            font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800;
+            text-align: center; margin-bottom: 6px;
+        }
+        .ptp-handoff-sub {
+            font-size: 0.82rem; color: var(--text3); text-align: center; margin-bottom: 24px;
+        }
+        .ptp-ready-btn {
+            width: 100%; padding: 14px; border-radius: 11px;
+            background: var(--accent-dim); border: 1px solid var(--accent-border);
+            color: var(--accent); font-family: 'Outfit', sans-serif;
+            font-size: 1rem; font-weight: 800; cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ptp-progress { display: flex; justify-content: center; gap: 7px; margin-bottom: 16px; }
+        .ptp-prog-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); transition: all 0.2s;
+        }
+        .ptp-prog-dot.done { background: var(--green); }
+        .ptp-prog-dot.active { background: var(--accent); transform: scale(1.25); }
+        .ptp-player-label {
+            text-align: center; margin-bottom: 12px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .ptp-player-label-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+        .ptp-player-label-name {
+            font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 800; color: #fff;
+        }
+        .ptp-summary-title {
+            text-align: center; margin-bottom: 14px;
+        }
+        .ptp-summary-title-main {
+            font-family: 'Outfit', sans-serif; font-size: 1.2rem; font-weight: 800; color: #fff;
+        }
+        .ptp-summary-title-sub { font-size: 0.78rem; color: var(--text2); margin-top: 3px; }
+        .ptp-next-btn {
+            width: 100%; padding: 13px; border-radius: 10px;
+            background: var(--green-dim); border: 1px solid var(--green-border);
+            color: var(--green); font-family: 'Outfit', sans-serif;
+            font-size: 0.92rem; font-weight: 800; cursor: pointer;
+            margin-top: 4px;
         }
 
         /* ── COUNT STEPPER ── */
@@ -537,7 +575,7 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
             <div>
-                <div class="topbar-name">Scorecard</div>
+                <div class="topbar-name">Pass the Phone</div>
                 <div class="topbar-course" id="courseLabel" onclick="openCourseModal()">
                     Home Course
                     <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -619,24 +657,55 @@
     </div>
 </div>
 
-<!-- ── HOLE MODAL ── -->
-<div class="overlay" id="holeOverlay" onclick="handleHoleOverlayClick(event)">
+<!-- ── HOLE MODAL (Pass the Phone) ── -->
+<div class="overlay" id="holeOverlay">
     <div class="sheet" id="holeSheet">
         <div class="sheet-handle"></div>
-        <div class="hole-modal-title">
-            <div class="hole-modal-num" id="modalHoleNum">Hole 1</div>
-            <div class="hole-modal-par" id="modalHolePar">Par 3</div>
+
+        <!-- Phase 1: Hand-off -->
+        <div class="ptp-phase" id="ptpHandoff">
+            <div class="ptp-progress" id="ptpProgress"></div>
+            <div class="ptp-player-orb" id="ptpOrb"></div>
+            <div class="ptp-handoff-name" id="ptpHandoffName"></div>
+            <div class="ptp-handoff-sub">Hand the phone over, then tap when ready</div>
+            <button class="ptp-ready-btn" onclick="ptpReady()">I'm Ready →</button>
         </div>
-        <div class="par-btns">
-            <button class="par-btn" onclick="setModalPar(3)" id="parBtn3">Par 3</button>
-            <button class="par-btn" onclick="setModalPar(4)" id="parBtn4">Par 4</button>
-            <button class="par-btn" onclick="setModalPar(5)" id="parBtn5">Par 5</button>
+
+        <!-- Phase 2: Score entry -->
+        <div class="ptp-phase" id="ptpScore" style="display:none;">
+            <div class="ptp-progress" id="ptpScoreProgress"></div>
+            <div class="ptp-player-label" id="ptpPlayerLabel">
+                <div class="ptp-player-label-dot" id="ptpLabelDot"></div>
+                <div class="ptp-player-label-name" id="ptpLabelName"></div>
+            </div>
+            <div class="hole-modal-title">
+                <div class="hole-modal-num" id="ptpHoleNum">Hole 1</div>
+                <div class="hole-modal-par" id="ptpHolePar">Par 3</div>
+            </div>
+            <div class="par-btns">
+                <button class="par-btn" onclick="setPtpPar(3)" id="ptpPar3">Par 3</button>
+                <button class="par-btn" onclick="setPtpPar(4)" id="ptpPar4">Par 4</button>
+                <button class="par-btn" onclick="setPtpPar(5)" id="ptpPar5">Par 5</button>
+            </div>
+            <div class="player-score-rows">
+                <div class="player-score-row" id="ptpScoreRow"></div>
+            </div>
+            <button class="ptp-next-btn" id="ptpNextBtn" onclick="ptpNextPlayer()">Next Player →</button>
         </div>
-        <div class="player-score-rows" id="playerScoreRows"></div>
-        <div class="hole-modal-actions">
-            <button class="hm-clear" onclick="clearAllScores()">Clear All</button>
-            <button class="hm-confirm" onclick="confirmHole()">Save Hole ✓</button>
+
+        <!-- Phase 3: Summary -->
+        <div class="ptp-phase" id="ptpSummary" style="display:none;">
+            <div class="ptp-summary-title">
+                <div class="ptp-summary-title-main" id="ptpSummaryTitle">Hole 1 — All Done</div>
+                <div class="ptp-summary-title-sub" id="ptpSummaryPar">Par 3</div>
+            </div>
+            <div class="player-score-rows" id="ptpSummaryRows"></div>
+            <div class="hole-modal-actions">
+                <button class="hm-clear" onclick="ptpRestart()">Re-enter</button>
+                <button class="hm-confirm" onclick="confirmHole()">Save Hole ✓</button>
+            </div>
         </div>
+
     </div>
 </div>
 
@@ -672,9 +741,8 @@
     /* ═══════════════════════════════════════════
        STORAGE
     ═══════════════════════════════════════════ */
-    const ROUND_KEY   = 'reese_dg_mp_round_v1';
-    const HISTORY_KEY = 'reese_dg_mp_history_v1';
-    const LEGACY_KEY  = 'reese_dg_history_v1'; // old single-player history
+    const ROUND_KEY   = 'ptp_dg_mp_round_v1';
+    const HISTORY_KEY = 'ptp_dg_mp_history_v1';
 
     /* ═══════════════════════════════════════════
        PLAYER COLORS
@@ -802,12 +870,12 @@
         strip.innerHTML = round.players.map((name, i) => {
             const t = totals[i];
             const isLeading = t.thru > 0 && t.rel === minRel;
-            const sClass = t.thru === 0 ? 'chip-even' : t.rel < 0 ? 'chip-under' : t.rel > 0 ? 'chip-over' : 'chip-even';
+            const scoreClass = t.thru === 0 ? 'chip-even' : t.rel < 0 ? 'chip-under' : t.rel > 0 ? 'chip-over' : 'chip-even';
             const scoreDisp = t.thru === 0 ? '—' : relStr(t.rel);
             return `<div class="player-chip ${isLeading ? 'leading' : ''}">
                 ${avatarHtml(name, PLAYER_COLORS[i], 22)}
                 <span class="player-chip-name">${name}</span>
-                <span class="player-chip-score ${sClass}">${scoreDisp}</span>
+                <span class="player-chip-score ${scoreClass}">${scoreDisp}</span>
                 ${isLeading && played.length > 1 ? '<span class="chip-lead-icon">🏆</span>' : ''}
             </div>`;
         }).join('');
@@ -961,18 +1029,12 @@
 
     function renderHistory() {
         const el = document.getElementById('historyList');
-        let items = [...history].reverse();
-
-        // Also show legacy single-player rounds
-        let legacy = [];
-        try { legacy = JSON.parse(localStorage.getItem(LEGACY_KEY)) || []; } catch {}
-
-        if (items.length === 0 && legacy.length === 0) {
+        const items = [...history].reverse();
+        if (items.length === 0) {
             el.innerHTML = '<div class="no-history">No saved rounds yet. Finish a round and hit Save.</div>';
             return;
         }
-
-        const newHtml = items.map((r, ri) => {
+        el.innerHTML = items.map((r, ri) => {
             const actualIdx = history.length - 1 - ri;
             const ranked = r.playerResults.slice().sort((a, b) => a.rel - b.rel);
             const playerHtml = ranked.map((p, ri2) => {
@@ -992,19 +1054,6 @@
                 <div class="hist-players">${playerHtml}</div>
             </div>`;
         }).join('');
-
-        const legacyHtml = legacy.slice().reverse().map(r => {
-            const tClass = r.rel < 0 ? 'chip-under' : r.rel > 0 ? 'chip-over' : 'chip-even';
-            return `<div class="history-item">
-                <div class="hist-top">
-                    <div><div class="hist-course">${r.course} <span style="font-size:0.65rem;color:var(--text3);">(solo)</span></div>
-                    <div class="hist-meta">${r.date} · ${r.thru} holes · ${r.total} strokes</div></div>
-                </div>
-                <div class="hist-players"><div class="hist-player"><span class="hist-player-score ${tClass}">${relStr(r.rel)}</span></div></div>
-            </div>`;
-        }).join('');
-
-        el.innerHTML = newHtml + legacyHtml;
     }
 
     /* ═══════════════════════════════════════════
@@ -1075,21 +1124,29 @@
     }
 
     /* ═══════════════════════════════════════════
-       HOLE MODAL
+       HOLE MODAL — PASS THE PHONE
     ═══════════════════════════════════════════ */
+    let ptpCurrentPlayer = 0;
+
+    function buildProgressDots(containerId) {
+        const el = document.getElementById(containerId);
+        if (!el) return;
+        el.innerHTML = round.players.map((_, i) => {
+            let cls = 'ptp-prog-dot';
+            if (i < ptpCurrentPlayer) cls += ' done';
+            else if (i === ptpCurrentPlayer) cls += ' active';
+            return `<div class="${cls}" style="${i===ptpCurrentPlayer?'background:'+PLAYER_COLORS[i]:''}"></div>`;
+        }).join('');
+    }
+
     function openHoleModal(idx) {
         activeHoleIdx = idx;
         const h = round.holes[idx];
         modalPar = h.par;
         modalScores = [...h.scores];
-        document.getElementById('modalHoleNum').textContent = 'Hole ' + h.num;
-        updateParButtons();
-        buildPlayerScoreRows();
+        ptpCurrentPlayer = 0;
         document.getElementById('holeOverlay').classList.add('active');
-    }
-
-    function handleHoleOverlayClick(e) {
-        if (e.target === document.getElementById('holeOverlay')) closeHoleModal();
+        showPtpHandoff();
     }
 
     function closeHoleModal() {
@@ -1097,35 +1154,121 @@
         activeHoleIdx = null;
     }
 
-    function setModalPar(p) {
-        modalPar = p;
-        updateParButtons();
-        buildPlayerScoreRows();
+    function showPtpHandoff() {
+        document.getElementById('ptpHandoff').style.display = '';
+        document.getElementById('ptpScore').style.display = 'none';
+        document.getElementById('ptpSummary').style.display = 'none';
+        buildProgressDots('ptpProgress');
+        const pi = ptpCurrentPlayer;
+        const name = round.players[pi];
+        const color = PLAYER_COLORS[pi];
+        const orb = document.getElementById('ptpOrb');
+        const orbPhoto = getAvatar(name);
+        orb.style.border = '3px solid ' + color;
+        if (orbPhoto) {
+            orb.style.background = 'transparent';
+            orb.style.overflow = 'hidden';
+            orb.innerHTML = `<img src="${orbPhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`;
+        } else {
+            orb.style.background = color + '22';
+            orb.style.color = color;
+            orb.innerHTML = name.charAt(0).toUpperCase();
+        }
+        const nameEl = document.getElementById('ptpHandoffName');
+        nameEl.textContent = name;
+        nameEl.style.color = color;
     }
 
-    function updateParButtons() {
-        [3, 4, 5].forEach(p => {
-            document.getElementById('parBtn' + p).classList.toggle('active', modalPar === p);
+    function ptpReady() {
+        document.getElementById('ptpHandoff').style.display = 'none';
+        document.getElementById('ptpScore').style.display = '';
+        const pi = ptpCurrentPlayer;
+        const h = round.holes[activeHoleIdx];
+        buildProgressDots('ptpScoreProgress');
+        // Player label
+        document.getElementById('ptpLabelDot').style.background = PLAYER_COLORS[pi];
+        document.getElementById('ptpLabelName').textContent = round.players[pi];
+        // Hole info
+        document.getElementById('ptpHoleNum').textContent = 'Hole ' + h.num;
+        document.getElementById('ptpHolePar').textContent = 'Par ' + modalPar;
+        // Par buttons
+        ['3','4','5'].forEach(p => {
+            document.getElementById('ptpPar' + p).classList.toggle('active', parseInt(p) === modalPar);
         });
-        document.getElementById('modalHolePar').textContent = 'Par ' + modalPar;
+        // Score row
+        buildPtpScoreRow(pi);
+        // Button label
+        const isLast = pi >= round.players.length - 1;
+        document.getElementById('ptpNextBtn').textContent = isLast ? 'Done ✓' : 'Next Player →';
     }
 
-    function buildPlayerScoreRows() {
-        const container = document.getElementById('playerScoreRows');
-        container.innerHTML = round.players.map((name, pi) => `
-            <div class="player-score-row" id="psRow${pi}">
-                <div class="psr-dot" style="background:${PLAYER_COLORS[pi]}"></div>
+    function buildPtpScoreRow(pi) {
+        const color = PLAYER_COLORS[pi];
+        const sc = modalScores[pi];
+        document.getElementById('ptpScoreRow').innerHTML = `
+            <div class="psr-dot" style="background:${color}"></div>
+            <div class="psr-name">${round.players[pi]}</div>
+            <div class="psr-adj" onclick="adjPlayerScore(${pi}, -1)">−</div>
+            <div class="psr-score-wrap">
+                <div class="psr-score ${sc===null?'empty':''}" id="psScore${pi}">${sc!==null?sc:'—'}</div>
+                <div class="psr-label" id="psLabel${pi}"></div>
+            </div>
+            <div class="psr-adj" onclick="adjPlayerScore(${pi}, +1)">+</div>`;
+        updatePlayerScoreDisplay(pi);
+    }
+
+    function setPtpPar(p) {
+        modalPar = p;
+        ['3','4','5'].forEach(pp => {
+            document.getElementById('ptpPar' + pp).classList.toggle('active', parseInt(pp) === p);
+        });
+        document.getElementById('ptpHolePar').textContent = 'Par ' + p;
+        updatePlayerScoreDisplay(ptpCurrentPlayer);
+    }
+
+    function ptpNextPlayer() {
+        // Default null score to par
+        if (modalScores[ptpCurrentPlayer] === null) {
+            modalScores[ptpCurrentPlayer] = modalPar;
+            updatePlayerScoreDisplay(ptpCurrentPlayer);
+        }
+        ptpCurrentPlayer++;
+        if (ptpCurrentPlayer >= round.players.length) {
+            showPtpSummary();
+        } else {
+            document.getElementById('ptpScore').style.display = 'none';
+            showPtpHandoff();
+        }
+    }
+
+    function showPtpSummary() {
+        document.getElementById('ptpHandoff').style.display = 'none';
+        document.getElementById('ptpScore').style.display = 'none';
+        document.getElementById('ptpSummary').style.display = '';
+        const h = round.holes[activeHoleIdx];
+        document.getElementById('ptpSummaryTitle').textContent = 'Hole ' + h.num + ' — All Done';
+        document.getElementById('ptpSummaryPar').textContent = 'Par ' + modalPar;
+        const lblMap = { hio:'lbl-hio', eagle:'lbl-eagle', birdie:'lbl-birdie', par:'lbl-par', bogey:'lbl-bogey', double:'lbl-dbl' };
+        document.getElementById('ptpSummaryRows').innerHTML = round.players.map((name, pi) => {
+            const sc = modalScores[pi];
+            const color = PLAYER_COLORS[pi];
+            const cls = sc !== null ? scoreClass(sc, modalPar) : '';
+            const text = sc !== null ? scoreLabelText(sc, modalPar) : '';
+            return `<div class="player-score-row">
+                <div class="psr-dot" style="background:${color}"></div>
                 <div class="psr-name">${name}</div>
-                <div class="psr-adj" onclick="adjPlayerScore(${pi}, -1)">−</div>
-                <div class="psr-score-wrap">
-                    <div class="psr-score ${modalScores[pi] === null ? 'empty' : ''}" id="psScore${pi}">
-                        ${modalScores[pi] !== null ? modalScores[pi] : '—'}
-                    </div>
-                    <div class="psr-label" id="psLabel${pi}"></div>
+                <div class="psr-score-wrap" style="flex:1;text-align:center;">
+                    <div class="psr-score">${sc !== null ? sc : '—'}</div>
+                    <div class="psr-label ${lblMap[cls]||''}">${text}</div>
                 </div>
-                <div class="psr-adj" onclick="adjPlayerScore(${pi}, +1)">+</div>
-            </div>`).join('');
-        round.players.forEach((_, pi) => updatePlayerScoreDisplay(pi));
+            </div>`;
+        }).join('');
+    }
+
+    function ptpRestart() {
+        modalScores = round.players.map(() => null);
+        ptpCurrentPlayer = 0;
+        showPtpHandoff();
     }
 
     function adjPlayerScore(pi, delta) {
@@ -1141,20 +1284,14 @@
         if (!scoreEl) return;
         if (sc === null) {
             scoreEl.textContent = '—'; scoreEl.className = 'psr-score empty';
-            labelEl.textContent = ''; labelEl.className = 'psr-label';
+            if (labelEl) { labelEl.textContent = ''; labelEl.className = 'psr-label'; }
         } else {
             scoreEl.textContent = sc; scoreEl.className = 'psr-score';
             const text = scoreLabelText(sc, modalPar);
-            labelEl.textContent = text;
             const cls = scoreClass(sc, modalPar);
             const lblMap = { hio:'lbl-hio', eagle:'lbl-eagle', birdie:'lbl-birdie', par:'lbl-par', bogey:'lbl-bogey', double:'lbl-dbl' };
-            labelEl.className = 'psr-label ' + (lblMap[cls] || '');
+            if (labelEl) { labelEl.textContent = text; labelEl.className = 'psr-label ' + (lblMap[cls] || ''); }
         }
-    }
-
-    function clearAllScores() {
-        modalScores = round.players.map(() => null);
-        buildPlayerScoreRows();
     }
 
     function confirmHole() {
@@ -1163,21 +1300,19 @@
         const prevScores = [...h.scores];
         const prevPar = h.par;
         h.par = modalPar;
-        h.scores = [...modalScores];
+        h.scores = modalScores.map(s => s === null ? modalPar : s);
         saveState();
         closeHoleModal();
         render();
-
-        // Fire confetti for new good scores
         round.players.forEach((_, pi) => {
             const prev = prevScores[pi];
             const cur  = h.scores[pi];
             if (cur === null) return;
-            const wasGood  = prev !== null && (prev === 1 || prev - prevPar <= -1);
-            const isGood   = cur === 1 || cur - h.par <= -1;
+            const wasGood = prev !== null && (prev === 1 || prev - prevPar <= -1);
+            const isGood  = cur === 1 || cur - h.par <= -1;
             if (isGood && !wasGood) {
                 const level = cur === 1 ? 'hio' : cur - h.par <= -2 ? 'eagle' : 'birdie';
-                setTimeout(() => launchConfetti(level), pi * 180);
+                setTimeout(() => launchConfetti(level), pi * 200);
             }
         });
     }
@@ -1205,67 +1340,47 @@
        SAVE / NEW ROUND
     ═══════════════════════════════════════════ */
     /* ═══════════════════════════════════════════
-       AVATARS
+       WINNER MODAL
     ═══════════════════════════════════════════ */
-    function getAvatarKey(name) { return 'dg_av_' + name.toLowerCase().replace(/\s+/g,'_'); }
-    function saveAvatar(name, dataUrl) { try { localStorage.setItem(getAvatarKey(name), dataUrl); } catch {} }
-    function getAvatar(name) { return localStorage.getItem(getAvatarKey(name)); }
-
-    function avatarHtml(name, color, size) {
-        const photo = getAvatar(name);
-        const s = `width:${size}px;height:${size}px;border-radius:50%;flex-shrink:0;border:2px solid ${color};`;
-        if (photo) return `<img style="${s}object-fit:cover;" src="${photo}" alt="${name[0]}">`;
-        const fs = Math.max(8, Math.round(size * 0.38));
-        return `<div style="${s}background:${color}22;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-weight:800;font-size:${fs}px;color:${color};">${name.charAt(0).toUpperCase()}</div>`;
+    function getAvatarKey(name){return 'dg_av_'+name.toLowerCase().replace(/\s+/g,'_');}
+    function saveAvatar(name,dataUrl){try{localStorage.setItem(getAvatarKey(name),dataUrl);}catch{}}
+    function getAvatar(name){return localStorage.getItem(getAvatarKey(name));}
+    function avatarHtml(name,color,size){
+        const photo=getAvatar(name);
+        const s=`width:${size}px;height:${size}px;border-radius:50%;flex-shrink:0;border:2px solid ${color};`;
+        if(photo)return`<img style="${s}object-fit:cover;"src="${photo}"alt="${name[0]}">`;
+        const fs=Math.max(8,Math.round(size*0.38));
+        return`<div style="${s}background:${color}22;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-weight:800;font-size:${fs}px;color:${color};">${name.charAt(0).toUpperCase()}</div>`;
     }
-
-    function triggerAvatarUpload(i) { document.getElementById('avatarInput' + i).click(); }
-
-    function handleAvatarUpload(i, event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        compressImage(file, dataUrl => {
-            const nameEl = document.getElementById('pName' + i);
-            const name = nameEl ? (nameEl.value.trim() || ('Player '+(i+1))) : ('Player '+(i+1));
-            saveAvatar(name, dataUrl);
-            updateSetupAvatar(i);
-        });
-        event.target.value = '';
+    function triggerAvatarUpload(i){document.getElementById('avatarInput'+i).click();}
+    function handleAvatarUpload(i,event){
+        const file=event.target.files[0];if(!file)return;
+        compressImage(file,dataUrl=>{
+            const nameEl=document.getElementById('pName'+i);
+            const name=nameEl?(nameEl.value.trim()||('Player '+(i+1))):('Player '+(i+1));
+            saveAvatar(name,dataUrl);updateSetupAvatar(i);
+        });event.target.value='';
     }
-
-    function updateSetupAvatar(i) {
-        const nameEl = document.getElementById('pName' + i);
-        if (!nameEl) return;
-        const name = nameEl.value.trim() || ('Player '+(i+1));
-        const color = PLAYER_COLORS[i];
-        const photo = getAvatar(name);
-        const av = document.getElementById('sAvatar' + i);
-        if (!av) return;
-        av.style.borderColor = color;
-        const initial = `<span style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.88rem;color:${color};">${name.charAt(0).toUpperCase()}</span>`;
-        av.innerHTML = (photo ? `<img src="${photo}" alt="">` : initial) + '<span class="setup-avatar-cam">📷</span>';
+    function updateSetupAvatar(i){
+        const nameEl=document.getElementById('pName'+i);if(!nameEl)return;
+        const name=nameEl.value.trim()||('Player '+(i+1));
+        const color=PLAYER_COLORS[i];const photo=getAvatar(name);
+        const av=document.getElementById('sAvatar'+i);if(!av)return;
+        av.style.borderColor=color;
+        const ini=`<span style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.88rem;color:${color};">${name.charAt(0).toUpperCase()}</span>`;
+        av.innerHTML=(photo?`<img src="${photo}"alt="">`:ini)+'<span class="setup-avatar-cam">📷</span>';
     }
-
-    function compressImage(file, callback) {
-        const reader = new FileReader();
-        reader.onload = e => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const size = 150; canvas.width = size; canvas.height = size;
-                const ctx = canvas.getContext('2d');
-                const min = Math.min(img.width, img.height);
-                ctx.drawImage(img, (img.width-min)/2, (img.height-min)/2, min, min, 0, 0, size, size);
-                callback(canvas.toDataURL('image/jpeg', 0.72));
-            };
-            img.src = e.target.result;
-        };
+    function compressImage(file,callback){
+        const reader=new FileReader();
+        reader.onload=e=>{const img=new Image();img.onload=()=>{
+            const canvas=document.createElement('canvas');const size=150;
+            canvas.width=size;canvas.height=size;const ctx=canvas.getContext('2d');
+            const min=Math.min(img.width,img.height);
+            ctx.drawImage(img,(img.width-min)/2,(img.height-min)/2,min,min,0,0,size,size);
+            callback(canvas.toDataURL('image/jpeg',0.72));};img.src=e.target.result;};
         reader.readAsDataURL(file);
     }
 
-    /* ═══════════════════════════════════════════
-       WINNER MODAL
-    ═══════════════════════════════════════════ */
     let pendingSave = null;
 
     function saveRound() { showWinnerModal(); }
@@ -1287,20 +1402,9 @@
         const winner = ranked[0];
 
         document.getElementById('wWinnerName').textContent = winner.thru > 0 ? winner.name : '—';
-        // Winner avatar
-        const wAvEl = document.getElementById('wWinnerAvatar');
-        if (wAvEl) {
-            const wPhoto = winner.thru > 0 ? getAvatar(winner.name) : null;
-            const wColor2 = PLAYER_COLORS[ranked.indexOf(winner)];
-            if (wPhoto) {
-                wAvEl.innerHTML = `<div style="position:relative;display:inline-block;margin-bottom:10px;">
-                    <img style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid rgba(251,191,36,0.5);" src="${wPhoto}">
-                    <div style="position:absolute;top:-10px;right:-8px;font-size:1.5rem;line-height:1;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.6));">👑</div>
-                </div>`;
-            } else {
-                wAvEl.innerHTML = '<div class="winner-crown">🏆</div>';
-            }
-        }
+        const wAvElP = document.getElementById('wWinnerAvatar');
+        if (wAvElP) { const wPh=winner.thru>0?getAvatar(winner.name):null;
+            wAvElP.innerHTML=wPh?`<div style="position:relative;display:inline-block;margin-bottom:10px;"><img style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid rgba(251,191,36,0.5);"src="${wPh}"><div style="position:absolute;top:-10px;right:-8px;font-size:1.5rem;line-height:1;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.6));">👑</div></div>`:'<div class="winner-crown">🏆</div>';}
         const wScore = winner.thru > 0 ? relStr(winner.rel) : '—';
         const wColor = winner.thru > 0 ? (winner.rel < 0 ? 'var(--green)' : winner.rel > 0 ? 'var(--red2)' : 'var(--text2)') : 'var(--text3)';
         const wScoreEl = document.getElementById('wWinnerScore');
@@ -1448,7 +1552,7 @@
             timestamp: Date.now(),
             thru: pendingSave.thru,
             winner: pendingSave.winner,
-            postedBy: 'Reese',
+            postedBy: 'Pass-the-Phone',
             players: (pendingSave.playerResults || []).map(p => ({
                 name: p.name, rel: p.rel, strokes: p.strokes, thru: p.thru
             }))

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disc Golf Scorecard</title>
+    <title>Brian's Disc Golf Scorecard</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -16,9 +16,9 @@
             --text: #f1f5f9;
             --text2: #94a3b8;
             --text3: #475569;
-            --accent: #818cf8;
-            --accent-dim: rgba(129,140,248,0.1);
-            --accent-border: rgba(129,140,248,0.25);
+            --accent: #4ade80;
+            --accent-dim: rgba(74,222,128,0.1);
+            --accent-border: rgba(74,222,128,0.25);
             --green: #4ade80;
             --green-dim: rgba(74,222,128,0.12);
             --green-border: rgba(74,222,128,0.3);
@@ -422,106 +422,38 @@
         }
 
         .setup-label { font-size: 0.7rem; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+        .setup-avatar { width:40px;height:40px;border-radius:50%;border:2px solid;flex-shrink:0;cursor:pointer;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);-webkit-tap-highlight-color:transparent;transition:transform 0.12s; }
+        .setup-avatar:active { transform:scale(0.9); }
+        .setup-avatar img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%; }
+        .setup-avatar-cam { position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:0.45rem;background:rgba(0,0,0,0.5);padding:2px 0;line-height:1.2;pointer-events:none; }
 
-        /* ── SETUP AVATARS ── */
-        .setup-avatar {
-            width: 40px; height: 40px; border-radius: 50%;
-            border: 2px solid; flex-shrink: 0; cursor: pointer;
-            position: relative; overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(255,255,255,0.04);
-            -webkit-tap-highlight-color: transparent;
-            transition: transform 0.12s;
-        }
-        .setup-avatar:active { transform: scale(0.9); }
-        .setup-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-        .setup-avatar-cam {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            text-align: center; font-size: 0.45rem; background: rgba(0,0,0,0.5);
-            padding: 2px 0; line-height: 1.2; pointer-events: none;
-        }
-
-        /* ── COUNT STEPPER ── */
-        .count-stepper {
-            display: flex; align-items: center;
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 10px; overflow: hidden; margin-bottom: 18px; height: 44px;
-        }
-        .count-step-btn {
-            width: 44px; height: 44px; background: none; border: none;
-            color: var(--text2); font-size: 1.4rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; transition: background 0.12s; user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .count-step-btn:active { background: rgba(255,255,255,0.08); }
-        .count-step-btn:disabled { color: var(--text3); cursor: default; }
-        .count-step-display {
-            flex: 1; text-align: center; font-family: 'Outfit', sans-serif;
-            font-size: 0.95rem; font-weight: 700; color: #fff;
-        }
-
-        /* ── WINNER MODAL ── */
-        .winner-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.88); z-index: 400;
-            align-items: center; justify-content: center; padding: 20px;
-            backdrop-filter: blur(16px);
-        }
-        .winner-overlay.active { display: flex; }
-        .winner-sheet {
-            background: #131720; border: 1px solid rgba(251,191,36,0.22);
-            border-radius: 22px; padding: 28px 22px;
-            width: 100%; max-width: 400px;
-            animation: fadeIn 0.3s cubic-bezier(0.16,1,0.3,1);
-            text-align: center; max-height: 90vh; overflow-y: auto;
-        }
-        .winner-badge {
-            display: inline-block; padding: 4px 13px; border-radius: 20px;
-            background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.25);
-            font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
-            text-transform: uppercase; letter-spacing: 0.12em; color: var(--hio);
-            margin-bottom: 16px;
-        }
-        .winner-crown { font-size: 2.6rem; line-height: 1; margin-bottom: 8px; }
-        .winner-name {
-            font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800;
-            color: #fff; margin-bottom: 4px;
-        }
-        .winner-score-line {
-            font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800;
-            margin-bottom: 20px;
-        }
-        .winner-divider { height: 1px; background: var(--border); margin: 0 0 16px; }
-        .winner-lb { margin-bottom: 20px; text-align: left; }
-        .winner-lb-row {
-            display: flex; align-items: center; gap: 9px;
-            padding: 8px 10px; border-radius: 10px; margin-bottom: 5px;
-            background: rgba(255,255,255,0.02); border: 1px solid var(--border2);
-        }
-        .winner-lb-row.w-top { background: rgba(251,191,36,0.07); border-color: rgba(251,191,36,0.2); }
-        .winner-lb-rank { font-size: 0.85rem; width: 26px; flex-shrink: 0; }
-        .winner-lb-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-        .winner-lb-name { font-size: 0.85rem; font-weight: 600; color: var(--text); flex: 1; }
-        .winner-lb-score { font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 800; }
-        .winner-lb-thru { font-size: 0.68rem; color: var(--text3); min-width: 48px; text-align: right; }
-        .winner-actions { display: flex; gap: 8px; flex-direction: column; }
-        .winner-actions-row { display: flex; gap: 8px; }
-        .winner-post-btn { width: 100%; padding: 12px; border-radius: 11px; background: rgba(129,140,248,0.1); border: 1px solid rgba(129,140,248,0.3); color: #818cf8; font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-        .winner-post-btn:disabled { opacity: 0.6; cursor: default; }
-        .winner-save-btn {
-            flex: 1; padding: 13px; border-radius: 11px;
-            background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3);
-            color: var(--hio); font-family: 'Outfit', sans-serif;
-            font-size: 0.92rem; font-weight: 800; cursor: pointer;
-        }
-        .winner-edit-btn {
-            padding: 13px 16px; border-radius: 11px;
-            background: var(--surface); border: 1px solid var(--border);
-            color: var(--text2); font-family: 'Outfit', sans-serif;
-            font-size: 0.85rem; font-weight: 600; cursor: pointer;
-        }
-
+        .count-stepper { display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:18px;height:44px; }
+        .count-step-btn { width:44px;height:44px;background:none;border:none;color:var(--text2);font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.12s;user-select:none;-webkit-tap-highlight-color:transparent; }
+        .count-step-btn:active { background:rgba(255,255,255,0.08); }
+        .count-step-btn:disabled { color:var(--text3);cursor:default; }
+        .count-step-display { flex:1;text-align:center;font-family:'Outfit',sans-serif;font-size:0.95rem;font-weight:700;color:#fff; }
+        .winner-overlay { display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:400;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(16px); }
+        .winner-overlay.active { display:flex; }
+        .winner-sheet { background:#131720;border:1px solid rgba(251,191,36,0.22);border-radius:22px;padding:28px 22px;width:100%;max-width:400px;animation:fadeIn 0.3s cubic-bezier(0.16,1,0.3,1);text-align:center;max-height:90vh;overflow-y:auto; }
+        .winner-badge { display:inline-block;padding:4px 13px;border-radius:20px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.25);font-family:'JetBrains Mono',monospace;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--hio);margin-bottom:16px; }
+        .winner-crown { font-size:2.6rem;line-height:1;margin-bottom:8px; }
+        .winner-name { font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:4px; }
+        .winner-score-line { font-family:'Outfit',sans-serif;font-size:2rem;font-weight:800;margin-bottom:20px; }
+        .winner-divider { height:1px;background:var(--border);margin:0 0 16px; }
+        .winner-lb { margin-bottom:20px;text-align:left; }
+        .winner-lb-row { display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:10px;margin-bottom:5px;background:rgba(255,255,255,0.02);border:1px solid var(--border2); }
+        .winner-lb-row.w-top { background:rgba(251,191,36,0.07);border-color:rgba(251,191,36,0.2); }
+        .winner-lb-rank { font-size:0.85rem;width:26px;flex-shrink:0; }
+        .winner-lb-dot { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
+        .winner-lb-name { font-size:0.85rem;font-weight:600;color:var(--text);flex:1; }
+        .winner-lb-score { font-family:'Outfit',sans-serif;font-size:0.95rem;font-weight:800; }
+        .winner-lb-thru { font-size:0.68rem;color:var(--text3);min-width:48px;text-align:right; }
+        .winner-actions { display:flex;gap:8px;flex-direction:column; }
+        .winner-actions-row { display:flex;gap:8px; }
+        .winner-post-btn { width:100%;padding:12px;border-radius:11px;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.3);color:#818cf8;font-family:'Outfit',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s; }
+        .winner-post-btn:disabled { opacity:0.6;cursor:default; }
+        .winner-save-btn { flex:1;padding:13px;border-radius:11px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);color:var(--hio);font-family:'Outfit',sans-serif;font-size:0.92rem;font-weight:800;cursor:pointer; }
+        .winner-edit-btn { padding:13px 16px;border-radius:11px;background:var(--surface);border:1px solid var(--border);color:var(--text2);font-family:'Outfit',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer; }
         @media (max-width: 400px) {
             .holes-grid { gap: 3px; }
         }
@@ -672,24 +604,15 @@
     /* ═══════════════════════════════════════════
        STORAGE
     ═══════════════════════════════════════════ */
-    const ROUND_KEY   = 'reese_dg_mp_round_v1';
-    const HISTORY_KEY = 'reese_dg_mp_history_v1';
-    const LEGACY_KEY  = 'reese_dg_history_v1'; // old single-player history
+    const ROUND_KEY   = 'shared_dg_mp_round_v1';
+    const HISTORY_KEY = 'shared_dg_mp_history_v1';
 
     /* ═══════════════════════════════════════════
        PLAYER COLORS
     ═══════════════════════════════════════════ */
     const PLAYER_COLORS = [
-        '#818cf8', // indigo
-        '#4ade80', // green
-        '#fb923c', // orange
-        '#e879f9', // pink
-        '#38bdf8', // sky
-        '#fbbf24', // amber
-        '#f87171', // red
-        '#2dd4bf', // teal
-        '#a3e635', // lime
-        '#c084fc'  // purple
+        '#818cf8', '#4ade80', '#fb923c', '#e879f9',
+        '#38bdf8', '#fbbf24', '#f87171', '#2dd4bf', '#a3e635', '#c084fc'
     ];
 
     /* ═══════════════════════════════════════════
@@ -802,12 +725,12 @@
         strip.innerHTML = round.players.map((name, i) => {
             const t = totals[i];
             const isLeading = t.thru > 0 && t.rel === minRel;
-            const sClass = t.thru === 0 ? 'chip-even' : t.rel < 0 ? 'chip-under' : t.rel > 0 ? 'chip-over' : 'chip-even';
+            const scoreClass = t.thru === 0 ? 'chip-even' : t.rel < 0 ? 'chip-under' : t.rel > 0 ? 'chip-over' : 'chip-even';
             const scoreDisp = t.thru === 0 ? '—' : relStr(t.rel);
             return `<div class="player-chip ${isLeading ? 'leading' : ''}">
                 ${avatarHtml(name, PLAYER_COLORS[i], 22)}
                 <span class="player-chip-name">${name}</span>
-                <span class="player-chip-score ${sClass}">${scoreDisp}</span>
+                <span class="player-chip-score ${scoreClass}">${scoreDisp}</span>
                 ${isLeading && played.length > 1 ? '<span class="chip-lead-icon">🏆</span>' : ''}
             </div>`;
         }).join('');
@@ -963,11 +886,7 @@
         const el = document.getElementById('historyList');
         let items = [...history].reverse();
 
-        // Also show legacy single-player rounds
-        let legacy = [];
-        try { legacy = JSON.parse(localStorage.getItem(LEGACY_KEY)) || []; } catch {}
-
-        if (items.length === 0 && legacy.length === 0) {
+        if (items.length === 0) {
             el.innerHTML = '<div class="no-history">No saved rounds yet. Finish a round and hit Save.</div>';
             return;
         }
@@ -993,18 +912,7 @@
             </div>`;
         }).join('');
 
-        const legacyHtml = legacy.slice().reverse().map(r => {
-            const tClass = r.rel < 0 ? 'chip-under' : r.rel > 0 ? 'chip-over' : 'chip-even';
-            return `<div class="history-item">
-                <div class="hist-top">
-                    <div><div class="hist-course">${r.course} <span style="font-size:0.65rem;color:var(--text3);">(solo)</span></div>
-                    <div class="hist-meta">${r.date} · ${r.thru} holes · ${r.total} strokes</div></div>
-                </div>
-                <div class="hist-players"><div class="hist-player"><span class="hist-player-score ${tClass}">${relStr(r.rel)}</span></div></div>
-            </div>`;
-        }).join('');
-
-        el.innerHTML = newHtml + legacyHtml;
+        el.innerHTML = newHtml;
     }
 
     /* ═══════════════════════════════════════════
@@ -1204,68 +1112,45 @@
     /* ═══════════════════════════════════════════
        SAVE / NEW ROUND
     ═══════════════════════════════════════════ */
-    /* ═══════════════════════════════════════════
-       AVATARS
-    ═══════════════════════════════════════════ */
-    function getAvatarKey(name) { return 'dg_av_' + name.toLowerCase().replace(/\s+/g,'_'); }
-    function saveAvatar(name, dataUrl) { try { localStorage.setItem(getAvatarKey(name), dataUrl); } catch {} }
-    function getAvatar(name) { return localStorage.getItem(getAvatarKey(name)); }
-
-    function avatarHtml(name, color, size) {
-        const photo = getAvatar(name);
-        const s = `width:${size}px;height:${size}px;border-radius:50%;flex-shrink:0;border:2px solid ${color};`;
-        if (photo) return `<img style="${s}object-fit:cover;" src="${photo}" alt="${name[0]}">`;
-        const fs = Math.max(8, Math.round(size * 0.38));
-        return `<div style="${s}background:${color}22;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-weight:800;font-size:${fs}px;color:${color};">${name.charAt(0).toUpperCase()}</div>`;
+    function getAvatarKey(name){return 'dg_av_'+name.toLowerCase().replace(/\s+/g,'_');}
+    function saveAvatar(name,dataUrl){try{localStorage.setItem(getAvatarKey(name),dataUrl);}catch{}}
+    function getAvatar(name){return localStorage.getItem(getAvatarKey(name));}
+    function avatarHtml(name,color,size){
+        const photo=getAvatar(name);
+        const s=`width:${size}px;height:${size}px;border-radius:50%;flex-shrink:0;border:2px solid ${color};`;
+        if(photo)return`<img style="${s}object-fit:cover;"src="${photo}"alt="${name[0]}">`;
+        const fs=Math.max(8,Math.round(size*0.38));
+        return`<div style="${s}background:${color}22;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-weight:800;font-size:${fs}px;color:${color};">${name.charAt(0).toUpperCase()}</div>`;
     }
-
-    function triggerAvatarUpload(i) { document.getElementById('avatarInput' + i).click(); }
-
-    function handleAvatarUpload(i, event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        compressImage(file, dataUrl => {
-            const nameEl = document.getElementById('pName' + i);
-            const name = nameEl ? (nameEl.value.trim() || ('Player '+(i+1))) : ('Player '+(i+1));
-            saveAvatar(name, dataUrl);
-            updateSetupAvatar(i);
-        });
-        event.target.value = '';
+    function triggerAvatarUpload(i){document.getElementById('avatarInput'+i).click();}
+    function handleAvatarUpload(i,event){
+        const file=event.target.files[0];if(!file)return;
+        compressImage(file,dataUrl=>{
+            const nameEl=document.getElementById('pName'+i);
+            const name=nameEl?(nameEl.value.trim()||('Player '+(i+1))):('Player '+(i+1));
+            saveAvatar(name,dataUrl);updateSetupAvatar(i);
+        });event.target.value='';
     }
-
-    function updateSetupAvatar(i) {
-        const nameEl = document.getElementById('pName' + i);
-        if (!nameEl) return;
-        const name = nameEl.value.trim() || ('Player '+(i+1));
-        const color = PLAYER_COLORS[i];
-        const photo = getAvatar(name);
-        const av = document.getElementById('sAvatar' + i);
-        if (!av) return;
-        av.style.borderColor = color;
-        const initial = `<span style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.88rem;color:${color};">${name.charAt(0).toUpperCase()}</span>`;
-        av.innerHTML = (photo ? `<img src="${photo}" alt="">` : initial) + '<span class="setup-avatar-cam">📷</span>';
+    function updateSetupAvatar(i){
+        const nameEl=document.getElementById('pName'+i);if(!nameEl)return;
+        const name=nameEl.value.trim()||('Player '+(i+1));
+        const color=PLAYER_COLORS[i];const photo=getAvatar(name);
+        const av=document.getElementById('sAvatar'+i);if(!av)return;
+        av.style.borderColor=color;
+        const ini=`<span style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.88rem;color:${color};">${name.charAt(0).toUpperCase()}</span>`;
+        av.innerHTML=(photo?`<img src="${photo}"alt="">`:ini)+'<span class="setup-avatar-cam">📷</span>';
     }
-
-    function compressImage(file, callback) {
-        const reader = new FileReader();
-        reader.onload = e => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const size = 150; canvas.width = size; canvas.height = size;
-                const ctx = canvas.getContext('2d');
-                const min = Math.min(img.width, img.height);
-                ctx.drawImage(img, (img.width-min)/2, (img.height-min)/2, min, min, 0, 0, size, size);
-                callback(canvas.toDataURL('image/jpeg', 0.72));
-            };
-            img.src = e.target.result;
-        };
+    function compressImage(file,callback){
+        const reader=new FileReader();
+        reader.onload=e=>{const img=new Image();img.onload=()=>{
+            const canvas=document.createElement('canvas');const size=150;
+            canvas.width=size;canvas.height=size;const ctx=canvas.getContext('2d');
+            const min=Math.min(img.width,img.height);
+            ctx.drawImage(img,(img.width-min)/2,(img.height-min)/2,min,min,0,0,size,size);
+            callback(canvas.toDataURL('image/jpeg',0.72));};img.src=e.target.result;};
         reader.readAsDataURL(file);
     }
 
-    /* ═══════════════════════════════════════════
-       WINNER MODAL
-    ═══════════════════════════════════════════ */
     let pendingSave = null;
 
     function saveRound() { showWinnerModal(); }
@@ -1273,74 +1158,48 @@
     function showWinnerModal() {
         const totalHoles = round.holes.filter(h => h.scores.some(s => s !== null)).length;
         if (totalHoles === 0) { alert('Score at least one hole first.'); return; }
-
         const playerResults = round.players.map((name, i) => {
             const t = playerTotals(i);
             return { name, color: PLAYER_COLORS[i], ...t };
         });
         const ranked = [...playerResults].sort((a, b) => {
-            if (a.thru === 0 && b.thru === 0) return 0;
-            if (a.thru === 0) return 1;
-            if (b.thru === 0) return -1;
+            if (a.thru===0&&b.thru===0) return 0; if (a.thru===0) return 1; if (b.thru===0) return -1;
             return a.rel - b.rel;
         });
         const winner = ranked[0];
-
         document.getElementById('wWinnerName').textContent = winner.thru > 0 ? winner.name : '—';
-        // Winner avatar
         const wAvEl = document.getElementById('wWinnerAvatar');
-        if (wAvEl) {
-            const wPhoto = winner.thru > 0 ? getAvatar(winner.name) : null;
-            const wColor2 = PLAYER_COLORS[ranked.indexOf(winner)];
-            if (wPhoto) {
-                wAvEl.innerHTML = `<div style="position:relative;display:inline-block;margin-bottom:10px;">
-                    <img style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid rgba(251,191,36,0.5);" src="${wPhoto}">
-                    <div style="position:absolute;top:-10px;right:-8px;font-size:1.5rem;line-height:1;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.6));">👑</div>
-                </div>`;
-            } else {
-                wAvEl.innerHTML = '<div class="winner-crown">🏆</div>';
-            }
-        }
-        const wScore = winner.thru > 0 ? relStr(winner.rel) : '—';
+        if (wAvEl) { const wPh=winner.thru>0?getAvatar(winner.name):null;
+            wAvEl.innerHTML=wPh?`<div style="position:relative;display:inline-block;margin-bottom:10px;"><img style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid rgba(251,191,36,0.5);"src="${wPh}"><div style="position:absolute;top:-10px;right:-8px;font-size:1.5rem;line-height:1;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.6));">👑</div></div>`:'<div class="winner-crown">🏆</div>';}
         const wColor = winner.thru > 0 ? (winner.rel < 0 ? 'var(--green)' : winner.rel > 0 ? 'var(--red2)' : 'var(--text2)') : 'var(--text3)';
-        const wScoreEl = document.getElementById('wWinnerScore');
-        wScoreEl.textContent = wScore;
-        wScoreEl.style.color = wColor;
-
-        const rankIcons = ['🥇','🥈','🥉','4th','5th','6th','7th','8th','9th','10th'];
-        document.getElementById('wLeaderboard').innerHTML = ranked.map((p, ri) => {
-            const t = p.thru > 0 ? relStr(p.rel) : '—';
-            const tColor = p.thru === 0 ? 'var(--text3)' : p.rel < 0 ? 'var(--green)' : p.rel > 0 ? 'var(--red2)' : 'var(--text2)';
-            return `<div class="winner-lb-row ${ri === 0 && ranked.length > 1 && p.thru > 0 ? 'w-top' : ''}">
-                <div class="winner-lb-rank">${rankIcons[ri] || (ri+1)}</div>
+        const wEl = document.getElementById('wWinnerScore');
+        wEl.textContent = winner.thru > 0 ? relStr(winner.rel) : '—'; wEl.style.color = wColor;
+        const ri = ['🥇','🥈','🥉','4th','5th','6th','7th','8th','9th','10th'];
+        document.getElementById('wLeaderboard').innerHTML = ranked.map((p, i) => {
+            const t = p.thru>0?relStr(p.rel):'—';
+            const tc = p.thru===0?'var(--text3)':p.rel<0?'var(--green)':p.rel>0?'var(--red2)':'var(--text2)';
+            return `<div class="winner-lb-row ${i===0&&ranked.length>1&&p.thru>0?'w-top':''}">
+                <div class="winner-lb-rank">${ri[i]||i+1}</div>
                 <div class="winner-lb-dot" style="background:${p.color}"></div>
                 <div class="winner-lb-name">${p.name}</div>
-                <div class="winner-lb-score" style="color:${tColor}">${t}</div>
-                <div class="winner-lb-thru">${p.thru > 0 ? p.strokes + ' · ' + p.thru + 'h' : '—'}</div>
+                <div class="winner-lb-score" style="color:${tc}">${t}</div>
+                <div class="winner-lb-thru">${p.thru>0?p.strokes+' · '+p.thru+'h':'—'}</div>
             </div>`;
         }).join('');
-
         pendingSave = {
             course: round.course,
-            date: new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
-            thru: totalHoles,
-            players: [...round.players],
-            playerResults,
-            winner: winner.name,
-            holes: round.holes.map(h => ({ par: h.par, scores: [...h.scores] }))
+            date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+            thru: totalHoles, players: [...round.players], playerResults,
+            winner: winner.name, holes: round.holes.map(h=>({par:h.par,scores:[...h.scores]}))
         };
-
         document.getElementById('winnerOverlay').classList.add('active');
-        const level = winner.rel <= -4 ? 'hio' : winner.rel <= -2 ? 'eagle' : 'birdie';
-        launchConfetti(level);
-        setTimeout(() => launchConfetti('birdie'), 500);
+        launchConfetti(winner.rel<=-4?'hio':winner.rel<=-2?'eagle':'birdie');
+        setTimeout(()=>launchConfetti('birdie'),500);
     }
 
     function commitSave() {
         if (!pendingSave) return;
-        history.push(pendingSave);
-        saveHistory();
-        renderHistory();
+        history.push(pendingSave); saveHistory(); renderHistory();
         pendingSave = null;
         document.getElementById('winnerOverlay').classList.remove('active');
     }
@@ -1448,7 +1307,7 @@
             timestamp: Date.now(),
             thru: pendingSave.thru,
             winner: pendingSave.winner,
-            postedBy: 'Reese',
+            postedBy: 'Jacob',
             players: (pendingSave.playerResults || []).map(p => ({
                 name: p.name, rel: p.rel, strokes: p.strokes, thru: p.thru
             }))
