@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Something I've Been Building — Brian Whitesel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #0c0d0f;
+            --bg2: #111315;
+            --surface: rgba(255,255,255,0.04);
+            --surface2: rgba(255,255,255,0.07);
+            --border: rgba(255,255,255,0.08);
+            --text: #f1f5f9;
+            --text2: #94a3b8;
+            --text3: #475569;
+            --gold: #eab308;
+            --gold-dim: rgba(234,179,8,0.1);
+            --gold-border: rgba(234,179,8,0.22);
+            --green: #4ade80;
+            --green-dim: rgba(74,222,128,0.08);
+            --green-border: rgba(74,222,128,0.2);
+            --amber: #f59e0b;
+            --amber-dim: rgba(245,158,11,0.1);
+            --amber-border: rgba(245,158,11,0.22);
+            --blue: #60a5fa;
+            --blue-dim: rgba(96,165,250,0.08);
+            --blue-border: rgba(96,165,250,0.2);
+            --purple: #a78bfa;
+            --purple-dim: rgba(167,139,250,0.08);
+            --purple-border: rgba(167,139,250,0.2);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; top: -10%; left: -10%;
+            width: 60vw; height: 60vw;
+            background: radial-gradient(circle, rgba(234,179,8,0.05) 0%, transparent 65%);
+            pointer-events: none; z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed; bottom: -10%; right: -10%;
+            width: 50vw; height: 50vw;
+            background: radial-gradient(circle, rgba(96,165,250,0.04) 0%, transparent 65%);
+            pointer-events: none; z-index: 0;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative; z-index: 1;
+            padding: 64px 24px 52px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .hero-from {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 5px 13px;
+            font-size: 0.7rem;
+            color: var(--text3);
+            letter-spacing: 0.07em;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+        .hero-from span { color: var(--gold); }
+        .hero-eyebrow {
+            font-size: 0.72rem;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 16px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.9rem, 7vw, 2.9rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+        .hero h1 em {
+            font-style: normal;
+            background: linear-gradient(135deg, #eab308 0%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: 0.95rem;
+            color: var(--text2);
+            line-height: 1.75;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        /* ── CONTAINER ── */
+        .container { max-width: 600px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+        /* ── DIVIDER ── */
+        .divider {
+            width: 32px; height: 2px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+            border-radius: 2px;
+            margin: 32px auto;
+            opacity: 0.5;
+        }
+
+        /* ── SECTION HEADER ── */
+        .sh {
+            font-size: 0.67rem;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 16px;
+        }
+
+        /* ── STAT STRIP ── */
+        .stat-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 12px;
+            text-align: center;
+        }
+        .stat-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .stat-val.gold  { color: var(--gold); }
+        .stat-val.green { color: var(--green); }
+        .stat-val.blue  { color: var(--blue); }
+        .stat-label { font-size: 0.67rem; color: var(--text3); line-height: 1.4; }
+
+        /* ── FEATURE CARDS ── */
+        .obs {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+        .obs.active   { border-color: var(--green-border);  background: var(--green-dim);   }
+        .obs.build    { border-color: var(--amber-border);  background: var(--amber-dim);   }
+        .obs.teaser   { border-color: var(--blue-border);   background: var(--blue-dim);    }
+        .obs.vision   { border-color: var(--purple-border); background: var(--purple-dim);  }
+        .obs-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+        .obs-body h4 { font-family: 'Outfit', sans-serif; font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+        .obs-body p  { font-size: 0.82rem; color: var(--text2); line-height: 1.65; }
+        .obs-tag {
+            display: inline-block;
+            font-size: 0.63rem; font-weight: 600;
+            letter-spacing: 0.07em; text-transform: uppercase;
+            padding: 2px 7px; border-radius: 4px; margin-top: 7px;
+        }
+        .obs-tag.live    { background: rgba(74,222,128,0.15);   color: var(--green);  }
+        .obs-tag.active  { background: rgba(245,158,11,0.15);   color: var(--amber);  }
+        .obs-tag.unlock  { background: rgba(96,165,250,0.15);   color: var(--blue);   }
+        .obs-tag.vision  { background: rgba(167,139,250,0.15);  color: var(--purple); }
+
+        /* ── CLIENT GRID ── */
+        .client-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+        .client-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .client-icon { font-size: 1.15rem; flex-shrink: 0; }
+        .client-name { font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+        .client-type { font-size: 0.71rem; color: var(--text3); }
+
+        /* ── CATEGORY STRIP ── */
+        .cat-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+        .cat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+        }
+        .cat-icon { font-size: 1.1rem; margin-bottom: 8px; }
+        .cat-title { font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .cat-desc  { font-size: 0.72rem; color: var(--text3); line-height: 1.5; }
+
+        /* ── TEASER CARD ── */
+        .teaser-card {
+            background: linear-gradient(135deg, rgba(96,165,250,0.06) 0%, rgba(234,179,8,0.04) 100%);
+            border: 1px solid rgba(96,165,250,0.18);
+            border-radius: 18px;
+            padding: 28px 24px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .teaser-icon { font-size: 2rem; margin-bottom: 12px; }
+        .teaser-title { font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+        .teaser-body  { font-size: 0.85rem; color: var(--text2); line-height: 1.75; max-width: 400px; margin: 0 auto; }
+        .teaser-note  { font-size: 0.72rem; color: var(--text3); margin-top: 14px; font-family: 'JetBrains Mono', monospace; }
+
+        /* ── CTA ── */
+        .cta-block {
+            background: linear-gradient(135deg, rgba(234,179,8,0.08) 0%, rgba(245,158,11,0.04) 100%);
+            border: 1px solid var(--gold-border);
+            border-radius: 20px; padding: 32px 24px;
+            text-align: center; margin-bottom: 48px;
+        }
+        .cta-title { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+        .cta-sub   { font-size: 0.88rem; color: var(--text2); line-height: 1.7; margin-bottom: 24px; max-width: 380px; margin-left: auto; margin-right: auto; }
+        .cta-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--gold); color: #0c0d0f;
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.95rem;
+            padding: 14px 28px; border-radius: 12px;
+            text-decoration: none; transition: opacity 0.2s, transform 0.15s;
+        }
+        .cta-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .cta-note { font-size: 0.72rem; color: var(--text3); margin-top: 12px; }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 20px; text-align: center;
+            font-size: 0.75rem; color: var(--text3); line-height: 1.8;
+        }
+        footer strong { color: var(--text2); }
+
+        @media (max-width: 420px) {
+            .stat-strip    { grid-template-columns: 1fr 1fr; }
+            .client-grid   { grid-template-columns: 1fr; }
+            .cat-strip     { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-from">From <span>Brian Whitesel</span> · Columbus, OH</div>
+    <div class="hero-eyebrow">Something I've been quietly building</div>
+    <h1>What if every small business felt like it had<br><em>a full team behind it?</em></h1>
+    <p class="hero-sub">I've spent the last year building a system to make that real — 250+ tools, templates, and automation workflows designed for small business owners who are doing it all themselves. Wanted to show you before the dinner conversation gets going.</p>
+</div>
+
+<div class="container">
+
+    <!-- STATS -->
+    <div class="sh">Where it stands right now</div>
+    <div class="stat-strip">
+        <div class="stat-card">
+            <div class="stat-val gold">250+</div>
+            <div class="stat-label">Business tools &amp; templates built and ready</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val green">5</div>
+            <div class="stat-label">Industries active — real clients, real workflows</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val blue">1</div>
+            <div class="stat-label">Connected system powering all of it</div>
+        </div>
+    </div>
+
+    <!-- WHAT IT IS -->
+    <div class="sh">What I've been building</div>
+
+    <div class="obs active">
+        <div class="obs-icon">⚡</div>
+        <div class="obs-body">
+            <h4>An AI-powered workspace, built from scratch</h4>
+            <p>Not a subscription product, not a template marketplace — a fully connected system where automation, client management, content tools, and business operations all live in one place. I built it to run the way a real business team would, without needing the team.</p>
+            <div class="obs-tag live">Live system</div>
+        </div>
+    </div>
+
+    <div class="obs build">
+        <div class="obs-icon">🛠️</div>
+        <div class="obs-body">
+            <h4>250+ tools already in the library</h4>
+            <p>Templates, automation workflows, trackers, generators, client-facing documents — across every major category a small business touches. The goal was depth: each tool is built to actually save time, not just look good in a folder.</p>
+            <div class="obs-tag active">Growing every week</div>
+        </div>
+    </div>
+
+    <div class="obs vision">
+        <div class="obs-icon">🎯</div>
+        <div class="obs-body">
+            <h4>The vision: a full team in a single system</h4>
+            <p>Most small business owners are doing the work of five people. The system doesn't replace the craft — it handles everything around it. Scheduling, proposals, follow-ups, social content, tracking, invoicing. The owner stays in their zone; the system covers the rest.</p>
+            <div class="obs-tag vision">The bigger picture</div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ACTIVE CLIENTS -->
+    <div class="sh">Already in the field</div>
+
+    <div class="client-grid">
+        <div class="client-card">
+            <div class="client-icon">📷</div>
+            <div>
+                <div class="client-name">Photography</div>
+                <div class="client-type">Booking, delivery & client flow</div>
+            </div>
+        </div>
+        <div class="client-card">
+            <div class="client-icon">🎬</div>
+            <div>
+                <div class="client-name">Videography</div>
+                <div class="client-type">Project management & proposals</div>
+            </div>
+        </div>
+        <div class="client-card">
+            <div class="client-icon">🐾</div>
+            <div>
+                <div class="client-name">Dog Grooming</div>
+                <div class="client-type">Scheduling, reminders & client tracking</div>
+            </div>
+        </div>
+        <div class="client-card">
+            <div class="client-icon">🔨</div>
+            <div>
+                <div class="client-name">Renovation</div>
+                <div class="client-type">Estimates, job tracking & follow-ups</div>
+            </div>
+        </div>
+        <div class="client-card" style="grid-column: 1 / -1;">
+            <div class="client-icon">🥏</div>
+            <div>
+                <div class="client-name">Disc Golf League</div>
+                <div class="client-type">Scheduling, scoring, social content & member communication</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="sh">What's inside the system</div>
+    <div class="cat-strip">
+        <div class="cat-card">
+            <div class="cat-icon">⏱️</div>
+            <div class="cat-title">Time-Saving Tools</div>
+            <div class="cat-desc">Automated workflows that handle the repetitive tasks so the owner doesn't have to</div>
+        </div>
+        <div class="cat-card">
+            <div class="cat-icon">👥</div>
+            <div class="cat-title">Client Management</div>
+            <div class="cat-desc">Proposals, onboarding, follow-ups, and tracking — all running without manual effort</div>
+        </div>
+        <div class="cat-card">
+            <div class="cat-icon">📱</div>
+            <div class="cat-title">Social Content</div>
+            <div class="cat-desc">Captions, content calendars, post templates — generated for the business, not generic</div>
+        </div>
+        <div class="cat-card">
+            <div class="cat-icon">🤖</div>
+            <div class="cat-title">Automation</div>
+            <div class="cat-desc">The connective layer — tools that talk to each other, so nothing falls through the cracks</div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- TEASER -->
+    <div class="obs teaser" style="margin-bottom: 12px;">
+        <div class="obs-icon">💡</div>
+        <div class="obs-body">
+            <h4>This is just the surface</h4>
+            <p>What I've built is bigger than any one category, and it's easier to understand when you can actually see it running. The full picture — how the pieces connect, where this is heading, and what it could look like for specific businesses — is the conversation I'd rather have in person.</p>
+            <div class="obs-tag unlock">More to show you</div>
+        </div>
+    </div>
+
+    <div class="teaser-card">
+        <div class="teaser-icon">🔒</div>
+        <div class="teaser-title">The room reveals the bigger vision.</div>
+        <div class="teaser-body">This page gets you oriented. What I haven't put here is intentional — the strategy, the bigger picture, the specific way this could apply to you. That's a conversation worth having face to face. Happy to walk you through it tonight.</div>
+        <div class="teaser-note">// better shown than written</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- CTA -->
+    <div class="cta-block">
+        <div class="cta-title">Wanted you to see it first.</div>
+        <div class="cta-sub">I've been heads-down on this for about a year. You're one of the first people I'm actually walking through it. Happy to show you whatever you want to see — no agenda, just the work.</div>
+        <a href="mailto:brianwhitesel@gmail.com" class="cta-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Get in touch
+        </a>
+        <div class="cta-note">brianwhitesel@gmail.com · Columbus, OH</div>
+    </div>
+
+</div>
+
+<footer>
+    <strong>Brian Whitesel</strong> · Columbus, OH<br>
+    Built for JD · this is a preview, not the full picture
+</footer>
+
+</body>
+</html>
