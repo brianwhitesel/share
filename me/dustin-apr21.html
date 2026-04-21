@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dustin — Apr 21 Meeting</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0f14;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --text: #f1f5f9;
+      --text2: #94a3b8;
+      --text3: #475569;
+      --blue: #60a5fa;
+      --blue-dim: rgba(96,165,250,0.08);
+      --blue-border: rgba(96,165,250,0.2);
+      --green: #4ade80;
+      --green-dim: rgba(74,222,128,0.07);
+      --green-border: rgba(74,222,128,0.18);
+      --amber: #f59e0b;
+      --amber-dim: rgba(245,158,11,0.08);
+      --amber-border: rgba(245,158,11,0.2);
+      --purple: #a78bfa;
+      --purple-dim: rgba(167,139,250,0.08);
+      --purple-border: rgba(167,139,250,0.2);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 36px 18px 60px;
+      max-width: 480px;
+      margin: 0 auto;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      margin-bottom: 28px;
+    }
+    .header-label {
+      font-size: 0.65rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .header-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .header-meta {
+      font-size: 0.82rem;
+      color: var(--text2);
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .header-meta span { display: flex; align-items: center; gap: 4px; }
+
+    /* ── GOAL BANNER ── */
+    .goal-banner {
+      background: var(--blue-dim);
+      border: 1px solid var(--blue-border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 24px;
+      font-size: 0.88rem;
+      color: var(--blue);
+      line-height: 1.55;
+    }
+    .goal-banner strong { font-weight: 600; }
+
+    /* ── SECTION ── */
+    .section { margin-bottom: 24px; }
+    .section-label {
+      font-size: 0.63rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      margin-bottom: 10px;
+      padding-left: 2px;
+    }
+
+    /* ── CHECKLIST ── */
+    .checklist { display: flex; flex-direction: column; gap: 8px; }
+    .check-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      color: var(--text2);
+      line-height: 1.5;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .check-item .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--text3);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+    .check-item.blue  { border-color: var(--blue-border);   background: var(--blue-dim);   }
+    .check-item.green { border-color: var(--green-border);  background: var(--green-dim);  }
+    .check-item.amber { border-color: var(--amber-border);  background: var(--amber-dim);  }
+    .check-item.purple{ border-color: var(--purple-border); background: var(--purple-dim); }
+    .check-item.blue   .dot { background: var(--blue); }
+    .check-item.green  .dot { background: var(--green); }
+    .check-item.amber  .dot { background: var(--amber); }
+    .check-item.purple .dot { background: var(--purple); }
+
+    /* ── LINK CARD ── */
+    .link-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      text-decoration: none;
+      color: inherit;
+      gap: 12px;
+      transition: border-color 0.18s;
+      margin-bottom: 8px;
+    }
+    .link-card:hover { border-color: rgba(96,165,250,0.35); }
+    .link-card-left { display: flex; flex-direction: column; gap: 3px; }
+    .link-card-title { font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--text); }
+    .link-card-desc  { font-size: 0.75rem; color: var(--text3); }
+    .link-card-arrow { color: var(--text3); font-size: 1rem; flex-shrink: 0; }
+
+    /* ── REMINDER STRIP ── */
+    .reminders { display: flex; flex-direction: column; gap: 7px; }
+    .reminder {
+      font-size: 0.8rem;
+      color: var(--text3);
+      padding: 9px 13px;
+      border-left: 2px solid var(--border);
+      line-height: 1.4;
+    }
+    .reminder.hot { border-color: var(--amber); color: var(--amber); }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #1e293b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-label">Meeting prep</div>
+    <div class="header-name">Dustin Whitesel</div>
+    <div class="header-meta">
+      <span>📅 Tuesday, Apr 21</span>
+      <span>🕕 6:00 PM</span>
+      <span>📍 Centerburg</span>
+    </div>
+  </div>
+
+  <div class="goal-banner">
+    <strong>Goal:</strong> Understand his business pain points and whether he's in a position to pay for help — landing page, booking system, or anything else. Also be ready to talk about what you're building if he brings it up.
+  </div>
+
+  <!-- DISCOVERY QUESTIONS -->
+  <div class="section">
+    <div class="section-label">Ask him</div>
+    <div class="checklist">
+      <div class="check-item blue">
+        <div class="dot"></div>
+        <span>How are you currently getting new clients? Word of mouth, Facebook, something else?</span>
+      </div>
+      <div class="check-item blue">
+        <div class="dot"></div>
+        <span>Do you have a way for people to book you online, or is it all texts and DMs?</span>
+      </div>
+      <div class="check-item blue">
+        <div class="dot"></div>
+        <span>What's the biggest thing slowing you down or taking up time you'd rather not spend?</span>
+      </div>
+      <div class="check-item blue">
+        <div class="dot"></div>
+        <span>Are you trying to grow the business, or is the current volume about right?</span>
+      </div>
+      <div class="check-item blue">
+        <div class="dot"></div>
+        <span>Have you thought about having a real website or booking page? What's held you back?</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- IF HE ASKS WHAT YOU'RE BUILDING -->
+  <div class="section">
+    <div class="section-label">If he asks what you're building</div>
+    <div class="checklist">
+      <div class="check-item purple">
+        <div class="dot"></div>
+        <span>You're building tools and pages for small business owners — booking pages, client portals, content systems.</span>
+      </div>
+      <div class="check-item purple">
+        <div class="dot"></div>
+        <span>You've already built tools for a photographer, a videographer, and a social media manager — working on a few clients now.</span>
+      </div>
+      <div class="check-item purple">
+        <div class="dot"></div>
+        <span>The goal is to make it feel like you have a team behind you, even when it's just you.</span>
+      </div>
+      <div class="check-item purple">
+        <div class="dot"></div>
+        <span>Keep it high-level — you can show him the booking page you already built for his business if the moment feels right.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINKS TO PULL UP -->
+  <div class="section">
+    <div class="section-label">Pull up if the moment is right</div>
+    <a href="../dustin/customer-booking.html" class="link-card">
+      <div class="link-card-left">
+        <div class="link-card-title">Wash Wiggle & Wag — Booking Page</div>
+        <div class="link-card-desc">Show him what a real booking page looks like for his business</div>
+      </div>
+      <div class="link-card-arrow">→</div>
+    </a>
+  </div>
+
+  <!-- REMINDERS -->
+  <div class="section">
+    <div class="section-label">Reminders</div>
+    <div class="reminders">
+      <div class="reminder hot">Text him your ETA day-of</div>
+      <div class="reminder">Paper notepad only — no laptop</div>
+      <div class="reminder">Listen more than you pitch — it's a discovery meeting</div>
+      <div class="reminder">Confirm his pricing and phone number before adding to the booking page</div>
+    </div>
+  </div>
+
+  <footer>Brian's Visuals · Dustin Meeting · Apr 21, 2026</footer>
+
+</body>
+</html>
