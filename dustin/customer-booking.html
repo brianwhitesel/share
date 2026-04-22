@@ -313,60 +313,22 @@
 <!-- SERVICES -->
 <div class="services-bg">
     <div class="section">
-        <div class="section-title">Services & pricing</div>
-        <div class="section-sub">All services include a fresh-scent finish and lots of treats.</div>
+        <div class="section-title">What's included</div>
+        <div class="section-sub">We do one thing and we do it right — a complete full groom, every time.</div>
         <div class="service-cards">
-
-            <div class="service-card">
-                <div class="service-icon">🛁</div>
-                <div class="service-info">
-                    <div class="service-name">Bath & Brush</div>
-                    <div class="service-desc">Shampoo, blow dry, brush out, ear cleaning, and nail trim.</div>
-                </div>
-                <div class="service-price">
-                    <span class="from">starting at</span>
-                    $45
-                </div>
-            </div>
-
             <div class="service-card">
                 <div class="service-icon">✂️</div>
                 <div class="service-info">
                     <div class="service-name">Full Groom</div>
-                    <div class="service-desc">Everything in Bath & Brush plus a full haircut to your style preference.</div>
+                    <div class="service-desc">Bath, blow dry, brush out, ear cleaning, nail trim, and a full haircut to your style preference. Everything your dog needs in one visit.</div>
                 </div>
                 <div class="service-price">
                     <span class="from">starting at</span>
-                    $65
+                    $95
                 </div>
             </div>
-
-            <div class="service-card">
-                <div class="service-icon">🌟</div>
-                <div class="service-info">
-                    <div class="service-name">Spa Package</div>
-                    <div class="service-desc">Full groom + teeth brushing, paw balm, and bandana or bow.</div>
-                </div>
-                <div class="service-price">
-                    <span class="from">starting at</span>
-                    $85
-                </div>
-            </div>
-
-            <div class="service-card">
-                <div class="service-icon">🐾</div>
-                <div class="service-info">
-                    <div class="service-name">Puppy's First Groom</div>
-                    <div class="service-desc">Gentle intro groom for puppies. Easy, calm, and fun for young pups.</div>
-                </div>
-                <div class="service-price">
-                    <span class="from">starting at</span>
-                    $50
-                </div>
-            </div>
-
         </div>
-        <p style="font-size:0.75rem;color:var(--text3);margin-top:14px;text-align:center;line-height:1.6;">Prices vary by breed, size, and coat condition. Final quote given at booking.</p>
+        <p style="font-size:0.75rem;color:var(--text3);margin-top:14px;text-align:center;line-height:1.6;">Final price based on your dog's breed, weight, and coat condition. We'll confirm before your appointment.</p>
     </div>
 </div>
 
@@ -401,8 +363,8 @@
 <!-- BOOKING FORM -->
 <div class="section" id="book" style="padding-top:0;">
     <div class="booking-form" id="bookingForm">
-        <div class="form-title">Book an appointment</div>
-        <div class="form-sub">We'll confirm your spot within 24 hours.</div>
+        <div class="form-title">Request an appointment</div>
+        <div class="form-sub">We'll text you within 24 hours to confirm your spot.</div>
 
         <div class="form-row">
             <label class="form-label">Your name</label>
@@ -411,42 +373,67 @@
         <div class="form-row-2">
             <div class="form-row" style="margin-bottom:0;">
                 <label class="form-label">Phone number</label>
-                <input type="tel" class="form-input" placeholder="(555) 000-0000" id="fPhone">
+                <input type="tel" class="form-input" placeholder="(740) 555-0000" id="fPhone">
             </div>
             <div class="form-row" style="margin-bottom:0;">
                 <label class="form-label">ZIP code</label>
                 <input type="text" class="form-input" placeholder="43011" id="fZip">
             </div>
         </div>
-        <div class="form-row" style="margin-top:16px;">
-            <label class="form-label">Service</label>
-            <select class="form-select" id="fService">
-                <option value="">Select a service...</option>
-                <option>Bath & Brush — starting at $45</option>
-                <option>Full Groom — starting at $65</option>
-                <option>Spa Package — starting at $85</option>
-                <option>Puppy's First Groom — starting at $50</option>
-                <option>Not sure — help me pick</option>
-            </select>
-        </div>
-        <div class="form-row-2">
+        <div class="form-row-2" style="margin-top:16px;">
             <div class="form-row" style="margin-bottom:0;">
                 <label class="form-label">Dog's name</label>
                 <input type="text" class="form-input" placeholder="Buddy" id="fDogName">
             </div>
             <div class="form-row" style="margin-bottom:0;">
-                <label class="form-label">Breed / size</label>
-                <input type="text" class="form-input" placeholder="Goldendoodle, large" id="fBreed">
+                <label class="form-label">Breed</label>
+                <input type="text" class="form-input" placeholder="Golden Doodle" id="fBreed">
             </div>
+        </div>
+        <div class="form-row-2" style="margin-top:16px;">
+            <div class="form-row" style="margin-bottom:0;">
+                <label class="form-label">Dog's weight</label>
+                <select class="form-select" id="fWeight">
+                    <option value="">Select weight...</option>
+                    <option value="xs">Under 15 lbs</option>
+                    <option value="sm">15 – 30 lbs</option>
+                    <option value="md">30 – 55 lbs</option>
+                    <option value="lg">55 – 85 lbs</option>
+                    <option value="xl">85+ lbs</option>
+                </select>
+            </div>
+            <div class="form-row" style="margin-bottom:0;">
+                <label class="form-label">Coat type</label>
+                <select class="form-select" id="fCoat">
+                    <option value="">Select coat...</option>
+                    <option value="short">Short / smooth</option>
+                    <option value="medium">Medium</option>
+                    <option value="long">Long / thick</option>
+                    <option value="curly">Curly / doodle</option>
+                    <option value="double">Double coat</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Price estimate -->
+        <div id="priceEstimate" style="display:none;margin-top:14px;padding:13px 16px;background:var(--teal-dim);border:1px solid var(--teal-border);border-radius:10px;">
+            <div style="font-size:0.72rem;color:var(--teal);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Estimated Starting Price</div>
+            <div style="font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:800;color:var(--teal)" id="priceText">$95+</div>
+            <div style="font-size:0.72rem;color:var(--text2);margin-top:3px;">Final price confirmed before your appointment.</div>
+        </div>
+
+        <div class="form-row" style="margin-top:16px;">
+            <label class="form-label">Photo of your dog <span style="font-weight:400;color:var(--text3)">(helps us prepare)</span></label>
+            <input type="file" class="form-input" id="fPhoto" accept="image/*" capture="environment" style="padding:10px 14px;cursor:pointer;">
         </div>
         <div class="form-row" style="margin-top:16px;">
             <label class="form-label">Preferred date & any notes</label>
-            <textarea class="form-textarea" placeholder="e.g. Available Tuesdays or Thursdays, dog is nervous around loud dryers..." id="fNotes"></textarea>
+            <textarea class="form-textarea" placeholder="e.g. Available Tuesdays, dog is nervous around dryers, gate code is 1234..." id="fNotes"></textarea>
         </div>
         <button class="submit-btn" onclick="submitBooking()">
             Request Appointment →
         </button>
-        <p class="form-note">We'll reach out to confirm your time slot. No payment required to request.</p>
+        <p class="form-note">No payment required to request. We'll text you to confirm within 24 hours.</p>
     </div>
     <div class="success-state" id="successState">
         <div class="success-icon">🐾</div>
@@ -470,23 +457,46 @@
         });
     });
 
+    // Price estimator
+    const prices = {
+      xs: { short: 95, medium: 95, long: 105, curly: 110, double: 105 },
+      sm: { short: 95, medium: 100, long: 110, curly: 115, double: 110 },
+      md: { short: 105, medium: 115, long: 125, curly: 135, double: 125 },
+      lg: { short: 120, medium: 135, long: 150, curly: 160, double: 150 },
+      xl: { short: 140, medium: 160, long: 175, curly: 190, double: 180 },
+    };
+    function updateEstimate() {
+      const w = document.getElementById('fWeight').value;
+      const c = document.getElementById('fCoat').value;
+      const box = document.getElementById('priceEstimate');
+      if (w && c) {
+        const p = (prices[w] && prices[w][c]) ? prices[w][c] : 95;
+        document.getElementById('priceText').textContent = '$' + p + '+';
+        box.style.display = 'block';
+      } else {
+        box.style.display = 'none';
+      }
+    }
+    document.getElementById('fWeight').addEventListener('change', updateEstimate);
+    document.getElementById('fCoat').addEventListener('change', updateEstimate);
+
     // Form submission
     function submitBooking() {
         const name = document.getElementById('fName').value.trim();
         const phone = document.getElementById('fPhone').value.trim();
-        const service = document.getElementById('fService').value;
-        if (!name || !phone || !service) {
-            alert('Please fill in your name, phone, and service selection.');
+        const dogName = document.getElementById('fDogName').value.trim();
+        if (!name || !phone || !dogName) {
+            alert('Please fill in your name, phone number, and your dog\'s name.');
             return;
         }
 
-        // Save locally (in real version, this would post to a backend or email)
         const booking = {
             name, phone,
             zip: document.getElementById('fZip').value,
-            service,
-            dogName: document.getElementById('fDogName').value,
+            dogName,
             breed: document.getElementById('fBreed').value,
+            weight: document.getElementById('fWeight').value,
+            coat: document.getElementById('fCoat').value,
             notes: document.getElementById('fNotes').value,
             submitted: new Date().toLocaleString()
         };

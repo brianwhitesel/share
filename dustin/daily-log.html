@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Log — Wash Wiggle & Wag</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0f14;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --text: #f1f5f9;
+      --text2: #94a3b8;
+      --text3: #475569;
+      --teal: #2dd4bf;
+      --teal-dim: rgba(45,212,191,0.08);
+      --teal-border: rgba(45,212,191,0.2);
+      --green: #4ade80;
+      --green-dim: rgba(74,222,128,0.07);
+      --green-border: rgba(74,222,128,0.18);
+      --amber: #fbbf24;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 28px 16px 100px;
+      max-width: 420px;
+      margin: 0 auto;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    .date-label { font-size: 0.62rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; margin-bottom: 4px; }
+    .date-big { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+    .groomer-line { font-size: 0.82rem; color: var(--text2); margin-bottom: 24px; }
+
+    /* ── TOTAL BANNER ── */
+    .total-banner {
+      background: var(--green-dim);
+      border: 1px solid var(--green-border);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .total-label { font-size: 0.75rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+    .total-amount { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: var(--green); }
+    .total-count { font-size: 0.75rem; color: var(--text3); margin-top: 2px; }
+
+    /* ── ADD DOG BUTTON ── */
+    .add-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--teal);
+      color: #0d0f14;
+      border: none;
+      border-radius: 14px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+      transition: opacity 0.18s;
+    }
+    .add-btn:hover { opacity: 0.88; }
+    .add-btn:active { transform: scale(0.98); }
+
+    /* ── ADD FORM ── */
+    .add-form {
+      background: var(--teal-dim);
+      border: 1px solid var(--teal-border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .add-form.open { display: block; }
+    .form-title { font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--teal); margin-bottom: 16px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 0.7rem; font-weight: 700; color: var(--text2); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .field input {
+      width: 100%;
+      padding: 13px 14px;
+      background: rgba(0,0,0,0.35);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.18s;
+    }
+    .field input:focus { border-color: var(--teal); }
+    .field input::placeholder { color: var(--text3); }
+    .amount-wrap { position: relative; }
+    .amount-wrap::before {
+      content: '$';
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--teal);
+      font-size: 1rem;
+      font-weight: 600;
+      pointer-events: none;
+    }
+    .amount-wrap input { padding-left: 26px; }
+    .form-actions { display: flex; gap: 10px; }
+    .btn-save {
+      flex: 1; padding: 13px;
+      background: var(--teal); color: #0d0f14;
+      border: none; border-radius: 10px;
+      font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 800;
+      cursor: pointer;
+    }
+    .btn-cancel {
+      padding: 13px 18px;
+      background: transparent; color: var(--text3);
+      border: 1px solid var(--border); border-radius: 10px;
+      font-size: 0.85rem; cursor: pointer;
+    }
+
+    /* ── DOG ENTRIES ── */
+    .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .section-label { font-size: 0.6rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; white-space: nowrap; }
+    .section-line { flex: 1; height: 1px; background: rgba(255,255,255,0.05); }
+
+    .dog-entry {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .entry-left { flex: 1; min-width: 0; }
+    .entry-client { font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--text); }
+    .entry-dog { font-size: 0.78rem; color: var(--text2); margin-top: 1px; }
+    .entry-time { font-size: 0.68rem; color: var(--text3); margin-top: 3px; }
+    .entry-amount { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--green); flex-shrink: 0; }
+    .entry-delete {
+      background: transparent; border: none;
+      color: var(--text3); font-size: 1rem;
+      cursor: pointer; padding: 4px 6px;
+      flex-shrink: 0; opacity: 0.5;
+      transition: opacity 0.15s;
+    }
+    .entry-delete:hover { opacity: 1; }
+
+    .empty-today { text-align: center; padding: 28px 0; color: var(--text3); font-size: 0.85rem; line-height: 1.6; }
+
+    /* ── COPY / HISTORY ── */
+    .actions-row { display: flex; gap: 10px; margin-top: 20px; }
+    .copy-btn, .history-btn {
+      flex: 1; padding: 11px;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; border: 1px solid;
+      transition: opacity 0.15s;
+    }
+    .copy-btn { background: rgba(251,191,36,0.1); color: var(--amber); border-color: rgba(251,191,36,0.25); }
+    .history-btn { background: var(--surface); color: var(--text2); border-color: var(--border); }
+    .copy-btn:hover, .history-btn:hover { opacity: 0.75; }
+
+    /* ── HISTORY ── */
+    .history-panel { margin-top: 20px; display: none; }
+    .history-panel.open { display: block; }
+    .history-day {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+    .history-date { font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .history-summary { font-size: 0.78rem; color: var(--text2); }
+    .history-total { font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--green); float: right; }
+
+    footer { margin-top: 48px; text-align: center; color: #1e293b; font-size: 0.7rem; }
+  </style>
+</head>
+<body>
+
+  <div class="date-label">Daily Log · Wash Wiggle & Wag</div>
+  <div class="date-big" id="todayLabel"></div>
+  <div class="groomer-line" id="groomerSelect">
+    <select id="groomerPicker" onchange="setGroomer(this.value)" style="background:transparent;border:none;color:#94a3b8;font-size:0.82rem;font-family:'Inter',sans-serif;outline:none;cursor:pointer;padding:0;">
+      <option value="">Select your name...</option>
+      <option>Brandy</option>
+      <option>Brooke</option>
+      <option>Alexa</option>
+      <option>Brittany</option>
+      <option>Courtney</option>
+    </select>
+  </div>
+
+  <div class="total-banner">
+    <div>
+      <div class="total-label">Today's Total</div>
+      <div class="total-count" id="totalCount">0 dogs</div>
+    </div>
+    <div class="total-amount" id="totalAmount">$0</div>
+  </div>
+
+  <button class="add-btn" onclick="toggleForm()">＋ Add Dog</button>
+
+  <div class="add-form" id="addForm">
+    <div class="form-title">Who did you just groom?</div>
+    <div class="field">
+      <label>Client Name</label>
+      <input type="text" id="iClient" placeholder="Jane Smith" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label>Dog's Name</label>
+      <input type="text" id="iDog" placeholder="Buddy" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label>Amount Collected</label>
+      <div class="amount-wrap">
+        <input type="number" id="iAmount" placeholder="0" inputmode="decimal" min="0" step="1" />
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-save" onclick="saveEntry()">Save</button>
+      <button class="btn-cancel" onclick="toggleForm()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <span class="section-label">Today's Dogs</span>
+    <div class="section-line"></div>
+  </div>
+  <div id="entriesList"></div>
+
+  <div class="actions-row">
+    <button class="copy-btn" onclick="copyDaySummary()">📋 Copy Day Summary</button>
+    <button class="history-btn" onclick="toggleHistory()">📅 Past Days</button>
+  </div>
+
+  <div class="history-panel" id="historyPanel"></div>
+
+  <footer>Wash Wiggle & Wag · Daily Log · Groomer Tool</footer>
+
+<script>
+  const STORE = 'www_dailylog_v1';
+  const GROOMER_KEY = 'www_groomer';
+
+  function todayKey() {
+    return new Date().toISOString().split('T')[0];
+  }
+  function formatDate(key) {
+    return new Date(key + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  }
+  function formatTime(iso) {
+    return new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  }
+  function loadAll() {
+    try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch(e) { return {}; }
+  }
+  function saveAll(data) { localStorage.setItem(STORE, JSON.stringify(data)); }
+  function todayEntries() {
+    return loadAll()[todayKey()] || [];
+  }
+  function setGroomer(name) {
+    localStorage.setItem(GROOMER_KEY, name);
+    document.getElementById('groomerPicker').value = name;
+  }
+  function getGroomer() {
+    return localStorage.getItem(GROOMER_KEY) || '';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('todayLabel').textContent = formatDate(todayKey());
+    const g = getGroomer();
+    if (g) document.getElementById('groomerPicker').value = g;
+  });
+
+  function toggleForm() {
+    const f = document.getElementById('addForm');
+    f.classList.toggle('open');
+    if (f.classList.contains('open')) {
+      setTimeout(() => document.getElementById('iClient').focus(), 100);
+    }
+  }
+
+  function saveEntry() {
+    const client = document.getElementById('iClient').value.trim();
+    const dog    = document.getElementById('iDog').value.trim();
+    const amount = parseFloat(document.getElementById('iAmount').value) || 0;
+
+    if (!client || !dog) { alert('Enter client name and dog name.'); return; }
+    if (!getGroomer()) { alert('Pick your name at the top first.'); return; }
+
+    const all = loadAll();
+    const key = todayKey();
+    if (!all[key]) all[key] = [];
+    all[key].push({ id: Date.now(), client, dog, amount, groomer: getGroomer(), ts: new Date().toISOString() });
+    saveAll(all);
+
+    document.getElementById('iClient').value = '';
+    document.getElementById('iDog').value = '';
+    document.getElementById('iAmount').value = '';
+    toggleForm();
+    render();
+  }
+
+  function deleteEntry(id) {
+    const all = loadAll();
+    const key = todayKey();
+    if (all[key]) all[key] = all[key].filter(e => e.id !== id);
+    saveAll(all);
+    render();
+  }
+
+  function render() {
+    const entries = todayEntries();
+    const total = entries.reduce((s, e) => s + (e.amount || 0), 0);
+
+    document.getElementById('totalAmount').textContent = '$' + total.toLocaleString();
+    document.getElementById('totalCount').textContent = entries.length + ' dog' + (entries.length !== 1 ? 's' : '');
+
+    const list = document.getElementById('entriesList');
+    if (entries.length === 0) {
+      list.innerHTML = '<div class="empty-today">No dogs logged yet today.<br>Tap <strong>Add Dog</strong> after each groom.</div>';
+      return;
+    }
+    list.innerHTML = entries.map(e => `
+      <div class="dog-entry">
+        <div class="entry-left">
+          <div class="entry-client">${e.client}</div>
+          <div class="entry-dog">🐶 ${e.dog}</div>
+          <div class="entry-time">${formatTime(e.ts)}</div>
+        </div>
+        <div class="entry-amount">$${(e.amount || 0).toFixed(0)}</div>
+        <button class="entry-delete" onclick="deleteEntry(${e.id})" title="Remove">✕</button>
+      </div>
+    `).join('');
+  }
+
+  function copyDaySummary() {
+    const entries = todayEntries();
+    const total = entries.reduce((s, e) => s + (e.amount || 0), 0);
+    const g = getGroomer() || 'Groomer';
+    const lines = [`${g} — ${formatDate(todayKey())}`, ''];
+    entries.forEach((e, i) => lines.push(`${i+1}. ${e.client} (${e.dog}) — $${(e.amount||0).toFixed(0)}`));
+    lines.push('');
+    lines.push(`Total: $${total.toFixed(0)} · ${entries.length} dog${entries.length !== 1 ? 's' : ''}`);
+    navigator.clipboard.writeText(lines.join('\n')).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy Day Summary', 1800);
+    });
+  }
+
+  function toggleHistory() {
+    const panel = document.getElementById('historyPanel');
+    panel.classList.toggle('open');
+    if (panel.classList.contains('open')) renderHistory();
+  }
+
+  function renderHistory() {
+    const all = loadAll();
+    const keys = Object.keys(all).filter(k => k !== todayKey()).sort().reverse();
+    const panel = document.getElementById('historyPanel');
+    if (keys.length === 0) {
+      panel.innerHTML = '<div class="empty-today" style="padding:16px 0">No past days yet.</div>';
+      return;
+    }
+    panel.innerHTML = '<div class="section-head" style="margin-bottom:10px"><span class="section-label">Past Days</span><div class="section-line"></div></div>' +
+      keys.map(k => {
+        const entries = all[k];
+        const total = entries.reduce((s, e) => s + (e.amount || 0), 0);
+        return `<div class="history-day">
+          <div class="history-date">${formatDate(k)} <span class="history-total">$${total.toFixed(0)}</span></div>
+          <div class="history-summary">${entries.length} dog${entries.length !== 1 ? 's' : ''} · ${entries.map(e => e.dog).join(', ')}</div>
+        </div>`;
+      }).join('');
+  }
+
+  render();
+</script>
+</body>
+</html>
