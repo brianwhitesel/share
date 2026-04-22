@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Route Planner — Wash Wiggle & Wag</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --teal-dim: rgba(13,148,136,0.08);
+      --teal-border: rgba(13,148,136,0.2);
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --green: #16a34a;
+      --green-dim: rgba(22,163,74,0.08);
+      --green-border: rgba(22,163,74,0.2);
+      --amber: #d97706;
+      --amber-dim: rgba(217,119,6,0.06);
+      --amber-border: rgba(217,119,6,0.2);
+      --purple: #7c3aed;
+      --purple-dim: rgba(124,58,237,0.06);
+      --purple-border: rgba(124,58,237,0.2);
+      --blue: #2563eb;
+      --blue-dim: rgba(37,99,235,0.06);
+      --blue-border: rgba(37,99,235,0.2);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(160deg, #0f766e 0%, #0d9488 50%, #14b8a6 100%);
+      padding: 36px 20px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-inner { max-width: 480px; margin: 0 auto; position: relative; text-align: center; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 5px 13px;
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .hero-sub {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+    }
+
+    /* ── BODY ── */
+    .body-wrap { max-width: 480px; margin: 0 auto; padding: 20px 16px 80px; }
+
+    /* ── SECTION DIVIDER ── */
+    .section-head { display: flex; align-items: center; gap: 10px; margin: 20px 0 12px; }
+    .section-label { font-size: 0.6rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; white-space: nowrap; }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ── GROOMER SELECTOR ── */
+    .groomer-row {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .groomer-row label { font-size: 0.78rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+    .groomer-row select {
+      flex: 1;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.88rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      outline: none;
+      appearance: none;
+    }
+    .groomer-row select:focus { border-color: var(--teal); }
+
+    /* ── ADD STOP BUTTON ── */
+    .add-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-bottom: 14px;
+      transition: background 0.18s, transform 0.15s;
+    }
+    .add-btn:hover { background: #0f766e; }
+    .add-btn:active { transform: scale(0.98); }
+
+    /* ── ADD FORM ── */
+    .add-form {
+      background: var(--card);
+      border: 1px solid var(--teal-border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 14px;
+      display: none;
+      box-shadow: 0 4px 16px rgba(13,148,136,0.08);
+    }
+    .add-form.open { display: block; }
+    .form-title { font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--teal); margin-bottom: 14px; }
+    .field { margin-bottom: 12px; }
+    .field label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+    .field input {
+      width: 100%;
+      padding: 11px 13px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    .field input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13,148,136,0.1); }
+    .field input::placeholder { color: var(--text3); }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .form-actions { display: flex; gap: 10px; }
+    .btn-save {
+      flex: 1; padding: 12px;
+      background: var(--teal); color: #fff;
+      border: none; border-radius: 9px;
+      font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 800;
+      cursor: pointer; transition: background 0.18s;
+    }
+    .btn-save:hover { background: #0f766e; }
+    .btn-cancel {
+      padding: 12px 16px;
+      background: transparent; color: var(--text3);
+      border: 1.5px solid var(--border); border-radius: 9px;
+      font-size: 0.82rem; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── EMPTY ── */
+    .empty-state {
+      text-align: center;
+      padding: 32px 0;
+      color: var(--text3);
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+    .empty-icon {
+      width: 48px; height: 48px;
+      background: var(--teal-dim);
+      border: 1px solid var(--teal-border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
+    }
+
+    /* ── STOP CARDS ── */
+    .stop-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .stop-num {
+      width: 30px; height: 30px;
+      background: var(--teal);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800; font-size: 0.82rem;
+      flex-shrink: 0;
+    }
+    .stop-info { flex: 1; min-width: 0; }
+    .stop-name { font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--text); }
+    .stop-address { font-size: 0.78rem; color: var(--text2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .stop-zip { font-size: 0.68rem; color: var(--text3); margin-top: 2px; }
+    .stop-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .btn-map {
+      padding: 7px 11px;
+      background: var(--teal-dim);
+      border: 1px solid var(--teal-border);
+      border-radius: 8px;
+      color: var(--teal);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex; align-items: center; gap: 4px;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .btn-map:hover { background: rgba(13,148,136,0.14); }
+    .btn-remove {
+      padding: 7px 9px;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      color: var(--text3);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .btn-remove:hover { color: #dc2626; border-color: #fecaca; background: #fef2f2; }
+
+    /* ── ROUTE ACTIONS ── */
+    .route-actions { display: flex; gap: 10px; margin-top: 14px; }
+    .btn-optimize {
+      flex: 1; padding: 13px;
+      background: var(--teal); color: #fff;
+      border: none; border-radius: 10px;
+      font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 800;
+      cursor: pointer; transition: background 0.18s;
+    }
+    .btn-optimize:hover { background: #0f766e; }
+    .btn-copy {
+      padding: 13px 16px;
+      background: var(--amber-dim);
+      border: 1.5px solid var(--amber-border);
+      border-radius: 10px;
+      color: var(--amber);
+      font-size: 0.8rem; font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: opacity 0.15s;
+    }
+    .btn-copy:hover { opacity: 0.75; }
+
+    /* ── OPTIMIZED NOTICE ── */
+    .optimized-banner {
+      background: var(--green-dim);
+      border: 1px solid var(--green-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      font-size: 0.8rem;
+      color: var(--green);
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .optimized-banner.show { display: flex; }
+
+    /* ── STATS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 10px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+    .stat-num { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--teal); }
+    .stat-label { font-size: 0.62rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 2px; }
+
+    /* ══════════════════════════════════════════
+       UPGRADE TIERS SECTION
+    ══════════════════════════════════════════ */
+    .tiers-section {
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 2px solid var(--border);
+    }
+    .tiers-header { text-align: center; margin-bottom: 20px; }
+    .tiers-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 6px;
+    }
+    .tiers-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .tiers-sub { font-size: 0.82rem; color: var(--text2); line-height: 1.6; }
+
+    .tier-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 12px;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .tier-card.active { border-color: var(--teal); box-shadow: 0 4px 20px rgba(13,148,136,0.1); }
+    .tier-card.upgrade { border-color: var(--purple-border); }
+    .tier-card.enterprise { border-color: var(--blue-border); }
+
+    .tier-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 9px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .badge-active  { background: var(--teal-dim);   color: var(--teal);   border: 1px solid var(--teal-border); }
+    .badge-upgrade { background: var(--purple-dim);  color: var(--purple); border: 1px solid var(--purple-border); }
+    .badge-enterprise { background: var(--blue-dim); color: var(--blue);   border: 1px solid var(--blue-border); }
+
+    .tier-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .tier-price {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+    .tier-price span { font-size: 0.75rem; font-weight: 500; color: var(--text3); }
+    .tier-price .included { font-size: 0.85rem; font-weight: 700; color: var(--teal); }
+
+    .tier-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .tier-features li {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: 0.82rem;
+      color: var(--text2);
+      line-height: 1.5;
+    }
+    .tier-features li .check {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .check-teal   { background: var(--teal-dim);   color: var(--teal); }
+    .check-purple { background: var(--purple-dim);  color: var(--purple); }
+    .check-blue   { background: var(--blue-dim);    color: var(--blue); }
+
+    .tier-cta {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 16px;
+      border: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .tier-cta:active { transform: scale(0.98); }
+    .cta-teal    { background: var(--teal);   color: #fff; }
+    .cta-purple  { background: var(--purple);  color: #fff; }
+    .cta-blue    { background: var(--blue);    color: #fff; }
+    .cta-teal:hover   { background: #0f766e; }
+    .cta-purple:hover { background: #6d28d9; }
+    .cta-blue:hover   { background: #1d4ed8; }
+
+    .current-pill {
+      position: absolute;
+      top: -1px; right: 16px;
+      background: var(--teal);
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 0 0 8px 8px;
+    }
+
+    footer { margin-top: 40px; text-align: center; color: var(--text3); font-size: 0.7rem; padding-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Route Planner · Wash Wiggle &amp; Wag
+    </div>
+    <h1>Plan Today's Route</h1>
+    <p class="hero-sub">Add your stops, get the smartest order — less driving, more grooming.</p>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <!-- GROOMER -->
+  <div class="groomer-row">
+    <label>Groomer</label>
+    <select id="groomerPicker" onchange="setGroomer(this.value)">
+      <option value="">Select your name…</option>
+      <option>Brandy</option>
+      <option>Brooke</option>
+      <option>Alexa</option>
+      <option>Brittany</option>
+      <option>Courtney</option>
+    </select>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num" id="statStops">0</div>
+      <div class="stat-label">Stops</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statZips">0</div>
+      <div class="stat-label">Areas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statSaved">—</div>
+      <div class="stat-label">Miles saved</div>
+    </div>
+  </div>
+
+  <!-- ADD BUTTON -->
+  <button class="add-btn" onclick="toggleForm()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:middle;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Add Stop
+  </button>
+
+  <!-- ADD FORM -->
+  <div class="add-form" id="addForm">
+    <div class="form-title">Add a stop</div>
+    <div class="field">
+      <label>Client Name</label>
+      <input type="text" id="iName" placeholder="Jane Smith" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label>Street Address</label>
+      <input type="text" id="iAddress" placeholder="123 Main St" autocomplete="off" />
+    </div>
+    <div class="field-row">
+      <div class="field" style="margin-bottom:0;">
+        <label>City</label>
+        <input type="text" id="iCity" placeholder="Centerburg" autocomplete="off" />
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label>ZIP Code</label>
+        <input type="text" id="iZip" placeholder="43011" inputmode="numeric" maxlength="5" />
+      </div>
+    </div>
+    <div class="form-actions" style="margin-top:14px;">
+      <button class="btn-save" onclick="addStop()">Add Stop</button>
+      <button class="btn-cancel" onclick="toggleForm()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- OPTIMIZED BANNER -->
+  <div class="optimized-banner" id="optimizedBanner">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    Route optimized — stops grouped by area to cut backtracking.
+  </div>
+
+  <!-- STOPS LIST -->
+  <div class="section-head">
+    <span class="section-label">Today's Stops</span>
+    <div class="section-line"></div>
+  </div>
+  <div id="stopsList"></div>
+
+  <!-- ROUTE ACTIONS -->
+  <div class="route-actions" id="routeActions" style="display:none;">
+    <button class="btn-optimize" onclick="optimizeRoute()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:middle;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Optimize Route
+    </button>
+    <button class="btn-copy" onclick="copyRoute()">📋 Copy</button>
+  </div>
+
+  <!-- ══ UPGRADE TIERS ══ -->
+  <div class="tiers-section">
+    <div class="tiers-header">
+      <div class="tiers-eyebrow">Route Planner — What's available</div>
+      <div class="tiers-title">Simple now. Powerful later.</div>
+      <div class="tiers-sub">The base tool is included in your current plan. Map view and full optimization are available as add-ons.</div>
+    </div>
+
+    <!-- TIER 1 — INCLUDED -->
+    <div class="tier-card active">
+      <div class="current-pill">✓ Active</div>
+      <div class="tier-badge badge-active">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Included in your plan
+      </div>
+      <div class="tier-name">Smart Route Planner</div>
+      <div class="tier-price"><span class="included">Included</span></div>
+      <ul class="tier-features">
+        <li>
+          <div class="check check-teal"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Add stops with name, address, and ZIP code
+        </li>
+        <li>
+          <div class="check check-teal"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          One-tap route optimization — stops sorted by area to cut backtracking
+        </li>
+        <li>
+          <div class="check check-teal"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Direct Google Maps link for each stop
+        </li>
+        <li>
+          <div class="check check-teal"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Copy full route as a text list to share
+        </li>
+        <li>
+          <div class="check check-teal"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Per-groomer routes — each groomer plans their own day
+        </li>
+      </ul>
+    </div>
+
+    <!-- TIER 2 — MAP VIEW -->
+    <div class="tier-card upgrade">
+      <div class="tier-badge badge-upgrade">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        Upgrade available
+      </div>
+      <div class="tier-name">Map View Add-on</div>
+      <div class="tier-price">+$15 <span>/ month</span></div>
+      <ul class="tier-features">
+        <li>
+          <div class="check check-purple"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Everything in Smart Route Planner
+        </li>
+        <li>
+          <div class="check check-purple"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Visual map — see all your stops plotted before you leave
+        </li>
+        <li>
+          <div class="check check-purple"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Estimated drive time between each stop
+        </li>
+        <li>
+          <div class="check check-purple"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Route drawn on map — drag stops to reorder
+        </li>
+        <li>
+          <div class="check check-purple"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          One-tap open in Google Maps or Apple Maps
+        </li>
+      </ul>
+      <button class="tier-cta cta-purple" onclick="contactUpgrade('map-view')">Ask about Map View →</button>
+    </div>
+
+    <!-- TIER 3 — FULL OPTIMIZATION -->
+    <div class="tier-card enterprise">
+      <div class="tier-badge badge-enterprise">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Full suite
+      </div>
+      <div class="tier-name">Full Route Optimization</div>
+      <div class="tier-price">Custom <span>pricing</span></div>
+      <ul class="tier-features">
+        <li>
+          <div class="check check-blue"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Everything in Map View
+        </li>
+        <li>
+          <div class="check check-blue"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          AI-optimized multi-groomer scheduling across all vans
+        </li>
+        <li>
+          <div class="check check-blue"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Booking requests auto-assigned to nearest available groomer
+        </li>
+        <li>
+          <div class="check check-blue"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Live traffic — routes updated if something changes mid-day
+        </li>
+        <li>
+          <div class="check check-blue"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Weekly mileage and efficiency reports per groomer
+        </li>
+      </ul>
+      <button class="tier-cta cta-blue" onclick="contactUpgrade('full-optimization')">Ask about Full Suite →</button>
+    </div>
+
+  </div>
+
+  <footer>Wash Wiggle &amp; Wag · Route Planner</footer>
+</div>
+
+<script>
+  const STORE_KEY = 'www_route_v1';
+  const GROOMER_KEY = 'www_groomer';
+
+  function loadStops() {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch(e) { return []; }
+  }
+  function saveStops(stops) { localStorage.setItem(STORE_KEY, JSON.stringify(stops)); }
+
+  function setGroomer(name) {
+    localStorage.setItem(GROOMER_KEY, name);
+  }
+  function getGroomer() {
+    return localStorage.getItem(GROOMER_KEY) || '';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const g = getGroomer();
+    if (g) document.getElementById('groomerPicker').value = g;
+    render();
+  });
+
+  function toggleForm() {
+    const f = document.getElementById('addForm');
+    f.classList.toggle('open');
+    if (f.classList.contains('open')) setTimeout(() => document.getElementById('iName').focus(), 80);
+  }
+
+  function addStop() {
+    const name    = document.getElementById('iName').value.trim();
+    const address = document.getElementById('iAddress').value.trim();
+    const city    = document.getElementById('iCity').value.trim();
+    const zip     = document.getElementById('iZip').value.trim();
+
+    if (!name) { document.getElementById('iName').focus(); return; }
+    if (!city && !zip) { document.getElementById('iCity').focus(); return; }
+
+    const stops = loadStops();
+    stops.push({ id: Date.now(), name, address, city, zip });
+    saveStops(stops);
+
+    document.getElementById('iName').value = '';
+    document.getElementById('iAddress').value = '';
+    document.getElementById('iCity').value = '';
+    document.getElementById('iZip').value = '';
+    toggleForm();
+    render();
+  }
+
+  function removeStop(id) {
+    saveStops(loadStops().filter(s => s.id !== id));
+    render();
+  }
+
+  // Sort stops by ZIP code (simple geo-cluster: alphabetical ZIP groups nearby areas)
+  function optimizeRoute() {
+    const stops = loadStops();
+    if (stops.length < 2) return;
+    stops.sort((a, b) => {
+      const za = a.zip || a.city || '';
+      const zb = b.zip || b.city || '';
+      return za.localeCompare(zb);
+    });
+    saveStops(stops);
+    document.getElementById('optimizedBanner').classList.add('show');
+    // Estimate ~2 miles saved per avoided backtrack (rough)
+    const uniqueZips = new Set(stops.map(s => s.zip || s.city)).size;
+    const saved = Math.max(0, (stops.length - uniqueZips)) * 2;
+    document.getElementById('statSaved').textContent = saved > 0 ? '~' + saved : '0';
+    render(true);
+  }
+
+  function mapsUrl(stop) {
+    const query = encodeURIComponent([stop.address, stop.city, stop.zip].filter(Boolean).join(' '));
+    return `https://maps.google.com/?q=${query}`;
+  }
+
+  function render(optimized = false) {
+    const stops = loadStops();
+
+    document.getElementById('statStops').textContent = stops.length;
+    const uniqueZips = new Set(stops.map(s => s.zip || s.city).filter(Boolean)).size;
+    document.getElementById('statZips').textContent = uniqueZips;
+
+    const list = document.getElementById('stopsList');
+    const actions = document.getElementById('routeActions');
+
+    if (stops.length === 0) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          No stops added yet.<br>Tap <strong>Add Stop</strong> to build today's route.
+        </div>`;
+      actions.style.display = 'none';
+      return;
+    }
+
+    list.innerHTML = stops.map((s, i) => `
+      <div class="stop-card">
+        <div class="stop-num">${i + 1}</div>
+        <div class="stop-info">
+          <div class="stop-name">${s.name}</div>
+          ${s.address ? `<div class="stop-address">${s.address}${s.city ? ', ' + s.city : ''}</div>` : s.city ? `<div class="stop-address">${s.city}</div>` : ''}
+          ${s.zip ? `<div class="stop-zip">ZIP ${s.zip}</div>` : ''}
+        </div>
+        <div class="stop-actions">
+          <a class="btn-map" href="${mapsUrl(s)}" target="_blank">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Map
+          </a>
+          <button class="btn-remove" onclick="removeStop(${s.id})">✕</button>
+        </div>
+      </div>
+    `).join('');
+
+    actions.style.display = 'flex';
+  }
+
+  function copyRoute() {
+    const stops = loadStops();
+    const groomer = getGroomer() || 'Groomer';
+    const lines = [`${groomer}'s Route — ${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}`, ''];
+    stops.forEach((s, i) => {
+      const loc = [s.address, s.city, s.zip].filter(Boolean).join(', ');
+      lines.push(`${i + 1}. ${s.name}${loc ? ' — ' + loc : ''}`);
+    });
+    navigator.clipboard.writeText(lines.join('\n')).then(() => {
+      const btn = document.querySelector('.btn-copy');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 1800);
+    });
+  }
+
+  function contactUpgrade(tier) {
+    const msg = tier === 'map-view'
+      ? "Hey Brian — I'm interested in the Map View add-on for Route Planner. Can you set that up?"
+      : "Hey Brian — I want to learn more about the Full Route Optimization suite.";
+    window.location.href = `sms:6149358958&body=${encodeURIComponent(msg)}`;
+  }
+</script>
+</body>
+</html>
