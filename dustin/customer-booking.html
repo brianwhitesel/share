@@ -364,35 +364,35 @@
 <div class="section" id="book" style="padding-top:0;">
     <div class="booking-form" id="bookingForm">
         <div class="form-title">Request an appointment</div>
-        <div class="form-sub">We'll text you within 24 hours to confirm your spot.</div>
+        <div class="form-sub">We'll text you within 24 hours to confirm your spot. Fields marked <span style="color:#dc2626;font-weight:600;">*</span> are required.</div>
 
         <div class="form-row">
-            <label class="form-label">Your name</label>
+            <label class="form-label">Your name <span style="color:#dc2626;">*</span></label>
             <input type="text" class="form-input" placeholder="Jane Smith" id="fName">
         </div>
         <div class="form-row-2">
             <div class="form-row" style="margin-bottom:0;">
-                <label class="form-label">Phone number</label>
+                <label class="form-label">Phone number <span style="color:#dc2626;">*</span></label>
                 <input type="tel" class="form-input" placeholder="(740) 555-0000" id="fPhone">
             </div>
             <div class="form-row" style="margin-bottom:0;">
-                <label class="form-label">ZIP code</label>
+                <label class="form-label">ZIP code <span style="color:#dc2626;">*</span></label>
                 <input type="text" class="form-input" placeholder="43011" id="fZip">
             </div>
         </div>
         <div class="form-row-2" style="margin-top:16px;">
             <div class="form-row" style="margin-bottom:0;">
-                <label class="form-label">Dog's name</label>
+                <label class="form-label">Dog's name <span style="color:#dc2626;">*</span></label>
                 <input type="text" class="form-input" placeholder="Buddy" id="fDogName">
             </div>
             <div class="form-row" style="margin-bottom:0;">
-                <label class="form-label">Breed</label>
+                <label class="form-label">Breed <span style="color:#dc2626;">*</span></label>
                 <input type="text" class="form-input" placeholder="Golden Doodle" id="fBreed">
             </div>
         </div>
         <div class="form-row-2" style="margin-top:16px;">
             <div class="form-row" style="margin-bottom:0;">
-                <label class="form-label">Dog's weight</label>
+                <label class="form-label">Dog's weight <span style="color:#dc2626;">*</span></label>
                 <select class="form-select" id="fWeight">
                     <option value="">Select weight...</option>
                     <option value="xs">Under 15 lbs</option>
@@ -403,7 +403,7 @@
                 </select>
             </div>
             <div class="form-row" style="margin-bottom:0;">
-                <label class="form-label">Coat type</label>
+                <label class="form-label">Coat type <span style="color:#dc2626;">*</span></label>
                 <select class="form-select" id="fCoat">
                     <option value="">Select coat...</option>
                     <option value="short">Short / smooth</option>
@@ -423,7 +423,7 @@
         </div>
 
         <div class="form-row" style="margin-top:16px;">
-            <label class="form-label">Photo of your dog <span style="font-weight:400;color:var(--text3)">(helps us prepare)</span></label>
+            <label class="form-label">Photo of your dog <span style="color:#dc2626;">*</span> <span style="font-weight:400;color:var(--text3)">(helps us prepare)</span></label>
             <input type="file" class="form-input" id="fPhoto" accept="image/*" capture="environment" style="padding:10px 14px;cursor:pointer;">
         </div>
         <div class="form-row" style="margin-top:16px;">
@@ -480,32 +480,90 @@
     document.getElementById('fWeight').addEventListener('change', updateEstimate);
     document.getElementById('fCoat').addEventListener('change', updateEstimate);
 
+    // ── GOOGLE SHEETS ENDPOINT ──────────────────────────────────────────
+    // Paste your Apps Script Web App URL here after deploying (see setup doc)
+    const SHEETS_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+    // ────────────────────────────────────────────────────────────────────
+
+    // Field error helpers
+    function setError(id, msg) {
+        const el = document.getElementById(id);
+        el.style.borderColor = '#dc2626';
+        el.style.boxShadow = '0 0 0 3px rgba(220,38,38,0.12)';
+        let err = el.parentNode.querySelector('.field-err');
+        if (!err) { err = document.createElement('div'); err.className = 'field-err'; err.style.cssText = 'font-size:0.7rem;color:#dc2626;margin-top:4px;'; el.parentNode.appendChild(err); }
+        err.textContent = msg;
+    }
+    function clearErrors() {
+        document.querySelectorAll('.form-input, .form-select').forEach(el => {
+            el.style.borderColor = '';
+            el.style.boxShadow = '';
+        });
+        document.querySelectorAll('.field-err').forEach(e => e.remove());
+    }
+
     // Form submission
     function submitBooking() {
-        const name = document.getElementById('fName').value.trim();
-        const phone = document.getElementById('fPhone').value.trim();
+        clearErrors();
+
+        const name    = document.getElementById('fName').value.trim();
+        const phone   = document.getElementById('fPhone').value.trim();
+        const zip     = document.getElementById('fZip').value.trim();
         const dogName = document.getElementById('fDogName').value.trim();
-        if (!name || !phone || !dogName) {
-            alert('Please fill in your name, phone number, and your dog\'s name.');
+        const breed   = document.getElementById('fBreed').value.trim();
+        const weight  = document.getElementById('fWeight').value;
+        const coat    = document.getElementById('fCoat').value;
+        const photo   = document.getElementById('fPhoto').files[0];
+
+        let valid = true;
+        if (!name)    { setError('fName',    'Your name is required.');        valid = false; }
+        if (!phone)   { setError('fPhone',   'Phone number is required.');     valid = false; }
+        if (!zip)     { setError('fZip',     'ZIP code is required.');         valid = false; }
+        if (!dogName) { setError('fDogName', "Dog's name is required.");       valid = false; }
+        if (!breed)   { setError('fBreed',   'Breed is required.');            valid = false; }
+        if (!weight)  { setError('fWeight',  'Please select a weight range.'); valid = false; }
+        if (!coat)    { setError('fCoat',    'Please select a coat type.');    valid = false; }
+        if (!photo)   { setError('fPhoto',   'Please attach a photo of your dog.'); valid = false; }
+
+        if (!valid) {
+            // scroll to first error
+            const first = document.querySelector('.field-err');
+            if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
             return;
         }
 
+        // Build weight/coat labels for readable sheet output
+        const weightLabels = { xs:'Under 15 lbs', sm:'15–30 lbs', md:'30–55 lbs', lg:'55–85 lbs', xl:'85+ lbs' };
+        const coatLabels   = { short:'Short/smooth', medium:'Medium', long:'Long/thick', curly:'Curly/doodle', double:'Double coat' };
+
         const booking = {
-            name, phone,
-            zip: document.getElementById('fZip').value,
-            dogName,
-            breed: document.getElementById('fBreed').value,
-            weight: document.getElementById('fWeight').value,
-            coat: document.getElementById('fCoat').value,
-            notes: document.getElementById('fNotes').value,
+            name, phone, zip, dogName, breed,
+            weight: weightLabels[weight] || weight,
+            coat:   coatLabels[coat]   || coat,
+            notes:  document.getElementById('fNotes').value.trim(),
+            photoName: photo ? photo.name : '',
             submitted: new Date().toLocaleString()
         };
+
+        // Save locally
         try {
             const existing = JSON.parse(localStorage.getItem('www_bookings') || '[]');
             existing.push(booking);
             localStorage.setItem('www_bookings', JSON.stringify(existing));
         } catch(e) {}
 
+        // Send to Google Sheets (if URL is configured)
+        if (SHEETS_URL && SHEETS_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+            const body = new URLSearchParams(booking).toString();
+            fetch(SHEETS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body
+            }).catch(() => {}); // silent fail — local save is the backup
+        }
+
+        // Show success
         document.getElementById('bookingForm').style.display = 'none';
         document.getElementById('successState').style.display = 'block';
         document.getElementById('book').scrollIntoView({ behavior: 'smooth' });

@@ -4,58 +4,82 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rebook Tracker — Wash Wiggle & Wag</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0d0f14;
-      --surface: rgba(255,255,255,0.04);
-      --border: rgba(255,255,255,0.08);
-      --text: #f1f5f9;
-      --text2: #94a3b8;
-      --text3: #475569;
-      --teal: #2dd4bf;
-      --teal-dim: rgba(45,212,191,0.08);
-      --teal-border: rgba(45,212,191,0.2);
-      --green: #4ade80;
-      --green-dim: rgba(74,222,128,0.07);
-      --green-border: rgba(74,222,128,0.18);
-      --amber: #fbbf24;
-      --amber-dim: rgba(251,191,36,0.08);
-      --amber-border: rgba(251,191,36,0.2);
-      --red: #f87171;
-      --red-dim: rgba(248,113,113,0.08);
-      --red-border: rgba(248,113,113,0.22);
-      --blue: #60a5fa;
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --teal-dim: rgba(13,148,136,0.08);
+      --teal-border: rgba(13,148,136,0.2);
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --red: #dc2626;
+      --red-bg: #fef2f2;
+      --red-border: #fecaca;
+      --amber: #d97706;
+      --amber-bg: #fffbeb;
+      --amber-border: #fde68a;
+      --green: #16a34a;
+      --green-bg: #f0fdf4;
+      --green-border: #bbf7d0;
     }
     body {
       background: var(--bg);
       color: var(--text);
       font-family: 'Inter', sans-serif;
       min-height: 100vh;
-      padding: 28px 16px 80px;
-      max-width: 500px;
-      margin: 0 auto;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── HEADER ── */
-    .header { margin-bottom: 24px; }
-    .header-label { font-size: 0.6rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; margin-bottom: 5px; }
-    .header-title { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--text); line-height: 1.1; margin-bottom: 4px; }
-    .header-sub { font-size: 0.8rem; color: var(--text2); }
-
-    /* ── STATS ROW ── */
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
-    .stat {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
+    /* ── HERO BAR ── */
+    .hero-bar {
+      background: linear-gradient(160deg, #0f766e 0%, #0d9488 60%, #14b8a6 100%);
+      padding: 32px 24px 36px;
       text-align: center;
     }
-    .stat-num { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800; line-height: 1; margin-bottom: 4px; }
-    .stat-label { font-size: 0.65rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; }
+    .hero-bar .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .hero-bar h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .hero-bar p { font-size: 0.85rem; color: rgba(255,255,255,0.78); }
+
+    /* ── CONTENT ── */
+    .content { max-width: 540px; margin: 0 auto; padding: 28px 20px 80px; }
+
+    /* ── STATS ── */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 12px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .stat-num { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-size: 0.65rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
     .stat.red .stat-num { color: var(--red); }
     .stat.amber .stat-num { color: var(--amber); }
     .stat.green .stat-num { color: var(--green); }
@@ -63,241 +87,231 @@
     /* ── ADD BUTTON ── */
     .add-btn {
       width: 100%;
-      padding: 13px;
+      padding: 14px;
       background: var(--teal);
-      color: #0d0f14;
+      color: #fff;
       border: none;
       border-radius: 12px;
       font-family: 'Outfit', sans-serif;
       font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
-      margin-bottom: 24px;
-      transition: opacity 0.18s;
+      margin-bottom: 20px;
+      transition: background 0.18s, transform 0.15s;
+      box-shadow: 0 2px 12px rgba(13,148,136,0.25);
     }
-    .add-btn:hover { opacity: 0.88; }
+    .add-btn:hover { background: #0f766e; transform: translateY(-1px); }
 
     /* ── ADD FORM ── */
     .add-form {
-      background: var(--teal-dim);
+      background: var(--card);
       border: 1px solid var(--teal-border);
       border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 24px;
+      padding: 22px;
+      margin-bottom: 22px;
       display: none;
+      box-shadow: 0 4px 16px rgba(13,148,136,0.1);
     }
     .add-form.open { display: block; }
     .form-title { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700; color: var(--teal); margin-bottom: 16px; }
     .field { margin-bottom: 12px; }
-    .field label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--text2); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 5px; }
+    .field label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--text2); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 5px; }
     .field input, .field select {
       width: 100%;
       padding: 10px 12px;
-      background: rgba(0,0,0,0.3);
-      border: 1px solid var(--border);
+      background: var(--bg);
+      border: 1.5px solid var(--border);
       border-radius: 8px;
       color: var(--text);
       font-size: 0.9rem;
       font-family: 'Inter', sans-serif;
       outline: none;
       appearance: none;
-      transition: border-color 0.18s;
+      transition: border-color 0.18s, box-shadow 0.18s;
     }
-    .field input:focus, .field select:focus { border-color: var(--teal); }
-    .field select option { background: #1e2535; }
+    .field input:focus, .field select:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(13,148,136,0.1);
+    }
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .form-actions { display: flex; gap: 10px; margin-top: 16px; }
     .btn-save {
       flex: 1; padding: 11px;
-      background: var(--teal); color: #0d0f14;
+      background: var(--teal); color: #fff;
       border: none; border-radius: 8px;
-      font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 700;
+      font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 700;
       cursor: pointer;
+      transition: background 0.18s;
     }
+    .btn-save:hover { background: #0f766e; }
     .btn-cancel {
       padding: 11px 18px;
       background: transparent; color: var(--text3);
-      border: 1px solid var(--border); border-radius: 8px;
-      font-family: 'Inter', sans-serif; font-size: 0.85rem;
-      cursor: pointer;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 0.85rem; cursor: pointer;
     }
 
     /* ── SECTION HEADER ── */
-    .section-head {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 10px; margin-top: 8px;
-    }
-    .section-label {
-      font-size: 0.62rem; color: var(--text3);
-      text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600;
-      white-space: nowrap;
-    }
-    .section-line { flex: 1; height: 1px; background: rgba(255,255,255,0.05); }
+    .section-head { display: flex; align-items: center; gap: 10px; margin: 20px 0 10px; }
+    .section-label { font-size: 0.62rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; white-space: nowrap; }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
     .section-count {
       font-family: 'Outfit', sans-serif; font-size: 0.7rem; font-weight: 700;
-      padding: 2px 7px; border-radius: 10px;
+      padding: 2px 8px; border-radius: 10px;
     }
-    .count-red { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-border); }
-    .count-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); }
-    .count-green { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+    .count-red { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+    .count-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+    .count-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
 
     /* ── CLIENT CARD ── */
     .client-card {
       border-radius: 14px;
-      padding: 16px;
+      padding: 16px 18px;
       margin-bottom: 10px;
-      border: 1px solid;
+      border: 1.5px solid;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     }
-    .client-card.overdue { background: var(--red-dim); border-color: var(--red-border); }
-    .client-card.due-soon { background: var(--amber-dim); border-color: var(--amber-border); }
-    .client-card.on-track { background: var(--surface); border-color: var(--border); }
-    .client-card.rebooked { background: var(--green-dim); border-color: var(--green-border); opacity: 0.6; }
+    .client-card.overdue  { background: var(--red-bg);   border-color: var(--red-border); }
+    .client-card.due-soon { background: var(--amber-bg); border-color: var(--amber-border); }
+    .client-card.on-track { background: var(--card);     border-color: var(--border); }
+    .client-card.rebooked { background: var(--green-bg); border-color: var(--green-border); opacity: 0.7; }
 
-    .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 10px; }
     .client-name { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); }
-    .dog-name { font-size: 0.78rem; color: var(--text2); margin-top: 1px; }
+    .dog-name { font-size: 0.78rem; color: var(--text2); margin-top: 2px; }
     .days-badge {
-      font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 800;
+      font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 700;
       padding: 4px 10px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
     }
-    .overdue .days-badge { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-border); }
-    .due-soon .days-badge { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); }
-    .on-track .days-badge { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
-    .rebooked .days-badge { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+    .overdue  .days-badge { background: var(--red-bg);   color: var(--red);   border: 1.5px solid var(--red-border); }
+    .due-soon .days-badge { background: var(--amber-bg); color: var(--amber); border: 1.5px solid var(--amber-border); }
+    .on-track .days-badge { background: var(--green-bg); color: var(--green); border: 1.5px solid var(--green-border); }
+    .rebooked .days-badge { background: var(--green-bg); color: var(--green); border: 1.5px solid var(--green-border); }
 
-    .card-meta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; }
+    .card-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
     .meta-item { font-size: 0.75rem; color: var(--text3); }
-    .meta-item span { color: var(--text2); }
-
-    .card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    .action-btn {
-      padding: 7px 13px;
-      border-radius: 8px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1px solid;
-      transition: opacity 0.15s;
-    }
-    .action-btn:hover { opacity: 0.75; }
-    .btn-copy { background: rgba(251,191,36,0.12); color: var(--amber); border-color: var(--amber-border); }
-    .btn-rebooked { background: var(--green-dim); color: var(--green); border-color: var(--green-border); }
-    .btn-delete { background: transparent; color: var(--text3); border-color: var(--border); margin-left: auto; }
+    .meta-item span { color: var(--text2); font-weight: 500; }
 
     .sms-preview {
-      background: rgba(0,0,0,0.3);
-      border: 1px solid var(--border);
+      background: #f1faf9;
+      border: 1px solid var(--teal-border);
       border-radius: 10px;
       padding: 12px 14px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--text2);
       line-height: 1.55;
       margin-bottom: 10px;
       display: none;
     }
     .sms-preview.open { display: block; }
-    .sms-label { font-size: 0.62rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 6px; }
-    .sms-text { color: var(--text); font-style: italic; }
+    .sms-label { font-size: 0.62rem; color: var(--teal); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 6px; }
+    .sms-text { color: var(--text); }
 
-    .empty-state { text-align: center; padding: 28px 16px; color: var(--text3); font-size: 0.85rem; }
+    .card-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .action-btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid;
+      transition: opacity 0.15s, transform 0.12s;
+    }
+    .action-btn:hover { opacity: 0.78; }
+    .btn-copy    { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-border); }
+    .btn-rebooked{ background: var(--green-bg); color: var(--green); border-color: var(--green-border); }
+    .btn-delete  { background: transparent; color: var(--text3); border-color: var(--border); margin-left: auto; }
 
-    footer { margin-top: 48px; text-align: center; color: #1e293b; font-size: 0.7rem; }
+    .empty-state {
+      text-align: center; padding: 32px 16px;
+      color: var(--text3); font-size: 0.85rem; line-height: 1.7;
+    }
+
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 20px;
+      font-size: 0.75rem;
+      color: var(--text3);
+    }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="header-label">Operator Tool · Wash Wiggle & Wag</div>
-    <div class="header-title">Rebook Tracker</div>
-    <div class="header-sub">Who's due for a "time to book again" text?</div>
+  <div class="hero-bar">
+    <div class="badge">Operator Tool · WWW</div>
+    <h1>Rebook Tracker</h1>
+    <p>Who's due for a "time to book again" text?</p>
   </div>
 
-  <div class="stats">
-    <div class="stat red"><div class="stat-num" id="countOverdue">0</div><div class="stat-label">Overdue</div></div>
-    <div class="stat amber"><div class="stat-num" id="countSoon">0</div><div class="stat-label">Due Soon</div></div>
-    <div class="stat green"><div class="stat-num" id="countGood">0</div><div class="stat-label">On Track</div></div>
+  <div class="content">
+
+    <div class="stats">
+      <div class="stat red"><div class="stat-num" id="countOverdue">0</div><div class="stat-label">Overdue</div></div>
+      <div class="stat amber"><div class="stat-num" id="countSoon">0</div><div class="stat-label">Due Soon</div></div>
+      <div class="stat green"><div class="stat-num" id="countGood">0</div><div class="stat-label">On Track</div></div>
+    </div>
+
+    <button class="add-btn" onclick="toggleForm()">+ Log Completed Appointment</button>
+
+    <div class="add-form" id="addForm">
+      <div class="form-title">Log an appointment</div>
+      <div class="field-row">
+        <div class="field"><label>Client Name</label><input type="text" id="iClient" placeholder="Jane Smith" /></div>
+        <div class="field"><label>Phone</label><input type="tel" id="iPhone" placeholder="(740) 555-0000" /></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Dog's Name</label><input type="text" id="iDog" placeholder="Buddy" /></div>
+        <div class="field">
+          <label>Groomer</label>
+          <select id="iGroomer">
+            <option value="">Select...</option>
+            <option>Brandy</option><option>Brooke</option><option>Alexa</option>
+            <option>Brittany</option><option>Courtney</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Groom Date</label><input type="date" id="iDate" /></div>
+        <div class="field">
+          <label>Remind After</label>
+          <select id="iWeeks">
+            <option value="28">4 weeks</option>
+            <option value="35">5 weeks</option>
+            <option value="42">6 weeks</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-save" onclick="saveAppointment()">Save Appointment</button>
+        <button class="btn-cancel" onclick="toggleForm()">Cancel</button>
+      </div>
+    </div>
+
+    <div id="listOverdue"></div>
+    <div id="listSoon"></div>
+    <div id="listGood"></div>
+    <div id="listRebooked"></div>
+
   </div>
 
-  <button class="add-btn" onclick="toggleForm()">+ Log Completed Appointment</button>
-
-  <div class="add-form" id="addForm">
-    <div class="form-title">Log an appointment</div>
-    <div class="field-row">
-      <div class="field">
-        <label>Client Name</label>
-        <input type="text" id="iClient" placeholder="Jane Smith" />
-      </div>
-      <div class="field">
-        <label>Phone</label>
-        <input type="tel" id="iPhone" placeholder="(740) 555-0000" />
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Dog's Name</label>
-        <input type="text" id="iDog" placeholder="Buddy" />
-      </div>
-      <div class="field">
-        <label>Groomer</label>
-        <select id="iGroomer">
-          <option value="">Select...</option>
-          <option>Brandy</option>
-          <option>Brooke</option>
-          <option>Alexa</option>
-          <option>Brittany</option>
-          <option>Courtney</option>
-        </select>
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Groom Date</label>
-        <input type="date" id="iDate" />
-      </div>
-      <div class="field">
-        <label>Remind After</label>
-        <select id="iWeeks">
-          <option value="28">4 weeks</option>
-          <option value="35">5 weeks</option>
-          <option value="42">6 weeks</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-actions">
-      <button class="btn-save" onclick="saveAppointment()">Save</button>
-      <button class="btn-cancel" onclick="toggleForm()">Cancel</button>
-    </div>
-  </div>
-
-  <div id="listOverdue"></div>
-  <div id="listSoon"></div>
-  <div id="listGood"></div>
-  <div id="listRebooked"></div>
-
-  <footer>Wash Wiggle & Wag · Rebook Tracker · Operator Only</footer>
+  <footer>Wash Wiggle & Wag · Rebook Tracker · Groomer Tool</footer>
 
 <script>
   const STORE_KEY = 'www_rebook_v1';
 
-  function load() {
-    try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch(e) { return []; }
-  }
-  function save(data) {
-    localStorage.setItem(STORE_KEY, JSON.stringify(data));
-  }
+  function load() { try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch(e) { return []; } }
+  function save(data) { localStorage.setItem(STORE_KEY, JSON.stringify(data)); }
   function daysSince(dateStr) {
-    const d = new Date(dateStr);
-    const now = new Date();
-    return Math.floor((now - d) / 86400000);
+    return Math.floor((new Date() - new Date(dateStr + 'T12:00:00')) / 86400000);
   }
 
   function toggleForm() {
     const f = document.getElementById('addForm');
     f.classList.toggle('open');
-    if (f.classList.contains('open')) {
-      document.getElementById('iDate').value = new Date().toISOString().split('T')[0];
-    }
+    if (f.classList.contains('open')) document.getElementById('iDate').value = new Date().toISOString().split('T')[0];
   }
 
   function saveAppointment() {
@@ -307,127 +321,92 @@
     const groomer= document.getElementById('iGroomer').value;
     const date   = document.getElementById('iDate').value;
     const weeks  = document.getElementById('iWeeks').value;
-
-    if (!client || !phone || !dog || !groomer || !date) {
-      alert('Please fill in all fields.'); return;
-    }
+    if (!client || !phone || !dog || !groomer || !date) { alert('Please fill in all fields.'); return; }
     const data = load();
     data.push({ id: Date.now(), client, phone, dog, groomer, date, remindAfter: parseInt(weeks), rebooked: false });
     save(data);
     toggleForm();
-    ['iClient','iPhone','iDog','iDate'].forEach(id => document.getElementById(id).value = '');
+    ['iClient','iPhone','iDog'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('iGroomer').value = '';
     render();
   }
 
   function markRebooked(id) {
-    const data = load().map(r => r.id === id ? {...r, rebooked: true, rebookedAt: new Date().toISOString()} : r);
-    save(data);
+    save(load().map(r => r.id === id ? {...r, rebooked: true} : r));
     render();
   }
-
-  function deleteEntry(id) {
-    save(load().filter(r => r.id !== id));
-    render();
-  }
-
-  function toggleSMS(id) {
-    const el = document.getElementById('sms_' + id);
-    if (el) el.classList.toggle('open');
-  }
+  function deleteEntry(id) { save(load().filter(r => r.id !== id)); render(); }
 
   function buildSMS(r) {
     return `Hey ${r.client.split(' ')[0]}! 🐾 It's been about ${Math.round(r.remindAfter / 7)} weeks since ${r.dog}'s last groom with ${r.groomer}. Ready to get them back on the books? Just reply here and we'll get you scheduled!`;
   }
 
-  function cardHTML(r) {
-    const days = daysSince(r.date);
-    const isOverdue = !r.rebooked && days >= r.remindAfter + 7;
-    const isDueSoon = !r.rebooked && !isOverdue && days >= r.remindAfter;
-    const isRebooked = r.rebooked;
-    const cls = isRebooked ? 'rebooked' : isOverdue ? 'overdue' : isDueSoon ? 'due-soon' : 'on-track';
-
-    let badgeText = '';
-    if (isRebooked) badgeText = '✓ Rebooked';
-    else if (days >= r.remindAfter) badgeText = `${days - r.remindAfter}d late`;
-    else badgeText = `${r.remindAfter - days}d left`;
-
-    const groomDate = new Date(r.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-    return `
-      <div class="client-card ${cls}">
-        <div class="card-top">
-          <div>
-            <div class="client-name">${r.client}</div>
-            <div class="dog-name">🐶 ${r.dog}</div>
-          </div>
-          <div class="days-badge">${badgeText}</div>
-        </div>
-        <div class="card-meta">
-          <div class="meta-item">Groomer: <span>${r.groomer}</span></div>
-          <div class="meta-item">Last groom: <span>${groomDate}</span></div>
-          <div class="meta-item">Phone: <span>${r.phone}</span></div>
-        </div>
-        ${!isRebooked ? `
-        <div class="sms-preview" id="sms_${r.id}">
-          <div class="sms-label">Ready-to-send text</div>
-          <div class="sms-text" id="smstext_${r.id}">${buildSMS(r)}</div>
-        </div>
-        <div class="card-actions">
-          <button class="action-btn btn-copy" onclick="copySMS(${r.id})">📋 Copy Text</button>
-          <button class="action-btn btn-rebooked" onclick="markRebooked(${r.id})">✓ Mark Rebooked</button>
-          <button class="action-btn btn-delete" onclick="deleteEntry(${r.id})">✕</button>
-        </div>
-        ` : `
-        <div class="card-actions">
-          <button class="action-btn btn-delete" onclick="deleteEntry(${r.id})">Remove</button>
-        </div>
-        `}
-      </div>`;
-  }
-
   function copySMS(id) {
     const el = document.getElementById('smstext_' + id);
-    const smsBox = document.getElementById('sms_' + id);
-    if (!smsBox.classList.contains('open')) smsBox.classList.add('open');
-    if (el) {
-      navigator.clipboard.writeText(el.innerText).then(() => {
-        const btn = document.querySelector(`[onclick="copySMS(${id})"]`);
-        if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = '📋 Copy Text', 1800); }
-      });
-    }
+    const box = document.getElementById('sms_' + id);
+    if (!box.classList.contains('open')) box.classList.add('open');
+    navigator.clipboard.writeText(el.innerText).then(() => {
+      const btn = document.querySelector(`[onclick="copySMS(${id})"]`);
+      if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = '📋 Copy Text', 1800); }
+    });
+  }
+
+  function cardHTML(r) {
+    const days = daysSince(r.date);
+    const isOverdue  = !r.rebooked && days >= r.remindAfter + 7;
+    const isDueSoon  = !r.rebooked && !isOverdue && days >= r.remindAfter;
+    const isRebooked = r.rebooked;
+    const cls = isRebooked ? 'rebooked' : isOverdue ? 'overdue' : isDueSoon ? 'due-soon' : 'on-track';
+    let badge = isRebooked ? '✓ Rebooked' : days >= r.remindAfter ? `${days - r.remindAfter}d overdue` : `${r.remindAfter - days}d left`;
+    const groomDate = new Date(r.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    return `<div class="client-card ${cls}">
+      <div class="card-top">
+        <div><div class="client-name">${r.client}</div><div class="dog-name">🐶 ${r.dog}</div></div>
+        <div class="days-badge">${badge}</div>
+      </div>
+      <div class="card-meta">
+        <div class="meta-item">Groomer: <span>${r.groomer}</span></div>
+        <div class="meta-item">Last groom: <span>${groomDate}</span></div>
+        <div class="meta-item">📞 <span>${r.phone}</span></div>
+      </div>
+      ${!isRebooked ? `
+      <div class="sms-preview" id="sms_${r.id}">
+        <div class="sms-label">Ready-to-send text</div>
+        <div class="sms-text" id="smstext_${r.id}">${buildSMS(r)}</div>
+      </div>
+      <div class="card-actions">
+        <button class="action-btn btn-copy" onclick="copySMS(${r.id})">📋 Copy Text</button>
+        <button class="action-btn btn-rebooked" onclick="markRebooked(${r.id})">✓ Rebooked</button>
+        <button class="action-btn btn-delete" onclick="deleteEntry(${r.id})">✕ Remove</button>
+      </div>` : `
+      <div class="card-actions">
+        <button class="action-btn btn-delete" onclick="deleteEntry(${r.id})">Remove</button>
+      </div>`}
+    </div>`;
   }
 
   function render() {
     const data = load();
-    const now = new Date();
-
     const overdue  = data.filter(r => !r.rebooked && daysSince(r.date) >= r.remindAfter + 7);
     const dueSoon  = data.filter(r => !r.rebooked && daysSince(r.date) >= r.remindAfter && daysSince(r.date) < r.remindAfter + 7);
     const onTrack  = data.filter(r => !r.rebooked && daysSince(r.date) < r.remindAfter);
     const rebooked = data.filter(r => r.rebooked);
 
     document.getElementById('countOverdue').textContent = overdue.length;
-    document.getElementById('countSoon').textContent = dueSoon.length;
-    document.getElementById('countGood').textContent = onTrack.length;
+    document.getElementById('countSoon').textContent    = dueSoon.length;
+    document.getElementById('countGood').textContent    = onTrack.length;
 
-    function section(containerId, labelText, countClass, items, emptyMsg) {
-      const el = document.getElementById(containerId);
-      if (items.length === 0) { el.innerHTML = ''; return; }
-      el.innerHTML = `
-        <div class="section-head">
-          <span class="section-label">${labelText}</span>
-          <div class="section-line"></div>
-          <span class="section-count ${countClass}">${items.length}</span>
-        </div>
-        ${items.sort((a,b) => daysSince(b.date) - daysSince(a.date)).map(cardHTML).join('')}
-      `;
+    function section(id, label, countCls, items) {
+      const el = document.getElementById(id);
+      if (!items.length) { el.innerHTML = ''; return; }
+      el.innerHTML = `<div class="section-head"><span class="section-label">${label}</span><div class="section-line"></div><span class="section-count ${countCls}">${items.length}</span></div>`
+        + items.sort((a,b) => daysSince(b.date) - daysSince(a.date)).map(cardHTML).join('');
     }
-
     section('listOverdue', 'Overdue — Send Now', 'count-red', overdue);
-    section('listSoon', 'Due This Week', 'count-amber', dueSoon);
-    section('listGood', 'On Track', 'count-green', onTrack);
-    section('listRebooked', 'Rebooked ✓', 'count-green', rebooked);
+    section('listSoon',    'Due This Week',       'count-amber', dueSoon);
+    section('listGood',    'On Track',             'count-green', onTrack);
+    section('listRebooked','Rebooked ✓',           'count-green', rebooked);
   }
 
   render();

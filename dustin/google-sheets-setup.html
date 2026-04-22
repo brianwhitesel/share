@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google Sheets Setup — Wash Wiggle & Wag</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0d9488;
+      --teal-dim: rgba(13,148,136,0.08);
+      --teal-border: rgba(13,148,136,0.2);
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --green: #16a34a;
+      --green-dim: rgba(22,163,74,0.08);
+      --green-border: rgba(22,163,74,0.2);
+      --amber: #d97706;
+      --amber-dim: rgba(217,119,6,0.06);
+      --amber-border: rgba(217,119,6,0.2);
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    .hero {
+      background: linear-gradient(160deg, #0f766e 0%, #0d9488 50%, #14b8a6 100%);
+      padding: 36px 20px 40px;
+    }
+    .hero-inner { max-width: 560px; margin: 0 auto; }
+    .hero-eyebrow { font-size: 0.65rem; font-weight: 600; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+    .hero-title { font-family: 'Outfit', sans-serif; font-size: 1.55rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.15; }
+    .hero-sub { font-size: 0.88rem; color: rgba(255,255,255,0.75); margin-top: 8px; line-height: 1.6; }
+
+    .body-wrap { max-width: 560px; margin: 0 auto; padding: 28px 16px 80px; }
+
+    .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .section-label { font-size: 0.6rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; white-space: nowrap; }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .step-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 10px; }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--teal);
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800; font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .step-title { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .step-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.7; margin-left: 46px; }
+    .step-desc p { margin-bottom: 8px; }
+    .step-desc p:last-child { margin-bottom: 0; }
+
+    .code-block {
+      background: #0f172a;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin: 12px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      color: #e2e8f0;
+      line-height: 1.7;
+      overflow-x: auto;
+      position: relative;
+    }
+    .code-block .kw { color: #7dd3fc; }
+    .code-block .str { color: #86efac; }
+    .code-block .fn { color: #fcd34d; }
+    .code-block .cmt { color: #64748b; }
+
+    .copy-code-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #94a3b8;
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.15s;
+    }
+    .copy-code-btn:hover { background: rgba(255,255,255,0.14); color: #e2e8f0; }
+
+    .alert {
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      margin: 12px 0;
+    }
+    .alert-amber { background: var(--amber-dim); border: 1px solid var(--amber-border); color: var(--amber); }
+    .alert-green  { background: var(--green-dim);  border: 1px solid var(--green-border);  color: var(--green); }
+    .alert-teal   { background: var(--teal-dim);   border: 1px solid var(--teal-border);   color: var(--teal); }
+    .alert strong { font-weight: 600; }
+
+    .url-paste-box {
+      background: var(--card);
+      border: 1.5px dashed var(--teal-border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin: 12px 0;
+      font-size: 0.82rem;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+    .url-paste-box strong { color: var(--teal); }
+
+    .columns-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 12px 0; }
+    .columns-table th { background: #f1f5f9; color: var(--text); font-weight: 600; padding: 8px 12px; text-align: left; border-bottom: 2px solid var(--border); }
+    .columns-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text2); }
+    .columns-table tr:last-child td { border-bottom: none; }
+
+    footer { margin-top: 40px; text-align: center; color: var(--text3); font-size: 0.7rem; padding-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Wash Wiggle &amp; Wag · Booking System</div>
+    <div class="hero-title">Google Sheets Setup Guide</div>
+    <div class="hero-sub">Connect the booking form to a Google Sheet in about 10 minutes — no coding experience needed.</div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <div class="alert alert-teal" style="margin-bottom:20px;">
+    <strong>What this does:</strong> Every time a customer submits the booking form, their info automatically appears as a new row in your Google Sheet. You'll see their name, phone, dog details, and when they submitted — all in one place.
+  </div>
+
+  <div class="section-head">
+    <span class="section-label">Setup Steps</span>
+    <div class="section-line"></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div class="step-title">Create your Google Sheet</div>
+    </div>
+    <div class="step-desc">
+      <p>Go to <strong>sheets.google.com</strong> and create a new blank spreadsheet. Name it something like <em>WWW Booking Requests</em>.</p>
+      <p>In Row 1, add these column headers exactly as shown (just type them in, one per cell starting at A1):</p>
+      <table class="columns-table">
+        <thead><tr><th>Column</th><th>Header to type</th></tr></thead>
+        <tbody>
+          <tr><td>A</td><td>Submitted</td></tr>
+          <tr><td>B</td><td>Name</td></tr>
+          <tr><td>C</td><td>Phone</td></tr>
+          <tr><td>D</td><td>ZIP</td></tr>
+          <tr><td>E</td><td>Dog Name</td></tr>
+          <tr><td>F</td><td>Breed</td></tr>
+          <tr><td>G</td><td>Weight</td></tr>
+          <tr><td>H</td><td>Coat</td></tr>
+          <tr><td>I</td><td>Notes</td></tr>
+          <tr><td>J</td><td>Photo</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div class="step-title">Open Apps Script</div>
+    </div>
+    <div class="step-desc">
+      <p>In your Google Sheet, click the menu: <strong>Extensions → Apps Script</strong>. A new tab will open with a code editor.</p>
+      <p>Delete any existing code in the editor. Then paste in the code below:</p>
+
+      <div class="code-block" id="appsScriptCode">
+        <button class="copy-code-btn" onclick="copyCode()">Copy</button>
+<span class="kw">function</span> <span class="fn">doPost</span>(e) {<br>
+&nbsp;&nbsp;<span class="kw">var</span> sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();<br>
+&nbsp;&nbsp;<span class="kw">var</span> p = e.parameter;<br>
+&nbsp;&nbsp;sheet.appendRow([<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.submitted &nbsp;|| <span class="str">''</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| <span class="str">''</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.phone &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| <span class="str">''</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.zip &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| <span class="str">''</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.dogName &nbsp;&nbsp;&nbsp;|| <span class="str">''</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.breed &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| <span class="str">''</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.weight &nbsp;&nbsp;&nbsp;&nbsp;|| <span class="str">''</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.coat &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| <span class="str">''</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.notes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| <span class="str">''</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.photoName &nbsp;|| <span class="str">''</span><br>
+&nbsp;&nbsp;]);<br>
+&nbsp;&nbsp;<span class="kw">return</span> ContentService<br>
+&nbsp;&nbsp;&nbsp;&nbsp;.createTextOutput(<span class="str">'OK'</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;.setMimeType(ContentService.MimeType.TEXT);<br>
+}
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div class="step-title">Deploy as a Web App</div>
+    </div>
+    <div class="step-desc">
+      <p>Click <strong>Deploy → New deployment</strong> in the top-right of the Apps Script editor.</p>
+      <p>In the dialog that appears:</p>
+      <p>• Under <strong>Select type</strong>, choose <strong>Web app</strong><br>
+         • <strong>Execute as:</strong> Me<br>
+         • <strong>Who has access:</strong> Anyone<br>
+         • Click <strong>Deploy</strong></p>
+      <p>Google will ask you to authorize the app. Click <strong>Authorize access</strong>, choose your Google account, and click <strong>Allow</strong>.</p>
+      <div class="alert alert-amber">
+        <strong>Important:</strong> You'll see a warning that says "Google hasn't verified this app." This is normal for your own scripts. Click <strong>Advanced → Go to [your project name] (unsafe)</strong> and then Allow.
+      </div>
+      <p>After deploying, you'll see a <strong>Web app URL</strong> — it will look something like:<br>
+      <code style="font-size:0.78rem;color:var(--teal);">https://script.google.com/macros/s/ABC123.../exec</code></p>
+      <p><strong>Copy that URL</strong> — you'll need it in the next step.</p>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div class="step-title">Add the URL to your booking page</div>
+    </div>
+    <div class="step-desc">
+      <p>Open <strong>customer-booking.html</strong> in a text editor (TextEdit on Mac, Notepad on Windows, or Google Chrome → right-click → View page source → copy to editor).</p>
+      <p>Near the top of the &lt;script&gt; section, find this line:</p>
+      <div class="code-block">
+        <span class="kw">const</span> SHEETS_URL = <span class="str">'YOUR_APPS_SCRIPT_URL_HERE'</span>;
+      </div>
+      <p>Replace <code style="color:var(--teal);">YOUR_APPS_SCRIPT_URL_HERE</code> with the URL you copied from Step 3. Keep the single quotes around it:</p>
+      <div class="code-block">
+        <span class="kw">const</span> SHEETS_URL = <span class="str">'https://script.google.com/macros/s/YOUR_ACTUAL_URL/exec'</span>;
+      </div>
+      <p>Save the file and re-upload it to your website.</p>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">5</div>
+      <div class="step-title">Test it</div>
+    </div>
+    <div class="step-desc">
+      <p>Open your booking page in a browser and submit a test request with your own name and phone number.</p>
+      <p>Then open your Google Sheet — you should see a new row at the bottom with all the info from the form within a few seconds.</p>
+      <div class="alert alert-green">
+        <strong>It's working!</strong> Every future booking request will automatically appear as a new row. You'll always have a running list of everyone who's asked to book — name, phone, dog info, and when they submitted.
+      </div>
+    </div>
+  </div>
+
+  <!-- TROUBLESHOOTING -->
+  <div class="section-head" style="margin-top:24px;">
+    <span class="section-label">Troubleshooting</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-desc" style="margin-left:0;">
+      <p><strong>Rows aren't appearing in the sheet</strong><br>
+      Double-check that you deployed the script with "Who has access: Anyone" — not "Only myself." If you need to change it, go back to Apps Script → Deploy → Manage deployments → edit your deployment.</p>
+      <p style="margin-top:10px;"><strong>I get a permissions error when deploying</strong><br>
+      Make sure you're signed into the same Google account that owns the sheet. The script has to be authorized by the account that owns the spreadsheet.</p>
+      <p style="margin-top:10px;"><strong>I accidentally deployed a new version</strong><br>
+      Each time you re-deploy, you get a new URL. Make sure you update the SHEETS_URL in customer-booking.html any time you redeploy.</p>
+    </div>
+  </div>
+
+  <footer>Wash Wiggle &amp; Wag · Booking System Setup · v1.0</footer>
+</div>
+
+<script>
+  const rawCode = `function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var p = e.parameter;
+  sheet.appendRow([
+    p.submitted  || '',
+    p.name       || '',
+    p.phone      || '',
+    p.zip        || '',
+    p.dogName    || '',
+    p.breed      || '',
+    p.weight     || '',
+    p.coat       || '',
+    p.notes      || '',
+    p.photoName  || ''
+  ]);
+  return ContentService
+    .createTextOutput('OK')
+    .setMimeType(ContentService.MimeType.TEXT);
+}`;
+
+  function copyCode() {
+    navigator.clipboard.writeText(rawCode).then(() => {
+      const btn = document.querySelector('.copy-code-btn');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 1800);
+    });
+  }
+</script>
+</body>
+</html>

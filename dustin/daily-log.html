@@ -7,97 +7,169 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg: #0d0f14;
-      --surface: rgba(255,255,255,0.04);
-      --border: rgba(255,255,255,0.08);
-      --text: #f1f5f9;
-      --text2: #94a3b8;
-      --text3: #475569;
-      --teal: #2dd4bf;
-      --teal-dim: rgba(45,212,191,0.08);
-      --teal-border: rgba(45,212,191,0.2);
-      --green: #4ade80;
-      --green-dim: rgba(74,222,128,0.07);
-      --green-border: rgba(74,222,128,0.18);
-      --amber: #fbbf24;
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --teal-dim: rgba(13,148,136,0.08);
+      --teal-border: rgba(13,148,136,0.2);
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --green: #16a34a;
+      --green-dim: rgba(22,163,74,0.08);
+      --green-border: rgba(22,163,74,0.2);
+      --amber: #d97706;
+      --amber-dim: rgba(217,119,6,0.08);
+      --amber-border: rgba(217,119,6,0.2);
+      --red: #dc2626;
     }
+
     body {
       background: var(--bg);
       color: var(--text);
       font-family: 'Inter', sans-serif;
       min-height: 100vh;
-      padding: 28px 16px 100px;
-      max-width: 420px;
-      margin: 0 auto;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── HEADER ── */
-    .date-label { font-size: 0.62rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; margin-bottom: 4px; }
-    .date-big { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 2px; }
-    .groomer-line { font-size: 0.82rem; color: var(--text2); margin-bottom: 24px; }
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(160deg, #0f766e 0%, #0d9488 50%, #14b8a6 100%);
+      padding: 36px 20px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-inner { max-width: 420px; margin: 0 auto; position: relative; }
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .groomer-picker-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 7px 14px;
+    }
+    .groomer-picker-wrap select {
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.95);
+      font-size: 0.82rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      outline: none;
+      cursor: pointer;
+    }
+    .groomer-picker-wrap select option { color: #0f172a; background: #fff; }
+
+    /* ── BODY CONTENT ── */
+    .body-wrap { max-width: 420px; margin: 0 auto; padding: 20px 16px 80px; }
 
     /* ── TOTAL BANNER ── */
     .total-banner {
-      background: var(--green-dim);
-      border: 1px solid var(--green-border);
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 16px;
       padding: 18px 20px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
-    .total-label { font-size: 0.75rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+    .total-label { font-size: 0.72rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
     .total-amount { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: var(--green); }
-    .total-count { font-size: 0.75rem; color: var(--text3); margin-top: 2px; }
+    .total-count { font-size: 0.72rem; color: var(--text2); margin-top: 3px; }
 
     /* ── ADD DOG BUTTON ── */
     .add-btn {
       width: 100%;
-      padding: 16px;
+      padding: 15px;
       background: var(--teal);
-      color: #0d0f14;
+      color: #fff;
       border: none;
-      border-radius: 14px;
+      border-radius: 12px;
       font-family: 'Outfit', sans-serif;
       font-size: 1rem;
       font-weight: 800;
       cursor: pointer;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       letter-spacing: -0.01em;
-      transition: opacity 0.18s;
+      transition: background 0.18s, transform 0.15s;
     }
-    .add-btn:hover { opacity: 0.88; }
+    .add-btn:hover { background: #0f766e; }
     .add-btn:active { transform: scale(0.98); }
 
     /* ── ADD FORM ── */
     .add-form {
-      background: var(--teal-dim);
+      background: var(--card);
       border: 1px solid var(--teal-border);
       border-radius: 16px;
       padding: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       display: none;
+      box-shadow: 0 4px 16px rgba(13,148,136,0.08);
     }
     .add-form.open { display: block; }
-    .form-title { font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--teal); margin-bottom: 16px; }
+    .form-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
     .field { margin-bottom: 14px; }
-    .field label { display: block; font-size: 0.7rem; font-weight: 700; color: var(--text2); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .field label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
+    }
     .field input {
       width: 100%;
-      padding: 13px 14px;
-      background: rgba(0,0,0,0.35);
+      padding: 12px 14px;
+      background: var(--bg);
       border: 1.5px solid var(--border);
       border-radius: 10px;
       color: var(--text);
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-family: 'Inter', sans-serif;
       outline: none;
-      transition: border-color 0.18s;
+      transition: border-color 0.18s, box-shadow 0.18s;
+      appearance: none;
     }
-    .field input:focus { border-color: var(--teal); }
+    .field input:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(13,148,136,0.12);
+    }
     .field input::placeholder { color: var(--text3); }
     .amount-wrap { position: relative; }
     .amount-wrap::before {
@@ -114,25 +186,29 @@
     .form-actions { display: flex; gap: 10px; }
     .btn-save {
       flex: 1; padding: 13px;
-      background: var(--teal); color: #0d0f14;
+      background: var(--teal); color: #fff;
       border: none; border-radius: 10px;
       font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 800;
       cursor: pointer;
+      transition: background 0.18s;
     }
+    .btn-save:hover { background: #0f766e; }
     .btn-cancel {
       padding: 13px 18px;
       background: transparent; color: var(--text3);
-      border: 1px solid var(--border); border-radius: 10px;
+      border: 1.5px solid var(--border); border-radius: 10px;
       font-size: 0.85rem; cursor: pointer;
+      font-family: 'Inter', sans-serif;
     }
 
-    /* ── DOG ENTRIES ── */
+    /* ── SECTION DIVIDER ── */
     .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .section-label { font-size: 0.6rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; white-space: nowrap; }
-    .section-line { flex: 1; height: 1px; background: rgba(255,255,255,0.05); }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
 
+    /* ── DOG ENTRIES ── */
     .dog-entry {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 14px 16px;
@@ -141,6 +217,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
     .entry-left { flex: 1; min-width: 0; }
     .entry-client { font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--text); }
@@ -149,59 +226,92 @@
     .entry-amount { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--green); flex-shrink: 0; }
     .entry-delete {
       background: transparent; border: none;
-      color: var(--text3); font-size: 1rem;
+      color: var(--text3); font-size: 0.9rem;
       cursor: pointer; padding: 4px 6px;
-      flex-shrink: 0; opacity: 0.5;
-      transition: opacity 0.15s;
+      flex-shrink: 0;
+      transition: color 0.15s;
+      border-radius: 6px;
     }
-    .entry-delete:hover { opacity: 1; }
+    .entry-delete:hover { color: var(--red); background: rgba(220,38,38,0.06); }
 
-    .empty-today { text-align: center; padding: 28px 0; color: var(--text3); font-size: 0.85rem; line-height: 1.6; }
+    .empty-today {
+      text-align: center; padding: 28px 0;
+      color: var(--text3); font-size: 0.85rem; line-height: 1.7;
+    }
 
     /* ── COPY / HISTORY ── */
-    .actions-row { display: flex; gap: 10px; margin-top: 20px; }
+    .actions-row { display: flex; gap: 10px; margin-top: 16px; }
     .copy-btn, .history-btn {
       flex: 1; padding: 11px;
       border-radius: 10px;
       font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600;
-      cursor: pointer; border: 1px solid;
+      cursor: pointer; border: 1.5px solid;
       transition: opacity 0.15s;
     }
-    .copy-btn { background: rgba(251,191,36,0.1); color: var(--amber); border-color: rgba(251,191,36,0.25); }
-    .history-btn { background: var(--surface); color: var(--text2); border-color: var(--border); }
+    .copy-btn {
+      background: var(--amber-dim);
+      color: var(--amber);
+      border-color: var(--amber-border);
+    }
+    .history-btn {
+      background: var(--card);
+      color: var(--text2);
+      border-color: var(--border);
+    }
     .copy-btn:hover, .history-btn:hover { opacity: 0.75; }
 
     /* ── HISTORY ── */
-    .history-panel { margin-top: 20px; display: none; }
+    .history-panel { margin-top: 16px; display: none; }
     .history-panel.open { display: block; }
     .history-day {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 14px 16px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
     }
-    .history-date { font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .history-date {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem; font-weight: 700;
+      color: var(--text); margin-bottom: 4px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .history-total { font-weight: 800; color: var(--green); }
     .history-summary { font-size: 0.78rem; color: var(--text2); }
-    .history-total { font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--green); float: right; }
 
-    footer { margin-top: 48px; text-align: center; color: #1e293b; font-size: 0.7rem; }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--text3);
+      font-size: 0.7rem;
+      padding-bottom: 20px;
+    }
   </style>
 </head>
 <body>
 
-  <div class="date-label">Daily Log · Wash Wiggle & Wag</div>
-  <div class="date-big" id="todayLabel"></div>
-  <div class="groomer-line" id="groomerSelect">
-    <select id="groomerPicker" onchange="setGroomer(this.value)" style="background:transparent;border:none;color:#94a3b8;font-size:0.82rem;font-family:'Inter',sans-serif;outline:none;cursor:pointer;padding:0;">
-      <option value="">Select your name...</option>
-      <option>Brandy</option>
-      <option>Brooke</option>
-      <option>Alexa</option>
-      <option>Brittany</option>
-      <option>Courtney</option>
-    </select>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Daily Log · Wash Wiggle & Wag</div>
+    <div class="hero-title" id="todayLabel">Loading…</div>
+    <div class="groomer-picker-wrap">
+      <span style="font-size:0.78rem;color:rgba(255,255,255,0.7);">👤</span>
+      <select id="groomerPicker" onchange="setGroomer(this.value)">
+        <option value="">Select your name…</option>
+        <option>Brandy</option>
+        <option>Brooke</option>
+        <option>Alexa</option>
+        <option>Brittany</option>
+        <option>Courtney</option>
+      </select>
+    </div>
   </div>
+</div>
+
+<!-- BODY -->
+<div class="body-wrap">
 
   <div class="total-banner">
     <div>
@@ -248,7 +358,9 @@
 
   <div class="history-panel" id="historyPanel"></div>
 
-  <footer>Wash Wiggle & Wag · Daily Log · Groomer Tool</footer>
+  <footer>Wash Wiggle &amp; Wag · Groomer Tool</footer>
+
+</div>
 
 <script>
   const STORE = 'www_dailylog_v1';
@@ -282,6 +394,7 @@
     document.getElementById('todayLabel').textContent = formatDate(todayKey());
     const g = getGroomer();
     if (g) document.getElementById('groomerPicker').value = g;
+    render();
   });
 
   function toggleForm() {
@@ -365,6 +478,7 @@
     const panel = document.getElementById('historyPanel');
     panel.classList.toggle('open');
     if (panel.classList.contains('open')) renderHistory();
+    else panel.innerHTML = '';
   }
 
   function renderHistory() {
@@ -380,13 +494,14 @@
         const entries = all[k];
         const total = entries.reduce((s, e) => s + (e.amount || 0), 0);
         return `<div class="history-day">
-          <div class="history-date">${formatDate(k)} <span class="history-total">$${total.toFixed(0)}</span></div>
+          <div class="history-date">
+            <span>${formatDate(k)}</span>
+            <span class="history-total">$${total.toFixed(0)}</span>
+          </div>
           <div class="history-summary">${entries.length} dog${entries.length !== 1 ? 's' : ''} · ${entries.map(e => e.dog).join(', ')}</div>
         </div>`;
       }).join('');
   }
-
-  render();
 </script>
 </body>
 </html>
