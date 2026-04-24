@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Wash, Wiggle & Wag — Clock In</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #1e293b; min-height: 100vh; }
+
+.header { background: #0f172a; padding: 16px 20px 14px; display: flex; align-items: center; gap: 10px; }
+.header h1 { font-size: 15px; font-weight: 700; color: white; }
+.header-sub { font-size: 10px; color: #64748b; margin-top: 1px; }
+
+.clock-display { text-align: center; padding: 20px 20px 0; }
+.time-now { font-size: 36px; font-weight: 800; color: #0f172a; letter-spacing: -1px; }
+.date-now { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+
+.section { padding: 20px; }
+.section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; font-weight: 700; margin-bottom: 12px; }
+
+.employee-grid { display: flex; gap: 10px; }
+.emp-btn { flex: 1; padding: 14px 8px; border-radius: 10px; border: 2px solid #e2e8f0; background: white; font-size: 13px; font-weight: 600; color: #64748b; cursor: pointer; text-align: center; transition: all 0.15s; }
+.emp-btn.selected { border-color: #0d9488; background: #ccfbf1; color: #0d9488; }
+.emp-btn.clocked-in { border-color: #10b981; background: #d1fae5; color: #065f46; }
+.emp-name { font-size: 12px; font-weight: 700; display: block; }
+.emp-status { font-size: 10px; margin-top: 3px; display: block; }
+
+.timer-wrap { text-align: center; padding: 8px 20px 0; }
+.timer-label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
+.timer-val { font-size: 28px; font-weight: 800; color: #0d9488; letter-spacing: 1px; margin-top: 2px; }
+
+.clock-btn-wrap { padding: 16px 20px; }
+.clock-btn { width: 100%; padding: 20px; border-radius: 14px; border: none; font-size: 17px; font-weight: 800; cursor: pointer; transition: all 0.15s; position: relative; overflow: hidden; }
+.clock-btn.in { background: #0d9488; color: white; box-shadow: 0 4px 20px rgba(13,148,136,0.35); }
+.clock-btn.out { background: #ef4444; color: white; box-shadow: 0 4px 20px rgba(239,68,68,0.35); }
+.clock-btn:active { transform: scale(0.97); }
+.clock-btn-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+
+.overtime-banner { margin: 0 20px 16px; background: #fef2f2; border: 1px solid #fca5a5; border-radius: 10px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.75; } }
+.ot-icon { font-size: 18px; flex-shrink: 0; }
+.ot-title { font-size: 12px; font-weight: 700; color: #dc2626; }
+.ot-desc { font-size: 11px; color: #ef4444; margin-top: 2px; }
+.hidden { display: none; }
+
+.divider { height: 1px; background: #e2e8f0; margin: 0 20px; }
+
+.timesheet-wrap { padding: 20px; }
+.ts-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.ts-actions { display: flex; gap: 8px; }
+.ts-btn { font-size: 11px; padding: 6px 12px; border-radius: 6px; border: 1px solid #e2e8f0; background: white; cursor: pointer; color: #475569; font-weight: 500; }
+.ts-btn.copy { background: #0d9488; color: white; border-color: #0d9488; }
+.ts-btn.danger { color: #ef4444; border-color: #fca5a5; }
+
+.ts-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.ts-table th { text-align: left; font-size: 9px; text-transform: uppercase; letter-spacing: 0.07em; color: #94a3b8; font-weight: 700; padding: 0 0 8px; border-bottom: 1px solid #f1f5f9; }
+.ts-table td { padding: 9px 4px 9px 0; border-bottom: 1px solid #f8fafc; color: #475569; vertical-align: top; }
+.ts-table tr:last-child td { border-bottom: none; }
+.ts-name { font-weight: 600; color: #1e293b; }
+.ts-active { color: #0d9488; font-style: italic; font-weight: 600; }
+.ts-empty { text-align: center; padding: 24px 0; color: #cbd5e1; font-size: 12px; }
+
+.copy-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 20px; opacity: 0; transition: opacity 0.2s; pointer-events: none; white-space: nowrap; }
+.copy-toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span style="font-size:22px">🐾</span>
+  <div>
+    <h1>Wash, Wiggle & Wag</h1>
+    <div class="header-sub">Employee Time Tracker</div>
+  </div>
+</div>
+
+<div class="clock-display">
+  <div class="time-now" id="timeNow">—</div>
+  <div class="date-now" id="dateNow">—</div>
+</div>
+
+<div class="section">
+  <div class="section-label">Who's clocking in?</div>
+  <div class="employee-grid">
+    <button class="emp-btn" onclick="selectEmp(0)">
+      <span class="emp-name">Dustin</span>
+      <span class="emp-status" id="status-0">—</span>
+    </button>
+    <button class="emp-btn" onclick="selectEmp(1)">
+      <span class="emp-name">Employee 1</span>
+      <span class="emp-status" id="status-1">—</span>
+    </button>
+    <button class="emp-btn" onclick="selectEmp(2)">
+      <span class="emp-name">Employee 2</span>
+      <span class="emp-status" id="status-2">—</span>
+    </button>
+  </div>
+</div>
+
+<div class="timer-wrap hidden" id="timerWrap">
+  <div class="timer-label">Time In</div>
+  <div class="timer-val" id="timerVal">0:00:00</div>
+</div>
+
+<div class="clock-btn-wrap">
+  <button class="clock-btn in" id="clockBtn" onclick="toggleClock()">
+    <span class="clock-btn-icon">✅</span>
+    Clock In
+  </button>
+</div>
+
+<div class="overtime-banner hidden" id="overtimeBanner">
+  <div class="ot-icon">⚠️</div>
+  <div>
+    <div class="ot-title" id="otTitle">Someone forgot to clock out!</div>
+    <div class="ot-desc" id="otDesc">Check the timesheet below.</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="timesheet-wrap">
+  <div class="ts-header">
+    <div class="section-label" style="margin:0">Timesheet</div>
+    <div class="ts-actions">
+      <button class="ts-btn copy" onclick="copyTimesheet()">Copy</button>
+      <button class="ts-btn danger" onclick="clearTimesheet()">Clear</button>
+    </div>
+  </div>
+  <table class="ts-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>In</th>
+        <th>Out</th>
+        <th>Hours</th>
+      </tr>
+    </thead>
+    <tbody id="tsBody">
+      <tr><td colspan="5" class="ts-empty">No entries yet</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="copy-toast" id="copyToast">Copied to clipboard ✓</div>
+
+<script>
+const EMPLOYEES = ['Dustin', 'Employee 1', 'Employee 2'];
+let selectedEmp = -1;
+let timerInterval = null;
+
+// Load state
+let sessions = JSON.parse(localStorage.getItem('www_timesheet_v1') || '[]');
+let active = JSON.parse(localStorage.getItem('www_active_v1') || '{}');
+// active = { empIndex: { clockIn: timestamp, empName } }
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function fmtTime(ts) {
+  const d = new Date(ts);
+  let h = d.getHours(), m = d.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${h}:${pad(m)} ${ampm}`;
+}
+
+function fmtDate(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function fmtHours(ms) {
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  return `${h}h ${m}m`;
+}
+
+function elapsed(ts) {
+  const ms = Date.now() - ts;
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  return `${h}:${pad(m)}:${pad(s)}`;
+}
+
+function updateClock() {
+  const now = new Date();
+  let h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  document.getElementById('timeNow').textContent = `${h}:${pad(m)}:${pad(s)} ${ampm}`;
+  document.getElementById('dateNow').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+}
+
+function updateTimer() {
+  if (selectedEmp >= 0 && active[selectedEmp]) {
+    document.getElementById('timerVal').textContent = elapsed(active[selectedEmp].clockIn);
+    document.getElementById('timerWrap').classList.remove('hidden');
+  } else {
+    document.getElementById('timerWrap').classList.add('hidden');
+  }
+  checkOvertime();
+}
+
+function checkOvertime() {
+  const TEN_HOURS = 10 * 3600000;
+  const overtime = Object.entries(active).filter(([, v]) => Date.now() - v.clockIn > TEN_HOURS);
+  const banner = document.getElementById('overtimeBanner');
+  if (overtime.length > 0) {
+    const names = overtime.map(([, v]) => v.empName).join(', ');
+    document.getElementById('otTitle').textContent = `${names} — over 10 hours!`;
+    document.getElementById('otDesc').textContent = 'Tap their name and clock them out.';
+    banner.classList.remove('hidden');
+  } else {
+    banner.classList.add('hidden');
+  }
+}
+
+function selectEmp(idx) {
+  selectedEmp = idx;
+  const btns = document.querySelectorAll('.emp-btn');
+  btns.forEach((b, i) => {
+    b.classList.toggle('selected', i === idx && !active[i]);
+    b.classList.toggle('clocked-in', !!active[i]);
+  });
+  const btn = document.getElementById('clockBtn');
+  if (active[idx]) {
+    btn.className = 'clock-btn out';
+    btn.innerHTML = '<span class="clock-btn-icon">🔴</span>Clock Out — ' + EMPLOYEES[idx];
+  } else {
+    btn.className = 'clock-btn in';
+    btn.innerHTML = '<span class="clock-btn-icon">✅</span>Clock In — ' + EMPLOYEES[idx];
+  }
+  updateTimer();
+}
+
+function toggleClock() {
+  if (selectedEmp < 0) {
+    alert('Please select an employee first.');
+    return;
+  }
+  if (active[selectedEmp]) {
+    // Clock out
+    const entry = active[selectedEmp];
+    const clockOut = Date.now();
+    sessions.unshift({ empName: entry.empName, date: fmtDate(entry.clockIn), clockIn: entry.clockIn, clockOut });
+    delete active[selectedEmp];
+  } else {
+    // Clock in
+    active[selectedEmp] = { clockIn: Date.now(), empName: EMPLOYEES[selectedEmp] };
+  }
+  save();
+  selectEmp(selectedEmp);
+  renderTimesheet();
+}
+
+function save() {
+  localStorage.setItem('www_timesheet_v1', JSON.stringify(sessions));
+  localStorage.setItem('www_active_v1', JSON.stringify(active));
+}
+
+function renderTimesheet() {
+  const tbody = document.getElementById('tsBody');
+  // Build rows: active sessions first, then completed
+  let rows = [];
+  Object.entries(active).forEach(([, v]) => {
+    rows.push({ empName: v.empName, date: fmtDate(v.clockIn), clockIn: v.clockIn, clockOut: null });
+  });
+  rows = rows.concat(sessions);
+
+  if (rows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="ts-empty">No entries yet</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td class="ts-name">${r.empName}</td>
+      <td>${r.date}</td>
+      <td>${fmtTime(r.clockIn)}</td>
+      <td>${r.clockOut ? fmtTime(r.clockOut) : '<span class="ts-active">active</span>'}</td>
+      <td>${r.clockOut ? fmtHours(r.clockOut - r.clockIn) : '—'}</td>
+    </tr>
+  `).join('');
+}
+
+function copyTimesheet() {
+  let text = 'Name\tDate\tClock In\tClock Out\tHours\n';
+  Object.entries(active).forEach(([, v]) => {
+    text += `${v.empName}\t${fmtDate(v.clockIn)}\t${fmtTime(v.clockIn)}\tActive\t—\n`;
+  });
+  sessions.forEach(r => {
+    text += `${r.empName}\t${r.date}\t${fmtTime(r.clockIn)}\t${fmtTime(r.clockOut)}\t${fmtHours(r.clockOut - r.clockIn)}\n`;
+  });
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    const toast = document.getElementById('copyToast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  });
+}
+
+function clearTimesheet() {
+  if (confirm('Clear all timesheet data? This cannot be undone.')) {
+    sessions = [];
+    active = {};
+    save();
+    selectedEmp = -1;
+    document.querySelectorAll('.emp-btn').forEach(b => { b.classList.remove('selected', 'clocked-in'); });
+    document.getElementById('clockBtn').className = 'clock-btn in';
+    document.getElementById('clockBtn').innerHTML = '<span class="clock-btn-icon">✅</span>Clock In';
+    renderTimesheet();
+    checkOvertime();
+  }
+}
+
+// Update employee status labels
+function updateStatusLabels() {
+  EMPLOYEES.forEach((name, i) => {
+    const el = document.getElementById('status-' + i);
+    if (active[i]) {
+      el.textContent = '● clocked in';
+      el.style.color = '#0d9488';
+    } else {
+      el.textContent = 'not clocked in';
+      el.style.color = '#94a3b8';
+    }
+  });
+  const btns = document.querySelectorAll('.emp-btn');
+  btns.forEach((b, i) => { b.classList.toggle('clocked-in', !!active[i]); });
+}
+
+setInterval(() => { updateClock(); updateTimer(); updateStatusLabels(); }, 1000);
+updateClock();
+renderTimesheet();
+updateStatusLabels();
+updateTimer();
+</script>
+</body>
+</html>
