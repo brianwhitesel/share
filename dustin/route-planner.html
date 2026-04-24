@@ -647,6 +647,29 @@
   <footer>Wash Wiggle &amp; Wag · Route Planner</footer>
 </div>
 
+<!-- UPGRADE MODAL -->
+<div id="upgradeModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:18px;padding:24px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+    <div style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:800;color:#0f172a;margin-bottom:4px;">Get in touch about</div>
+    <div id="upgradeTierLabel" style="font-family:'Outfit',sans-serif;font-size:0.85rem;font-weight:600;color:#0d9488;margin-bottom:18px;"></div>
+    <input type="hidden" id="upgradeTier" />
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:0.72rem;font-weight:600;color:#0f172a;margin-bottom:5px;">Your name</label>
+      <input id="upgradeName" type="text" placeholder="Jane Smith" style="width:100%;padding:11px 13px;border:1.5px solid #e2e8f0;border-radius:9px;font-size:0.9rem;font-family:'Inter',sans-serif;color:#0f172a;background:#f8fafc;outline:none;" onfocus="this.style.borderColor='#0d9488'" onblur="this.style.borderColor='#e2e8f0'" />
+    </div>
+    <div style="margin-bottom:16px;">
+      <label style="display:block;font-size:0.72rem;font-weight:600;color:#0f172a;margin-bottom:5px;">Business name</label>
+      <input id="upgradeBiz" type="text" placeholder="Wash Wiggle & Wag" style="width:100%;padding:11px 13px;border:1.5px solid #e2e8f0;border-radius:9px;font-size:0.9rem;font-family:'Inter',sans-serif;color:#0f172a;background:#f8fafc;outline:none;" onfocus="this.style.borderColor='#0d9488'" onblur="this.style.borderColor='#e2e8f0'" />
+    </div>
+    <div id="upgradeModalErr" style="display:none;font-size:0.75rem;color:#dc2626;margin-bottom:12px;">Please fill in both fields.</div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="sendUpgradeEmail()" style="flex:1;padding:13px;background:#0d9488;color:#fff;border:none;border-radius:9px;font-family:'Outfit',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;">Send Email →</button>
+      <button onclick="closeModal()" style="padding:13px 16px;background:transparent;border:1.5px solid #e2e8f0;border-radius:9px;font-size:0.82rem;cursor:pointer;color:#94a3b8;font-family:'Inter',sans-serif;">Cancel</button>
+    </div>
+    <div style="font-size:0.7rem;color:#94a3b8;text-align:center;margin-top:10px;">Opens your email app with a pre-written message.</div>
+  </div>
+</div>
+
 <script>
   const STORE_KEY = 'www_route_v1';
   const GROOMER_KEY = 'www_groomer';
@@ -782,11 +805,39 @@
     });
   }
 
+  // ── UPGRADE CONTACT MODAL ──────────────────────────────────────
   function contactUpgrade(tier) {
-    const msg = tier === 'map-view'
-      ? "Hey Brian — I'm interested in the Map View add-on for Route Planner. Can you set that up?"
-      : "Hey Brian — I want to learn more about the Full Route Optimization suite.";
-    window.location.href = `sms:6149358958&body=${encodeURIComponent(msg)}`;
+    const tierLabel = tier === 'map-view' ? 'Map View Add-on' : 'Full Route Optimization Suite';
+    document.getElementById('upgradeModal').style.display = 'flex';
+    document.getElementById('upgradeTierLabel').textContent = tierLabel;
+    document.getElementById('upgradeTier').value = tier;
+    setTimeout(() => document.getElementById('upgradeName').focus(), 80);
+  }
+
+  function closeModal() {
+    document.getElementById('upgradeModal').style.display = 'none';
+    document.getElementById('upgradeName').value = '';
+    document.getElementById('upgradeBiz').value = '';
+  }
+
+  function sendUpgradeEmail() {
+    const name    = document.getElementById('upgradeName').value.trim();
+    const biz     = document.getElementById('upgradeBiz').value.trim();
+    const tier    = document.getElementById('upgradeTier').value;
+    const tierLabel = tier === 'map-view' ? 'Map View Add-on' : 'Full Route Optimization Suite';
+
+    if (!name || !biz) {
+      document.getElementById('upgradeModalErr').style.display = 'block';
+      return;
+    }
+    document.getElementById('upgradeModalErr').style.display = 'none';
+
+    const subject = encodeURIComponent(`Route Planner Upgrade — ${tierLabel} | ${biz}`);
+    const body    = encodeURIComponent(
+      `Hi Brian,\n\nI'm interested in the ${tierLabel} for our Route Planner.\n\nName: ${name}\nBusiness: ${biz}\n\nCan you reach out to discuss?\n\nThanks`
+    );
+    window.location.href = `mailto:brianwhitesel@gmail.com?subject=${subject}&body=${body}`;
+    closeModal();
   }
 </script>
 </body>
