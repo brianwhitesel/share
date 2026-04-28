@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iman Gadzhi — MMO Challenge 3.0 | VIP Sessions</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e16;
+    --surface: #111827;
+    --surface2: #1a2233;
+    --border: #1e2d42;
+    --accent: #3b82f6;
+    --accent2: #8b5cf6;
+    --accent3: #10b981;
+    --accent4: #f59e0b;
+    --accent5: #ef4444;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    background: linear-gradient(135deg, #0d1220 0%, #111827 50%, #0f172a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(59,130,246,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .badge-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .badge-blue  { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.3); color: #93c5fd; }
+  .badge-green { background: rgba(16,185,129,0.10); border-color: rgba(16,185,129,0.3); color: #6ee7b7; }
+  .badge-amber { background: rgba(245,158,11,0.10); border-color: rgba(245,158,11,0.3); color: #fcd34d; }
+  .badge-purple{ background: rgba(139,92,246,0.10); border-color: rgba(139,92,246,0.3); color: #c4b5fd; }
+  .badge-red   { background: rgba(239,68,68,0.10);  border-color: rgba(239,68,68,0.3);  color: #fca5a5; }
+
+  h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(26px, 5vw, 42px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  h1 span { color: var(--accent); }
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-bottom: 28px;
+  }
+  .stat-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* ── NAV TABS ── */
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 9px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .tab-btn:hover { background: var(--surface2); color: var(--text-dim); }
+  .tab-btn.active { background: var(--accent); color: #fff; }
+
+  /* ── SECTION ── */
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .section-desc {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  .icon-blue   { background: rgba(59,130,246,0.12); }
+  .icon-green  { background: rgba(16,185,129,0.12); }
+  .icon-amber  { background: rgba(245,158,11,0.12); }
+  .icon-purple { background: rgba(139,92,246,0.12); }
+  .icon-red    { background: rgba(239,68,68,0.12);  }
+
+  .card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .card-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .card-body {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .card-body p { margin-bottom: 8px; }
+  .card-body p:last-child { margin-bottom: 0; }
+
+  /* ── PULL QUOTES ── */
+  .pull-quote {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .pull-quote cite {
+    display: block;
+    margin-top: 6px;
+    font-style: normal;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── KEY CONCEPTS ── */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .concept-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 16px;
+  }
+  .concept-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text);
+  }
+  .concept-def {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ── SUCCESS STORIES ── */
+  .stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .story-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 14px;
+    text-align: center;
+  }
+  .story-amount {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent3);
+    display: block;
+  }
+  .story-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 3px 0;
+  }
+  .story-detail {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* ── THREE FORMATS ── */
+  .format-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .format-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 18px;
+  }
+  .format-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .format-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .format-name.blue   { color: #60a5fa; }
+  .format-name.green  { color: #34d399; }
+  .format-name.purple { color: #a78bfa; }
+  .format-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .format-price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent4);
+  }
+
+  /* ── THREE SECRETS ── */
+  .secret-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .secret-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+  }
+  .secret-card.s1::before { background: var(--accent); }
+  .secret-card.s2::before { background: var(--accent3); }
+  .secret-card.s3::before { background: var(--accent2); }
+
+  .secret-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 5px;
+  }
+  .secret-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .s1 .secret-title { color: #60a5fa; }
+  .s2 .secret-title { color: #34d399; }
+  .s3 .secret-title { color: #a78bfa; }
+
+  /* ── SLOT MACHINE ANALOGY ── */
+  .analogy-box {
+    background: rgba(16,185,129,0.06);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 14px 0;
+  }
+  .analogy-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent3);
+    margin-bottom: 8px;
+  }
+  .analogy-body {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ── NOTES FOR BRIAN ── */
+  .brian-note {
+    background: rgba(245,158,11,0.06);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 20px 0;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .brian-note strong {
+    color: var(--accent4);
+    font-weight: 600;
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+
+  /* ── PRODUCT DETAILS ── */
+  .product-box {
+    background: rgba(59,130,246,0.06);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 14px 0;
+  }
+  .product-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .product-price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent4);
+    margin-bottom: 10px;
+  }
+  .product-desc {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ── LIST ── */
+  ul.bullet {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+  }
+  ul.bullet li {
+    padding: 4px 0 4px 20px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    position: relative;
+  }
+  ul.bullet li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    border-top: 1px solid var(--border);
+    padding: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  @media (max-width: 600px) {
+    .tab-btn { font-size: 12px; padding: 8px 8px; }
+    .concept-grid, .stories-grid, .format-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── PAGE HEADER ── -->
+<div class="page-header">
+  <div class="badge-row">
+    <span class="badge badge-blue">Iman Gadzhi</span>
+    <span class="badge badge-amber">MMO Challenge 3.0</span>
+    <span class="badge badge-green">VIP Sessions</span>
+    <span class="badge badge-purple">Days 1–2 Complete</span>
+    <span class="badge badge-red">Days 3–5 Pending</span>
+  </div>
+  <h1>Make Money Online<br><span>Challenge 3.0</span></h1>
+  <p class="subtitle">VIP session notes + replay breakdowns — AI digital products on WAP</p>
+  <div class="stat-row">
+    <div class="stat-item">
+      <span class="stat-num">$23.9M</span>
+      <span class="stat-label">Client Earnings Tracked</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">$373/day</span>
+      <span class="stat-label">Core Concept</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">3,300+</span>
+      <span class="stat-label">Verified Reviews</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">3 Formats</span>
+      <span class="stat-label">Digital Product Types</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="container">
+
+  <!-- NAV TABS -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+    <button class="tab-btn" onclick="showTab('day1')">Day 1 Replay</button>
+    <button class="tab-btn" onclick="showTab('vip1')">VIP #1</button>
+    <button class="tab-btn" onclick="showTab('day2')">Day 2 Breakdown</button>
+    <button class="tab-btn" onclick="showTab('vip2')">VIP #2</button>
+    <button class="tab-btn" onclick="showTab('product')">The Offer</button>
+  </div>
+
+  <!-- ── OVERVIEW ── -->
+  <div id="tab-overview" class="tab-pane active">
+    <div class="section-label">Big Picture</div>
+    <div class="section-title">What This Challenge Is</div>
+    <div class="section-desc">A 5-day live event teaching how to build a portfolio of AI-generated digital products and sell them on WAP (Write-a-Product) marketplace — no tech skills, no audience, no sales required.</div>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-name">WAP Platform</div>
+        <div class="concept-def">Write-a-Product marketplace. Unicorn-status platform. Acts like a supermarket for digital products — brings buyers to you.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-name">Synthesize AI</div>
+        <div class="concept-def">Iman's proprietary AI tool. Trained on $100M+ in digital product sales and 20K+ products. Not publicly available — only via Monetize program.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-name">AI Digital Products</div>
+        <div class="concept-def">Ebooks, digital assets, and pre-recorded programs built entirely by AI in under 90 minutes. Zero inventory, zero cost to produce.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-name">Infinite Game</div>
+        <div class="concept-def">Don't aim for one win — build a portfolio. Failure costs nothing. Keep pulling the lever until something hits.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-name">Faceless Model</div>
+        <div class="concept-def">No personal brand, no face, no audience required. Products listed on marketplace; platform drives the traffic.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-name">Data-Driven Niche</div>
+        <div class="concept-def">"Your passion is not a business strategy. The data is." AI picks the niche based on search demand, not your interests.</div>
+      </div>
+    </div>
+
+    <div class="brian-note">
+      <strong>Relevance to your work:</strong> The "digital asset" format and WAP marketplace model maps directly to your HTML tool products. Your workspace tools, NDA generator, Audio Sync Tool, etc. are the equivalent of WAP-listed digital products — the key differentiator is your AI-native build pipeline and customization layer. The "infinite game" framework validates your 260+ products approach.
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-amber">📊</div>
+        <div>
+          <div class="card-title">Historical Context Iman Uses</div>
+          <div class="card-meta">Why "now" is the right time</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Iman frames AI digital products as a once-in-a-generation wealth window — like the early internet era, e-commerce boom, or social media rise. His argument: most people will miss it because they're too late to adopt, but those who start now have asymmetric advantage before mass competition arrives.</p>
+        <p>Key stat he uses: AI is disrupting traditional employment across skilled roles. The opportunity window is widest right now, before the space saturates.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-green">🎯</div>
+        <div>
+          <div class="card-title">The Core Pitch Loop</div>
+          <div class="card-meta">Repeated across all sessions</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p><strong style="color:var(--text)">1. The Problem:</strong> Traditional income is capped by time, skills, and employer decisions.</p>
+        <p><strong style="color:var(--text)">2. The Old Solution (broken):</strong> Start a business — too much money, time, and risk. Most fail in year one.</p>
+        <p><strong style="color:var(--text)">3. The New Model:</strong> AI builds your product for free. Marketplace sells it without you. Failure costs nothing. Test as many times as it takes.</p>
+        <p><strong style="color:var(--text)">4. The Ask:</strong> Buy Monetize + Synthesize AI ($2,999 list price) to get access to the proprietary tooling.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DAY 1 REPLAY ── -->
+  <div id="tab-day1" class="tab-pane">
+    <div class="section-label">Session 1</div>
+    <div class="section-title">$373/Day Business — Live Replay</div>
+    <div class="section-desc">The main Day 1 public session. Full $373/day framework, platform overview, and success story showcase.</div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-blue">💡</div>
+        <div>
+          <div class="card-title">The $373/Day Number</div>
+          <div class="card-meta">Where the figure comes from</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>$373/day = ~$11,190/month = ~$134K/year. Positioned as achievable through a small portfolio of AI digital products running in the background. Not a single product — a diversified catalog approach.</p>
+        <p>The number is used as an aspirational but "attainable" figure (not "get rich quick" — more like "quit your job" level). Framed differently than $1M/year targets to feel within reach for a regular person.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-green">🏆</div>
+        <div>
+          <div class="card-title">Success Stories Used</div>
+          <div class="card-meta">Real client examples</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="stories-grid">
+          <div class="story-card">
+            <span class="story-amount">$111K</span>
+            <div class="story-name">Armando</div>
+            <div class="story-detail">19 y/o, construction worker. Bought first computer to start. 45 days.</div>
+          </div>
+          <div class="story-card">
+            <span class="story-amount">$9,200</span>
+            <div class="story-name">Pedro (Portugal)</div>
+            <div class="story-detail">3 products to get there</div>
+          </div>
+          <div class="story-card">
+            <span class="story-amount">$5,000</span>
+            <div class="story-name">Eugene</div>
+            <div class="story-detail">13 products total</div>
+          </div>
+          <div class="story-card">
+            <span class="story-amount">$16,000</span>
+            <div class="story-name">Naffy (Staten Island)</div>
+            <div class="story-detail">17 products created</div>
+          </div>
+          <div class="story-card">
+            <span class="story-amount">$9,000/mo</span>
+            <div class="story-name">Vietnam Creator</div>
+            <div class="story-detail">49 maps, faceless</div>
+          </div>
+          <div class="story-card">
+            <span class="story-amount">$1,200</span>
+            <div class="story-name">Single Mom</div>
+            <div class="story-detail">First month applying system</div>
+          </div>
+          <div class="story-card">
+            <span class="story-amount">235K+ sales</span>
+            <div class="story-name">Become a Super Learner</div>
+            <div class="story-detail">Speed reading guide, no audience at launch</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-amber">🧠</div>
+        <div>
+          <div class="card-title">Specialized AI vs Generic AI</div>
+          <div class="card-meta">Key differentiator he emphasizes</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Iman draws a sharp distinction between ChatGPT/generic AI (which anyone can use) and purpose-built "specialized AI" trained specifically on digital product data. His argument: generic AI gives mediocre product ideas because it lacks domain-specific market intelligence. Synthesize AI is trained on real sales data and knows what actually sells.</p>
+        <p>This distinction is what justifies the price of the Monetize program — access to proprietary tooling that generic AI can't replicate.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-purple">❤️</div>
+        <div>
+          <div class="card-title">"Your Why" Framework</div>
+          <div class="card-meta">Motivational anchor he uses throughout</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Iman asks attendees to write down their personal reason for wanting this — pay off debt, stop living paycheck to paycheck, take parents on vacation, build a safety net. He comes back to this multiple times during the pitch.</p>
+        <p>Emotionally: even $2,000/month extra is positioned as "life changing for 99% of people" — deliberately anchors the bar low so the goal feels achievable, then scales it up from there.</p>
+      </div>
+    </div>
+
+    <div class="pull-quote">
+      "Your passion is not a business strategy. The data is. If you were planning to build your first product around something you personally love, stop — that instinct, as natural as it feels, is the single fastest way to guarantee that your product never sells."
+      <cite>— Iman Gadzhi, Day 1 Replay</cite>
+    </div>
+  </div>
+
+  <!-- ── VIP SESSION #1 ── -->
+  <div id="tab-vip1" class="tab-pane">
+    <div class="section-label">VIP Exclusive</div>
+    <div class="section-title">VIP Session #1 — Day 1</div>
+    <div class="section-desc">Smaller group session. Deeper framework discussion, historical wealth window context, and personal development component.</div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-blue">🌐</div>
+        <div>
+          <div class="card-title">Historical Wealth Windows</div>
+          <div class="card-meta">The big picture framing</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Iman positions AI digital products as the current open "wealth window" — comparing it to early internet domain registration, the e-commerce boom, affiliate marketing's early days, and social media monetization before ad costs scaled. Each era had a brief window where normal people could build outsized wealth before the masses caught on.</p>
+        <p>The argument: AI is currently at that early, exploitable stage. The platforms are new, competition is low, and the tools are accessible. This window will close as the space matures and competition increases.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-purple">🧘</div>
+        <div>
+          <div class="card-title">Alchemy of Self</div>
+          <div class="card-meta">Personal development element</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>VIP sessions include a personal development track Iman calls "Alchemy of Self." The premise: external success follows internal transformation. Financial freedom requires identity-level change, not just tactical knowledge.</p>
+        <p>Topics include mindset around money, why most people self-sabotage even with the right information, and how to build the habits and environment that make execution happen.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-amber">🎁</div>
+        <div>
+          <div class="card-title">MacBook Giveaway</div>
+          <div class="card-meta">VIP incentive</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>MacBook giveaway mentioned as a VIP-exclusive incentive during Day 1 session. Used to increase engagement and reward early action-takers. Standard challenge mechanic to maintain session attendance across the week.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-green">🚀</div>
+        <div>
+          <div class="card-title">WAP Platform Overview</div>
+          <div class="card-meta">Expanded deep-dive in VIP</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>WAP is described as having reached "unicorn status" (>$1B valuation). The VIP session goes deeper on why WAP is the right marketplace choice vs. Etsy, Gumroad, or other options — specifically its built-in buyer demand, recommendation engine, and the fact that sellers don't need to drive their own traffic.</p>
+        <p>Jamar + Julio case study: built a sports digital product at $50/month subscription → ranked on WAP top charts → 450 signups without external marketing → $22,000/month passive.</p>
+      </div>
+    </div>
+
+    <div class="pull-quote">
+      "The people currently generating serious income with AI digital products on WAP are not, for the most part, technically sophisticated people. They are regular people who learned a simple process and executed it."
+      <cite>— Iman Gadzhi, VIP Session #1</cite>
+    </div>
+  </div>
+
+  <!-- ── DAY 2 BREAKDOWN ── -->
+  <div id="tab-day2" class="tab-pane">
+    <div class="section-label">Session 3</div>
+    <div class="section-title">$373/Day Live Breakdown — Day 2</div>
+    <div class="section-desc">The three success secrets, live AI demo, and "unlimited slot machine" framework. Most tactical session of the challenge.</div>
+
+    <div class="section-label" style="margin-top:4px">Three Success Secrets</div>
+
+    <div class="secret-card s1">
+      <div class="secret-num">Secret 01</div>
+      <div class="secret-title">Get Your First AI Product Built in Under 90 Minutes</div>
+      <div class="card-body">
+        <p>The technical barrier is "as close to zero as anything I've ever seen." If you can type into Google, you have every skill this requires. No coding, no software to configure, no design work.</p>
+        <p>Iman ran a live demo: typed "any topic you want" into Synthesize AI. It returned candidates scored on Pain, Demand, and Speed. Picked "peaceful co-parenting after divorce" — generated a complete ebook with sections, messaging, and downloadable file in under 5 minutes.</p>
+        <p>"This is your unlimited slot machine. You can pull it as many times as you want."</p>
+      </div>
+    </div>
+
+    <div class="secret-card s2">
+      <div class="secret-num">Secret 02</div>
+      <div class="secret-title">Guarantee Failure Is Impossible</div>
+      <div class="card-body">
+        <p>Iman's honest admission: "Your first AI digital product probably won't make any money." And that's okay — because it costs nothing to create another one.</p>
+
+        <div class="analogy-box">
+          <div class="analogy-title">🎰 The Unlimited Slot Machine</div>
+          <div class="analogy-body">Most businesses fail because they run out of money trying to find product-market fit. The digital product model eliminates this. Each pull costs nothing (just time). Keep creating until one hits. The only way to truly fail is to stop pulling.<br><br>
+          Pedro: $9,200 from 3 products. Eugene: $5K from 13. Naffy: $16K from 17. None got it right on the first try — but they all made money.</div>
+        </div>
+
+        <p>Income progression model: product #5 makes $15/day, #10 makes $50/day, eventually one makes $100/day. Three products stacked = $5,000+/month. "No inventory to buy when testing, no cost of goods, no marketing budget, no ongoing cost."</p>
+      </div>
+    </div>
+
+    <div class="secret-card s3">
+      <div class="secret-num">Secret 03</div>
+      <div class="secret-title">Make Full-Time Income Without Selling Anything</div>
+      <div class="card-body">
+        <p>The supermarket analogy: Kellogg's doesn't knock on your door to sell cereal. They just make sure the box is on the shelf when you walk in hungry. WAP marketplace does the same thing — aggregates buyer demand and connects it to your product.</p>
+        <p>Your only job: have the right product listed when the buyer arrives. You don't need to convince, persuade, or cold outreach anyone.</p>
+        <ul class="bullet">
+          <li>No sales skills required</li>
+          <li>No personal brand or audience needed</li>
+          <li>No cold outreach, DMs, or rejection</li>
+          <li>Income independent of personality, confidence, or background</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-blue">🎬</div>
+        <div>
+          <div class="card-title">Live AI Demo — Synthesize in Action</div>
+          <div class="card-meta">Watched live during Day 2</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Iman showed himself using Synthesize AI with no pre-planned topic. The system returned multiple product candidates, each scored on Pain (how much people suffer without a solution), Demand (search volume/market size), and Speed (how fast you can monetize it).</p>
+        <p>Selected niche: <strong style="color:var(--text)">"Peaceful co-parenting after divorce"</strong> — a topic he never would have chosen himself. AI generated complete product with sections: "Three guardrail rules," "Short messages to keep co-parenting out of court," "Protect the child and keep handoffs calm."</p>
+        <p>Time from prompt to downloadable product: under 5 minutes.</p>
+      </div>
+    </div>
+
+    <div class="pull-quote">
+      "That process that used to take people half a year — a year of paralysis — 'should I do this? let me do the market research' — the AI does all of that for you. I hope you truly understand how insane this is."
+      <cite>— Iman Gadzhi, Day 2 Live Breakdown</cite>
+    </div>
+  </div>
+
+  <!-- ── VIP SESSION #2 ── -->
+  <div id="tab-vip2" class="tab-pane">
+    <div class="section-label">VIP Exclusive</div>
+    <div class="section-title">VIP Session #2 — Day 2</div>
+    <div class="section-desc">Deep-dive on the three product formats, pricing strategy, and the "infinite game" philosophy for building a sustainable digital product income.</div>
+
+    <div class="section-label" style="margin-top:4px">Three Digital Product Formats</div>
+    <div class="format-row">
+      <div class="format-card">
+        <div class="format-num">Format 01</div>
+        <div class="format-name blue">Ebook</div>
+        <div class="format-desc">AI-generated text document on a specific topic. Lowest friction to create. Best for testing niches quickly. Pain + demand + speed scoring used to pick topics.</div>
+        <div class="format-price">Typical price: $10–$49 one-time</div>
+      </div>
+      <div class="format-card">
+        <div class="format-num">Format 02</div>
+        <div class="format-name green">Digital Asset</div>
+        <div class="format-desc">Templates, tools, prompts, checklists, swipe files. Higher perceived value than ebooks. More reusable. Brian's HTML tools fall into this category.</div>
+        <div class="format-price">Typical price: $25–$97 one-time</div>
+      </div>
+      <div class="format-card">
+        <div class="format-num">Format 03</div>
+        <div class="format-name purple">Pre-Recorded Program</div>
+        <div class="format-desc">Video course or training series. Highest price point. More effort to produce but can be built using AI-scripted content and screen recordings.</div>
+        <div class="format-price">Typical price: $97–$497 one-time or subscription</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-green">♾️</div>
+        <div>
+          <div class="card-title">The Infinite Game Philosophy</div>
+          <div class="card-meta">Long-term model over one-hit thinking</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Core VIP Session #2 theme: stop thinking about hitting a single home run and start thinking about building a catalog. The infinite game is one you're never trying to "win" — you're trying to keep playing.</p>
+        <p>Applied to digital products: your goal isn't to create the perfect product. It's to build a system that lets you create products faster than the market evolves. One bad product doesn't matter. A portfolio of 20, 30, 50 products with a few hits changes your financial picture permanently.</p>
+        <p>This is why Iman doesn't call it a business — he calls it an "income stream system." It's infrastructure, not a single bet.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-amber">💰</div>
+        <div>
+          <div class="card-title">Faceless Business Model Deep-Dive</div>
+          <div class="card-meta">VIP-exclusive content</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>VIP attendees get more detail on how to operate completely without a personal brand. Key elements:</p>
+        <ul class="bullet">
+          <li>Use pen names or brand names instead of your real name</li>
+          <li>AI-generated cover art and product imagery</li>
+          <li>No video content, no social media presence required</li>
+          <li>WAP marketplace drives discovery — your face is irrelevant</li>
+          <li>The Vietnam creator making $9K/month from 49 maps is the archetype</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-purple">📈</div>
+        <div>
+          <div class="card-title">Pricing Tier Strategy</div>
+          <div class="card-meta">How to price for conversions</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>VIP sessions go deeper on pricing than the public sessions. Key frameworks:</p>
+        <ul class="bullet">
+          <li>Start low to get reviews and marketplace ranking, then raise price</li>
+          <li>Subscriptions ($49–$99/month) compound over time vs. one-time sales</li>
+          <li>Jamar + Julio example: $50/month product → 450 subscribers → $22K/month recurring</li>
+          <li>Bundles of related products increase average order value without additional marketing</li>
+          <li>Price signals quality — too cheap can hurt conversion rates</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pull-quote">
+      "The infinite game is one where you're never trying to win — you're trying to keep playing. One bad product doesn't matter. A portfolio of products, some hitting, some not, is how this becomes permanent income."
+      <cite>— Iman Gadzhi, VIP Session #2</cite>
+    </div>
+
+    <div class="brian-note">
+      <strong>Note for Days 3–5:</strong> VIP sessions are expected to go deeper on traffic amplification, scaling beyond WAP, and potentially advanced AI tooling. Transcripts incoming end of week. Same pipeline: run Whisper on the MP4s, drop .txt into Inbox, this page will be updated.
+    </div>
+  </div>
+
+  <!-- ── THE OFFER ── -->
+  <div id="tab-product" class="tab-pane">
+    <div class="section-label">Monetize Program</div>
+    <div class="section-title">The Offer</div>
+    <div class="section-desc">What Iman is selling at the end of the challenge. Understanding the product helps understand what the free content is building toward.</div>
+
+    <div class="product-box">
+      <div class="product-name">Monetize</div>
+      <div class="product-price">List price: $2,999 — BNPL available via Klarna, AfterPay, Splitit, Clarity Pay, Affirm</div>
+      <div class="product-desc">Described as "the world's first complete system for building highly profitable AI digital products." Includes access to Synthesize AI, Digital Product Formula training, and client success community with 3,300+ verified reviews.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-blue">🤖</div>
+        <div>
+          <div class="card-title">Synthesize AI</div>
+          <div class="card-meta">Core proprietary tool</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>The proprietary AI tool doing the heavy lifting. Not publicly available — only accessible through Monetize enrollment. Key specs mentioned:</p>
+        <ul class="bullet">
+          <li>Trained on $100M+ of Iman's own digital product sales data</li>
+          <li>Built on 20,000+ AI digital products created through it</li>
+          <li>Scores product ideas by Pain, Demand, and Speed metrics</li>
+          <li>Generates complete downloadable product in minutes</li>
+          <li>Unlimited usage — create as many products as you want</li>
+        </ul>
+        <p style="margin-top:10px">Iman used it to build a product that made $370,000 in 30 days from under 60 minutes of work.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-green">📋</div>
+        <div>
+          <div class="card-title">Digital Product Formula</div>
+          <div class="card-meta">Step-by-step blueprint bonus</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Exact blueprint used by leaderboard earners from prior challenges. Includes full implementation training with watch-over-shoulder recordings of Iman building products from scratch.</p>
+        <ul class="bullet">
+          <li>Connor: $16,000 in 24 hours using the blueprint</li>
+          <li>Rebecca: $9,000 on first launch day</li>
+          <li>Historically priced at $1,495 as standalone — included in Monetize</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-amber">📊</div>
+        <div>
+          <div class="card-title">Enrollment — joiniman.com</div>
+          <div class="card-meta">How to sign up</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Sign-up flow: joiniman.com → Get Access button → Enrollment page showing BNPL financing options by region. Splitit "available virtually everywhere." Positioned as accessible to anyone with any credit situation.</p>
+        <p>BNPL access is framed as a privilege — WAP only grants it to businesses with a "long proven track record of customer satisfaction." Used as a trust signal.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon icon-purple">🏅</div>
+        <div>
+          <div class="card-title">Notable Client Results Referenced</div>
+          <div class="card-meta">Used throughout Day 2 pitch</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="stories-grid">
+          <div class="story-card">
+            <span class="story-amount">$145K</span>
+            <div class="story-name">Alex</div>
+            <div class="story-detail">90 days</div>
+          </div>
+          <div class="story-card">
+            <span class="story-amount">$7K</span>
+            <div class="story-name">Carl</div>
+            <div class="story-detail">3 days after launch</div>
+          </div>
+          <div class="story-card">
+            <span class="story-amount">$10K</span>
+            <div class="story-name">Rick</div>
+            <div class="story-detail">1.5 months</div>
+          </div>
+          <div class="story-card">
+            <span class="story-amount">$16K</span>
+            <div class="story-name">Connor</div>
+            <div class="story-detail">24 hours</div>
+          </div>
+          <div class="story-card">
+            <span class="story-amount">$9K</span>
+            <div class="story-name">Rebecca</div>
+            <div class="story-detail">First launch day</div>
+          </div>
+          <div class="story-card">
+            <span class="story-amount">$5K+</span>
+            <div class="story-name">Unnamed Client</div>
+            <div class="story-detail">Pure profit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="page-footer">
+  Iman Gadzhi — MMO Challenge 3.0 · Days 1–2 · Updated April 2026 · Days 3–5 pending
+</div>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
