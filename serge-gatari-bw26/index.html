@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serge Gatari — One Person AI Business</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0e16; --surface:#111827; --surface2:#1a2233; --border:#1e2d42;
+    --accent:#3b82f6; --green:#10b981; --amber:#f59e0b; --purple:#8b5cf6; --red:#ef4444;
+    --text:#e2e8f0; --dim:#94a3b8; --muted:#64748b;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; font-size:15px; line-height:1.6; }
+
+  .header { background:linear-gradient(135deg,#0d1220 0%,#111827 100%); border-bottom:1px solid var(--border); padding:40px 24px 32px; text-align:center; position:relative; overflow:hidden; }
+  .header::before { content:''; position:absolute; top:-60px; left:50%; transform:translateX(-50%); width:500px; height:250px; background:radial-gradient(ellipse,rgba(139,92,246,.08) 0%,transparent 70%); pointer-events:none; }
+  .badge-row { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:14px; }
+  .badge { font-family:'JetBrains Mono',monospace; font-size:11px; padding:4px 10px; border-radius:4px; border:1px solid; text-transform:uppercase; letter-spacing:.05em; }
+  .b-blue   { background:rgba(59,130,246,.12); border-color:rgba(59,130,246,.3); color:#93c5fd; }
+  .b-green  { background:rgba(16,185,129,.10); border-color:rgba(16,185,129,.3); color:#6ee7b7; }
+  .b-amber  { background:rgba(245,158,11,.10); border-color:rgba(245,158,11,.3); color:#fcd34d; }
+  .b-purple { background:rgba(139,92,246,.10); border-color:rgba(139,92,246,.3); color:#c4b5fd; }
+  .b-red    { background:rgba(239,68,68,.10);  border-color:rgba(239,68,68,.3);  color:#fca5a5; }
+
+  h1 { font-family:'Outfit',sans-serif; font-size:clamp(24px,5vw,40px); font-weight:800; letter-spacing:-.02em; margin-bottom:8px; }
+  h1 span { color:var(--purple); }
+  .subtitle { color:var(--dim); font-size:14px; }
+
+  .container { max-width:880px; margin:0 auto; padding:28px 20px 80px; }
+
+  .tab-nav { display:flex; gap:4px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:28px; flex-wrap:wrap; }
+  .tab-btn { flex:1; min-width:110px; padding:9px 10px; border:none; background:transparent; color:var(--muted); font-family:'Inter',sans-serif; font-size:13px; font-weight:500; border-radius:7px; cursor:pointer; transition:all .15s; text-align:center; }
+  .tab-btn:hover { background:var(--surface2); color:var(--dim); }
+  .tab-btn.active { background:var(--purple); color:#fff; }
+  .tab-pane { display:none; }
+  .tab-pane.active { display:block; }
+
+  .section-label { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.12em; margin-bottom:5px; }
+  h2 { font-family:'Outfit',sans-serif; font-size:20px; font-weight:700; margin-bottom:6px; }
+  .section-desc { color:var(--dim); font-size:14px; margin-bottom:20px; line-height:1.55; }
+
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px 20px; margin-bottom:12px; }
+  .card-head { display:flex; align-items:flex-start; gap:12px; margin-bottom:10px; }
+  .icon { width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+  .i-blue   { background:rgba(59,130,246,.12); }
+  .i-green  { background:rgba(16,185,129,.12); }
+  .i-amber  { background:rgba(245,158,11,.12); }
+  .i-purple { background:rgba(139,92,246,.12); }
+  .i-red    { background:rgba(239,68,68,.12);  }
+  .card-title { font-family:'Outfit',sans-serif; font-size:15px; font-weight:600; }
+  .card-sub { font-size:12px; color:var(--muted); }
+  .card-body { color:var(--dim); font-size:13.5px; line-height:1.65; }
+  .card-body p { margin-bottom:8px; }
+  .card-body p:last-child { margin-bottom:0; }
+
+  .pull-quote { background:var(--surface2); border-left:3px solid var(--purple); border-radius:0 8px 8px 0; padding:14px 16px; margin:14px 0; font-style:italic; color:var(--dim); font-size:13.5px; line-height:1.6; }
+  .pull-quote cite { display:block; margin-top:6px; font-style:normal; font-size:11px; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+
+  .note { border-radius:10px; padding:14px 16px; margin:14px 0; font-size:13px; line-height:1.65; }
+  .note-amber  { background:rgba(245,158,11,.06); border:1px solid rgba(245,158,11,.2); color:var(--dim); }
+  .note-green  { background:rgba(16,185,129,.06); border:1px solid rgba(16,185,129,.2); color:var(--dim); }
+  .note-blue   { background:rgba(59,130,246,.06); border:1px solid rgba(59,130,246,.2); color:var(--dim); }
+  .note-purple { background:rgba(139,92,246,.06); border:1px solid rgba(139,92,246,.2); color:var(--dim); }
+  .note-red    { background:rgba(239,68,68,.06);  border:1px solid rgba(239,68,68,.2);  color:var(--dim); }
+  .note strong { font-weight:600; }
+  .note-amber strong  { color:var(--amber); }
+  .note-green strong  { color:var(--green); }
+  .note-blue strong   { color:var(--accent); }
+  .note-purple strong { color:var(--purple); }
+  .note-red strong    { color:var(--red); }
+
+  /* Playbook stack */
+  .stack { border:1px solid var(--border); border-radius:10px; overflow:hidden; margin:14px 0; }
+  .stack-row { display:flex; align-items:center; gap:14px; padding:13px 16px; border-bottom:1px solid var(--border); }
+  .stack-row:last-child { border-bottom:none; }
+  .stack-num { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); width:28px; flex-shrink:0; }
+  .stack-name { font-family:'Outfit',sans-serif; font-size:14px; font-weight:600; color:var(--text); min-width:120px; }
+  .stack-desc { font-size:13px; color:var(--dim); }
+
+  /* Comparison table */
+  .compare { width:100%; border-collapse:collapse; margin:14px 0; font-size:13px; }
+  .compare th { text-align:left; padding:10px 14px; font-family:'Outfit',sans-serif; font-weight:600; font-size:13px; border-bottom:2px solid var(--border); color:var(--dim); background:var(--surface); }
+  .compare td { padding:10px 14px; border-bottom:1px solid var(--border); color:var(--dim); vertical-align:top; }
+  .compare tr:last-child td { border-bottom:none; }
+  .compare td:first-child { color:var(--text); font-weight:500; }
+  .compare .yes { color:var(--green); }
+  .compare .partial { color:var(--amber); }
+  .compare .no { color:var(--red); }
+
+  /* Grid */
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+  @media(max-width:560px) { .grid2 { grid-template-columns:1fr; } }
+
+  /* Action items */
+  .action { background:var(--surface2); border:1px solid var(--border); border-radius:9px; padding:13px 16px; margin-bottom:10px; display:flex; gap:12px; align-items:flex-start; }
+  .action-num { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--purple); font-weight:500; flex-shrink:0; padding-top:1px; }
+  .action-text { font-size:13.5px; color:var(--dim); line-height:1.55; }
+  .action-text strong { color:var(--text); }
+
+  .divider { height:1px; background:var(--border); margin:24px 0; }
+
+  footer { border-top:1px solid var(--border); padding:18px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge-row">
+    <span class="badge b-purple">Serge Gatari</span>
+    <span class="badge b-blue">ClientAcquisition.io</span>
+    <span class="badge b-green">TryCook.ai</span>
+    <span class="badge b-amber">One Person Company</span>
+    <span class="badge b-red">$15M → 1 Person</span>
+  </div>
+  <h1>The <span>One Person</span><br>AI Business</h1>
+  <p class="subtitle">"The ONLY Video You Need to Build a Profitable 1-Person AI Business in 2026" — analysis + application</p>
+</div>
+
+<div class="container">
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('core')">Core Thesis</button>
+    <button class="tab-btn" onclick="showTab('playbook')">Playbook System</button>
+    <button class="tab-btn" onclick="showTab('context')">Context Layer</button>
+    <button class="tab-btn" onclick="showTab('apply')">Brian's Build</button>
+    <button class="tab-btn" onclick="showTab('vs')">vs. Iman</button>
+  </div>
+
+  <!-- CORE THESIS -->
+  <div id="tab-core" class="tab-pane active">
+    <div class="section-label">The Problem</div>
+    <h2>Why Everyone's Broke Despite the AI Boom</h2>
+    <div class="section-desc">Serge's entire video is built around one uncomfortable truth that no AI creator wants to say out loud.</div>
+
+    <div class="card">
+      <div class="card-head"><div class="icon i-red">⚠️</div><div><div class="card-title">The Business Model Confusion</div><div class="card-sub">The #1 reason solo operators fail with AI</div></div></div>
+      <div class="card-body">
+        <p>Anthropic's business model is to provide intelligence as cheap infrastructure — a commodity embedded everywhere. Your business model is NOT to resell that commodity. Yet millions of people watch Claude Code tutorials, learn N8N workflows, master AI features, and make zero dollars.</p>
+        <p>Claude Code features are free. You can't charge businesses thousands of dollars for something they could do themselves for free. The feature is not the product. The application of the feature to a specific business context — that's the product.</p>
+      </div>
+    </div>
+
+    <div class="pull-quote">
+      "If AI can create it, it is not valuable. You need to go find proprietary data — data that is not accessible by this intelligence. You have to go inside boring businesses."
+      <cite>— Serge Gatari</cite>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="icon i-purple">🎯</div><div><div class="card-title">AI Slop vs. Proprietary Data</div><div class="card-sub">The real moat</div></div></div>
+      <div class="card-body">
+        <p><strong style="color:var(--text)">AI Slop</strong> = anything AI already knows, can generate, or can replicate. Ebooks on generic topics. Boilerplate workflows. Vibe-coded apps. Generic outreach. Zero moat, zero value, declining prices.</p>
+        <p><strong style="color:var(--text)">Proprietary Data</strong> = the specific processes, conversion rates, ad scripts, sales cycles, PNL line items, and customer behavior data locked inside real businesses. AI can't access this. When you embed it into AI systems, you create something that is genuinely irreplaceable.</p>
+        <p>The path: go inside boring businesses → understand every process → codify everything → build AI agents trained on that specific data → the result is 10x better than anything generic AI could produce.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="icon i-amber">💰</div><div><div class="card-title">The Revenue Model</div><div class="card-sub">How Serge is converting his $15M agency to 1-person operation</div></div></div>
+      <div class="card-body">
+        <p>ClientAcquisition.io made $15M over 4 years with a full team and millions in payroll. He's now rebuilding it as a one-person operation using his TryCook.ai platform. The three paths to money:</p>
+        <p><strong style="color:var(--text)">Path 1 — Retainer:</strong> Build AI employees for a business, get paid monthly. The AI keeps working, you keep getting paid without lifting a finger.</p>
+        <p><strong style="color:var(--text)">Path 2 — Acquisition:</strong> Don't take a retainer — buy the business. Strip the waste, run it entirely on AI employees. Target boomer-owned businesses whose owners want to retire and have no succession plan.</p>
+        <p><strong style="color:var(--text)">Path 3 — Platform:</strong> Build the infrastructure itself (TryCook.ai) and charge other operators to use it.</p>
+      </div>
+    </div>
+
+    <div class="note note-purple">
+      <strong>Why this matters to you:</strong> Serge built ClientAcquisition.io — a consulting/agency training platform — and is converting it to one-person using AI. You're building a consulting + tools business from scratch, already AI-native. You're starting where he's trying to get to. That's an asymmetric advantage.
+    </div>
+  </div>
+
+  <!-- PLAYBOOK SYSTEM -->
+  <div id="tab-playbook" class="tab-pane">
+    <div class="section-label">The Framework</div>
+    <h2>The Agentic Operation Stack</h2>
+    <div class="section-desc">Serge's five-layer system for replacing human employees with AI agents. Every function in a business is a collection of playbooks.</div>
+
+    <div class="stack">
+      <div class="stack-row">
+        <div class="stack-num">01</div>
+        <div class="stack-name">Skills</div>
+        <div class="stack-desc">The "how to do the job" — codified knowledge and procedures for each task. A media buyer needs to know: how to script VSLs, build funnels, write hooks, optimize CTAs. All of that gets documented into skills.</div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-num">02</div>
+        <div class="stack-name">Tools</div>
+        <div class="stack-desc">Integrations the AI agent needs to actually execute — ads manager, CRM, funnel builder, content creation, analytics. Serge integrated 100+ tools just for one business function. Each skill calls the tools it needs.</div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-num">03</div>
+        <div class="stack-name">Workflows</div>
+        <div class="stack-desc">The sequence in which skills and tools get used. Research before ads. Analysis before decisions. The order matters — this is the logic layer that makes outputs actually good.</div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-num">04</div>
+        <div class="stack-name">Missions</div>
+        <div class="stack-desc">When does this all run? Daily? Weekly? On trigger? Missions are the automation layer — the scheduler that fires workflows at the right time without human input.</div>
+      </div>
+      <div class="stack-row">
+        <div class="stack-num">05</div>
+        <div class="stack-name">Playbooks</div>
+        <div class="stack-desc">The full package for one job function: skills + tools + workflows + missions combined. A billion-dollar company has a billion-dollar playbook for every function. Media buying. Sales. Fulfillment. Hiring. Each is its own complete playbook.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="icon i-blue">🤖</div><div><div class="card-title">AI Employees</div><div class="card-sub">Agents that own a playbook</div></div></div>
+      <div class="card-body">
+        <p>Once you build a playbook, you assign it to an AI employee — a named agent that owns that function. Serge's example: Alexander, his AI media buyer, owns the entire paid media playbook for his business.</p>
+        <p>These AI employees live in Discord or Slack. Serge just chats with them to get work done. Each one has the full playbook + all integrations + full business context. The result: one person managing what previously required a team of 10+.</p>
+      </div>
+    </div>
+
+    <div class="note note-amber">
+      <strong>Direct parallel to your work:</strong> Your scheduled tasks (daily-workspace-sync, mmoc3-transcript-updater) are primitive missions. Your .auto-memory files are primitive playbooks. Your Cowork + Dispatch setup is the beginning of this stack. You're building this organically — Serge's framework is the formalized version of what you're already doing.
+    </div>
+
+    <div class="pull-quote">
+      "Every single job, every single function, every single business is a collection of playbooks. A billion dollar company has a billion dollar playbook for every single function in their business."
+      <cite>— Serge Gatari</cite>
+    </div>
+  </div>
+
+  <!-- CONTEXT LAYER -->
+  <div id="tab-context" class="tab-pane">
+    <div class="section-label">The Unlock</div>
+    <h2>Context Management — The Missing Piece</h2>
+    <div class="section-desc">This is the part nobody talks about. You can have perfect playbooks and perfect AI agents and still fail without this.</div>
+
+    <div class="card">
+      <div class="card-head"><div class="icon i-purple">🧠</div><div><div class="card-title">Why Agents Fail Without Context</div><div class="card-sub">The #1 reason AI deployments deliver no value</div></div></div>
+      <div class="card-body">
+        <p>Even with perfect playbooks and integrations, AI agents fail if they don't know the specifics of the business they're operating in. They have to be re-prompted every time. They forget the little things that make all the difference. They produce generic output instead of tailored output.</p>
+        <p>Most AI implementations fail here — not because the model is bad, but because the context layer doesn't exist. The agent doesn't know: which ads converted last month, who the best clients are, what sales objections come up most, what the brand voice sounds like in real conversations.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="icon i-green">📁</div><div><div class="card-title">The Shared World Model</div><div class="card-sub">Jack Dorsey's concept, Serge's implementation</div></div></div>
+      <div class="card-body">
+        <p>Instead of each agent having its own memory, all agents share one central file system — a world model that knows everything about the organization. Sales call transcripts. Content performance data. Best client profiles. Ad scripts that converted. Every data point that matters.</p>
+        <p>Every time an AI employee does work, the output feeds back into that shared database. The system gets smarter recursively — it learns from its own outputs and improves itself continuously without human intervention.</p>
+        <p>Serge built this into TryCook.ai — a unified workspace that ingests data from Fathom (call recordings), Google Docs, payment processors, CRMs, and anywhere else business data lives.</p>
+      </div>
+    </div>
+
+    <div class="note note-green">
+      <strong>This is exactly what your workspace is:</strong> Your .auto-memory folder IS a shared world model. Every project file, feedback rule, and client note is context that every future Claude session pulls from. You solved the context layer for yourself. The next step is building the same thing for your clients — and charging for it.
+    </div>
+
+    <div class="pull-quote">
+      "To truly have these AI bots derive great value in a business, they need to know everything about that business — data about sales, marketing, content, customer support, everything. Solving for context is how you achieve true autonomous one-person companies."
+      <cite>— Serge Gatari</cite>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="icon i-amber">💡</div><div><div class="card-title">TryCook.ai (Cokai)</div><div class="card-sub">His platform that solves for all of this</div></div></div>
+      <div class="card-body">
+        <p>Serge built TryCook.ai specifically to solve the context + playbook + agent problem in one unified platform. It ingests all business data into one workspace, lets you build skills, set up integrations, create AI employees, and run missions — all from one place.</p>
+        <p>The name: "You're either cooking with AI or getting cooked by AI." The pitch is that anyone running an AI business without a proper context layer is getting cooked — losing to competitors who have figured it out.</p>
+        <p>Worth studying as a competitive reference. His platform and your workspace tool vision are solving adjacent problems for different audiences.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRIAN'S BUILD -->
+  <div id="tab-apply" class="tab-pane">
+    <div class="section-label">Application</div>
+    <h2>How This Maps to Your Business</h2>
+    <div class="section-desc">The framework Serge describes isn't something you need to build from scratch. You're already further along than you realize.</div>
+
+    <div class="note note-purple">
+      <strong>The key insight:</strong> Serge is converting a $15M agency into a 1-person operation. You're building a 1-person operation from day one. You don't have the technical debt, the payroll, or the organizational inertia he's fighting. You're starting where he's trying to get to — that's a structural advantage.
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">What You Already Have</div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-head"><div class="icon i-green">✅</div><div><div class="card-title">Context Layer</div><div class="card-sub">Already solved</div></div></div>
+        <div class="card-body"><p>Your .auto-memory system IS the shared world model. MEMORY.md + individual project files = the context layer Serge spent months building. You have client context, feedback rules, project history — all auto-loaded into every session.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="icon i-green">✅</div><div><div class="card-title">Missions</div><div class="card-sub">Already running</div></div></div>
+        <div class="card-body"><p>Your scheduled tasks (daily-workspace-sync, mmoc3-transcript-updater) are missions. They run autonomously, detect changes, and update outputs without you doing anything. You built this organically.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="icon i-amber">🔨</div><div><div class="card-title">Playbooks</div><div class="card-sub">In progress</div></div></div>
+        <div class="card-body"><p>Your 260+ HTML products are codified skills and tools. The Inbox pipeline + transcription scripts + daily sync = early workflows. The gap is formalizing these into named playbooks per client function (social media, client intake, billing, etc.).</p></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="icon i-blue">🔨</div><div><div class="card-title">AI Employees</div><div class="card-sub">Next build</div></div></div>
+        <div class="card-body"><p>You have Dispatch + Cowork acting as one AI employee. The next phase is building specialized scheduled tasks per client function — a "social media AI employee" for Geddis, a "booking AI employee" for Dustin, etc.</p></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">Shortcuts Serge's Model Reveals</div>
+
+    <div class="action">
+      <div class="action-num">01</div>
+      <div class="action-text"><strong>Lead with the context audit.</strong> Before building anything for a client, document their proprietary data — what converts, what their best clients look like, what their sales cycle is. This is the data layer. It's also the discovery call deliverable that justifies the engagement.</div>
+    </div>
+    <div class="action">
+      <div class="action-num">02</div>
+      <div class="action-text"><strong>Sell the playbook, not the tool.</strong> Don't pitch "I'll build you a website." Pitch "I'll build you a lead-gen playbook — the system that runs your acquisition, qualification, and follow-up on autopilot." The playbook is 10x more valuable and harder to replace.</div>
+    </div>
+    <div class="action">
+      <div class="action-num">03</div>
+      <div class="action-text"><strong>Target boomer businesses.</strong> Serge specifically calls out owners who want to retire and can't find successors. Local businesses — renovation companies, specialty retailers, service businesses — are the exact clients in your pipeline. They have proprietary data, recurring revenue, and no AI capability.</div>
+    </div>
+    <div class="action">
+      <div class="action-num">04</div>
+      <div class="action-text"><strong>Build the workspace tool as the retention mechanism.</strong> Once a client's data lives in your context system and their AI employees are running, switching costs become enormous. That's recurring revenue locked in — not by contract, but by dependency on the system you built for them.</div>
+    </div>
+    <div class="action">
+      <div class="action-num">05</div>
+      <div class="action-text"><strong>Stack Serge's model with Iman's.</strong> Iman handles passive distribution (WAP marketplace products). Serge handles active client delivery (playbooks + AI employees). You can run both simultaneously: marketplace products for passive income, AI systems for high-ticket clients. They don't compete.</div>
+    </div>
+  </div>
+
+  <!-- VS IMAN -->
+  <div id="tab-vs" class="tab-pane">
+    <div class="section-label">Strategic Overview</div>
+    <h2>Serge vs. Iman — Two Sides of the Same Model</h2>
+    <div class="section-desc">These two creators are teaching complementary approaches. Understanding both tells you exactly where your build fits.</div>
+
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Iman Gadzhi (MMOC3)</th>
+          <th>Serge Gatari</th>
+          <th>Your Position</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Revenue model</td>
+          <td>Passive — marketplace products</td>
+          <td>Active — client retainers + acquisitions</td>
+          <td class="partial">Both — tools + clients</td>
+        </tr>
+        <tr>
+          <td>Distribution</td>
+          <td>WAP marketplace does it for you</td>
+          <td>You do outreach, content, ads</td>
+          <td class="partial">Share pages + referrals</td>
+        </tr>
+        <tr>
+          <td>Effort level</td>
+          <td>Low — create & list, platform sells</td>
+          <td>High — acquire clients, build systems</td>
+          <td class="amber">Medium — build once, serve many</td>
+        </tr>
+        <tr>
+          <td>Income ceiling</td>
+          <td>Medium — portfolio of $10–$100 products</td>
+          <td>High — $50K–$200K/client possible</td>
+          <td class="yes">High — tools scale, clients pay big</td>
+        </tr>
+        <tr>
+          <td>Moat</td>
+          <td>Low — anyone can create similar products</td>
+          <td>High — proprietary data + embedded systems</td>
+          <td class="yes">High — workspace + client context layer</td>
+        </tr>
+        <tr>
+          <td>Speed to $5K/mo</td>
+          <td>Months — build portfolio, get traction</td>
+          <td>Faster — 1-2 clients at $2.5K each</td>
+          <td class="yes">Fastest — you have pipeline now</td>
+        </tr>
+        <tr>
+          <td>Technical requirement</td>
+          <td>Zero — AI does everything</td>
+          <td>High — 100+ integrations, context engineering</td>
+          <td class="yes">Already built — Cowork + workspace</td>
+        </tr>
+        <tr>
+          <td>Personal brand needed</td>
+          <td>No — fully faceless possible</td>
+          <td>Yes — content + outreach required</td>
+          <td class="partial">Light — share pages, no social required</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note note-amber">
+      <strong>The combined play:</strong> Use Iman's distribution model (marketplace + WAP) for your HTML tools — passive income from 260+ products. Use Serge's client model for your consulting — high-ticket, high-moat, recurring. The tools you build for the marketplace also become proof of capability that closes consulting clients. One reinforces the other.
+    </div>
+
+    <div class="pull-quote">
+      "The future of business is that one person is going to be able to own an entire vertical, understand every playbook within that business, build AI employees that run those playbooks, and connect these AI agents to the entire context of that business."
+      <cite>— Serge Gatari</cite>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="icon i-purple">🔭</div><div><div class="card-title">The 12-Month Vision This Points To</div><div class="card-sub">Where these two models converge for you</div></div></div>
+      <div class="card-body">
+        <p><strong style="color:var(--text)">Months 1–3:</strong> Close 2–3 clients using your existing pipeline (Dustin, Geddis, DMD, Understory). Build their context layer as part of onboarding. Start the playbook for each client's core function.</p>
+        <p><strong style="color:var(--text)">Months 4–6:</strong> List productized versions of your tools on WAP and similar marketplaces. Passive income starts compounding. Client results become case studies.</p>
+        <p><strong style="color:var(--text)">Months 7–12:</strong> Your workspace tool IS TryCook.ai for local businesses. Package it. Offer it as the platform. Clients pay to have their business run on it. That's the recurring revenue moat — not a retainer, a dependency.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Serge Gatari — One Person AI Business · Analyzed April 2026 · Brian Whitesel</footer>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
