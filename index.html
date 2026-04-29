@@ -82,29 +82,27 @@ body {
   position: fixed; inset: 0;
   pointer-events: none; z-index: 0;
   overflow: hidden;
-  filter: blur(72px);
 }
-@media(prefers-reduced-motion:reduce) { .bg-orbs { display:none; } }
-.orb { position:absolute; border-radius:50%; will-change:transform; opacity:0; animation:orbFade 2s ease forwards; }
-@keyframes orbFade { to { opacity:1; } }
-.o1  { width:360px;height:360px; top:-6%;  left:5%;   background:radial-gradient(circle,rgba(99,102,241,0.40),transparent 70%); animation:orbFade 2s ease forwards,d1 28s ease-in-out infinite; }
-.o2  { width:310px;height:310px; top:8%;   left:58%;  background:radial-gradient(circle,rgba(59,130,246,0.36),transparent 70%); animation:orbFade 2.2s ease forwards,d2 34s ease-in-out infinite; }
-.o3  { width:270px;height:270px; top:32%;  left:-3%;  background:radial-gradient(circle,rgba(139,92,246,0.34),transparent 70%); animation:orbFade 2.4s ease forwards,d3 22s ease-in-out infinite; }
-.o4  { width:400px;height:400px; top:18%;  left:74%;  background:radial-gradient(circle,rgba(99,102,241,0.30),transparent 70%); animation:orbFade 2.1s ease forwards,d4 40s ease-in-out infinite; }
-.o5  { width:230px;height:230px; top:55%;  left:12%;  background:radial-gradient(circle,rgba(59,130,246,0.36),transparent 70%); animation:orbFade 2.6s ease forwards,d5 26s ease-in-out infinite; }
-.o6  { width:300px;height:300px; top:62%;  left:48%;  background:radial-gradient(circle,rgba(139,92,246,0.34),transparent 70%); animation:orbFade 1.9s ease forwards,d6 32s ease-in-out infinite; }
-.o7  { width:340px;height:340px; top:78%;  left:82%;  background:radial-gradient(circle,rgba(99,102,241,0.38),transparent 70%); animation:orbFade 2.3s ease forwards,d7 24s ease-in-out infinite; }
-.o8  { width:210px;height:210px; top:42%;  left:90%;  background:radial-gradient(circle,rgba(59,130,246,0.30),transparent 70%); animation:orbFade 2.7s ease forwards,d8 30s ease-in-out infinite; }
-.o9  { width:250px;height:250px; top:85%;  left:22%;  background:radial-gradient(circle,rgba(139,92,246,0.34),transparent 70%); animation:orbFade 2.0s ease forwards,d9 20s ease-in-out infinite; }
-.o10 { width:380px;height:380px; top:-4%;  left:32%;  background:radial-gradient(circle,rgba(59,130,246,0.28),transparent 70%); animation:orbFade 2.5s ease forwards,d10 44s ease-in-out infinite; }
-.o11 { width:220px;height:220px; top:28%;  left:42%;  background:radial-gradient(circle,rgba(99,102,241,0.32),transparent 70%); animation:orbFade 2.2s ease forwards,d11 18s ease-in-out infinite; }
-.o12 { width:290px;height:290px; top:72%;  left:64%;  background:radial-gradient(circle,rgba(139,92,246,0.35),transparent 70%); animation:orbFade 2.4s ease forwards,d12 36s ease-in-out infinite; }
-.o13 { width:240px;height:240px; top:38%;  left:25%;  background:radial-gradient(circle,rgba(59,130,246,0.36),transparent 70%); animation:orbFade 2.8s ease forwards,d13 27s ease-in-out infinite; }
-.o14 { width:320px;height:320px; top:90%;  left:52%;  background:radial-gradient(circle,rgba(99,102,241,0.30),transparent 70%); animation:orbFade 2.1s ease forwards,d14 38s ease-in-out infinite; }
-.o15 { width:195px;height:195px; top:50%;  left:35%;  background:radial-gradient(circle,rgba(139,92,246,0.30),transparent 70%); animation:orbFade 2.6s ease forwards,d15 23s ease-in-out infinite; }
-.o16 { width:265px;height:265px; top:14%;  left:87%;  background:radial-gradient(circle,rgba(59,130,246,0.33),transparent 70%); animation:orbFade 2.3s ease forwards,d16 31s ease-in-out infinite; }
-.o17 { width:350px;height:350px; top:66%;  left:-1%;  background:radial-gradient(circle,rgba(99,102,241,0.30),transparent 70%); animation:orbFade 2.0s ease forwards,d17 42s ease-in-out infinite; }
-.o18 { width:230px;height:230px; top:94%;  left:77%;  background:radial-gradient(circle,rgba(139,92,246,0.38),transparent 70%); animation:orbFade 2.5s ease forwards,d18 19s ease-in-out infinite; }
+@media(prefers-reduced-motion:reduce) { .bg-orbs,.bg-particles { display:none; } }
+.orb { position:absolute; border-radius:50%; will-change:transform; filter:blur(48px); }
+.o1  { width:360px;height:360px; top:-6%;  left:5%;   opacity:0.60; background:radial-gradient(circle,rgba(99,102,241,1),transparent 70%); animation:d1 28s ease-in-out infinite; }
+.o2  { width:310px;height:310px; top:8%;   left:58%;  opacity:0.57; background:radial-gradient(circle,rgba(59,130,246,1),transparent 70%);  animation:d2 34s ease-in-out infinite; }
+.o3  { width:270px;height:270px; top:32%;  left:-3%;  opacity:0.55; background:radial-gradient(circle,rgba(139,92,246,1),transparent 70%);  animation:d3 22s ease-in-out infinite; }
+.o4  { width:400px;height:400px; top:18%;  left:74%;  opacity:0.52; background:radial-gradient(circle,rgba(99,102,241,1),transparent 70%);  animation:d4 40s ease-in-out infinite; }
+.o5  { width:230px;height:230px; top:55%;  left:12%;  opacity:0.58; background:radial-gradient(circle,rgba(59,130,246,1),transparent 70%);  animation:d5 26s ease-in-out infinite; }
+.o6  { width:300px;height:300px; top:62%;  left:48%;  opacity:0.55; background:radial-gradient(circle,rgba(139,92,246,1),transparent 70%);  animation:d6 32s ease-in-out infinite; }
+.o7  { width:340px;height:340px; top:78%;  left:82%;  opacity:0.60; background:radial-gradient(circle,rgba(99,102,241,1),transparent 70%);  animation:d7 24s ease-in-out infinite; }
+.o8  { width:210px;height:210px; top:42%;  left:90%;  opacity:0.50; background:radial-gradient(circle,rgba(59,130,246,1),transparent 70%);  animation:d8 30s ease-in-out infinite; }
+.o9  { width:250px;height:250px; top:85%;  left:22%;  opacity:0.56; background:radial-gradient(circle,rgba(139,92,246,1),transparent 70%);  animation:d9 20s ease-in-out infinite; }
+.o10 { width:380px;height:380px; top:-4%;  left:32%;  opacity:0.50; background:radial-gradient(circle,rgba(59,130,246,1),transparent 70%);  animation:d10 44s ease-in-out infinite; }
+.o11 { width:220px;height:220px; top:28%;  left:42%;  opacity:0.53; background:radial-gradient(circle,rgba(99,102,241,1),transparent 70%);  animation:d11 18s ease-in-out infinite; }
+.o12 { width:290px;height:290px; top:72%;  left:64%;  opacity:0.57; background:radial-gradient(circle,rgba(139,92,246,1),transparent 70%);  animation:d12 36s ease-in-out infinite; }
+.o13 { width:240px;height:240px; top:38%;  left:25%;  opacity:0.58; background:radial-gradient(circle,rgba(59,130,246,1),transparent 70%);  animation:d13 27s ease-in-out infinite; }
+.o14 { width:320px;height:320px; top:90%;  left:52%;  opacity:0.52; background:radial-gradient(circle,rgba(99,102,241,1),transparent 70%);  animation:d14 38s ease-in-out infinite; }
+.o15 { width:195px;height:195px; top:50%;  left:35%;  opacity:0.52; background:radial-gradient(circle,rgba(139,92,246,1),transparent 70%);  animation:d15 23s ease-in-out infinite; }
+.o16 { width:265px;height:265px; top:14%;  left:87%;  opacity:0.55; background:radial-gradient(circle,rgba(59,130,246,1),transparent 70%);  animation:d16 31s ease-in-out infinite; }
+.o17 { width:350px;height:350px; top:66%;  left:-1%;  opacity:0.52; background:radial-gradient(circle,rgba(99,102,241,1),transparent 70%);  animation:d17 42s ease-in-out infinite; }
+.o18 { width:230px;height:230px; top:94%;  left:77%;  opacity:0.60; background:radial-gradient(circle,rgba(139,92,246,1),transparent 70%);  animation:d18 19s ease-in-out infinite; }
 @keyframes d1  { 0%,100%{transform:translate(0,0)}   40%{transform:translate(22px,-18px)} 75%{transform:translate(-12px,28px)} }
 @keyframes d2  { 0%,100%{transform:translate(0,0)}   35%{transform:translate(-28px,15px)} 70%{transform:translate(18px,-22px)} }
 @keyframes d3  { 0%,100%{transform:translate(0,0)}   45%{transform:translate(16px,24px)}  80%{transform:translate(-20px,-10px)} }
@@ -123,6 +121,17 @@ body {
 @keyframes d16 { 0%,100%{transform:translate(0,0)}   40%{transform:translate(-14px,-20px)} 78%{transform:translate(24px,12px)} }
 @keyframes d17 { 0%,100%{transform:translate(0,0)}   46%{transform:translate(18px,-28px)} 80%{transform:translate(-10px,18px)} }
 @keyframes d18 { 0%,100%{transform:translate(0,0)}   34%{transform:translate(-26px,10px)} 70%{transform:translate(14px,-22px)} }
+
+/* Particle dots */
+.bg-particles { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.particle { position:absolute; border-radius:50%; will-change:transform,opacity; }
+@keyframes pFloat {
+  0%   { transform:translate(0,0) scale(1);                           opacity:var(--p-lo); }
+  25%  { transform:translate(var(--px1),var(--py1)) scale(1.3);       opacity:var(--p-hi); }
+  55%  { transform:translate(var(--px2),var(--py2)) scale(0.85);      opacity:var(--p-lo); }
+  80%  { transform:translate(var(--px3),var(--py3)) scale(1.1);       opacity:var(--p-hi); }
+  100% { transform:translate(0,0) scale(1);                           opacity:var(--p-lo); }
+}
 
 /* ═══════════════════════════════════════════════════════
    HERO
@@ -398,6 +407,8 @@ body {
   <div class="orb o13"></div><div class="orb o14"></div><div class="orb o15"></div>
   <div class="orb o16"></div><div class="orb o17"></div><div class="orb o18"></div>
 </div>
+<!-- PARTICLE DOTS -->
+<div class="bg-particles" id="bg-particles" aria-hidden="true"></div>
 
 <!-- HERO -->
 <div class="hero">
@@ -520,6 +531,40 @@ body {
         'Push to GitHub Pages to load content, or open via a local web server.';
     });
 
+})();
+
+// — Particle dots —
+(function(){
+  var container = document.getElementById('bg-particles');
+  if (!container) return;
+  var colors = ['99,102,241','59,130,246','139,92,246','20,184,166','14,165,233','99,102,241','59,130,246'];
+  var frag = document.createDocumentFragment();
+  for (var i = 0; i < 65; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+    var size  = (1.5 + Math.random() * 2.5).toFixed(1);
+    var color = colors[Math.floor(Math.random() * colors.length)];
+    var plo   = (0.10 + Math.random() * 0.12).toFixed(2);
+    var phi   = (parseFloat(plo) + 0.10 + Math.random() * 0.10).toFixed(2);
+    var x     = (Math.random() * 100).toFixed(1);
+    var y     = (Math.random() * 100).toFixed(1);
+    var dur   = (14 + Math.random() * 28).toFixed(1);
+    var delay = (-Math.random() * 30).toFixed(1);
+    var px1 = ((-20 + Math.random() * 40).toFixed(0)) + 'px';
+    var py1 = ((-35 + Math.random() * 20).toFixed(0)) + 'px';
+    var px2 = ((-15 + Math.random() * 30).toFixed(0)) + 'px';
+    var py2 = ((-50 + Math.random() * 25).toFixed(0)) + 'px';
+    var px3 = ((-10 + Math.random() * 25).toFixed(0)) + 'px';
+    var py3 = ((-30 + Math.random() * 15).toFixed(0)) + 'px';
+    p.style.cssText =
+      'width:'+size+'px;height:'+size+'px;left:'+x+'%;top:'+y+'%;' +
+      'background:rgba('+color+','+phi+');' +
+      '--p-lo:'+plo+';--p-hi:'+phi+';' +
+      '--px1:'+px1+';--py1:'+py1+';--px2:'+px2+';--py2:'+py2+';--px3:'+px3+';--py3:'+py3+';' +
+      'animation:pFloat '+dur+'s '+delay+'s ease-in-out infinite;';
+    frag.appendChild(p);
+  }
+  container.appendChild(frag);
 })();
 </script>
 </body>
