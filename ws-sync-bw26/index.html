@@ -48,6 +48,49 @@
     margin-bottom: 20px;
     overflow-x: auto;
   }
+
+  /* Layer grid */
+  .layer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  @media(max-width:600px) { .layer-grid { grid-template-columns: 1fr; } }
+  .layer-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    border-left: 3px solid;
+  }
+  .layer-card.lc-blue  { border-left-color: var(--accent); }
+  .layer-card.lc-green { border-left-color: var(--green); }
+  .layer-card.lc-amber { border-left-color: var(--amber); }
+  .layer-card.lc-purple{ border-left-color: var(--purple); }
+  .layer-card.lc-red   { border-left-color: var(--red); }
+  .layer-title { font-family:'Outfit',sans-serif; font-size:13px; font-weight:700; margin-bottom:4px; }
+  .layer-sub { font-size:11px; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-bottom:8px; }
+  .layer-body { font-size:13px; color:var(--dim); line-height:1.5; }
+
+  /* Differentiator callout */
+  .diff-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  @media(max-width:640px) { .diff-grid { grid-template-columns: 1fr; } }
+  .diff-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .diff-icon { font-size: 22px; margin-bottom: 6px; }
+  .diff-label { font-family:'Outfit',sans-serif; font-size:12px; font-weight:700; margin-bottom:4px; }
+  .diff-desc { font-size:11px; color:var(--dim); line-height:1.4; }
   .arch-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
   .arch-row:last-child { margin-bottom:0; }
   .node {
@@ -159,6 +202,7 @@
     <h2>How It All Connects</h2>
 
     <div class="arch">
+      <!-- Memory Layer -->
       <div class="arch-row">
         <div class="node blue">Claude.ai Chats</div>
         <div class="arrow">→</div>
@@ -173,6 +217,7 @@
         <div class="arrow">→</div>
         <div class="node amber">Loaded into every session</div>
       </div>
+      <!-- Inbox Bridge -->
       <div class="arch-row">
         <div class="node purple">Any chat output</div>
         <div class="arrow">→</div>
@@ -187,12 +232,120 @@
         <div class="arrow">→</div>
         <div class="node amber">.txt lands in Inbox/</div>
       </div>
+      <!-- Automation -->
       <div class="arch-row">
         <div class="node blue">Daily sync task (9pm)</div>
         <div class="arrow">→</div>
         <div class="node green">Scans Inbox, updates pages</div>
         <div class="arrow">→</div>
         <div class="node amber">Notifies you when done</div>
+      </div>
+      <!-- Share pipeline -->
+      <div class="arch-row">
+        <div class="node purple">push-to-site.sh --share</div>
+        <div class="arrow">→</div>
+        <div class="node green">GitHub Pages deploys</div>
+        <div class="arrow">→</div>
+        <div class="node amber">Phone-accessible URL in seconds</div>
+      </div>
+      <!-- MCP tools -->
+      <div class="arch-row">
+        <div class="node blue">Gmail / Calendar MCP</div>
+        <div class="arrow">→</div>
+        <div class="node green">Claude reads + acts</div>
+        <div class="arrow">→</div>
+        <div class="node amber">Schedule calls, find emails</div>
+      </div>
+      <div class="arch-row">
+        <div class="node blue">Monday.com MCP</div>
+        <div class="arrow">→</div>
+        <div class="node green">Claude updates pipeline</div>
+        <div class="arrow">→</div>
+        <div class="node amber">Track clients, log activity</div>
+      </div>
+      <!-- Client intelligence -->
+      <div class="arch-row">
+        <div class="node purple">Client folder index.html</div>
+        <div class="arrow">→</div>
+        <div class="node green">Social audit pre-loaded</div>
+        <div class="arrow">→</div>
+        <div class="node amber">Open live on sales calls</div>
+      </div>
+      <!-- Dispatch orchestration -->
+      <div class="arch-row">
+        <div class="node blue">Dispatch (orchestrator)</div>
+        <div class="arrow">→</div>
+        <div class="node green">Routes to sub-agents</div>
+        <div class="arrow">→</div>
+        <div class="node amber">Parallel tasks, reports back</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:24px;margin-bottom:12px;">What separates this system</div>
+    <div class="diff-grid">
+      <div class="diff-card">
+        <div class="diff-icon">🤖</div>
+        <div class="diff-label">AI Employees</div>
+        <div class="diff-desc">Scheduled tasks run autonomously — check files, update pages, report back. No human trigger needed.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">📱</div>
+        <div class="diff-label">Phone-First</div>
+        <div class="diff-desc">Every output can be pushed to a shareable URL. Read research, review clients, and check your queue from anywhere.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">🧠</div>
+        <div class="diff-label">Three Memory Layers</div>
+        <div class="diff-desc">Built-in Claude memory + file-based memory + Inbox bridge. Context survives across every chat and tool.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">🔌</div>
+        <div class="diff-label">Live Tool Access</div>
+        <div class="diff-desc">Gmail, Calendar, and Monday.com connected via MCP. Claude can read and act — not just advise.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">🎬</div>
+        <div class="diff-label">Voice-to-Intelligence</div>
+        <div class="diff-desc">Drop an audio file in Inbox, run one script. Full transcript and analysis page — no manual work.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">💼</div>
+        <div class="diff-label">Client-Ready Assets</div>
+        <div class="diff-desc">Every client has a pre-loaded HTML dossier. Open it live on a call. Looks like a custom product — built in minutes.</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:24px;margin-bottom:12px;">System layers — bottom to top</div>
+    <div class="layer-grid">
+      <div class="layer-card lc-blue">
+        <div class="layer-title">Layer 1 — Context</div>
+        <div class="layer-sub">.auto-memory/ + built-in memory</div>
+        <div class="layer-body">Everything Claude knows about you, your clients, and your work. Loaded fresh every session. Serge Gatari calls this the "shared world model" — your context layer is the unlock.</div>
+      </div>
+      <div class="layer-card lc-green">
+        <div class="layer-title">Layer 2 — Inbox</div>
+        <div class="layer-sub">~/Desktop/Brian Personal/Inbox/</div>
+        <div class="layer-body">The universal drop zone. Transcripts, notes, audio, chat outputs — everything flows here first. The bridge between Claude.ai, Cowork, and your file system.</div>
+      </div>
+      <div class="layer-card lc-amber">
+        <div class="layer-title">Layer 3 — Automation</div>
+        <div class="layer-sub">Scheduled tasks at 9pm daily</div>
+        <div class="layer-body">AI employees that run without you. They scan Inbox, update HTML pages, flip memory flags, and notify Dispatch when done. Your system works while you sleep.</div>
+      </div>
+      <div class="layer-card lc-purple">
+        <div class="layer-title">Layer 4 — Products</div>
+        <div class="layer-sub">260+ HTML files in Products/</div>
+        <div class="layer-body">Codified skills. Every product is a tool, template, or playbook Brian can sell, demo, or deliver. Reusable and instantly shareable via the push-to-site pipeline.</div>
+      </div>
+      <div class="layer-card lc-red">
+        <div class="layer-title">Layer 5 — Connectors</div>
+        <div class="layer-sub">Gmail, Calendar, Monday.com MCPs</div>
+        <div class="layer-body">Live integrations. Claude can read your email, check your calendar, and update your pipeline directly — not just advise on what to do next. This is where it becomes an operator, not just an assistant.</div>
+      </div>
+      <div class="layer-card lc-green">
+        <div class="layer-title">Layer 6 — Dispatch</div>
+        <div class="layer-sub">Orchestrator + sub-agents</div>
+        <div class="layer-body">Dispatch routes complex requests to specialized sub-agents running in parallel. Research, analysis, writing, and file work all happen simultaneously. One message, multiple outcomes.</div>
       </div>
     </div>
   </div>
@@ -387,7 +540,7 @@
 
 </div>
 
-<footer>Workspace Sync System · Brian Whitesel · Updated April 2026</footer>
+<footer>Workspace Sync System · Brian Whitesel · Updated April 28, 2026</footer>
 
 </body>
 </html>
