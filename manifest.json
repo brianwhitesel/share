@@ -1,0 +1,44 @@
+{
+  "updated": "2026-04-28T21:00:00",
+  "updatedLabel": "April 28, 2026",
+  "sections": {
+    "recent": [
+      { "href": "serge-gatari-bw26/index.html", "icon": "🤖", "title": "Serge Gatari — AI Business", "desc": "One-person AI company framework mapped to Brian's build", "tag": "knowledge", "added": "2026-04-28" },
+      { "href": "ws-sync-bw26/index.html", "icon": "🔄", "title": "Workspace Sync System", "desc": "How memory, files, chats, and automation all stay in sync", "tag": "knowledge", "added": "2026-04-28" },
+      { "href": "mmoc3-vip-bw26/index.html", "icon": "🎓", "title": "MMOC3 VIP Sessions", "desc": "Iman Gadzhi Make Money Online Challenge 3.0 — Days 1-2", "tag": "knowledge", "added": "2026-04-28" },
+      { "href": "bryce/index.html", "icon": "⚖️", "title": "Bryce — IP Consultation", "desc": "May 7, 1pm — IP protection prep and discussion questions", "tag": "personal", "added": "2026-04-28" }
+    ],
+    "knowledge": [
+      { "href": "serge-gatari-bw26/index.html", "icon": "🤖", "title": "Serge Gatari — AI Business", "desc": "One-person AI company framework. Playbooks, context layer, AI employees.", "tag": "knowledge", "added": "2026-04-28" },
+      { "href": "ws-sync-bw26/index.html", "icon": "🔄", "title": "Workspace Sync System", "desc": "The full architecture — memory layers, automation, MCP connectors, Dispatch.", "tag": "knowledge", "added": "2026-04-28" },
+      { "href": "mmoc3-vip-bw26/index.html", "icon": "🎓", "title": "MMOC3 VIP Sessions", "desc": "Iman Gadzhi's Make Money Online Challenge 3.0. WAP marketplace, AI products.", "tag": "knowledge", "added": "2026-04-28" }
+    ],
+    "clients": [
+      { "href": "dustin/index.html", "name": "Dustin Whitesel", "role": "Wash Wiggle & Wag", "status": "active", "tag": "client" },
+      { "href": "chase/index.html", "name": "Chase Geddis", "role": "Geddis Soccer Training", "status": "reconnect week of May 4", "tag": "client" },
+      { "href": "dmd/index.html", "name": "Derek — DMD Renovation", "role": "Renovation & construction", "status": "June 2026", "tag": "client" },
+      { "href": "designery/index.html", "name": "The Designery Columbus", "role": "Design studio", "status": "pipeline", "tag": "client" },
+      { "href": "kollin/index.html", "name": "Kollin McKee", "role": "Prospect", "status": "pipeline", "tag": "client" },
+      { "href": "sam/index.html", "name": "Sam Townsend", "role": "Prospect", "status": "pipeline", "tag": "client" }
+    ],
+    "prospects": [
+      { "href": "elevator/index.html", "name": "Elevator Brewery", "role": "Columbus · outreach sent Apr 19", "status": "sent", "tag": "prospect" },
+      { "href": "land-grant/index.html", "name": "Land-Grant Brewing", "role": "Columbus · outreach sent Apr 19", "status": "sent", "tag": "prospect" }
+    ],
+    "friends": [
+      { "href": "reese/index.html", "name": "Reese White", "role": "Videographer & photographer", "tag": "friend" },
+      { "href": "dylan/index.html", "name": "Dylan Miracle", "role": "Editor — Card Collector 2", "tag": "friend" },
+      { "href": "connor/index.html", "name": "Connor McGovern", "role": "Video & social media", "tag": "friend" },
+      { "href": "paige/index.html", "name": "Paige Tinnel", "role": "Photographer", "tag": "friend" },
+      { "href": "jacobmanken/index.html", "name": "Jacob Manken", "role": "Disc golf · shared tools", "tag": "friend" },
+      { "href": "luke/index.html", "name": "Luke", "role": "Photography tools", "tag": "friend" },
+      { "href": "jd/index.html", "name": "JD", "role": "Personal demo", "tag": "friend" },
+      { "href": "abby/index.html", "name": "Abby", "role": "Personal page", "tag": "friend" }
+    ],
+    "tools": [
+      { "href": "Photography - Client Booking & Invoice.html", "icon": "📷", "title": "Photography — Booking & Invoice", "desc": "Track client sessions, packages, and payments." },
+      { "href": "Videography - Production Tracker.html", "icon": "🎬", "title": "Videography — Production Tracker", "desc": "Manage shoots, deliverables, and billing." },
+      { "href": "Social Media - Content Planner.html", "icon": "📱", "title": "Social Media — Content Planner", "desc": "Plan, schedule, and track posts across platforms." }
+    ]
+  }
+}
