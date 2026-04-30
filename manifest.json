@@ -1,6 +1,6 @@
 {
-  "updated": "2026-04-28T21:00:00",
-  "updatedLabel": "April 28, 2026",
+  "updated": "2026-04-29T21:00:00",
+  "updatedLabel": "April 29, 2026",
   "sections": {
     "recent": [
       { "href": "serge-gatari-bw26/index.html", "icon": "🤖", "title": "Serge Gatari — AI Business", "desc": "One-person AI company framework mapped to Brian's build", "tag": "knowledge", "added": "2026-04-28" },
@@ -11,7 +11,8 @@
     "knowledge": [
       { "href": "serge-gatari-bw26/index.html", "icon": "🤖", "title": "Serge Gatari — AI Business", "desc": "One-person AI company framework. Playbooks, context layer, AI employees.", "tag": "knowledge", "added": "2026-04-28" },
       { "href": "ws-sync-bw26/index.html", "icon": "🔄", "title": "Workspace Sync System", "desc": "The full architecture — memory layers, automation, MCP connectors, Dispatch.", "tag": "knowledge", "added": "2026-04-28" },
-      { "href": "mmoc3-vip-bw26/index.html", "icon": "🎓", "title": "MMOC3 VIP Sessions", "desc": "Iman Gadzhi's Make Money Online Challenge 3.0. WAP marketplace, AI products.", "tag": "knowledge", "added": "2026-04-28" }
+      { "href": "mmoc3-vip-bw26/index.html", "icon": "🎓", "title": "MMOC3 VIP Sessions", "desc": "Iman Gadzhi's Make Money Online Challenge 3.0. WAP marketplace, AI products.", "tag": "knowledge", "added": "2026-04-28" },
+      { "href": "ip-brief-bm26/index.html", "icon": "⚖️", "title": "IP Consultation Brief", "desc": "Brian's pre-meeting brief for the May 7 IP consult with Bryce.", "tag": "knowledge", "added": "2026-04-28" }
     ],
     "clients": [
       { "href": "dustin/index.html", "name": "Dustin Whitesel", "role": "Wash Wiggle & Wag", "status": "active", "tag": "client" },
@@ -23,7 +24,8 @@
     ],
     "prospects": [
       { "href": "elevator/index.html", "name": "Elevator Brewery", "role": "Columbus · outreach sent Apr 19", "status": "sent", "tag": "prospect" },
-      { "href": "land-grant/index.html", "name": "Land-Grant Brewing", "role": "Columbus · outreach sent Apr 19", "status": "sent", "tag": "prospect" }
+      { "href": "land-grant/index.html", "name": "Land-Grant Brewing", "role": "Columbus · outreach sent Apr 19", "status": "sent", "tag": "prospect" },
+      { "href": "brewery-template/index.html", "name": "Brewery Pitch Template", "role": "Reusable Columbus brewery audit/pitch page", "status": "template", "tag": "prospect" }
     ],
     "friends": [
       { "href": "reese/index.html", "name": "Reese White", "role": "Videographer & photographer", "tag": "friend" },
@@ -33,12 +35,16 @@
       { "href": "jacobmanken/index.html", "name": "Jacob Manken", "role": "Disc golf · shared tools", "tag": "friend" },
       { "href": "luke/index.html", "name": "Luke", "role": "Photography tools", "tag": "friend" },
       { "href": "jd/index.html", "name": "JD", "role": "Personal demo", "tag": "friend" },
-      { "href": "abby/index.html", "name": "Abby", "role": "Personal page", "tag": "friend" }
+      { "href": "abby/index.html", "name": "Abby", "role": "Personal page", "tag": "friend" },
+      { "href": "greg-lav-pitch.html", "name": "Greg Lav", "role": "Lessons From My 20s — pitch page", "tag": "friend" }
     ],
     "tools": [
       { "href": "Photography - Client Booking & Invoice.html", "icon": "📷", "title": "Photography — Booking & Invoice", "desc": "Track client sessions, packages, and payments." },
       { "href": "Videography - Production Tracker.html", "icon": "🎬", "title": "Videography — Production Tracker", "desc": "Manage shoots, deliverables, and billing." },
-      { "href": "Social Media - Content Planner.html", "icon": "📱", "title": "Social Media — Content Planner", "desc": "Plan, schedule, and track posts across platforms." }
+      { "href": "Social Media - Content Planner.html", "icon": "📱", "title": "Social Media — Content Planner", "desc": "Plan, schedule, and track posts across platforms." },
+      { "href": "disc-golf-scorecard.html", "icon": "🥏", "title": "Disc Golf — Scorecard", "desc": "Brian's personal disc golf scorecard." },
+      { "href": "disc-golf-ptp.html", "icon": "🥏", "title": "Disc Golf — Pass the Phone", "desc": "Group scorecard mode — pass-the-phone scoring." },
+      { "href": "disc-golf-social.html", "icon": "🥏", "title": "Disc Golf — Brian, Reese, Jacob", "desc": "Social round tracker for the regular crew." }
     ]
   }
 }

@@ -503,13 +503,63 @@ body {
 }
 
 @media(max-width:560px) {
-  .pitch-inner, .book-body, .toc-section, .pitch-close { padding-left: 20px; padding-right: 20px; }
+  .pitch-inner, .book-body, .toc-section, .pitch-close, .video-section { padding-left: 20px; padding-right: 20px; }
   .chapter { padding: 52px 0 44px; }
   .cover-title { font-size: 34px; }
+}
+
+/* ── CANVAS BACKGROUND ───────────────────────────────────── */
+#pitch-canvas {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+@media(prefers-reduced-motion:reduce) { #pitch-canvas { display:none; } }
+
+/* stack all content above canvas */
+.pitch-banner, .book-cover, .toc-section, .book-body,
+.pitch-close, .player, .video-section {
+  position: relative; z-index: 1;
+}
+
+/* ── VIDEO SECTION ───────────────────────────────────────── */
+.video-section {
+  max-width: 760px; margin: 0 auto;
+  padding: 64px 32px 56px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.video-eyebrow {
+  font-family: var(--font-ui);
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 10px;
+}
+.video-heading {
+  font-family: var(--font-head);
+  font-size: 22px; font-weight: 700;
+  color: var(--text-dim); margin-bottom: 8px;
+}
+.video-sub {
+  font-family: var(--font-body);
+  font-size: 14px; font-style: italic; color: var(--muted);
+  margin-bottom: 28px;
+}
+.video-frame {
+  position: relative; width: 100%; padding-bottom: 56.25%;
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid rgba(201,168,76,0.18);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+}
+.video-frame iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; border: none;
 }
 </style>
 </head>
 <body>
+
+<canvas id="pitch-canvas" aria-hidden="true"></canvas>
 
 <!-- ══════════════════════════════════════════════════════
      PITCH BANNER — visible to Greg
@@ -599,6 +649,21 @@ body {
       <a href="#final" class="toc-title-link">Final Message: Level Up Every Six Months</a>
     </li>
   </ul>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     THE SOURCE VIDEO
+══════════════════════════════════════════════════════ -->
+<div class="video-section">
+  <div class="video-eyebrow">The Source</div>
+  <div class="video-heading">The Video That Became This Book</div>
+  <p class="video-sub">Every word below came from here. This is Chapter One — in its raw form.</p>
+  <div class="video-frame">
+    <iframe src="https://www.youtube.com/embed/ut2X6SC84bA"
+            title="How I Built a $1B Brand in My 20s — Greg Lav"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════
@@ -905,8 +970,9 @@ body {
      AUDIOBOOK PLAYER
 ══════════════════════════════════════════════════════ -->
 <div class="player" id="player">
+  <audio id="audioEl" src="greg-lav-audio.mp3" preload="metadata"></audio>
   <div class="player-inner">
-    <div class="player-progress-bar" id="progressBar" onclick="scrubProgress(event)">
+    <div class="player-progress-bar" id="progressBar" onclick="scrubAudio(event)">
       <div class="player-progress-fill" id="progressFill"></div>
     </div>
     <div class="player-controls">
@@ -918,12 +984,8 @@ body {
         <div class="player-chapter" id="playerChapterLabel">Audiobook</div>
         <div class="player-title" id="playerTitle">Lessons From My 20s — Greg Lav</div>
       </div>
-      <!-- Prev -->
-      <button class="player-btn" onclick="prevChapter()" title="Previous chapter">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <polygon points="19,20 9,12 19,4"/><line x1="5" y1="4" x2="5" y2="20"/>
-        </svg>
-      </button>
+      <!-- Back 30s -->
+      <button class="player-speed" onclick="skipAudio(-30)" title="Back 30 seconds">−30s</button>
       <!-- Play/Pause -->
       <button class="player-btn play-btn" id="playBtn" onclick="togglePlay()">
         <svg id="iconPlay" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
@@ -935,245 +997,138 @@ body {
           <line x1="10" y1="8" x2="10" y2="16" stroke-width="2.2"/><line x1="14" y1="8" x2="14" y2="16" stroke-width="2.2"/>
         </svg>
       </button>
-      <!-- Next -->
-      <button class="player-btn" onclick="nextChapter()" title="Next chapter">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <polygon points="5,4 15,12 5,20"/><line x1="19" y1="4" x2="19" y2="20"/>
-        </svg>
-      </button>
+      <!-- Forward 30s -->
+      <button class="player-speed" onclick="skipAudio(30)" title="Forward 30 seconds">+30s</button>
       <!-- Speed -->
       <button class="player-speed" id="speedBtn" onclick="cycleSpeed()">1×</button>
     </div>
-    <div class="player-status" id="playerStatus">Press play to listen · Web Speech powered</div>
+    <div class="player-status" id="playerStatus">Loading audio…</div>
   </div>
 </div>
 
 <script>
-// ── Chapter data ─────────────────────────────────────────
 
-var CHAPTERS = [
-  {
-    id: 'ch1',
-    num: 'Chapter I',
-    title: 'Why This Changes Everything',
-    text: "When your attention isn't divided, your decisions get sharper. Your execution gets smoother. It gets faster. My name is Greg Lav. I am the co-founder and CEO of Bloom Nutrition. This year, Bloom will sell over a quarter billion cans with the Bloom trademark on them. I co-founded this company with my wife, starting from our college dorm room. I'm turning thirty-one. I have a son. I'm married. And I'm sitting in the backyard of our vacation home in Aspen, Colorado. There are lessons I learned throughout my twenties that, had I known them earlier, I would be even further ahead today. If there's one thing I want to do with my time in my thirties, it's pass down the wisdom I've earned — through scars, gray hairs, wrinkles, and sleepless nights. If I can save you the tribulations and hand you the lessons ahead of time, I would love to see the next generation achieve what I've achieved — and achieve it faster. Your twenties are a wild time. You might not know if you're headed in the right direction. But remember these lessons. One day, a scenario will present itself, and you'll think: Greg told me this might happen. Now I know how to react."
-  },
-  {
-    id: 'ch2',
-    num: 'Chapter II',
-    title: 'Level Up the Game You\'re Playing',
-    text: "One of the biggest advantages I had in my twenties was recognizing when it was time to level up. The simplest analogy: think about video games. Once you beat a game, you move on to a more challenging, higher-risk, higher-reward game. That's how you should play life. I've seen many entrepreneurs stick to the venture they started out of college. They reach a place where they're making decent money, things are going fine, and they just stay there. But if your goal is to find out what you're truly capable of — if you want to make your life a moonshot and sit down at seventy-five and say: I actually did it — then you should look in the mirror every six months and not recognize the man staring back at you. Here's how it looked for us. Mari and I started selling instant-download PDF fitness guides, scaled that to a couple million a year, then launched booty bands, then a pre-workout, then greens powder, which we bootstrapped to one-hundred-eighty million dollars. Then we launched an energy drink and went after Monster, Red Bull, and Celsius. Today we have drinks in seventy-thousand doors across the country. The energy drink business does more in a single day than the booty band business ever did in a week. Seventy-five times the size. You have to give up the good for the great."
-  },
-  {
-    id: 'ch3',
-    num: 'Chapter III',
-    title: 'Focus Is King',
-    text: "Remove the noise. Every person I've met who has done exceptional things, and every period in my own journey when I was at peak performance, it all happened during times of complete, undivided focus. I am deeply anti-diversified portfolio. Our parents, college professors, Warren Buffett — they all say to diversify to reduce risk. But nobody has ever built real wealth quickly through diversification. I don't know anyone at thirty-one who has a high eight-figure home from a diversified stock portfolio. Every person I know who's done something remarkable in a short time put one hundred percent of their mindshare into one thing. Everything I've thought about for the last seven years is Bloom. Not other businesses. Not stock plays. Not real estate. I'm fully invested in this brand. My best friend Leo, now the president of Bloom, was selling biotech deals on Wall Street. I once asked him what the ultra-high-net-worth people who made it young all had in common. He said: They're all in, all the time. None of them have diversified portfolios. They do massive diligence on one deal, and they bet the house. You are your most important asset. Your mindshare is your most important portfolio. Give one hundred percent of it to the most valuable thing you are working on. Keep blinders on for a decade straight, and you'll accomplish what takes most people their entire lives."
-  },
-  {
-    id: 'ch4',
-    num: 'Chapter IV',
-    title: 'Stay Ready So You Don\'t Need to Get Ready',
-    text: "The greatest opportunities in my life were impossible to plan for. If you're trying to move at the speed of culture, you cannot plan for these moments. You just need to stay ready every single day. You can't be out of shape physically or mentally. You can't be distracted by emotional baggage. That's what staying ready means. Let me give you four examples. First, COVID. It was twenty-twenty. Bloom had just launched. Every competitor was shut down. We doubled down on protein and gut health through e-commerce and rode those trends to the moon before any competitor even had Zoom set up. Second, TikTok. It came out of nowhere. We jumped in early. Today, Bloom has over twelve billion views across our influencer program. We were ready. Third, GLP-ones. Half the country is taking these medications. Our low-calorie, gut-health-forward products were exactly what those users needed. We launched Clear Protein in response and it's demolishing Target shelves right now. Fourth, TikTok Shop. A brand new marketplace that launched about two years ago. The major beverage brands aren't even on it yet. We flew to TikTok's headquarters, made deals, and moved fourteen-thousand cases of our Shirley Temple energy drink before it even launched in retail. Instead of mapping out the next three, five, or ten years, I have found it far more valuable to stay ready for what those years will throw at me."
-  },
-  {
-    id: 'ch5',
-    num: 'Chapter V',
-    title: 'Discipline Creates Opportunity',
-    text: "Discipline is the greatest form of self-respect. Being a disciplined person — someone who shows up more consecutive days than anyone else — has increased my chances of luck. It's made me available for whatever the universe sends my way. When people say, oh they just launched when Meta ads were cheap, or they got lucky with TikTok, or they rode the GLP-one wave — what kind of victim mentality is that? Every year there are waves. The question is whether you're positioned to catch them. The only honest thing to say is: I wasn't ready. And that was on me. You're not ready if you're not disciplined. Master it. It takes time. Six months ago, I was less disciplined than I am today. It compounds, just like everything else. You're born with the hand you're dealt. But discipline? That's something you build. And it is the most powerful thing you can control."
-  },
-  {
-    id: 'ch6',
-    num: 'Chapter VI',
-    title: 'Change Your Environment to Change Your Life',
-    text: "I cannot count how many important meetings I've created simply by being in the right city at the right time. If you want to do business with Walmart and their buyers are at a trade show in California, go to that trade show. If there's a marketing convention in New York City, book the flight. If you have no money, stay at a hostel. Be in the room. Mari and I moved five times in five years. Philadelphia. New York. Los Angeles. Boulder. Now Austin, Texas. We moved because we were actively controlling our luck. When we were building our influencer program, Los Angeles was the answer. When we partnered with Dr. Pepper in Texas, we moved to Texas. Move out of your hometown. It is the single easiest way to increase your luck. Surround yourself with people who keep you sharp. Never be the smartest person in the room. Never be the shark in the pond in your friend group, your city, or the media you consume. If you're swimming in mediocrity, that is the ceiling you're setting for yourself."
-  },
-  {
-    id: 'ch7',
-    num: 'Chapter VII',
-    title: 'Build in Public to Open Doors',
-    text: "One of the worst pieces of advice I hear told to young people is to move in silence. Privacy has its place. But your business? Build it loudly. If you're building something special and staying quiet about it, you will be endlessly frustrated by the lack of momentum that comes your way. We have always been loud on social media about our milestones. When you share your wins consistently and authentically, it attracts talent looking for their next company, partners looking for momentum to attach to, retailers looking for the next brand, and investors looking for what's moving. Building in public opens doors. You get invited into rooms you would never have entered if people didn't know what you were building. And here's the fear most people have: someone will steal my ideas. They won't. I'm an open book. And if someone did take an idea, that's great. They won't execute it as well as you will. The simplest truth: building in public lets people be part of what you're doing. They root for you. They buy from you. Entrepreneurship is already a lonely game. Why make it lonelier?"
-  },
-  {
-    id: 'ch8',
-    num: 'Chapter VIII',
-    title: "Don't Reinvent the Wheel",
-    text: "A lot of people believe they need a completely original idea to build a business. The reality is I've never done that. We were not the first better-for-you soda. Not the first energy drink. Not the first booty band. Not the first greens powder. In fact, we were a little late to most of these categories. And that was exactly the point. I love being late to the party. When you enter an existing category, the market is already educated. You don't need to spend money explaining what the product is. All you need to do is take the wheel that already exists and make yours ten times better. I put soda in a soda can because that's what people expect a soda to come in. I didn't want to change cultural habits. Don't reinvent the wheel. Just make the wheel better. This is a big reason why we've been profitable every single day for ten years. We never needed to educate the market. We just made better products for people who were underserved."
-  },
-  {
-    id: 'ch9',
-    num: 'Chapter IX',
-    title: 'Connect the Dots Over Time',
-    text: "You will learn things throughout your journey that you need to note. And you will find, again and again, that the lessons from every chapter of your story become essential in the next one. Our top-selling pre-workout flavors from six or seven years ago — Crisp Apple and Glacier Crush — are now the top-selling energy drink flavors. The small negotiations I had when our business was tiny taught me how to show up to multi-million dollar deals. Every small interaction built toward something I couldn't see at the time. Life is learned in the arena. As you level up to each new challenge, bring the lessons from the previous one with you. Every lesson compounds. Every experience compounds. Every handshake compounds. Sometimes an interaction will feel like it led nowhere. Six months later, a year later, it will come back. If something feels right, it was worth your time. Trust that."
-  },
-  {
-    id: 'ch10',
-    num: 'Chapter X',
-    title: 'Go After Moonshots Only',
-    text: "If there is one lesson to carry from everything I've shared, it is this: moonshots only. A small venture takes the same amount of time and the same amount of resources as a large one. I know people running one-hundred-thousand dollar businesses. I know people running billion dollar businesses. We are all roughly the same amount of stressed. We all have the same gray hairs, the same sleepless nights, the same weight to carry. The scale is different. The effort is nearly identical. At Bloom, we don't pursue any opportunity that isn't potentially worth one-hundred million dollars, because we've learned that going after a ten-million-dollar opportunity takes nearly the same effort. The moonshot takes the same resources as the small shot. So you might as well take the moonshot. Go after the big thing. You will never regret it."
-  },
-  {
-    id: 'final',
-    num: 'Final Message',
-    title: 'Level Up Every Six Months',
-    text: "If you're serious about leveling up your twenties, here's what it actually takes. Look in the mirror every six months and not recognize the man looking back. Find yourself leveling up at a pace that surprises even you. The moment you sense the approach of a plateau — that is the signal. Time to find a larger challenge. A larger market. A larger goal to point yourself toward. It means putting yourself in rooms you aren't ready for. Taking on challenges you aren't equipped for yet. It may mean going against the advice of the people closest to you. I am deeply passionate about what entrepreneurship has done for my family, my team, and the community we've built — in ways I never could have imagined, in ways society never told me someone like me was capable of doing. And I want that for every person who has read these words. Your life starts changing the second you start taking action. Stop planning. You know what to do."
+// ── Canvas particle background ───────────────────────────
+(function(){
+  var canvas = document.getElementById('pitch-canvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H, dots = [];
+  var COLORS = ['#c9a84c','#c9a84c','#c9a84c','#e8c96a','#e8c96a','#b8893c','#d4a855','#f0d080','#a07830'];
+
+  function hexToRgba(hex, a){
+    var r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+    return 'rgba('+r+','+g+','+b+','+a+')';
   }
-];
 
-// ── Player state ─────────────────────────────────────────
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
 
-var currentChapter = 0;
+  function initDots(){
+    dots = [];
+    for(var i=0; i<85; i++){
+      dots.push({
+        x: Math.random()*W, y: Math.random()*H,
+        r: 0.6 + Math.random()*1.8,
+        op: 0.10 + Math.random()*0.20,
+        vx: (Math.random()-0.5)*0.13,
+        vy: (Math.random()-0.5)*0.13,
+        phase: Math.random()*Math.PI*2,
+        color: COLORS[Math.floor(Math.random()*COLORS.length)]
+      });
+    }
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    var t = Date.now()*0.001;
+    dots.forEach(function(d){
+      d.x += d.vx; d.y += d.vy;
+      if(d.x < -4) d.x = W+4; if(d.x > W+4) d.x = -4;
+      if(d.y < -4) d.y = H+4; if(d.y > H+4) d.y = -4;
+      var pulse = Math.max(0.04, Math.min(0.35, d.op + Math.sin(t + d.phase)*0.07));
+      // Halo
+      var g = ctx.createRadialGradient(d.x,d.y,0,d.x,d.y,d.r*3.5);
+      g.addColorStop(0, hexToRgba(d.color, pulse*0.38));
+      g.addColorStop(1, hexToRgba(d.color, 0));
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(d.x,d.y,d.r*3.5,0,Math.PI*2); ctx.fill();
+      // Core
+      ctx.globalAlpha = pulse;
+      ctx.fillStyle = d.color;
+      ctx.beginPath(); ctx.arc(d.x,d.y,d.r,0,Math.PI*2); ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize(); initDots(); draw();
+  window.addEventListener('resize', function(){ resize(); initDots(); });
+})();
+
+// ── HTML5 Audio Player ───────────────────────────────────
+var audio = document.getElementById('audioEl');
 var isPlaying = false;
-var speedValues = [0.8, 1.0, 1.25, 1.5, 2.0];
-var speedLabels = ['0.8×', '1×', '1.25×', '1.5×', '2×'];
+var speedValues = [0.75, 1.0, 1.25, 1.5, 2.0];
+var speedLabels = ['0.75×', '1×', '1.25×', '1.5×', '2×'];
 var speedIndex = 1;
-var utterance = null;
-var synth = window.speechSynthesis;
 
-// ── Player UI helpers ─────────────────────────────────────
-
-function updatePlayerUI() {
-  var ch = CHAPTERS[currentChapter];
-  document.getElementById('playerChapterLabel').textContent = ch.num;
-  document.getElementById('playerTitle').textContent = ch.title;
+function fmt(s){
+  if(isNaN(s)||s===Infinity) return '--:--';
+  var m = Math.floor(s/60), sec = Math.floor(s%60);
+  return m + ':' + (sec<10?'0':'') + sec;
 }
 
-function setPlayingState(playing) {
-  isPlaying = playing;
-  document.getElementById('iconPlay').style.display  = playing ? 'none' : '';
-  document.getElementById('iconPause').style.display = playing ? '' : 'none';
+function setPlayingState(p){
+  isPlaying = p;
+  document.getElementById('iconPlay').style.display = p ? 'none' : '';
+  document.getElementById('iconPause').style.display = p ? '' : 'none';
 }
 
-function setStatus(txt) {
-  document.getElementById('playerStatus').textContent = txt;
-}
+function setStatus(t){ document.getElementById('playerStatus').textContent = t; }
 
-// ── Speak ─────────────────────────────────────────────────
-
-function speakChapter(idx) {
-  synth.cancel();
-  currentChapter = idx;
-  updatePlayerUI();
-  document.getElementById('progressFill').style.width = '0%';
-
-  var ch = CHAPTERS[idx];
-  utterance = new SpeechSynthesisUtterance(ch.num + '. ' + ch.title + '. ' + ch.text);
-  utterance.rate  = speedValues[speedIndex];
-  utterance.pitch = 1.0;
-  utterance.lang  = 'en-US';
-
-  // Pick a good voice if available
-  var voices = synth.getVoices();
-  var preferred = voices.find(function(v){ return v.name.indexOf('Google US English') >= 0; }) ||
-                  voices.find(function(v){ return v.lang === 'en-US' && v.localService; }) ||
-                  voices.find(function(v){ return v.lang === 'en-US'; });
-  if (preferred) utterance.voice = preferred;
-
-  utterance.onstart = function() {
-    setPlayingState(true);
-    setStatus('Now reading: ' + ch.title);
-    // Scroll to chapter
-    var el = document.getElementById(ch.id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    animateProgress(utterance);
-  };
-
-  utterance.onend = function() {
-    if (currentChapter < CHAPTERS.length - 1) {
-      setTimeout(function(){ speakChapter(currentChapter + 1); }, 800);
-    } else {
-      setPlayingState(false);
-      setStatus('End of book');
-      document.getElementById('progressFill').style.width = '100%';
-    }
-  };
-
-  utterance.onerror = function(e) {
-    if (e.error !== 'interrupted') {
-      setPlayingState(false);
-      setStatus('Speech unavailable in this browser');
-    }
-  };
-
-  synth.speak(utterance);
-  setPlayingState(true);
-}
-
-// Rough progress animation (SpeechSynthesis doesn't expose real progress)
-var progressTimer = null;
-function animateProgress(utt) {
-  clearInterval(progressTimer);
-  var estDuration = (utt.text.length / 14) * (1 / speedValues[speedIndex]) * 1000;
-  var started = Date.now();
-  progressTimer = setInterval(function() {
-    if (!isPlaying) { clearInterval(progressTimer); return; }
-    var pct = Math.min(((Date.now() - started) / estDuration) * 100, 97);
-    document.getElementById('progressFill').style.width = pct + '%';
-  }, 300);
-}
-
-// ── Controls ──────────────────────────────────────────────
-
-function togglePlay() {
-  if (!isPlaying) {
-    if (synth.paused) {
-      synth.resume();
-      setPlayingState(true);
-      setStatus('Resuming...');
-    } else {
-      speakChapter(currentChapter);
-    }
-  } else {
-    synth.pause();
-    setPlayingState(false);
-    setStatus('Paused');
-    clearInterval(progressTimer);
+function updateProgress(){
+  if(audio.duration){
+    document.getElementById('progressFill').style.width = (audio.currentTime/audio.duration*100)+'%';
+    setStatus(fmt(audio.currentTime) + ' / ' + fmt(audio.duration));
   }
 }
 
-function nextChapter() {
-  if (currentChapter < CHAPTERS.length - 1) {
-    speakChapter(currentChapter + 1);
-  }
+audio.addEventListener('timeupdate', updateProgress);
+audio.addEventListener('play', function(){ setPlayingState(true); });
+audio.addEventListener('pause', function(){ setPlayingState(false); setStatus(fmt(audio.currentTime) + ' / ' + fmt(audio.duration) + ' — Paused'); });
+audio.addEventListener('ended', function(){ setPlayingState(false); setStatus('End of audiobook ◆'); });
+audio.addEventListener('loadedmetadata', function(){ setStatus('Ready · ' + fmt(audio.duration)); });
+audio.addEventListener('error', function(){ setStatus('Audio file not found — push to site first'); });
+
+function togglePlay(){
+  if(audio.paused){ audio.play().catch(function(){ setStatus('Tap play to enable audio'); }); }
+  else { audio.pause(); }
 }
 
-function prevChapter() {
-  if (currentChapter > 0) {
-    speakChapter(currentChapter - 1);
-  } else {
-    speakChapter(0);
-  }
+function skipAudio(sec){
+  audio.currentTime = Math.max(0, Math.min(audio.duration||0, audio.currentTime+sec));
 }
 
-function cycleSpeed() {
-  speedIndex = (speedIndex + 1) % speedValues.length;
+function cycleSpeed(){
+  speedIndex = (speedIndex+1) % speedValues.length;
+  audio.playbackRate = speedValues[speedIndex];
   document.getElementById('speedBtn').textContent = speedLabels[speedIndex];
-  if (utterance) utterance.rate = speedValues[speedIndex];
-  // Restart current chapter at new speed if playing
-  if (isPlaying) {
-    speakChapter(currentChapter);
-  }
 }
 
-function scrubProgress(e) {
+function scrubAudio(e){
+  if(!audio.duration) return;
   var bar = document.getElementById('progressBar');
-  var pct = e.offsetX / bar.offsetWidth;
-  var chIdx = Math.floor(pct * CHAPTERS.length);
-  speakChapter(Math.min(chIdx, CHAPTERS.length - 1));
+  audio.currentTime = (e.offsetX / bar.offsetWidth) * audio.duration;
 }
 
-function startAudiobook() {
-  speakChapter(0);
-  document.getElementById('player').scrollIntoView({ behavior: 'smooth', block: 'end' });
+function startAudiobook(){
+  audio.currentTime = 0;
+  audio.play().catch(function(){ setStatus('Tap play to listen'); });
+  document.getElementById('player').scrollIntoView({ behavior:'smooth', block:'end' });
 }
-
-// Wait for voices to load
-if (synth.onvoiceschanged !== undefined) {
-  synth.onvoiceschanged = function(){};
-}
-
-// Init UI
-updatePlayerUI();
 </script>
 </body>
 </html>
