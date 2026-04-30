@@ -40,7 +40,7 @@ body {
 
 /* ── PITCH BANNER ──────────────────────────────────────── */
 .pitch-banner {
-  background: linear-gradient(135deg, rgba(201,168,76,0.10) 0%, rgba(228,30,43,0.06) 100%);
+  background: #0d0b08;
   border-bottom: 1px solid var(--border2);
   padding: 0;
   overflow: hidden;
@@ -65,11 +65,11 @@ body {
 }
 
 .pitch-letter {
-  font-family: var(--font-body);
+  font-family: var(--font-ui);
   font-size: 16px;
   line-height: 1.9;
-  color: var(--text-dim);
-  font-style: italic;
+  color: var(--text);
+  font-style: normal;
 }
 
 .pitch-letter strong {
@@ -337,11 +337,12 @@ body {
 
 /* ── PITCH CLOSE ───────────────────────────────────────── */
 .pitch-close {
-  background: linear-gradient(180deg, var(--bg) 0%, rgba(201,168,76,0.04) 50%, var(--bg) 100%);
-  border-top: 1px solid var(--border2);
-  border-bottom: 1px solid var(--border);
+  background: #0d0b08;
+  border-top: 2px solid var(--gold);
+  border-bottom: 1px solid var(--border2);
   padding: 80px 32px;
   text-align: center;
+  box-shadow: 0 -24px 64px rgba(0,0,0,0.6);
 }
 
 .pitch-close-inner { max-width: 620px; margin: 0 auto; }
@@ -521,6 +522,8 @@ body {
 .pitch-close, .player, .video-section {
   position: relative; z-index: 1;
 }
+/* player floats above everything */
+.player { z-index: 100; }
 
 /* ── VIDEO SECTION ───────────────────────────────────────── */
 .video-section {
@@ -952,7 +955,7 @@ body {
     <ul class="pitch-close-items">
       <li>A beautifully formatted e-book that grows as you publish — one video at a time</li>
       <li>An audiobook version built directly into the page — no app required, just a link</li>
-      <li>A shareable URL you can drop anywhere: Instagram, YouTube description, email</li>
+      <li>A shareable URL you can drop anywhere: Instagram, YouTube description, email, or your own website — even your own domain (<em style="color:var(--gold)">lessons.greglav.com</em>)</li>
       <li>A lasting artifact of the wisdom you're building right now — for your son, and for the world</li>
       <li>Zero extra work from you — you film, I format and publish the next chapter</li>
     </ul>
