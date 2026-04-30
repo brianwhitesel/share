@@ -562,23 +562,24 @@ body {
 /* ── SECTION NAV ─────────────────────────────────────────── */
 #sec-nav {
   position: fixed;
-  bottom: 96px; right: 16px;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 200;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
 }
 
+/* Dropdown panel — opens to the left of the tab */
 .sec-nav-menu {
   display: none;
   flex-direction: column;
   background: rgba(10,8,5,0.97);
-  border: 1px solid rgba(201,168,76,0.25);
-  border-radius: 12px;
-  min-width: 150px;
+  border: 1px solid rgba(201,168,76,0.22);
+  border-radius: 12px 0 0 12px;
+  min-width: 148px;
   overflow: hidden;
-  margin-bottom: 8px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  box-shadow: -6px 0 32px rgba(0,0,0,0.55);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
@@ -588,7 +589,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 11px 16px;
+  padding: 13px 18px;
   font-family: var(--font-ui);
   font-size: 12px;
   font-weight: 500;
@@ -611,49 +612,37 @@ body {
 }
 .sec-nav-item.active .sec-nav-dot { background: var(--gold); }
 
-.sec-nav-pill {
+/* The tab itself — hugs the right edge */
+.sec-nav-tab {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 7px;
-  background: rgba(10,8,5,0.94);
-  border: 1px solid rgba(201,168,76,0.35);
-  border-radius: 20px;
-  padding: 8px 14px 8px 12px;
+  justify-content: center;
+  gap: 5px;
+  width: 28px;
+  padding: 14px 0;
+  background: rgba(10,8,5,0.90);
+  border: 1px solid rgba(201,168,76,0.28);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
   cursor: pointer;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-  transition: border-color 0.15s;
+  box-shadow: -3px 0 16px rgba(0,0,0,0.4);
+  transition: background 0.15s, border-color 0.15s;
   user-select: none;
-}
-.sec-nav-pill:hover { border-color: var(--gold); }
-.sec-nav-pill:active { transform: scale(0.97); }
-
-.sec-nav-pill-icon {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
   flex-shrink: 0;
 }
-.sec-nav-pill-icon span {
+.sec-nav-tab:hover  { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.5); }
+.sec-nav-tab:active { transform: scaleX(0.92); }
+
+/* Three lines */
+.sec-nav-tab span {
   display: block;
   width: 12px; height: 1.5px;
   background: var(--gold);
   border-radius: 2px;
-  transition: opacity 0.15s;
-}
-
-.sec-nav-pill-label {
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--gold);
-  max-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  opacity: 0.8;
 }
 </style>
 </head>
@@ -1251,11 +1240,8 @@ function startAudiobook(){
       <span class="sec-nav-dot"></span>The Pitch
     </div>
   </div>
-  <div class="sec-nav-pill" id="secNavPill">
-    <div class="sec-nav-pill-icon">
-      <span></span><span></span><span></span>
-    </div>
-    <span class="sec-nav-pill-label" id="secNavLabel">Cover</span>
+  <div class="sec-nav-tab" id="secNavPill">
+    <span></span><span></span><span></span>
   </div>
 </div>
 
@@ -1272,14 +1258,12 @@ function startAudiobook(){
 
   var pill    = document.getElementById('secNavPill');
   var menu    = document.getElementById('secNavMenu');
-  var label   = document.getElementById('secNavLabel');
   var items   = menu.querySelectorAll('.sec-nav-item');
   var current = -1;
 
   function setActive(idx) {
     if (idx === current) return;
     current = idx;
-    label.textContent = SECTIONS[idx].label;
     items.forEach(function(item, i) {
       item.classList.toggle('active', i === idx);
     });
