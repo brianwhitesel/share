@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clip Organizer - Rocket League</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #1a1a1a;
+            color: #d8d8d8;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-bar {
+            background: #242424;
+            border-bottom: 1px solid #333;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .clip-counter {
+            font-size: 14px;
+            color: #999;
+            min-width: 80px;
+        }
+
+        .current-filename {
+            font-size: 13px;
+            color: #b0b0b0;
+            font-family: 'Monaco', 'Courier New', monospace;
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .progress-bar-container {
+            flex: 1;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            overflow: hidden;
+            max-width: 300px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #f57c2a;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .top-bar-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .shortcut-hint {
+            font-size: 12px;
+            color: #666;
+            padding: 4px 8px;
+            background: #1a1a1a;
+            border-radius: 4px;
+            border: 1px solid #333;
+        }
+
+        .btn-top {
+            padding: 8px 16px;
+            background: #f57c2a;
+            border: none;
+            border-radius: 4px;
+            color: #1a1a1a;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-top:hover {
+            background: #ff8f4a;
+        }
+
+        .btn-top:active {
+            transform: scale(0.95);
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            gap: 0;
+            overflow: hidden;
+        }
+
+        .left-panel {
+            width: 160px;
+            background: #242424;
+            border-right: 1px solid #333;
+            padding: 20px 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+            position: relative;
+        }
+
+        video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .right-panel {
+            width: 160px;
+            background: #242424;
+            border-left: 1px solid #333;
+            padding: 20px 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .panel-title {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .btn-action {
+            padding: 10px 8px;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #d8d8d8;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: left;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .btn-action:hover {
+            background: #3a3a3a;
+            border-color: #555;
+        }
+
+        .btn-action.active {
+            background: #f57c2a;
+            color: #1a1a1a;
+            border-color: #f57c2a;
+        }
+
+        .btn-action .shortcut {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            color: #999;
+            font-family: monospace;
+        }
+
+        .btn-action.active .shortcut {
+            color: #1a1a1a;
+        }
+
+        .bottom-bar {
+            background: #242424;
+            border-top: 1px solid #333;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .filename-preview {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            color: #f57c2a;
+            text-align: center;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-break: break-all;
+        }
+
+        .bottom-controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .btn-control {
+            padding: 10px 16px;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #d8d8d8;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            min-width: 80px;
+        }
+
+        .btn-control:hover:not(:disabled) {
+            background: #3a3a3a;
+            border-color: #555;
+        }
+
+        .btn-control:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .btn-control:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-next {
+            background: #f57c2a;
+            color: #1a1a1a;
+            border-color: #f57c2a;
+            min-width: 100px;
+        }
+
+        .btn-next:hover {
+            background: #ff8f4a;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #242424;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #d8d8d8;
+        }
+
+        .modal-textarea {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 11px;
+            color: #f57c2a;
+            height: 400px;
+            overflow: auto;
+            resize: none;
+            line-height: 1.6;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .btn-modal {
+            padding: 10px 16px;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #d8d8d8;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-modal:hover {
+            background: #3a3a3a;
+        }
+
+        .btn-modal.primary {
+            background: #f57c2a;
+            color: #1a1a1a;
+            border-color: #f57c2a;
+        }
+
+        .btn-modal.primary:hover {
+            background: #ff8f4a;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .drop-zone {
+            border: 2px dashed #f57c2a;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .drop-zone.dragover {
+            background: rgba(245, 124, 42, 0.1);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .empty-state-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #d8d8d8;
+        }
+
+        .empty-state-text {
+            color: #999;
+            font-size: 14px;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <div class="clip-counter" id="clipCounter">Ready to load clips</div>
+            <div class="current-filename" id="currentFilename">-</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+        <div class="top-bar-right">
+            <div class="shortcut-hint">Enter to advance</div>
+            <button class="btn-top" id="exportBtn">Export Filenames</button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Panel: Actions -->
+        <div class="left-panel">
+            <div class="panel-title">Action Category</div>
+            <button class="btn-action" data-action="GOAL" data-key="1">GOAL <span class="shortcut">1</span></button>
+            <button class="btn-action" data-action="SAVE" data-key="2">SAVE <span class="shortcut">2</span></button>
+            <button class="btn-action" data-action="DEMO" data-key="3">DEMO <span class="shortcut">3</span></button>
+            <button class="btn-action" data-action="AERIAL" data-key="4">AERIAL <span class="shortcut">4</span></button>
+            <button class="btn-action" data-action="MECHANICAL" data-key="5">MECHANICAL <span class="shortcut">5</span></button>
+            <button class="btn-action" data-action="DRIBBLE" data-key="6">DRIBBLE <span class="shortcut">6</span></button>
+            <button class="btn-action" data-action="REDIRECT" data-key="7">REDIRECT <span class="shortcut">7</span></button>
+            <button class="btn-action" data-action="MISS" data-key="8">MISS <span class="shortcut">8</span></button>
+            <button class="btn-action" data-action="CLEAR" data-key="9">CLEAR <span class="shortcut">9</span></button>
+            <button class="btn-action" data-action="ROTATE" data-key="0">ROTATE <span class="shortcut">0</span></button>
+            <button class="btn-action" data-action="BOOST" data-key="B">BOOST <span class="shortcut">B</span></button>
+            <button class="btn-action" data-action="OTHER" data-key="O">OTHER <span class="shortcut">O</span></button>
+        </div>
+
+        <!-- Center: Video Player -->
+        <div class="center" id="centerArea">
+            <div class="placeholder">
+                <input type="file" id="fileInput" class="file-input" webkitdirectory multiple>
+                <div class="drop-zone" id="dropZone">
+                    <div class="empty-state">
+                        <div class="empty-state-title">Drop video folder here</div>
+                        <div class="empty-state-text">or click to select a folder containing .mp4 or .mov files</div>
+                        <button class="btn-control" style="margin-top: 8px; background: #f57c2a; color: #1a1a1a; border-color: #f57c2a;">
+                            Select Folder
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Details -->
+        <div class="right-panel">
+            <div class="panel-title">Details & Modifiers</div>
+            <div id="detailsPanel"></div>
+        </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="bottom-bar">
+        <div class="filename-preview" id="filenamePreview">Load a folder to begin</div>
+        <div class="bottom-controls">
+            <button class="btn-control" id="backBtn" disabled>Back</button>
+            <button class="btn-control" id="skipBtn" disabled>Skip</button>
+            <button class="btn-next" id="nextBtn" disabled>Next (Enter)</button>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <div class="modal-title">Export Renamed Filenames</div>
+            <textarea class="modal-textarea" id="exportTextarea" readonly></textarea>
+            <div class="modal-buttons">
+                <button class="btn-modal" id="closeExportBtn">Close</button>
+                <button class="btn-modal primary" id="copyExportBtn">Copy All to Clipboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        const state = {
+            clips: [],
+            currentIndex: 0,
+            tags: {},
+            videoElement: null,
+            selectedAction: null,
+            selectedDetails: [],
+        };
+
+        // Detail mappings by action
+        const detailMappings = {
+            GOAL: [
+                { label: 'Ceiling Shot', key: 'C' },
+                { label: 'Aerial', key: 'A' },
+                { label: 'Double Touch', key: 'D' },
+                { label: 'Redirect', key: 'R' },
+                { label: 'Tap-In', key: 'T' },
+                { label: 'Overtime', key: 'O' },
+            ],
+            SAVE: [
+                { label: 'Goal Line', key: 'G' },
+                { label: 'Aerial', key: 'A' },
+                { label: 'Last Touch', key: 'L' },
+                { label: 'Diving', key: 'D' },
+                { label: 'Blocked', key: 'B' },
+            ],
+            DEMO: [
+                { label: 'Boost Steal', key: 'B' },
+                { label: 'Midfield', key: 'M' },
+                { label: 'Corner', key: 'C' },
+            ],
+            AERIAL: [
+                { label: 'High Ball', key: 'H' },
+                { label: 'Long Ball', key: 'L' },
+                { label: 'Fast Aerial', key: 'F' },
+                { label: 'Turtle', key: 'T' },
+            ],
+            MECHANICAL: [
+                { label: 'Wall Ride', key: 'W' },
+                { label: 'Flip Reset', key: 'F' },
+                { label: 'Air Dribble', key: 'A' },
+                { label: 'Ceiling Shot', key: 'C' },
+            ],
+            DRIBBLE: [
+                { label: 'Ground Dribble', key: 'G' },
+                { label: 'Air Dribble', key: 'A' },
+                { label: 'Ball Chase', key: 'B' },
+            ],
+            REDIRECT: [
+                { label: 'Off Wall', key: 'W' },
+                { label: 'Air Pass', key: 'A' },
+                { label: 'Ceiling Redirect', key: 'C' },
+            ],
+            MISS: [
+                { label: 'Wide', key: 'W' },
+                { label: 'High', key: 'H' },
+                { label: 'Blocked', key: 'B' },
+            ],
+            CLEAR: [
+                { label: 'Defensive Clear', key: 'D' },
+                { label: 'Goal Line', key: 'G' },
+                { label: 'Full Court', key: 'F' },
+            ],
+            ROTATE: [
+                { label: 'Mid Rotate', key: 'M' },
+                { label: 'Back Rotate', key: 'B' },
+                { label: 'Boost Route', key: 'R' },
+            ],
+            BOOST: [
+                { label: 'Steal', key: 'S' },
+                { label: 'Full Grab', key: 'F' },
+                { label: 'Team Boost', key: 'T' },
+            ],
+            OTHER: [
+                { label: 'Kickoff', key: 'K' },
+                { label: 'Own Goal', key: 'O' },
+                { label: 'Funny Moment', key: 'F' },
+            ],
+        };
+
+        // DOM Elements
+        const centerArea = document.getElementById('centerArea');
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const clipCounter = document.getElementById('clipCounter');
+        const currentFilename = document.getElementById('currentFilename');
+        const filenamePreview = document.getElementById('filenamePreview');
+        const progressBar = document.getElementById('progressBar');
+        const detailsPanel = document.getElementById('detailsPanel');
+        const exportBtn = document.getElementById('exportBtn');
+        const exportModal = document.getElementById('exportModal');
+        const exportTextarea = document.getElementById('exportTextarea');
+        const closeExportBtn = document.getElementById('closeExportBtn');
+        const copyExportBtn = document.getElementById('copyExportBtn');
+        const backBtn = document.getElementById('backBtn');
+        const skipBtn = document.getElementById('skipBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        // File handling
+        dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.parentElement.classList.add('dragover');
+        });
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.parentElement.classList.remove('dragover');
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.parentElement.classList.remove('dragover');
+            handleFiles(e.dataTransfer.items);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(fileList) {
+            const videoExtensions = ['.mp4', '.mov'];
+            const clips = [];
+
+            for (let file of fileList) {
+                const ext = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+                if (videoExtensions.includes(ext)) {
+                    clips.push({
+                        file: file,
+                        name: file.name,
+                        url: URL.createObjectURL(file),
+                    });
+                }
+            }
+
+            if (clips.length === 0) {
+                alert('No video files found. Please select a folder with .mp4 or .mov files.');
+                return;
+            }
+
+            state.clips = clips.sort((a, b) => a.name.localeCompare(b.name));
+            state.currentIndex = 0;
+            state.tags = {};
+            state.selectedAction = null;
+            state.selectedDetails = [];
+
+            loadClip();
+        }
+
+        function loadClip() {
+            const clip = state.clips[state.currentIndex];
+
+            // Clear center area
+            centerArea.innerHTML = '';
+
+            // Create video element
+            const video = document.createElement('video');
+            video.src = clip.url;
+            video.controls = true;
+            video.autoplay = true;
+            video.loop = true;
+            state.videoElement = video;
+            centerArea.appendChild(video);
+
+            // Update UI
+            updateUI();
+        }
+
+        function updateUI() {
+            const clip = state.clips[state.currentIndex];
+            const total = state.clips.length;
+            const clipNum = state.currentIndex + 1;
+
+            clipCounter.textContent = `${clipNum} / ${total}`;
+            currentFilename.textContent = clip.name;
+
+            // Update progress bar
+            progressBar.style.width = `${(state.currentIndex / total) * 100}%`;
+
+            // Load tags for current clip
+            state.selectedAction = null;
+            state.selectedDetails = [];
+            if (state.tags[state.currentIndex]) {
+                const tag = state.tags[state.currentIndex];
+                state.selectedAction = tag.action;
+                state.selectedDetails = tag.details || [];
+            }
+
+            // Update buttons
+            updateActionButtons();
+            updateDetailButtons();
+            updatePreview();
+            updateControlButtons();
+        }
+
+        function updateActionButtons() {
+            document.querySelectorAll('.btn-action').forEach((btn) => {
+                const action = btn.getAttribute('data-action');
+                btn.classList.toggle('active', state.selectedAction === action);
+            });
+        }
+
+        function updateDetailButtons() {
+            const details = detailMappings[state.selectedAction] || [];
+            detailsPanel.innerHTML = '';
+
+            if (details.length === 0) {
+                detailsPanel.innerHTML = '<div style="color: #666; font-size: 12px;">Select an action first</div>';
+                return;
+            }
+
+            details.forEach((detail) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-action';
+                if (state.selectedDetails.includes(detail.label)) {
+                    btn.classList.add('active');
+                }
+                btn.innerHTML = `${detail.label} <span class="shortcut">${detail.key}</span>`;
+                btn.addEventListener('click', () => toggleDetail(detail.label));
+                detailsPanel.appendChild(btn);
+            });
+        }
+
+        function updatePreview() {
+            const clipNum = String(state.currentIndex + 1).padStart(3, '0');
+            const clip = state.clips[state.currentIndex];
+
+            if (!state.selectedAction) {
+                filenamePreview.textContent = `${clipNum}_[select action]`;
+                return;
+            }
+
+            const action = state.selectedAction.toLowerCase();
+            const details = state.selectedDetails.map((d) => d.toLowerCase().replace(/ /g, '_')).join('_');
+            const filename = details ? `${clipNum}_${action}_${details}` : `${clipNum}_${action}`;
+
+            filenamePreview.textContent = filename + (clip.name.includes('.') ? clip.name.substring(clip.name.lastIndexOf('.')) : '');
+        }
+
+        function updateControlButtons() {
+            backBtn.disabled = state.currentIndex === 0;
+            skipBtn.disabled = state.clips.length === 0;
+            nextBtn.disabled = state.clips.length === 0;
+            exportBtn.disabled = state.clips.length === 0;
+        }
+
+        // Action button handlers
+        document.querySelectorAll('.btn-action').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const action = btn.getAttribute('data-action');
+                if (state.selectedAction === action) {
+                    state.selectedAction = null;
+                    state.selectedDetails = [];
+                } else {
+                    state.selectedAction = action;
+                    state.selectedDetails = [];
+                }
+                updateUI();
+            });
+        });
+
+        function toggleDetail(label) {
+            if (state.selectedDetails.includes(label)) {
+                state.selectedDetails = state.selectedDetails.filter((d) => d !== label);
+            } else {
+                state.selectedDetails.push(label);
+            }
+            updateUI();
+        }
+
+        // Navigation
+        nextBtn.addEventListener('click', advanceClip);
+        backBtn.addEventListener('click', () => {
+            if (state.currentIndex > 0) {
+                state.currentIndex--;
+                loadClip();
+            }
+        });
+
+        skipBtn.addEventListener('click', () => {
+            state.tags[state.currentIndex] = {
+                action: 'UNTAGGED',
+                details: [],
+            };
+            advanceClip();
+        });
+
+        function advanceClip() {
+            if (!state.selectedAction && state.currentIndex < state.clips.length - 1) {
+                alert('Please select an action or click Skip');
+                return;
+            }
+
+            if (state.selectedAction) {
+                state.tags[state.currentIndex] = {
+                    action: state.selectedAction,
+                    details: state.selectedDetails,
+                };
+            }
+
+            if (state.currentIndex < state.clips.length - 1) {
+                state.currentIndex++;
+                loadClip();
+            } else {
+                showExport();
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'TEXTAREA') return;
+
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (!nextBtn.disabled) {
+                    advanceClip();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (!backBtn.disabled) {
+                    backBtn.click();
+                }
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                if (state.videoElement) {
+                    if (state.videoElement.paused) {
+                        state.videoElement.play();
+                    } else {
+                        state.videoElement.pause();
+                    }
+                }
+            } else if (e.key >= '0' && e.key <= '9') {
+                const keyMap = {
+                    '1': 'GOAL',
+                    '2': 'SAVE',
+                    '3': 'DEMO',
+                    '4': 'AERIAL',
+                    '5': 'MECHANICAL',
+                    '6': 'DRIBBLE',
+                    '7': 'REDIRECT',
+                    '8': 'MISS',
+                    '9': 'CLEAR',
+                    '0': 'ROTATE',
+                };
+                if (keyMap[e.key]) {
+                    state.selectedAction = state.selectedAction === keyMap[e.key] ? null : keyMap[e.key];
+                    state.selectedDetails = [];
+                    updateUI();
+                }
+            } else if (e.key.toUpperCase() === 'B' || e.key.toUpperCase() === 'O') {
+                const keyMap = {
+                    'B': 'BOOST',
+                    'O': 'OTHER',
+                };
+                state.selectedAction = state.selectedAction === keyMap[e.key.toUpperCase()] ? null : keyMap[e.key.toUpperCase()];
+                state.selectedDetails = [];
+                updateUI();
+            }
+
+            // Detail shortcuts
+            if (state.selectedAction) {
+                const details = detailMappings[state.selectedAction] || [];
+                const detail = details.find((d) => d.key.toUpperCase() === e.key.toUpperCase());
+                if (detail) {
+                    e.preventDefault();
+                    toggleDetail(detail.label);
+                }
+            }
+        });
+
+        // Export functionality
+        exportBtn.addEventListener('click', showExport);
+        closeExportBtn.addEventListener('click', closeExport);
+        copyExportBtn.addEventListener('click', copyToClipboard);
+
+        function showExport() {
+            // Save current clip if needed
+            if (state.selectedAction) {
+                state.tags[state.currentIndex] = {
+                    action: state.selectedAction,
+                    details: state.selectedDetails,
+                };
+            }
+
+            let exportText = '';
+            state.clips.forEach((clip, index) => {
+                const clipNum = String(index + 1).padStart(3, '0');
+                const tag = state.tags[index];
+
+                let newName;
+                if (!tag) {
+                    newName = `${clipNum}_UNTAGGED`;
+                } else if (tag.action === 'UNTAGGED') {
+                    newName = `${clipNum}_UNTAGGED`;
+                } else {
+                    const action = tag.action.toLowerCase();
+                    const details = tag.details.map((d) => d.toLowerCase().replace(/ /g, '_')).join('_');
+                    newName = details ? `${clipNum}_${action}_${details}` : `${clipNum}_${action}`;
+                }
+
+                const ext = clip.name.substring(clip.name.lastIndexOf('.'));
+                const originalName = clip.name;
+                const finalName = newName + ext;
+
+                exportText += `Original: ${originalName}  ->  ${finalName}\n`;
+            });
+
+            exportTextarea.value = exportText;
+            exportModal.classList.add('active');
+        }
+
+        function closeExport() {
+            exportModal.classList.remove('active');
+        }
+
+        function copyToClipboard() {
+            exportTextarea.select();
+            document.execCommand('copy');
+            copyExportBtn.textContent = 'Copied!';
+            setTimeout(() => {
+                copyExportBtn.textContent = 'Copy All to Clipboard';
+            }, 2000);
+        }
+
+        // Close modal on outside click
+        exportModal.addEventListener('click', (e) => {
+            if (e.target === exportModal) {
+                closeExport();
+            }
+        });
+    </script>
+</body>
+</html>

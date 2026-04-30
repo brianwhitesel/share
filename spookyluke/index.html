@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brian Whitesel — SpookyLuke Application</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0a0e16;
+  --surface:  rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.07);
+  --border:   rgba(255,255,255,0.08);
+  --border2:  rgba(255,255,255,0.14);
+  --text:     #e8edf5;
+  --dim:      #8a9ab5;
+  --muted:    #3d4f68;
+  --teal:     #2dd4bf;
+  --teal2:    #5eead4;
+  --blue:     #3b82f6;
+  --gold:     #f59e0b;
+  --font-head: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius:   12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── LAYOUT ── */
+.wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--border);
+}
+section:last-of-type { border-bottom: none; }
+
+/* ── HERO ── */
+.hero {
+  padding: 100px 0 80px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-family: var(--font-head);
+  font-size: clamp(44px, 9vw, 72px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.hero h1 span {
+  color: var(--teal);
+}
+
+.hero-tagline {
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--dim);
+  max-width: 520px;
+  line-height: 1.6;
+  margin-bottom: 36px;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 100px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--dim);
+}
+
+.pill.teal {
+  background: rgba(45, 212, 191, 0.10);
+  border-color: rgba(45, 212, 191, 0.25);
+  color: var(--teal2);
+}
+
+.pill.gold {
+  background: rgba(245, 158, 11, 0.10);
+  border-color: rgba(245, 158, 11, 0.22);
+  color: var(--gold);
+}
+
+/* ── SECTION HEADS ── */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: var(--font-head);
+  font-size: clamp(26px, 5vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.section-sub {
+  font-size: 16px;
+  color: var(--dim);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+/* ── BACKGROUND STATS ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: var(--font-head);
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--teal);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.bio-text {
+  font-size: 16px;
+  color: var(--dim);
+  line-height: 1.8;
+  max-width: 640px;
+}
+
+.bio-text + .bio-text {
+  margin-top: 16px;
+}
+
+/* ── TOOL SECTION ── */
+.tool-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.tool-header {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.tool-name {
+  font-family: var(--font-head);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.tool-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 100px;
+  background: rgba(45, 212, 191, 0.12);
+  border: 1px solid rgba(45, 212, 191, 0.28);
+  color: var(--teal);
+}
+
+.tool-body {
+  padding: 28px;
+}
+
+.tool-desc {
+  font-size: 15px;
+  color: var(--dim);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.feature-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+.feature-list li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  margin-top: 6px;
+}
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 13px 24px;
+  border-radius: 10px;
+  background: var(--teal);
+  color: #0a0e16;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.cta-btn:hover {
+  background: var(--teal2);
+  transform: translateY(-1px);
+}
+
+.cta-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.tool-note {
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+/* ── CLIP DEMOS ── */
+.clip-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.clip-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: start;
+}
+
+.clip-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  padding-top: 2px;
+  letter-spacing: 0.06em;
+}
+
+.clip-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--teal);
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+  word-break: break-all;
+}
+
+.clip-desc {
+  font-size: 13px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+.clip-flag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* ── MORE SECTION ── */
+.more-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.more-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  transition: border-color 0.15s ease;
+}
+
+.more-card:hover {
+  border-color: var(--border2);
+}
+
+.more-icon {
+  font-size: 22px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.more-title {
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.more-body {
+  font-size: 13px;
+  color: var(--dim);
+  line-height: 1.6;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 60px 0 80px;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-name {
+  font-family: var(--font-head);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.footer-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.footer-link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.footer-link:hover { color: var(--teal); }
+
+/* ── DIVIDER ── */
+.rule {
+  width: 48px;
+  height: 2px;
+  background: var(--teal);
+  border-radius: 2px;
+  margin-bottom: 28px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 560px) {
+  section { padding: 60px 0; }
+  .hero { padding: 72px 0 60px; }
+  .stats-row { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .stat-card { padding: 18px 12px; }
+  .stat-num { font-size: 28px; }
+  .more-grid { grid-template-columns: 1fr; }
+  .clip-row { grid-template-columns: auto 1fr; }
+  .clip-flag { display: none; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="wrap">
+    <p class="hero-label">Application — Clip Organizer Role</p>
+    <h1>Brian<br><span>Whitesel</span></h1>
+    <p class="hero-tagline">I organize content for a living. Then I build the tools that make it faster.</p>
+    <div class="hero-meta">
+      <span class="pill teal">Content Manager</span>
+      <span class="pill teal">Tool Builder</span>
+      <span class="pill gold">Rocket League Viewer</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── BACKGROUND ── -->
+<section>
+  <div class="wrap">
+    <p class="section-label">Background</p>
+    <h2 class="section-title">Five years of managing<br>high-volume content.</h2>
+    <div class="rule"></div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Years in content</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1K+</div>
+        <div class="stat-label">Videos processed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Remote workflow</div>
+      </div>
+    </div>
+
+    <p class="bio-text">I've spent five years as the content manager for a major sports card YouTube channel — responsible for organizing, tagging, and maintaining a large library of video assets across every upload cycle. That means building consistent naming conventions, working through high clip volumes without dropping quality, and hitting deadlines on a repeating schedule.</p>
+    <p class="bio-text" style="margin-top:16px;">I understand what it costs when a batch comes back disorganized. And I understand what a good clip library actually looks like — one where any editor can open it cold and find what they need.</p>
+  </div>
+</section>
+
+<!-- ── THE TOOL ── -->
+<section>
+  <div class="wrap">
+    <p class="section-label">Built for this role</p>
+    <h2 class="section-title">I didn't just apply.<br>I built the solution first.</h2>
+    <div class="rule"></div>
+    <p class="section-sub">Before submitting this application, I built a clip tagging tool specific to the Rocket League workflow — drop a folder of clips in, tag each one, and export a fully renamed batch.</p>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-name">Rocket League Clip Organizer</span>
+        <span class="tool-badge">Live Tool</span>
+      </div>
+      <div class="tool-body">
+        <p class="tool-desc">A keyboard-driven tagger for bulk clip batches. Load a folder, watch each clip play automatically, press a key to assign a category — the tool builds the filename in real time and exports a full rename map when you're done.</p>
+        <ul class="feature-list">
+          <li>Action categories: Goal, Save, Demo, Aerial, Dribble, Assist, Freestyle + more</li>
+          <li>Context detail buttons auto-populate based on the category selected</li>
+          <li>Keyboard shortcuts — 1–9 for categories, Enter to advance, Space to play/pause</li>
+          <li>Live filename preview on every clip before it's committed</li>
+          <li>Export modal with full rename map — ready to batch-rename in one step</li>
+          <li>Naming convention: <code style="font-family:var(--font-mono);font-size:12px;color:var(--teal)">260430_aerial_flip_reset_goal.mp4</code></li>
+        </ul>
+        <a class="cta-btn" href="../clip-organizer/" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Try the Tool
+        </a>
+        <p class="tool-note">Opens in a new tab — works best on desktop. Drop any folder of .mp4 files to test it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SAMPLE TAGS ── -->
+<section>
+  <div class="wrap">
+    <p class="section-label">Sample work — clip tagging</p>
+    <h2 class="section-title">Five clips tagged,<br>ready to ship.</h2>
+    <div class="rule"></div>
+    <p class="section-sub">These are the five clips from your application — tagged, named, and annotated.</p>
+
+    <div class="clip-grid">
+      <div class="clip-row">
+        <span class="clip-num">01</span>
+        <div>
+          <div class="clip-tag">260430 - cross_map_air_dribble_flip_reset</div>
+          <div class="clip-desc">Cross-map air dribble with a flip reset. Full-field carry on the roof, flip reset extends the touch at the peak.</div>
+        </div>
+      </div>
+      <div class="clip-row">
+        <span class="clip-num">02</span>
+        <div>
+          <div class="clip-tag">260430 - air_dribble_failed_flip_reset_assist</div>
+          <div class="clip-desc">Air dribble into a flip reset attempt that doesn't fully connect — resulting touch becomes a pass that a teammate converts for the goal. Game sense clip, not a mechanics highlight.</div>
+        </div>
+      </div>
+      <div class="clip-row">
+        <span class="clip-num">03</span>
+        <div>
+          <div class="clip-tag">260430 - air_dribble_flip_reset_over_defenders_midfield</div>
+          <div class="clip-desc">Clean air dribble from midfield, flip reset executed over two defenders. Straightforward mechanics, solid execution.</div>
+        </div>
+      </div>
+      <div class="clip-row">
+        <span class="clip-num">04</span>
+        <div>
+          <div class="clip-tag">260430 - fast_aerial_beat_defender_goal</div>
+          <div class="clip-desc">Speed-jump fast aerial that wins the race to the ball against the defender, scored directly.</div>
+        </div>
+        <span class="clip-flag">Audio flag</span>
+      </div>
+      <div class="clip-row">
+        <span class="clip-num">05</span>
+        <div>
+          <div class="clip-tag">260430 - slow_play_right_side_dribble</div>
+          <div class="clip-desc">Patient ground dribble across the right side of the field. Positional control clip — reads the play and holds possession.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MORE ── -->
+<section>
+  <div class="wrap">
+    <p class="section-label">Beyond the role</p>
+    <h2 class="section-title">A few other things<br>worth knowing.</h2>
+    <div class="rule"></div>
+    <p class="section-sub">This application is for the clip organizer role — but if you ever find yourself needing more, here's a sense of what else I bring.</p>
+
+    <div class="more-grid">
+      <div class="more-card">
+        <span class="more-icon">⚙️</span>
+        <div class="more-title">Custom Workflow Tools</div>
+        <div class="more-body">I build automation and workflow tools for content teams — from batch processors to tagging systems. If a task is repetitive, I look for a way to systematize it.</div>
+      </div>
+      <div class="more-card">
+        <span class="more-icon">📋</span>
+        <div class="more-title">Content Systems</div>
+        <div class="more-body">Five years building and maintaining content pipelines for a high-volume YouTube channel. Naming conventions, archive systems, publish schedules — the unsexy work that keeps a channel running.</div>
+      </div>
+      <div class="more-card">
+        <span class="more-icon">🎬</span>
+        <div class="more-title">Video Production</div>
+        <div class="more-body">Hands-on with the full production side — not just organization. Editing, syncing, reviewing footage. I know what a good clip looks like before it gets tagged.</div>
+      </div>
+      <div class="more-card">
+        <span class="more-icon">🔄</span>
+        <div class="more-title">Scalable Batches</div>
+        <div class="more-body">High-volume, deadline-driven work is the baseline expectation. Whether it's 50 clips or 500, the standard stays the same. Quality and consistency on every batch.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <span class="footer-name">Brian Whitesel</span>
+      <div class="footer-contact">
+        <a class="footer-link" href="mailto:brianwhitesel@gmail.com">brianwhitesel@gmail.com</a>
+        <span class="footer-link" style="cursor:default;">Discord: @papasoar</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
