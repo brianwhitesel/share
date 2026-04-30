@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lessons From My 20s — Greg Lav</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0c0a07;
+  --paper:     #111009;
+  --surface:   rgba(255,255,255,0.04);
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(212,168,83,0.22);
+  --text:      #e8dfc8;
+  --text-dim:  #a89880;
+  --muted:     #5c5040;
+  --gold:      #c9a84c;
+  --gold2:     #e8c96a;
+  --red:       #e41e2b;
+  --font-head: 'Playfair Display', Georgia, serif;
+  --font-body: 'Lora', Georgia, serif;
+  --font-ui:   'Inter', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  padding-bottom: 100px;
+}
+
+/* ── PITCH BANNER ──────────────────────────────────────── */
+.pitch-banner {
+  background: linear-gradient(135deg, rgba(201,168,76,0.10) 0%, rgba(228,30,43,0.06) 100%);
+  border-bottom: 1px solid var(--border2);
+  padding: 0;
+  overflow: hidden;
+}
+
+.pitch-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 32px 44px;
+}
+
+.pitch-eyebrow {
+  font-family: var(--font-ui);
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.pitch-eyebrow::before, .pitch-eyebrow::after {
+  content: ''; flex: 1; height: 1px; background: rgba(201,168,76,0.25);
+}
+
+.pitch-letter {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.pitch-letter strong {
+  font-style: normal; font-weight: 600; color: var(--text);
+}
+
+.pitch-letter .from {
+  display: block; margin-top: 24px;
+  font-style: normal;
+  font-family: var(--font-ui);
+  font-size: 13px; font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+
+/* ── BOOK COVER ────────────────────────────────────────── */
+.book-cover {
+  min-height: 92vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 80px 32px;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  background: radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.05) 0%, transparent 60%);
+  overflow: hidden;
+}
+
+.cover-ornament {
+  font-size: 28px; color: var(--gold); opacity: 0.5;
+  letter-spacing: 12px; margin-bottom: 40px;
+  line-height: 1;
+}
+
+.cover-author-pre {
+  font-family: var(--font-ui);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+
+.cover-title {
+  font-family: var(--font-head);
+  font-size: clamp(38px, 7vw, 66px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 14px;
+  max-width: 600px;
+}
+
+.cover-subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(15px, 2.5vw, 19px);
+  font-style: italic;
+  color: var(--text-dim);
+  max-width: 440px;
+  line-height: 1.6;
+  margin-bottom: 48px;
+}
+
+.cover-divider {
+  display: flex; align-items: center; gap: 16px;
+  width: 280px; margin: 0 auto 40px;
+}
+.cover-divider span { flex: 1; height: 1px; background: var(--border2); }
+.cover-divider em {
+  font-family: var(--font-head); font-size: 20px;
+  color: var(--gold); font-style: normal; opacity: 0.6;
+}
+
+.cover-author {
+  font-family: var(--font-head);
+  font-size: 20px; font-weight: 600;
+  letter-spacing: 0.04em; color: var(--text-dim);
+}
+
+.cover-listen-btn {
+  margin-top: 44px;
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(201,168,76,0.10);
+  border: 1px solid var(--border2);
+  border-radius: 40px;
+  color: var(--gold);
+  font-family: var(--font-ui);
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.cover-listen-btn:hover {
+  background: rgba(201,168,76,0.18);
+  border-color: var(--gold);
+}
+.cover-listen-btn svg { width: 16px; height: 16px; }
+
+/* ── TABLE OF CONTENTS ─────────────────────────────────── */
+.toc-section {
+  max-width: 640px; margin: 0 auto;
+  padding: 72px 32px 64px;
+  border-bottom: 1px solid var(--border);
+}
+
+.toc-heading {
+  font-family: var(--font-head);
+  font-size: 12px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); text-align: center;
+  margin-bottom: 40px;
+}
+
+.toc-list { list-style: none; }
+
+.toc-item {
+  display: flex; align-items: baseline; gap: 0;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.toc-item:last-child { border-bottom: none; }
+
+.toc-num {
+  font-family: var(--font-head);
+  font-size: 11px; font-style: italic; color: var(--gold);
+  min-width: 44px; opacity: 0.7;
+}
+
+.toc-title-link {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 15px; color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.toc-title-link:hover { color: var(--text); }
+
+.toc-dots {
+  flex: 1; margin: 0 12px;
+  border-bottom: 1px dotted rgba(255,255,255,0.10);
+  position: relative; bottom: 4px;
+}
+
+/* ── CHAPTER STYLES ────────────────────────────────────── */
+.book-body {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.chapter {
+  padding: 72px 0 56px;
+  border-bottom: 1px solid var(--border);
+  scroll-margin-top: 24px;
+}
+
+.chapter-eyebrow {
+  font-family: var(--font-ui);
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.chapter-numeral {
+  font-family: var(--font-head);
+  font-size: 13px; font-style: italic;
+  color: var(--gold); text-align: center;
+  margin-bottom: 14px;
+  letter-spacing: 0.1em;
+}
+
+.chapter-title {
+  font-family: var(--font-head);
+  font-size: clamp(24px, 4vw, 34px);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 44px;
+}
+
+.chapter-rule {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; margin-bottom: 44px;
+}
+.chapter-rule span { width: 48px; height: 1px; background: var(--border2); }
+.chapter-rule em {
+  font-family: var(--font-head); font-size: 16px;
+  color: var(--gold); font-style: normal; opacity: 0.5;
+}
+
+/* Drop cap on first paragraph of each chapter */
+.chapter p:first-of-type::first-letter {
+  font-family: var(--font-head);
+  font-size: 4.2em;
+  font-weight: 700;
+  color: var(--gold);
+  float: left;
+  line-height: 0.75;
+  margin: 8px 10px 0 0;
+}
+
+.chapter p {
+  margin-bottom: 22px;
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+.chapter p:last-child { margin-bottom: 0; }
+
+/* Pull quote */
+.pull-quote {
+  margin: 40px 0;
+  padding: 32px 28px;
+  border-left: 2px solid var(--gold);
+  background: rgba(201,168,76,0.04);
+  border-radius: 0 8px 8px 0;
+}
+
+.pull-quote p {
+  font-family: var(--font-head);
+  font-size: clamp(18px, 3vw, 22px);
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.55;
+  margin: 0 !important;
+}
+.pull-quote p::first-letter { all: unset; }
+
+/* Ordered lesson list */
+.lesson-list {
+  margin: 20px 0 24px 0;
+  padding-left: 0;
+  list-style: none;
+}
+.lesson-list li {
+  padding: 8px 0 8px 28px;
+  position: relative;
+  font-size: 16px;
+  color: var(--text-dim);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.lesson-list li:last-child { border-bottom: none; }
+.lesson-list li::before {
+  content: '—';
+  position: absolute; left: 0;
+  color: var(--gold); font-family: var(--font-head);
+}
+
+/* Subsection header (bold label within chapter) */
+.sub-head {
+  font-family: var(--font-head);
+  font-size: 17px; font-weight: 700;
+  color: var(--text);
+  margin: 32px 0 14px;
+  font-style: italic;
+}
+.sub-head::first-letter { all: unset; }
+
+/* ── PITCH CLOSE ───────────────────────────────────────── */
+.pitch-close {
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(201,168,76,0.04) 50%, var(--bg) 100%);
+  border-top: 1px solid var(--border2);
+  border-bottom: 1px solid var(--border);
+  padding: 80px 32px;
+  text-align: center;
+}
+
+.pitch-close-inner { max-width: 620px; margin: 0 auto; }
+
+.pitch-close-eyebrow {
+  font-family: var(--font-ui);
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 28px;
+}
+
+.pitch-close-headline {
+  font-family: var(--font-head);
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 24px;
+}
+
+.pitch-close-headline em {
+  color: var(--gold); font-style: italic;
+}
+
+.pitch-close-body {
+  font-family: var(--font-body);
+  font-size: 16px; font-style: italic;
+  color: var(--text-dim);
+  line-height: 1.85;
+  margin-bottom: 36px;
+}
+
+.pitch-close-body strong {
+  font-style: normal; color: var(--text); font-weight: 600;
+}
+
+.pitch-close-items {
+  list-style: none;
+  text-align: left;
+  margin: 0 0 40px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+.pitch-close-items li {
+  display: flex; align-items: flex-start; gap: 14px;
+  font-family: var(--font-ui);
+  font-size: 14px; color: var(--text-dim);
+}
+.pitch-close-items li::before {
+  content: '◆';
+  color: var(--gold); font-size: 8px; margin-top: 6px; flex-shrink: 0;
+}
+
+.pitch-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--gold);
+  border: none;
+  border-radius: 6px;
+  color: #0c0a07;
+  font-family: var(--font-ui);
+  font-size: 14px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 15px 32px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  margin-bottom: 16px;
+}
+.pitch-cta:hover { background: var(--gold2); transform: translateY(-1px); }
+
+.pitch-sig {
+  font-family: var(--font-body);
+  font-size: 14px; font-style: italic;
+  color: var(--muted);
+  margin-top: 24px;
+}
+
+/* ── AUDIOBOOK PLAYER ──────────────────────────────────── */
+.player {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(12,10,7,0.96);
+  border-top: 1px solid var(--border2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 10px 20px 12px;
+}
+
+.player-inner {
+  max-width: 760px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 7px;
+}
+
+.player-progress-bar {
+  width: 100%; height: 2px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px; overflow: hidden; cursor: pointer;
+}
+.player-progress-fill {
+  height: 100%; background: var(--gold);
+  border-radius: 2px;
+  transition: width 0.5s linear;
+  width: 0%;
+}
+
+.player-controls {
+  display: flex; align-items: center; gap: 14px;
+}
+
+.player-icon {
+  width: 16px; height: 16px;
+  color: var(--gold); flex-shrink: 0;
+}
+
+.player-info {
+  flex: 1; min-width: 0;
+}
+.player-chapter {
+  font-family: var(--font-ui);
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.7;
+}
+.player-title {
+  font-family: var(--font-head);
+  font-size: 13px; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.player-btn {
+  background: none; border: none;
+  color: var(--text-dim); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  padding: 4px; border-radius: 4px;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+.player-btn:hover { color: var(--text); }
+.player-btn svg { width: 20px; height: 20px; }
+.player-btn.play-btn svg { width: 28px; height: 28px; color: var(--gold); }
+
+.player-speed {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-dim);
+  font-family: var(--font-ui);
+  font-size: 11px; font-weight: 600;
+  padding: 4px 8px; cursor: pointer;
+  transition: all 0.15s;
+}
+.player-speed:hover { background: rgba(255,255,255,0.10); color: var(--text); }
+
+.player-status {
+  font-family: var(--font-ui);
+  font-size: 10px; color: var(--muted); text-align: center;
+  font-style: italic;
+}
+
+@media(max-width:560px) {
+  .pitch-inner, .book-body, .toc-section, .pitch-close { padding-left: 20px; padding-right: 20px; }
+  .chapter { padding: 52px 0 44px; }
+  .cover-title { font-size: 34px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     PITCH BANNER — visible to Greg
+══════════════════════════════════════════════════════ -->
+<div class="pitch-banner">
+  <div class="pitch-inner">
+    <div class="pitch-eyebrow">A message for Greg Lav</div>
+    <div class="pitch-letter">
+      <strong>Greg —</strong><br><br>
+      I was watching your video <em>"How I Built a $1B Brand in My 20s"</em> and realized something: you're not making YouTube videos. You're writing a book — one chapter at a time — without knowing it exists yet.<br><br>
+      What you see below is Chapter 1 of that book. I took your video, cleaned up the transcript, and formatted it as a premium e-book. You can read it or hit play and listen to it as an audiobook — right here, in the browser.<br><br>
+      Every video you upload is another chapter. Ten videos and you have a table of contents. Thirty videos and you have a book — a real one. One your son could pull off a shelf someday and read the wisdom his dad built in his 20s. One the world could learn from.<br><br>
+      <strong>I want to build this for you. Every week you film, I format and publish a new chapter. The book writes itself while you do what you do.</strong><br><br>
+      This page is one video. Imagine the collection.
+      <span class="from">— Brian Whitesel</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     BOOK COVER
+══════════════════════════════════════════════════════ -->
+<div class="book-cover">
+  <div class="cover-ornament">✦ ✦ ✦</div>
+  <div class="cover-author-pre">Greg Lav</div>
+  <h1 class="cover-title">Lessons From My 20s</h1>
+  <p class="cover-subtitle">The advice I would have given myself — and how it led to building a billion-dollar brand</p>
+  <div class="cover-divider"><span></span><em>◆</em><span></span></div>
+  <div class="cover-author">CEO &amp; Co-Founder, Bloom Nutrition</div>
+  <button class="cover-listen-btn" onclick="startAudiobook()">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"/>
+      <polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none"/>
+    </svg>
+    Listen to this book
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TABLE OF CONTENTS
+══════════════════════════════════════════════════════ -->
+<div class="toc-section">
+  <div class="toc-heading">Contents</div>
+  <ul class="toc-list">
+    <li class="toc-item">
+      <span class="toc-num">I</span>
+      <a href="#ch1" class="toc-title-link">Why This Changes Everything</a>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">II</span>
+      <a href="#ch2" class="toc-title-link">Level Up the Game You're Playing</a>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">III</span>
+      <a href="#ch3" class="toc-title-link">Focus Is King</a>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">IV</span>
+      <a href="#ch4" class="toc-title-link">Stay Ready So You Don't Need to Get Ready</a>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">V</span>
+      <a href="#ch5" class="toc-title-link">Discipline Creates Opportunity</a>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">VI</span>
+      <a href="#ch6" class="toc-title-link">Change Your Environment to Change Your Life</a>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">VII</span>
+      <a href="#ch7" class="toc-title-link">Build in Public to Open Doors</a>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">VIII</span>
+      <a href="#ch8" class="toc-title-link">Don't Reinvent the Wheel</a>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">IX</span>
+      <a href="#ch9" class="toc-title-link">Connect the Dots Over Time</a>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">X</span>
+      <a href="#ch10" class="toc-title-link">Go After Moonshots Only</a>
+    </li>
+    <li class="toc-item">
+      <span class="toc-num">✦</span>
+      <a href="#final" class="toc-title-link">Final Message: Level Up Every Six Months</a>
+    </li>
+  </ul>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     CHAPTERS
+══════════════════════════════════════════════════════ -->
+<div class="book-body">
+
+  <!-- CHAPTER I -->
+  <div class="chapter" id="ch1">
+    <div class="chapter-eyebrow">Chapter One</div>
+    <div class="chapter-numeral">I</div>
+    <h2 class="chapter-title">Why This Changes Everything</h2>
+    <div class="chapter-rule"><span></span><em>◆</em><span></span></div>
+
+    <p>When your attention isn't divided, your decisions get sharper. Your execution gets smoother. It gets faster.</p>
+
+    <p>My name is Greg Lav. I'm the co-founder and CEO of Bloom Nutrition. I've been building this company for about eight years now — in entrepreneurship for a decade. This year, Bloom will sell over a quarter billion cans with the Bloom trademark on them. I co-founded this company with my wife, starting out of our college dorm room.</p>
+
+    <p>I'm turning thirty-one. I have a son. I'm married. And I'm sitting in the backyard of our vacation home in Aspen, Colorado — though I live in Austin, Texas.</p>
+
+    <p>There are lessons I learned throughout my 20s that, had I known them earlier, I would be even further ahead today. If there's one thing I want to do with my time in my 30s, it's pass down the wisdom I've earned — through scars, a receding hairline, gray hairs, wrinkles, and sleepless nights.</p>
+
+    <div class="pull-quote">
+      <p>"If I can save you the tribulations and hand you the lessons ahead of time, I would love to see the next generation achieve what I've achieved — and achieve it faster."</p>
+    </div>
+
+    <p>That is how I will pass the torch to the next generation of entrepreneurs. Your 20s are a wild time. You might not know if you're headed in the right direction. You might be moving fast — but in the wrong direction entirely. Some of these lessons won't apply to you today. But I hope you remember them. One day, a scenario will present itself and you'll think: <em>Greg told me this might happen. Now I know how to react.</em></p>
+
+    <p>That could be tomorrow. It could be in a year. It could be three years from now. Either way, this is the advice I would give myself if I were in my 20s today.</p>
+  </div>
+
+  <!-- CHAPTER II -->
+  <div class="chapter" id="ch2">
+    <div class="chapter-eyebrow">Chapter Two</div>
+    <div class="chapter-numeral">II</div>
+    <h2 class="chapter-title">Level Up the Game You're Playing</h2>
+    <div class="chapter-rule"><span></span><em>◆</em><span></span></div>
+
+    <p>One of the biggest advantages I had in my 20s was recognizing when it was time to level up.</p>
+
+    <p>The simplest analogy: think about video games growing up — Grand Theft Auto, whatever it was. There were always kids who just loved continuing to play after they'd already beaten the game. That's not how you should play life. Once you beat a game, you move on to a more challenging, higher-risk, higher-reward game. You'll carry lessons from the previous game that you'll need for the harder one. They compound, one by one.</p>
+
+    <p>I've seen many entrepreneurs stick to the venture they started out of college or high school. They reach a place where they're making decent money, things are going fine, and they just stay there. There's nothing wrong with that. But if your goal is to find out what you're truly capable of — if you genuinely believe you want to make your life a moonshot and sit down at 75 and say, <em>I actually did it</em> — then you should look in the mirror every six months and not recognize the man staring back at you.</p>
+
+    <p>Here's exactly how it looked for us. Mari and I started a brand called Mari Fitness in college. She'd dropped out; I was finishing my degree — graduated with a 2.6. We weren't academics. We had no money. So we started a business that cost nothing: selling instant-download PDF fitness guides. We scaled that to a couple million dollars a year.</p>
+
+    <p>Our first physical product was the booty band. Everyone wanted a specific physique in 2018. We worked with manufacturers in Pakistan and sold nearly a million booty bands at $20 each. Then we took everything we learned from PDFs and physical products and launched Bloom — starting with a pre-workout for women.</p>
+
+    <p>There was a ceiling to the female pre-workout market. Once we found it, we moved to recovery powders, then greens powder. We bootstrapped greens to $180 million. When we'd learned everything that category had to teach us, we did the seemingly unthinkable: we launched an energy drink and went after Monster, Red Bull, and Celsius.</p>
+
+    <div class="pull-quote">
+      <p>"The energy drink business does more in a single day than the booty band business ever did in a week. Seventy-five times the size. You have to give up the good for the great."</p>
+    </div>
+
+    <p>Today we have energy drinks on Dr. Pepper trucks in 70,000 doors across the country. It would have been comfortable to stay selling booty bands. To stay selling greens. But here's the crucial point most people miss: when you move to the next, bigger game, you have to leave the easier game behind.</p>
+
+    <p>If you time it right — sensing when you're approaching the top of that bell curve — the previous business won't fall apart. Give it 5% of your time, keep it afloat, put it on autopilot, and pour 95% into the next thing. Once you have traction there, go all in at 100%.</p>
+
+    <p>It will feel weird. The people around you will tell you you're crazy. Tell them: <em>"I'm young, and I want more for myself, my family, my team, and my community."</em> Or don't say anything at all. Just go.</p>
+  </div>
+
+  <!-- CHAPTER III -->
+  <div class="chapter" id="ch3">
+    <div class="chapter-eyebrow">Chapter Three</div>
+    <div class="chapter-numeral">III</div>
+    <h2 class="chapter-title">Focus Is King</h2>
+    <div class="chapter-rule"><span></span><em>◆</em><span></span></div>
+
+    <p>Remove the noise.</p>
+
+    <p>Every person I have met in my life who has done exceptional things — and every period in my own journey when I was at peak performance, peak growth, peak income — it all happened during times of complete, undivided focus.</p>
+
+    <p>I am deeply anti-diversified portfolio. Our parents, the older generation, college professors — they all say to diversify to reduce risk. But nobody has ever built real wealth in a short window of time through diversification. I don't know anyone at 31 who has a high eight-figure home from a diversified stock portfolio. I've never seen it.</p>
+
+    <p>Every person I know who's done something remarkable in a short period of time put 100% of their mindshare into one thing. Everything I've thought about for the last seven years is Bloom. Not other businesses. Not stock plays. Not real estate. I let other people handle those things. I am fully, completely invested in this brand. And that's why we are climbing.</p>
+
+    <p>My best friend Leo — now the president of Bloom, and my son's middle name — was selling biotech deals to ultra-high-net-worth individuals on Wall Street. I once asked him: what do you notice about the people in their 40s who made it while they were young? He said: <em>"They're all in, all the time. None of them have diversified portfolios. They're savages. They do massive diligence on one deal, and they bet the house. And the reward is immense."</em></p>
+
+    <div class="pull-quote">
+      <p>"You are your most important asset. Your mindshare is your most important portfolio. Give 100% of it to the most valuable thing you are working on."</p>
+    </div>
+
+    <p>You can take that risk when you're young. In your 20s, who cares if you start over? I've started from zero multiple times. And if I hadn't gone all in as many times as I did, Bloom would never be what it is today.</p>
+
+    <p>When your attention isn't divided, your decisions get sharper. Your execution gets smoother and faster. Every partner I've worked with — Walmart, Dr. Pepper, my own team — they see it. You can't fake it. People want to partner with people who are 100% committed.</p>
+
+    <p>Keep blinders on for a decade straight, and you'll accomplish what takes most people their entire lives — if not more.</p>
+  </div>
+
+  <!-- CHAPTER IV -->
+  <div class="chapter" id="ch4">
+    <div class="chapter-eyebrow">Chapter Four</div>
+    <div class="chapter-numeral">IV</div>
+    <h2 class="chapter-title">Stay Ready So You Don't Need to Get Ready</h2>
+    <div class="chapter-rule"><span></span><em>◆</em><span></span></div>
+
+    <p>The greatest opportunities in my life were impossible to plan for.</p>
+
+    <p>So many people think you should plan two, four, five years out. But if you're trying to move at the speed of culture — if you're a real entrepreneur responding to macro movements — you cannot plan for these moments. You just need to stay ready every single day. You can't be out of shape physically or mentally. You can't be carrying emotional baggage that has you distracted. You can't miss days at the office. That's what staying ready means.</p>
+
+    <p>Let me give you four examples from our own story.</p>
+
+    <p class="sub-head">COVID.</p>
+    <p>It was 2020. Mari and I were in Brooklyn. Bloom had just launched in 2019. Nobody knew how to react. Every competitor we had was shut down — large corporate offices completely paralyzed. Bloom responded. We doubled down on protein (everyone was baking at home), doubled down on gut health through our greens powder, and pushed these products through e-commerce. We weren't chained to brick-and-mortar. We rode those trends to the moon before any competitor even had Zoom set up.</p>
+
+    <p class="sub-head">TikTok.</p>
+    <p>TikTok came out of nowhere. Kids were dancing on it. We took a bet: we already understood Instagram, YouTube, Snapchat — what's so different? So we jumped in early. Today, Bloom has one of the largest in-house influencer programs in the industry, with over 12 billion views across our channels. We were ready when the opportunity appeared.</p>
+
+    <p class="sub-head">GLP-1s.</p>
+    <p>Half the country is taking these medications, and their consumer behavior has completely changed. Our low-calorie, gut-health-forward products were exactly what GLP-1 users needed — more protein, better gut support, great-tasting options with fewer calories. We launched Clear Protein in response. Can a corporation pivot that fast to a pharmaceutical-driven cultural shift? No. That's your advantage as a young entrepreneur: speed, and readiness.</p>
+
+    <p class="sub-head">TikTok Shop.</p>
+    <p>This is a completely different opportunity from TikTok the platform — a new marketplace that launched roughly two years ago. Pepsi, Coke, Dr. Pepper — none of them are on it. We sell soda there. We moved 14,000 cases of our Shirley Temple energy drink before it even launched in retail. We flew to TikTok's LA headquarters and made things happen — because we were ready.</p>
+
+    <div class="pull-quote">
+      <p>"Instead of trying to map out the next three, five, or ten years of your life, stay ready for what those years will throw at you. Stay cognitively, physically, emotionally, and socially prepared."</p>
+    </div>
+  </div>
+
+  <!-- CHAPTER V -->
+  <div class="chapter" id="ch5">
+    <div class="chapter-eyebrow">Chapter Five</div>
+    <div class="chapter-numeral">V</div>
+    <h2 class="chapter-title">Discipline Creates Opportunity</h2>
+    <div class="chapter-rule"><span></span><em>◆</em><span></span></div>
+
+    <p>Discipline is the greatest form of self-respect.</p>
+
+    <p>Being a disciplined person — someone who shows up more consecutive days than anyone else — has increased my chances of luck. It's made me available for whatever the universe sends my way.</p>
+
+    <p>When people say, <em>"Oh, they just launched when Meta ads were cheap"</em> or <em>"They blew up because of TikTok"</em> or <em>"They got lucky with GLP-1s"</em> — what kind of victim mentality is that? Every year there are waves that people can say that about. The question is whether you're positioned to catch them. The only honest thing to say is: <em>"I wasn't ready. And that was on me."</em></p>
+
+    <p>You're not ready if you're not disciplined. Master it. It takes time — I wasn't as disciplined at 22, 25, or 27 as I am today. Six months ago, I was less disciplined than I am right now. It compounds the same way everything else does.</p>
+
+    <div class="pull-quote">
+      <p>"You're born with the hand you're dealt. But discipline? That's something you build. And it is the most powerful thing you can control."</p>
+    </div>
+  </div>
+
+  <!-- CHAPTER VI -->
+  <div class="chapter" id="ch6">
+    <div class="chapter-eyebrow">Chapter Six</div>
+    <div class="chapter-numeral">VI</div>
+    <h2 class="chapter-title">Change Your Environment to Change Your Life</h2>
+    <div class="chapter-rule"><span></span><em>◆</em><span></span></div>
+
+    <p>I cannot count how many important meetings I've created simply by being in the right city at the right time.</p>
+
+    <p>If you want to do business with Walmart and their buyers are walking a trade show in California — go to that trade show. If there's a marketing convention in New York City and you're looking for great marketers — book the flight. If you have no money, stay at a hostel. Be in the room. The room is everything.</p>
+
+    <p>Mari and I moved five times in five years. Philadelphia. New York. Los Angeles. Boulder. Now Austin, Texas. We moved because we were actively controlling our luck — making sure we were always in the environment that could give our business the most possible value. When we were building our influencer program, LA was the only answer. When we partnered with Dr. Pepper and launched our beverage business, we moved to Texas.</p>
+
+    <div class="pull-quote">
+      <p>"Move out of your hometown. It is the single easiest way to increase your luck."</p>
+    </div>
+
+    <p>Surround yourself with people who keep you sharp and out of trouble. Surround yourself with people who motivate you. Never be the smartest person in the room. Never be the shark in the pond — in your friend group, in your city, or in the media you consume. If you're swimming in a pond of mediocrity, that is the ceiling you're setting for yourself.</p>
+  </div>
+
+  <!-- CHAPTER VII -->
+  <div class="chapter" id="ch7">
+    <div class="chapter-eyebrow">Chapter Seven</div>
+    <div class="chapter-numeral">VII</div>
+    <h2 class="chapter-title">Build in Public to Open Doors</h2>
+    <div class="chapter-rule"><span></span><em>◆</em><span></span></div>
+
+    <p>One of the worst pieces of advice I hear told to young people is to move in silence.</p>
+
+    <p>Privacy has its place. There are things that are sacred to me that I don't share with the world. But your business? Build it loudly. If a tree falls in a forest and no one's around to hear it — who cares that it fell? If you're building something special and staying quiet about it, you will be endlessly frustrated by the lack of attention, opportunity, and momentum that comes your way.</p>
+
+    <p>We have always been loud on social media about our milestones — Amazon rankings, Target shelf wins, Walmart records, Instacart bestsellers. When you share this consistently and authentically, it attracts:</p>
+
+    <ul class="lesson-list">
+      <li>Talent looking for the next company worth betting their career on</li>
+      <li>Partners looking for momentum to attach themselves to</li>
+      <li>Retailers looking for the next brand their customers are asking for</li>
+      <li>Investors and strategic acquirers looking for what's moving</li>
+    </ul>
+
+    <div class="pull-quote">
+      <p>"Building in public opens doors. You get invited into rooms you would never have entered if people didn't know what you were building."</p>
+    </div>
+
+    <p>And here's the fear most people have: someone will steal my ideas. They won't. I'm an open book about everything I do. And honestly, if someone did take an idea — that's great. They won't execute it as well as you will. You've already used it. Let it go.</p>
+
+    <p>The simplest truth: building in public lets people be part of what you're doing. They root for you. They buy from you. They tell others. Entrepreneurship is already a lonely game. Why make it lonelier?</p>
+  </div>
+
+  <!-- CHAPTER VIII -->
+  <div class="chapter" id="ch8">
+    <div class="chapter-eyebrow">Chapter Eight</div>
+    <div class="chapter-numeral">VIII</div>
+    <h2 class="chapter-title">Don't Reinvent the Wheel</h2>
+    <div class="chapter-rule"><span></span><em>◆</em><span></span></div>
+
+    <p>A lot of people believe they need a completely original idea to build a business. The reality is I've never done that — not once.</p>
+
+    <p>We were not the first better-for-you soda. Not the first energy drink. Not the first booty band. Not the first greens powder. In fact, we were a little late to most of these categories. And that was exactly the point.</p>
+
+    <p>I love being late to the party.</p>
+
+    <p>When you enter an existing category, the market is already educated. People know what the product is. You don't need to spend money explaining it. All you need to do is take the wheel that already exists — and make yours ten times better. That's it.</p>
+
+    <div class="pull-quote">
+      <p>"I didn't want to change cultural habits with my product. I put soda in a soda can because that's what a soda can looks like. Don't reinvent the wheel. Just make the wheel better."</p>
+    </div>
+
+    <p>This philosophy is a big reason why we've been profitable every single day for ten years. We've never needed to explain what our product was — we just made it better, made it taste better, and made it matter to people who were being underserved by what already existed. That's a great way to build a business.</p>
+  </div>
+
+  <!-- CHAPTER IX -->
+  <div class="chapter" id="ch9">
+    <div class="chapter-eyebrow">Chapter Nine</div>
+    <div class="chapter-numeral">IX</div>
+    <h2 class="chapter-title">Connect the Dots Over Time</h2>
+    <div class="chapter-rule"><span></span><em>◆</em><span></span></div>
+
+    <p>You will learn things throughout your journey that you need to note. And you will find, again and again, that the lessons from every chapter of your story become essential in the next one.</p>
+
+    <p>Our top-selling pre-workout flavors from six or seven years ago — Crisp Apple and Glacier Crush — are now the top-selling energy drink flavors. The small negotiations I had when our business was tiny taught me how to show up to multimillion-dollar deals. Every small interaction built toward something I couldn't see at the time.</p>
+
+    <div class="pull-quote">
+      <p>"Life is learned in the arena. Every lesson compounds. Every experience compounds. Every handshake compounds."</p>
+    </div>
+
+    <p>As you level up to each new challenge, bring the lessons from the previous one with you. They are not separate chapters — they are one continuous story you are writing in real time. Sometimes an interaction will feel like it led nowhere. Six months later, a year later, it will come back. If something feels right, it was worth your time. Trust that.</p>
+  </div>
+
+  <!-- CHAPTER X -->
+  <div class="chapter" id="ch10">
+    <div class="chapter-eyebrow">Chapter Ten</div>
+    <div class="chapter-numeral">X</div>
+    <h2 class="chapter-title">Go After Moonshots Only</h2>
+    <div class="chapter-rule"><span></span><em>◆</em><span></span></div>
+
+    <p>If there is one lesson to carry from everything I've shared, it is this: moonshots only.</p>
+
+    <p>Here is what I can teach you so you don't have to learn it the hard way — a small venture takes the same amount of time and the same amount of resources as a large one.</p>
+
+    <p>I know people running $100,000-a-year businesses. I know people running million-dollar businesses. And I know people running billion-dollar businesses. We are all roughly the same amount of stressed. We all have the same gray hairs, the same sleepless nights, the same weight to carry. The scale is different. The effort is nearly identical.</p>
+
+    <p>At Bloom today, we don't pursue any opportunity that isn't potentially worth $100 million — because we've learned firsthand that going after a $10 million opportunity takes nearly the same effort. That's a strange thing to sit with, but it's true.</p>
+
+    <div class="pull-quote">
+      <p>"The moonshot takes the same resources as the small shot. So you might as well take the moonshot."</p>
+    </div>
+
+    <p>Apply that to whatever your journey looks like. But hear this: the chances of success are not that different. The stress is not that different. The risk is not that different. Go after the moonshot. You will never regret it.</p>
+  </div>
+
+  <!-- FINAL -->
+  <div class="chapter" id="final">
+    <div class="chapter-eyebrow">Final Message</div>
+    <div class="chapter-numeral">✦</div>
+    <h2 class="chapter-title">Level Up Every Six Months</h2>
+    <div class="chapter-rule"><span></span><em>◆</em><span></span></div>
+
+    <p>If you're serious about leveling up your 20s, here's what it actually takes.</p>
+
+    <p>Look in the mirror every six months and not recognize the man looking back. Find yourself leveling up at a pace that surprises even you. And the moment you sense even the approach of a plateau — that is the signal. Time to find a larger challenge. A larger market. A larger goal to point yourself toward.</p>
+
+    <p>It means putting yourself in rooms you aren't ready for. Taking on challenges you aren't equipped for yet. It may mean going against the advice of the people closest to you — your friends, your family, your community.</p>
+
+    <p>I am deeply passionate about what entrepreneurship has done for my family, my team, and the community we've built — in ways I never could have imagined, in ways society never told me someone like me was capable of doing. And I want that for every single person who has watched this, or read these words.</p>
+
+    <div class="pull-quote">
+      <p>"Your life starts changing the second you start taking action. Stop planning. You know what to do."</p>
+    </div>
+
+    <p>My name is Greg Lav. I'm the CEO and co-founder of Bloom Nutrition. These are the lessons from my 20s. I hope they find you when you need them most.</p>
+  </div>
+
+</div><!-- /book-body -->
+
+<!-- ══════════════════════════════════════════════════════
+     PITCH CLOSE
+══════════════════════════════════════════════════════ -->
+<div class="pitch-close">
+  <div class="pitch-close-inner">
+    <div class="pitch-close-eyebrow">The Pitch</div>
+    <h2 class="pitch-close-headline">This is one video.<br><em>Imagine the complete collection.</em></h2>
+    <p class="pitch-close-body">
+      Every video you upload is a chapter. Every lesson you share becomes a paragraph your son can read someday — and that a million young entrepreneurs could learn from the year it was written.<br><br>
+      <strong>Here's what I can build for you:</strong>
+    </p>
+    <ul class="pitch-close-items">
+      <li>A beautifully formatted e-book that grows as you publish — one video at a time</li>
+      <li>An audiobook version built directly into the page — no app required, just a link</li>
+      <li>A shareable URL you can drop anywhere: Instagram, YouTube description, email</li>
+      <li>A lasting artifact of the wisdom you're building right now — for your son, and for the world</li>
+      <li>Zero extra work from you — you film, I format and publish the next chapter</li>
+    </ul>
+    <p class="pitch-close-body">
+      The book writes itself while you do what you do. It just needs someone to format the pages.
+    </p>
+    <a class="pitch-cta" href="https://www.instagram.com/brianwhitesel/" target="_blank">
+      Let's build this — DM me on Instagram
+    </a>
+    <p class="pitch-sig">— Brian Whitesel &nbsp;·&nbsp; brianwhitesel.com</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     AUDIOBOOK PLAYER
+══════════════════════════════════════════════════════ -->
+<div class="player" id="player">
+  <div class="player-inner">
+    <div class="player-progress-bar" id="progressBar" onclick="scrubProgress(event)">
+      <div class="player-progress-fill" id="progressFill"></div>
+    </div>
+    <div class="player-controls">
+      <!-- Book icon -->
+      <svg class="player-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.966 8.966 0 00-6 2.292m0-14.25v14.25"/>
+      </svg>
+      <div class="player-info">
+        <div class="player-chapter" id="playerChapterLabel">Audiobook</div>
+        <div class="player-title" id="playerTitle">Lessons From My 20s — Greg Lav</div>
+      </div>
+      <!-- Prev -->
+      <button class="player-btn" onclick="prevChapter()" title="Previous chapter">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <polygon points="19,20 9,12 19,4"/><line x1="5" y1="4" x2="5" y2="20"/>
+        </svg>
+      </button>
+      <!-- Play/Pause -->
+      <button class="player-btn play-btn" id="playBtn" onclick="togglePlay()">
+        <svg id="iconPlay" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none"/>
+        </svg>
+        <svg id="iconPause" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" style="display:none">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="10" y1="8" x2="10" y2="16" stroke-width="2.2"/><line x1="14" y1="8" x2="14" y2="16" stroke-width="2.2"/>
+        </svg>
+      </button>
+      <!-- Next -->
+      <button class="player-btn" onclick="nextChapter()" title="Next chapter">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <polygon points="5,4 15,12 5,20"/><line x1="19" y1="4" x2="19" y2="20"/>
+        </svg>
+      </button>
+      <!-- Speed -->
+      <button class="player-speed" id="speedBtn" onclick="cycleSpeed()">1×</button>
+    </div>
+    <div class="player-status" id="playerStatus">Press play to listen · Web Speech powered</div>
+  </div>
+</div>
+
+<script>
+// ── Chapter data ─────────────────────────────────────────
+
+var CHAPTERS = [
+  {
+    id: 'ch1',
+    num: 'Chapter I',
+    title: 'Why This Changes Everything',
+    text: "When your attention isn't divided, your decisions get sharper. Your execution gets smoother. It gets faster. My name is Greg Lav. I am the co-founder and CEO of Bloom Nutrition. This year, Bloom will sell over a quarter billion cans with the Bloom trademark on them. I co-founded this company with my wife, starting from our college dorm room. I'm turning thirty-one. I have a son. I'm married. And I'm sitting in the backyard of our vacation home in Aspen, Colorado. There are lessons I learned throughout my twenties that, had I known them earlier, I would be even further ahead today. If there's one thing I want to do with my time in my thirties, it's pass down the wisdom I've earned — through scars, gray hairs, wrinkles, and sleepless nights. If I can save you the tribulations and hand you the lessons ahead of time, I would love to see the next generation achieve what I've achieved — and achieve it faster. Your twenties are a wild time. You might not know if you're headed in the right direction. But remember these lessons. One day, a scenario will present itself, and you'll think: Greg told me this might happen. Now I know how to react."
+  },
+  {
+    id: 'ch2',
+    num: 'Chapter II',
+    title: 'Level Up the Game You\'re Playing',
+    text: "One of the biggest advantages I had in my twenties was recognizing when it was time to level up. The simplest analogy: think about video games. Once you beat a game, you move on to a more challenging, higher-risk, higher-reward game. That's how you should play life. I've seen many entrepreneurs stick to the venture they started out of college. They reach a place where they're making decent money, things are going fine, and they just stay there. But if your goal is to find out what you're truly capable of — if you want to make your life a moonshot and sit down at seventy-five and say: I actually did it — then you should look in the mirror every six months and not recognize the man staring back at you. Here's how it looked for us. Mari and I started selling instant-download PDF fitness guides, scaled that to a couple million a year, then launched booty bands, then a pre-workout, then greens powder, which we bootstrapped to one-hundred-eighty million dollars. Then we launched an energy drink and went after Monster, Red Bull, and Celsius. Today we have drinks in seventy-thousand doors across the country. The energy drink business does more in a single day than the booty band business ever did in a week. Seventy-five times the size. You have to give up the good for the great."
+  },
+  {
+    id: 'ch3',
+    num: 'Chapter III',
+    title: 'Focus Is King',
+    text: "Remove the noise. Every person I've met who has done exceptional things, and every period in my own journey when I was at peak performance, it all happened during times of complete, undivided focus. I am deeply anti-diversified portfolio. Our parents, college professors, Warren Buffett — they all say to diversify to reduce risk. But nobody has ever built real wealth quickly through diversification. I don't know anyone at thirty-one who has a high eight-figure home from a diversified stock portfolio. Every person I know who's done something remarkable in a short time put one hundred percent of their mindshare into one thing. Everything I've thought about for the last seven years is Bloom. Not other businesses. Not stock plays. Not real estate. I'm fully invested in this brand. My best friend Leo, now the president of Bloom, was selling biotech deals on Wall Street. I once asked him what the ultra-high-net-worth people who made it young all had in common. He said: They're all in, all the time. None of them have diversified portfolios. They do massive diligence on one deal, and they bet the house. You are your most important asset. Your mindshare is your most important portfolio. Give one hundred percent of it to the most valuable thing you are working on. Keep blinders on for a decade straight, and you'll accomplish what takes most people their entire lives."
+  },
+  {
+    id: 'ch4',
+    num: 'Chapter IV',
+    title: 'Stay Ready So You Don\'t Need to Get Ready',
+    text: "The greatest opportunities in my life were impossible to plan for. If you're trying to move at the speed of culture, you cannot plan for these moments. You just need to stay ready every single day. You can't be out of shape physically or mentally. You can't be distracted by emotional baggage. That's what staying ready means. Let me give you four examples. First, COVID. It was twenty-twenty. Bloom had just launched. Every competitor was shut down. We doubled down on protein and gut health through e-commerce and rode those trends to the moon before any competitor even had Zoom set up. Second, TikTok. It came out of nowhere. We jumped in early. Today, Bloom has over twelve billion views across our influencer program. We were ready. Third, GLP-ones. Half the country is taking these medications. Our low-calorie, gut-health-forward products were exactly what those users needed. We launched Clear Protein in response and it's demolishing Target shelves right now. Fourth, TikTok Shop. A brand new marketplace that launched about two years ago. The major beverage brands aren't even on it yet. We flew to TikTok's headquarters, made deals, and moved fourteen-thousand cases of our Shirley Temple energy drink before it even launched in retail. Instead of mapping out the next three, five, or ten years, I have found it far more valuable to stay ready for what those years will throw at me."
+  },
+  {
+    id: 'ch5',
+    num: 'Chapter V',
+    title: 'Discipline Creates Opportunity',
+    text: "Discipline is the greatest form of self-respect. Being a disciplined person — someone who shows up more consecutive days than anyone else — has increased my chances of luck. It's made me available for whatever the universe sends my way. When people say, oh they just launched when Meta ads were cheap, or they got lucky with TikTok, or they rode the GLP-one wave — what kind of victim mentality is that? Every year there are waves. The question is whether you're positioned to catch them. The only honest thing to say is: I wasn't ready. And that was on me. You're not ready if you're not disciplined. Master it. It takes time. Six months ago, I was less disciplined than I am today. It compounds, just like everything else. You're born with the hand you're dealt. But discipline? That's something you build. And it is the most powerful thing you can control."
+  },
+  {
+    id: 'ch6',
+    num: 'Chapter VI',
+    title: 'Change Your Environment to Change Your Life',
+    text: "I cannot count how many important meetings I've created simply by being in the right city at the right time. If you want to do business with Walmart and their buyers are at a trade show in California, go to that trade show. If there's a marketing convention in New York City, book the flight. If you have no money, stay at a hostel. Be in the room. Mari and I moved five times in five years. Philadelphia. New York. Los Angeles. Boulder. Now Austin, Texas. We moved because we were actively controlling our luck. When we were building our influencer program, Los Angeles was the answer. When we partnered with Dr. Pepper in Texas, we moved to Texas. Move out of your hometown. It is the single easiest way to increase your luck. Surround yourself with people who keep you sharp. Never be the smartest person in the room. Never be the shark in the pond in your friend group, your city, or the media you consume. If you're swimming in mediocrity, that is the ceiling you're setting for yourself."
+  },
+  {
+    id: 'ch7',
+    num: 'Chapter VII',
+    title: 'Build in Public to Open Doors',
+    text: "One of the worst pieces of advice I hear told to young people is to move in silence. Privacy has its place. But your business? Build it loudly. If you're building something special and staying quiet about it, you will be endlessly frustrated by the lack of momentum that comes your way. We have always been loud on social media about our milestones. When you share your wins consistently and authentically, it attracts talent looking for their next company, partners looking for momentum to attach to, retailers looking for the next brand, and investors looking for what's moving. Building in public opens doors. You get invited into rooms you would never have entered if people didn't know what you were building. And here's the fear most people have: someone will steal my ideas. They won't. I'm an open book. And if someone did take an idea, that's great. They won't execute it as well as you will. The simplest truth: building in public lets people be part of what you're doing. They root for you. They buy from you. Entrepreneurship is already a lonely game. Why make it lonelier?"
+  },
+  {
+    id: 'ch8',
+    num: 'Chapter VIII',
+    title: "Don't Reinvent the Wheel",
+    text: "A lot of people believe they need a completely original idea to build a business. The reality is I've never done that. We were not the first better-for-you soda. Not the first energy drink. Not the first booty band. Not the first greens powder. In fact, we were a little late to most of these categories. And that was exactly the point. I love being late to the party. When you enter an existing category, the market is already educated. You don't need to spend money explaining what the product is. All you need to do is take the wheel that already exists and make yours ten times better. I put soda in a soda can because that's what people expect a soda to come in. I didn't want to change cultural habits. Don't reinvent the wheel. Just make the wheel better. This is a big reason why we've been profitable every single day for ten years. We never needed to educate the market. We just made better products for people who were underserved."
+  },
+  {
+    id: 'ch9',
+    num: 'Chapter IX',
+    title: 'Connect the Dots Over Time',
+    text: "You will learn things throughout your journey that you need to note. And you will find, again and again, that the lessons from every chapter of your story become essential in the next one. Our top-selling pre-workout flavors from six or seven years ago — Crisp Apple and Glacier Crush — are now the top-selling energy drink flavors. The small negotiations I had when our business was tiny taught me how to show up to multi-million dollar deals. Every small interaction built toward something I couldn't see at the time. Life is learned in the arena. As you level up to each new challenge, bring the lessons from the previous one with you. Every lesson compounds. Every experience compounds. Every handshake compounds. Sometimes an interaction will feel like it led nowhere. Six months later, a year later, it will come back. If something feels right, it was worth your time. Trust that."
+  },
+  {
+    id: 'ch10',
+    num: 'Chapter X',
+    title: 'Go After Moonshots Only',
+    text: "If there is one lesson to carry from everything I've shared, it is this: moonshots only. A small venture takes the same amount of time and the same amount of resources as a large one. I know people running one-hundred-thousand dollar businesses. I know people running billion dollar businesses. We are all roughly the same amount of stressed. We all have the same gray hairs, the same sleepless nights, the same weight to carry. The scale is different. The effort is nearly identical. At Bloom, we don't pursue any opportunity that isn't potentially worth one-hundred million dollars, because we've learned that going after a ten-million-dollar opportunity takes nearly the same effort. The moonshot takes the same resources as the small shot. So you might as well take the moonshot. Go after the big thing. You will never regret it."
+  },
+  {
+    id: 'final',
+    num: 'Final Message',
+    title: 'Level Up Every Six Months',
+    text: "If you're serious about leveling up your twenties, here's what it actually takes. Look in the mirror every six months and not recognize the man looking back. Find yourself leveling up at a pace that surprises even you. The moment you sense the approach of a plateau — that is the signal. Time to find a larger challenge. A larger market. A larger goal to point yourself toward. It means putting yourself in rooms you aren't ready for. Taking on challenges you aren't equipped for yet. It may mean going against the advice of the people closest to you. I am deeply passionate about what entrepreneurship has done for my family, my team, and the community we've built — in ways I never could have imagined, in ways society never told me someone like me was capable of doing. And I want that for every person who has read these words. Your life starts changing the second you start taking action. Stop planning. You know what to do."
+  }
+];
+
+// ── Player state ─────────────────────────────────────────
+
+var currentChapter = 0;
+var isPlaying = false;
+var speedValues = [0.8, 1.0, 1.25, 1.5, 2.0];
+var speedLabels = ['0.8×', '1×', '1.25×', '1.5×', '2×'];
+var speedIndex = 1;
+var utterance = null;
+var synth = window.speechSynthesis;
+
+// ── Player UI helpers ─────────────────────────────────────
+
+function updatePlayerUI() {
+  var ch = CHAPTERS[currentChapter];
+  document.getElementById('playerChapterLabel').textContent = ch.num;
+  document.getElementById('playerTitle').textContent = ch.title;
+}
+
+function setPlayingState(playing) {
+  isPlaying = playing;
+  document.getElementById('iconPlay').style.display  = playing ? 'none' : '';
+  document.getElementById('iconPause').style.display = playing ? '' : 'none';
+}
+
+function setStatus(txt) {
+  document.getElementById('playerStatus').textContent = txt;
+}
+
+// ── Speak ─────────────────────────────────────────────────
+
+function speakChapter(idx) {
+  synth.cancel();
+  currentChapter = idx;
+  updatePlayerUI();
+  document.getElementById('progressFill').style.width = '0%';
+
+  var ch = CHAPTERS[idx];
+  utterance = new SpeechSynthesisUtterance(ch.num + '. ' + ch.title + '. ' + ch.text);
+  utterance.rate  = speedValues[speedIndex];
+  utterance.pitch = 1.0;
+  utterance.lang  = 'en-US';
+
+  // Pick a good voice if available
+  var voices = synth.getVoices();
+  var preferred = voices.find(function(v){ return v.name.indexOf('Google US English') >= 0; }) ||
+                  voices.find(function(v){ return v.lang === 'en-US' && v.localService; }) ||
+                  voices.find(function(v){ return v.lang === 'en-US'; });
+  if (preferred) utterance.voice = preferred;
+
+  utterance.onstart = function() {
+    setPlayingState(true);
+    setStatus('Now reading: ' + ch.title);
+    // Scroll to chapter
+    var el = document.getElementById(ch.id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    animateProgress(utterance);
+  };
+
+  utterance.onend = function() {
+    if (currentChapter < CHAPTERS.length - 1) {
+      setTimeout(function(){ speakChapter(currentChapter + 1); }, 800);
+    } else {
+      setPlayingState(false);
+      setStatus('End of book');
+      document.getElementById('progressFill').style.width = '100%';
+    }
+  };
+
+  utterance.onerror = function(e) {
+    if (e.error !== 'interrupted') {
+      setPlayingState(false);
+      setStatus('Speech unavailable in this browser');
+    }
+  };
+
+  synth.speak(utterance);
+  setPlayingState(true);
+}
+
+// Rough progress animation (SpeechSynthesis doesn't expose real progress)
+var progressTimer = null;
+function animateProgress(utt) {
+  clearInterval(progressTimer);
+  var estDuration = (utt.text.length / 14) * (1 / speedValues[speedIndex]) * 1000;
+  var started = Date.now();
+  progressTimer = setInterval(function() {
+    if (!isPlaying) { clearInterval(progressTimer); return; }
+    var pct = Math.min(((Date.now() - started) / estDuration) * 100, 97);
+    document.getElementById('progressFill').style.width = pct + '%';
+  }, 300);
+}
+
+// ── Controls ──────────────────────────────────────────────
+
+function togglePlay() {
+  if (!isPlaying) {
+    if (synth.paused) {
+      synth.resume();
+      setPlayingState(true);
+      setStatus('Resuming...');
+    } else {
+      speakChapter(currentChapter);
+    }
+  } else {
+    synth.pause();
+    setPlayingState(false);
+    setStatus('Paused');
+    clearInterval(progressTimer);
+  }
+}
+
+function nextChapter() {
+  if (currentChapter < CHAPTERS.length - 1) {
+    speakChapter(currentChapter + 1);
+  }
+}
+
+function prevChapter() {
+  if (currentChapter > 0) {
+    speakChapter(currentChapter - 1);
+  } else {
+    speakChapter(0);
+  }
+}
+
+function cycleSpeed() {
+  speedIndex = (speedIndex + 1) % speedValues.length;
+  document.getElementById('speedBtn').textContent = speedLabels[speedIndex];
+  if (utterance) utterance.rate = speedValues[speedIndex];
+  // Restart current chapter at new speed if playing
+  if (isPlaying) {
+    speakChapter(currentChapter);
+  }
+}
+
+function scrubProgress(e) {
+  var bar = document.getElementById('progressBar');
+  var pct = e.offsetX / bar.offsetWidth;
+  var chIdx = Math.floor(pct * CHAPTERS.length);
+  speakChapter(Math.min(chIdx, CHAPTERS.length - 1));
+}
+
+function startAudiobook() {
+  speakChapter(0);
+  document.getElementById('player').scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+// Wait for voices to load
+if (synth.onvoiceschanged !== undefined) {
+  synth.onvoiceschanged = function(){};
+}
+
+// Init UI
+updatePlayerUI();
+</script>
+</body>
+</html>
