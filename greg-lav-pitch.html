@@ -558,6 +558,103 @@ body {
   position: absolute; inset: 0;
   width: 100%; height: 100%; border: none;
 }
+
+/* ── SECTION NAV ─────────────────────────────────────────── */
+#sec-nav {
+  position: fixed;
+  bottom: 96px; right: 16px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.sec-nav-menu {
+  display: none;
+  flex-direction: column;
+  background: rgba(10,8,5,0.97);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 12px;
+  min-width: 150px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.sec-nav-menu.open { display: flex; }
+
+.sec-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(232,223,200,0.45);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+.sec-nav-item:last-child { border-bottom: none; }
+.sec-nav-item:hover { background: rgba(201,168,76,0.07); color: var(--text); }
+.sec-nav-item.active { color: var(--gold); }
+
+.sec-nav-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex-shrink: 0;
+  transition: background 0.12s;
+}
+.sec-nav-item.active .sec-nav-dot { background: var(--gold); }
+
+.sec-nav-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(10,8,5,0.94);
+  border: 1px solid rgba(201,168,76,0.35);
+  border-radius: 20px;
+  padding: 8px 14px 8px 12px;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  transition: border-color 0.15s;
+  user-select: none;
+}
+.sec-nav-pill:hover { border-color: var(--gold); }
+.sec-nav-pill:active { transform: scale(0.97); }
+
+.sec-nav-pill-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex-shrink: 0;
+}
+.sec-nav-pill-icon span {
+  display: block;
+  width: 12px; height: 1.5px;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: opacity 0.15s;
+}
+
+.sec-nav-pill-label {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 </style>
 </head>
 <body>
@@ -585,7 +682,7 @@ body {
 <!-- ══════════════════════════════════════════════════════
      BOOK COVER
 ══════════════════════════════════════════════════════ -->
-<div class="book-cover">
+<div class="book-cover" id="sec-cover">
   <div class="cover-ornament">✦ ✦ ✦</div>
   <div class="cover-author-pre">Greg Lav</div>
   <h1 class="cover-title">Lessons From My 20s</h1>
@@ -604,7 +701,7 @@ body {
 <!-- ══════════════════════════════════════════════════════
      TABLE OF CONTENTS
 ══════════════════════════════════════════════════════ -->
-<div class="toc-section">
+<div class="toc-section" id="sec-toc">
   <div class="toc-heading">Contents</div>
   <ul class="toc-list">
     <li class="toc-item">
@@ -657,7 +754,7 @@ body {
 <!-- ══════════════════════════════════════════════════════
      THE SOURCE VIDEO
 ══════════════════════════════════════════════════════ -->
-<div class="video-section">
+<div class="video-section" id="sec-video">
   <div class="video-eyebrow">The Source</div>
   <div class="video-heading">The Video That Became This Book</div>
   <p class="video-sub">Every word below came from here. This is Chapter One — in its raw form.</p>
@@ -672,7 +769,7 @@ body {
 <!-- ══════════════════════════════════════════════════════
      CHAPTERS
 ══════════════════════════════════════════════════════ -->
-<div class="book-body">
+<div class="book-body" id="sec-read">
 
   <!-- CHAPTER I -->
   <div class="chapter" id="ch1">
@@ -944,7 +1041,7 @@ body {
 <!-- ══════════════════════════════════════════════════════
      PITCH CLOSE
 ══════════════════════════════════════════════════════ -->
-<div class="pitch-close">
+<div class="pitch-close" id="sec-pitch">
   <div class="pitch-close-inner">
     <div class="pitch-close-eyebrow">The Pitch</div>
     <h2 class="pitch-close-headline">This is one video.<br><em>Imagine the complete collection.</em></h2>
@@ -1131,6 +1228,98 @@ function startAudiobook(){
   audio.play().catch(function(){ setStatus('Tap play to listen'); });
   document.getElementById('player').scrollIntoView({ behavior:'smooth', block:'end' });
 }
+</script>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION NAV
+══════════════════════════════════════════════════════ -->
+<div id="sec-nav">
+  <div class="sec-nav-menu" id="secNavMenu">
+    <div class="sec-nav-item" data-target="sec-cover">
+      <span class="sec-nav-dot"></span>Cover
+    </div>
+    <div class="sec-nav-item" data-target="sec-toc">
+      <span class="sec-nav-dot"></span>Chapters
+    </div>
+    <div class="sec-nav-item" data-target="sec-video">
+      <span class="sec-nav-dot"></span>The Video
+    </div>
+    <div class="sec-nav-item" data-target="sec-read">
+      <span class="sec-nav-dot"></span>Read
+    </div>
+    <div class="sec-nav-item" data-target="sec-pitch">
+      <span class="sec-nav-dot"></span>The Pitch
+    </div>
+  </div>
+  <div class="sec-nav-pill" id="secNavPill">
+    <div class="sec-nav-pill-icon">
+      <span></span><span></span><span></span>
+    </div>
+    <span class="sec-nav-pill-label" id="secNavLabel">Cover</span>
+  </div>
+</div>
+
+<script>
+// ── Section Nav ───────────────────────────────────────────
+(function(){
+  var SECTIONS = [
+    { id: 'sec-cover', label: 'Cover'     },
+    { id: 'sec-toc',   label: 'Chapters'  },
+    { id: 'sec-video', label: 'The Video' },
+    { id: 'sec-read',  label: 'Read'      },
+    { id: 'sec-pitch', label: 'The Pitch' },
+  ];
+
+  var pill    = document.getElementById('secNavPill');
+  var menu    = document.getElementById('secNavMenu');
+  var label   = document.getElementById('secNavLabel');
+  var items   = menu.querySelectorAll('.sec-nav-item');
+  var current = -1;
+
+  function setActive(idx) {
+    if (idx === current) return;
+    current = idx;
+    label.textContent = SECTIONS[idx].label;
+    items.forEach(function(item, i) {
+      item.classList.toggle('active', i === idx);
+    });
+  }
+
+  function onScroll() {
+    var trigger = window.scrollY + window.innerHeight * 0.4;
+    for (var i = SECTIONS.length - 1; i >= 0; i--) {
+      var el = document.getElementById(SECTIONS[i].id);
+      if (el && el.getBoundingClientRect().top + window.scrollY <= trigger) {
+        setActive(i);
+        return;
+      }
+    }
+    setActive(0);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Toggle menu open/close
+  pill.addEventListener('click', function(e) {
+    e.stopPropagation();
+    menu.classList.toggle('open');
+  });
+
+  // Jump to section
+  items.forEach(function(item) {
+    item.addEventListener('click', function() {
+      var target = document.getElementById(item.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      menu.classList.remove('open');
+    });
+  });
+
+  // Close on outside tap
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#sec-nav')) menu.classList.remove('open');
+  });
+})();
 </script>
 </body>
 </html>
