@@ -1,11 +1,13 @@
 {
-  "updated": "2026-04-29T21:00:00",
-  "updatedLabel": "April 29, 2026",
+  "updated": "2026-04-30T21:00:00",
+  "updatedLabel": "April 30, 2026",
   "sections": {
     "recent": [
+      { "href": "spookyluke/index.html", "icon": "🎮", "title": "SpookyLuke Application", "desc": "Brian's editor application page for SpookyLuke", "tag": "friend", "added": "2026-04-30" },
+      { "href": "clip-organizer/index.html", "icon": "🎬", "title": "Clip Organizer — Rocket League", "desc": "Personal Rocket League clip organizer tool", "tag": "tool", "added": "2026-04-30" },
+      { "href": "greg-lav-pitch/index.html", "icon": "📖", "title": "Greg Lav — Lessons From My 20s", "desc": "Updated pitch page with section nav + mobile fixes", "tag": "friend", "added": "2026-04-30" },
       { "href": "serge-gatari-bw26/index.html", "icon": "🤖", "title": "Serge Gatari — AI Business", "desc": "One-person AI company framework mapped to Brian's build", "tag": "knowledge", "added": "2026-04-28" },
       { "href": "ws-sync-bw26/index.html", "icon": "🔄", "title": "Workspace Sync System", "desc": "How memory, files, chats, and automation all stay in sync", "tag": "knowledge", "added": "2026-04-28" },
-      { "href": "mmoc3-vip-bw26/index.html", "icon": "🎓", "title": "MMOC3 VIP Sessions", "desc": "Iman Gadzhi Make Money Online Challenge 3.0 — Days 1-2", "tag": "knowledge", "added": "2026-04-28" },
       { "href": "bryce/index.html", "icon": "⚖️", "title": "Bryce — IP Consultation", "desc": "May 7, 1pm — IP protection prep and discussion questions", "tag": "personal", "added": "2026-04-28" }
     ],
     "knowledge": [
@@ -36,7 +38,8 @@
       { "href": "luke/index.html", "name": "Luke", "role": "Photography tools", "tag": "friend" },
       { "href": "jd/index.html", "name": "JD", "role": "Personal demo", "tag": "friend" },
       { "href": "abby/index.html", "name": "Abby", "role": "Personal page", "tag": "friend" },
-      { "href": "greg-lav-pitch.html", "name": "Greg Lav", "role": "Lessons From My 20s — pitch page", "tag": "friend" }
+      { "href": "greg-lav-pitch/index.html", "name": "Greg Lav", "role": "Lessons From My 20s — pitch page", "tag": "friend" },
+      { "href": "spookyluke/index.html", "name": "SpookyLuke", "role": "Editor application page", "tag": "friend" }
     ],
     "tools": [
       { "href": "Photography - Client Booking & Invoice.html", "icon": "📷", "title": "Photography — Booking & Invoice", "desc": "Track client sessions, packages, and payments." },
@@ -44,7 +47,8 @@
       { "href": "Social Media - Content Planner.html", "icon": "📱", "title": "Social Media — Content Planner", "desc": "Plan, schedule, and track posts across platforms." },
       { "href": "disc-golf-scorecard.html", "icon": "🥏", "title": "Disc Golf — Scorecard", "desc": "Brian's personal disc golf scorecard." },
       { "href": "disc-golf-ptp.html", "icon": "🥏", "title": "Disc Golf — Pass the Phone", "desc": "Group scorecard mode — pass-the-phone scoring." },
-      { "href": "disc-golf-social.html", "icon": "🥏", "title": "Disc Golf — Brian, Reese, Jacob", "desc": "Social round tracker for the regular crew." }
+      { "href": "disc-golf-social.html", "icon": "🥏", "title": "Disc Golf — Brian, Reese, Jacob", "desc": "Social round tracker for the regular crew." },
+      { "href": "clip-organizer/index.html", "icon": "🎮", "title": "Clip Organizer — Rocket League", "desc": "Personal RL clip tagger and organizer." }
     ]
   }
 }
