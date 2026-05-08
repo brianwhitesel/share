@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How It's Filmed — The Plan</title>
+  <style>
+    :root {
+      --black: #0e0e0e;
+      --charcoal: #1a1a1a;
+      --dark: #222;
+      --mid: #555;
+      --light: #888;
+      --border: #e0e0e0;
+      --bg: #f7f7f5;
+      --white: #ffffff;
+      --amber: #e8960f;
+      --amber-light: #fdf3e0;
+      --amber-border: #f5d08a;
+      --green: #1e9e6b;
+      --green-bg: #edfaf4;
+      --red: #d94f4f;
+      --red-bg: #fdf0f0;
+      --blue: #2d6bc4;
+      --blue-bg: #eef3fb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--black);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    /* HEADER */
+    .hero {
+      background: var(--charcoal);
+      color: var(--white);
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+
+    .hero-label {
+      display: inline-block;
+      background: var(--amber);
+      color: var(--black);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 7vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 span {
+      color: var(--amber);
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      color: #aaa;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .hero-meta {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta span {
+      font-size: 13px;
+      color: #888;
+    }
+
+    .hero-meta strong {
+      color: #ccc;
+    }
+
+    /* INTRO NOTE */
+    .intro-note {
+      background: var(--white);
+      border-left: 4px solid var(--amber);
+      padding: 20px 24px;
+      margin: 24px 16px;
+      border-radius: 0 8px 8px 0;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--dark);
+      font-style: italic;
+    }
+
+    /* MAIN CONTENT */
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 16px 60px;
+    }
+
+    /* SECTION */
+    .section {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 28px 24px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+
+    .section h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--black);
+      letter-spacing: -0.01em;
+    }
+
+    .section p {
+      font-size: 15px;
+      color: var(--mid);
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+
+    .section p:last-child { margin-bottom: 0; }
+
+    /* STAT ROW */
+    .stat-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+
+    .stat-card {
+      flex: 1;
+      min-width: 100px;
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 14px 16px;
+      text-align: center;
+    }
+
+    .stat-card .stat-num {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    .stat-card .stat-label {
+      font-size: 12px;
+      color: var(--light);
+      margin-top: 2px;
+    }
+
+    /* ROLE CARDS */
+    .role-grid {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .role-card {
+      flex: 1;
+      border-radius: 10px;
+      padding: 18px 16px;
+    }
+
+    .role-card.reese {
+      background: var(--amber-light);
+      border: 1px solid var(--amber-border);
+    }
+
+    .role-card.brian {
+      background: var(--blue-bg);
+      border: 1px solid #c5d8f5;
+    }
+
+    .role-card .role-name {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .role-card.reese .role-name { color: var(--amber); }
+    .role-card.brian .role-name { color: var(--blue); }
+
+    .role-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--black);
+    }
+
+    .role-card ul {
+      list-style: none;
+      font-size: 13px;
+      color: var(--mid);
+    }
+
+    .role-card ul li {
+      padding: 3px 0;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .role-card ul li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--light);
+      font-size: 11px;
+    }
+
+    /* PRODUCT CALLOUT */
+    .product-header {
+      background: var(--charcoal);
+      color: var(--white);
+      border-radius: 10px;
+      padding: 22px 20px;
+      margin-bottom: 16px;
+    }
+
+    .product-header .product-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 6px;
+    }
+
+    .product-header h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .product-header p {
+      font-size: 13px;
+      color: #999;
+    }
+
+    /* MECHANISM */
+    .mechanism {
+      background: var(--amber-light);
+      border: 1px solid var(--amber-border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+    }
+
+    .mechanism .mech-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 6px;
+    }
+
+    .mechanism h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--black);
+    }
+
+    .mechanism p {
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.6;
+    }
+
+    /* FRAME METHOD */
+    .frame-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .frame-item {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .frame-letter {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--amber);
+      line-height: 1;
+    }
+
+    .frame-word {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--black);
+      margin-top: 4px;
+    }
+
+    .frame-desc {
+      font-size: 11px;
+      color: var(--light);
+      margin-top: 2px;
+    }
+
+    /* PRICING */
+    .price-row {
+      display: flex;
+      gap: 10px;
+      margin: 14px 0;
+      flex-wrap: wrap;
+    }
+
+    .price-tag {
+      flex: 1;
+      min-width: 80px;
+      border-radius: 8px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+
+    .price-tag.anchor {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      opacity: 0.6;
+    }
+
+    .price-tag.regular {
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+
+    .price-tag.early {
+      background: var(--amber-light);
+      border: 1px solid var(--amber-border);
+    }
+
+    .price-tag .price-type {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 4px;
+    }
+
+    .price-tag.early .price-type { color: var(--amber); }
+
+    .price-tag .price-amount {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--black);
+    }
+
+    .price-tag .price-note {
+      font-size: 11px;
+      color: var(--light);
+      margin-top: 2px;
+    }
+
+    /* CHECKLIST */
+    .checklist {
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--bg);
+      font-size: 14px;
+      color: var(--mid);
+    }
+
+    .checklist li:last-child { border-bottom: none; }
+
+    .check-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .check-icon.done {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+    .check-icon.pending {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+
+    .check-icon.action {
+      background: var(--amber-light);
+      color: var(--amber);
+    }
+
+    .checklist li .check-title {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .checklist li .check-note {
+      font-size: 12px;
+      color: var(--light);
+      margin-top: 2px;
+    }
+
+    /* REESE ACTIONS */
+    .action-list {
+      list-style: none;
+      margin-top: 8px;
+      counter-reset: action-counter;
+    }
+
+    .action-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--bg);
+    }
+
+    .action-list li:last-child { border-bottom: none; }
+
+    .action-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--amber);
+      color: var(--black);
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .action-list li h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 3px;
+    }
+
+    .action-list li p {
+      font-size: 13px;
+      color: var(--light);
+      margin: 0;
+    }
+
+    /* VISION SECTION */
+    .vision-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .vision-item {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .vision-item h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .vision-item p {
+      font-size: 12px;
+      color: var(--light);
+      margin: 0;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      margin-top: 12px;
+    }
+
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--bg);
+    }
+
+    .timeline-item:last-child { border-bottom: none; }
+
+    .timeline-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .timeline-dot.done { background: var(--green); }
+    .timeline-dot.soon { background: var(--amber); }
+    .timeline-dot.later { background: var(--border); }
+
+    .timeline-item .tl-date {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--light);
+      min-width: 70px;
+      padding-top: 1px;
+    }
+
+    .timeline-item .tl-label {
+      font-size: 14px;
+      color: var(--mid);
+    }
+
+    .timeline-item .tl-label strong {
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    /* FOOTER */
+    .footer {
+      background: var(--charcoal);
+      color: #888;
+      text-align: center;
+      padding: 24px 16px;
+      font-size: 13px;
+    }
+
+    .footer strong { color: #ccc; }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 6px 0 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 500px) {
+      .role-grid { flex-direction: column; }
+      .vision-grid { grid-template-columns: 1fr; }
+      .stat-card .stat-num { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-label">For Reese — May 2026</div>
+    <h1>How It's <span>Filmed</span></h1>
+    <p class="hero-sub">What we've built, where we're going, and what I need from you to launch this thing.</p>
+    <div class="hero-meta">
+      <span><strong>170K+</strong> Instagram followers</span>
+      <span><strong>Filmmaking</strong> niche</span>
+      <span><strong>1 year</strong> dormant — about to change</span>
+    </div>
+  </div>
+
+  <!-- INTRO NOTE -->
+  <div class="intro-note">
+    Reese — we've owned this page together for years and never done anything with it. I've spent the last few weeks building everything we'd need to actually turn it into something real. Here's everything you need to know.
+  </div>
+
+  <div class="container">
+
+    <!-- THE ASSET -->
+    <div class="section">
+      <div class="section-label">The Asset</div>
+      <h2>What We Already Have</h2>
+      <p>How It's Filmed is a filmmaking and cinematography Instagram page we co-own. 170K+ followers who followed because they want to make better-looking video. The account has been dormant for about a year — which actually works in our favor. We're not rebuilding from zero, we're reactivating something that already has an audience.</p>
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-num">170K+</div>
+          <div class="stat-label">Instagram followers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">Filmmaking</div>
+          <div class="stat-label">Established niche</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">LLC</div>
+          <div class="stat-label">Entity already exists</div>
+        </div>
+      </div>
+      <p>We already have the LLC. It just needs to be restructured as a proper 50/50 partnership with your name officially on it — that's covered in the second doc I sent you.</p>
+    </div>
+
+    <!-- THE ROLES -->
+    <div class="section">
+      <div class="section-label">The Structure</div>
+      <h2>How This Works Between Us</h2>
+      <p>Simple split. You run the front of the house, I run the back. Here's what that actually looks like:</p>
+      <div class="role-grid">
+        <div class="role-card reese">
+          <div class="role-name">Reese</div>
+          <h3>Face & Content</h3>
+          <ul>
+            <li>Instagram presence</li>
+            <li>Posting the story launch</li>
+            <li>Engaging with replies + DMs</li>
+            <li>Building trust with the audience</li>
+            <li>Content direction over time</li>
+          </ul>
+        </div>
+        <div class="role-card brian">
+          <div class="role-name">Brian</div>
+          <h3>Products & Backend</h3>
+          <ul>
+            <li>Build the courses + tools</li>
+            <li>Marketing copy + strategy</li>
+            <li>Sales funnels + launch ops</li>
+            <li>Tech infrastructure</li>
+            <li>Revenue + product roadmap</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- THE PRODUCT -->
+    <div class="section">
+      <div class="section-label">The First Product</div>
+      <h2>The Cinematic System</h2>
+      <p>A beginner filmmaking course built specifically for the HIF audience — people who have a decent camera, but whose footage still looks flat and amateur. Not because of their gear. Because of what they don't know.</p>
+
+      <div class="product-header">
+        <div class="product-label">First Course</div>
+        <h3>The Cinematic System</h3>
+        <p>From flat footage to professional-looking video — without buying new gear.</p>
+      </div>
+
+      <div class="mechanism">
+        <div class="mech-label">The Core Problem</div>
+        <h4>The Gear Focus Fallacy</h4>
+        <p>Most aspiring filmmakers believe that better gear equals better footage. So they save up, buy better cameras, and their footage still looks flat. The problem was never the gear — it's the knowledge gap. That's what this course solves.</p>
+      </div>
+
+      <div class="mechanism" style="background: #eef3fb; border-color: #c5d8f5;">
+        <div class="mech-label" style="color: #2d6bc4;">The Solution</div>
+        <h4>The FRAME Method + Visual Depth Architecture</h4>
+        <p>A systematic approach to making footage look cinematic — covering manual camera settings, lighting, composition, color grading, and audio. The Visual Depth Architecture (VDA) is the proprietary framework that ties it all together and gives the course its unique angle.</p>
+      </div>
+
+      <p style="font-size:14px; color: var(--light); margin-top:4px; margin-bottom:8px;">The five modules of the FRAME Method:</p>
+      <div class="frame-grid">
+        <div class="frame-item">
+          <div class="frame-letter">F</div>
+          <div class="frame-word">Foundation</div>
+          <div class="frame-desc">Manual settings</div>
+        </div>
+        <div class="frame-item">
+          <div class="frame-letter">R</div>
+          <div class="frame-word">Radiance</div>
+          <div class="frame-desc">Lighting</div>
+        </div>
+        <div class="frame-item">
+          <div class="frame-letter">A</div>
+          <div class="frame-word">Angles</div>
+          <div class="frame-desc">Composition</div>
+        </div>
+        <div class="frame-item">
+          <div class="frame-letter">M</div>
+          <div class="frame-word">Mastery</div>
+          <div class="frame-desc">Color grading</div>
+        </div>
+        <div class="frame-item">
+          <div class="frame-letter">E</div>
+          <div class="frame-word">Expression</div>
+          <div class="frame-desc">Audio</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <p style="font-size:13px; font-weight:600; color: var(--dark); margin-bottom:8px;">Pricing (first launch)</p>
+      <div class="price-row">
+        <div class="price-tag anchor">
+          <div class="price-type">Anchor</div>
+          <div class="price-amount">$297</div>
+          <div class="price-note">Full price</div>
+        </div>
+        <div class="price-tag regular">
+          <div class="price-type">Regular</div>
+          <div class="price-amount">$197</div>
+          <div class="price-note">After launch</div>
+        </div>
+        <div class="price-tag early">
+          <div class="price-type">Early Bird</div>
+          <div class="price-amount">$97</div>
+          <div class="price-note">Launch window</div>
+        </div>
+      </div>
+      <p>Platform: <strong>Whop</strong> — course delivery and checkout in one place. Page still needs to be built, but the copy and scripts for it are already written.</p>
+    </div>
+
+    <!-- WHAT'S BUILT -->
+    <div class="section">
+      <div class="section-label">What's Ready</div>
+      <h2>What's Already Built</h2>
+      <p>I used a platform called GhostwriterOS to run a full launch campaign build for How It's Filmed. Here's where everything stands:</p>
+      <ul class="checklist">
+        <li>
+          <div class="check-icon done">✓</div>
+          <div>
+            <div class="check-title">Campaign DNA</div>
+            <div class="check-note">Full brand strategy — audience profile, messaging framework, offer positioning, brand voice</div>
+          </div>
+        </li>
+        <li>
+          <div class="check-icon done">✓</div>
+          <div>
+            <div class="check-title">14-Day Story Launch — All 14 Days Scripted</div>
+            <div class="check-note">Every Instagram story, every day of the launch sequence, fully written out and ready</div>
+          </div>
+        </li>
+        <li>
+          <div class="check-icon done">✓</div>
+          <div>
+            <div class="check-title">Landing Page Copy — All 13 Sections</div>
+            <div class="check-note">Full sales page copy ready to drop into Whop once the page is built</div>
+          </div>
+        </li>
+        <li>
+          <div class="check-icon done">✓</div>
+          <div>
+            <div class="check-title">VSL Script — Full Video Sales Letter</div>
+            <div class="check-note">12-section script for the sales video. Needs to be recorded.</div>
+          </div>
+        </li>
+        <li>
+          <div class="check-icon pending">○</div>
+          <div>
+            <div class="check-title">Whop Sales Page</div>
+            <div class="check-note">Needs to be built — this is the prerequisite before launch day goes live</div>
+          </div>
+        </li>
+        <li>
+          <div class="check-icon pending">○</div>
+          <div>
+            <div class="check-title">VSL Recording</div>
+            <div class="check-note">Script is done, needs to be filmed</div>
+          </div>
+        </li>
+        <li>
+          <div class="check-icon pending">○</div>
+          <div>
+            <div class="check-title">Real testimonials</div>
+            <div class="check-note">Need actual beta tester results before the launch scripts can go live as-is</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- YOUR ROLE -->
+    <div class="section">
+      <div class="section-label">What I Need From You</div>
+      <h2>Your Role in the Launch</h2>
+      <p>The 14-day story sequence is scripted. Your job is to execute it on the account and make it feel real — because you are real. Here's what that actually looks like:</p>
+      <ol class="action-list">
+        <li>
+          <div class="action-num">1</div>
+          <div>
+            <h4>Post the story sequence</h4>
+            <p>14 days of stories, all scripted. You post them, maybe add your own voice to them. They walk the audience from zero to the launch day.</p>
+          </div>
+        </li>
+        <li>
+          <div class="action-num">2</div>
+          <div>
+            <h4>Engage with replies — they become the testimonials</h4>
+            <p>The scripts include story prompts ("reply with your biggest camera struggle"). The real replies you get are what replace the placeholder testimonials in the copy. Save them.</p>
+          </div>
+        </li>
+        <li>
+          <div class="action-num">3</div>
+          <div>
+            <h4>Decide on the community</h4>
+            <p>The launch includes an offer for a founding community tier. We need to decide if that's a real commitment before it goes in the scripts.</p>
+          </div>
+        </li>
+        <li>
+          <div class="action-num">4</div>
+          <div>
+            <h4>Be a beta tester for the course content</h4>
+            <p>You have real production experience. Going through the material before launch and giving your honest take would make the testimonial section extremely credible.</p>
+          </div>
+        </li>
+        <li>
+          <div class="action-num">5</div>
+          <div>
+            <h4>Ongoing: content direction for the account</h4>
+            <p>Beyond the launch — you have production experience and an eye for it. What gets posted matters. Your call on the content side.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- BEFORE LAUNCH -->
+    <div class="section">
+      <div class="section-label">Timeline</div>
+      <h2>What Happens Next</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot done"></div>
+          <div class="tl-date">Done</div>
+          <div class="tl-label"><strong>Full launch infrastructure built</strong> — DNA, 14-day sequence, landing page, VSL script</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot soon"></div>
+          <div class="tl-date">Next</div>
+          <div class="tl-label"><strong>Pricing decision</strong> — single package or 2-tier (Complete + Community)?</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot soon"></div>
+          <div class="tl-date">Next</div>
+          <div class="tl-label"><strong>Build Whop sales page</strong> — I build it, copy is already written</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot soon"></div>
+          <div class="tl-date">Next</div>
+          <div class="tl-label"><strong>Editing pass on launch sequence</strong> — swap placeholder testimonials for real ones once you've run the first few story prompts</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot soon"></div>
+          <div class="tl-date">Next</div>
+          <div class="tl-label"><strong>Record the VSL</strong> — you or I could do this, or we do it together</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot later"></div>
+          <div class="tl-date">Launch</div>
+          <div class="tl-label"><strong>14-Day Story Launch goes live</strong> on How It's Filmed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THE BIGGER VISION -->
+    <div class="section">
+      <div class="section-label">Bigger Picture</div>
+      <h2>This Is Just the Start</h2>
+      <p>The Cinematic System is the first product. But this isn't a one-product business. Here's where this can go if we run it right:</p>
+      <div class="vision-grid">
+        <div class="vision-item">
+          <h4>Advanced Courses</h4>
+          <p>Rigging, technical production, advanced color — higher price, same audience</p>
+        </div>
+        <div class="vision-item">
+          <h4>HIF App</h4>
+          <p>Branded tools for filmmakers — built on the audience we already have</p>
+        </div>
+        <div class="vision-item">
+          <h4>Community</h4>
+          <p>Paid membership for ongoing access, feedback, and live Q&As</p>
+        </div>
+        <div class="vision-item">
+          <h4>Mentorship Tier</h4>
+          <p>High-ticket 1:1 for serious creators who want direct access</p>
+        </div>
+      </div>
+      <p style="margin-top:16px;">170K followers in a passion niche with two co-founders who both have real production experience. The credibility is already there. We just have to activate it.</p>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <strong>How It's Filmed</strong> · For Reese · Built May 8, 2026<br>
+    Questions, pushback, or ideas — text me.
+  </div>
+
+</body>
+</html>
