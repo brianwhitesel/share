@@ -1,6 +1,6 @@
 {
-  "updated": "2026-04-30T21:00:00",
-  "updatedLabel": "April 30, 2026",
+  "updated": "2026-05-07T21:00:00",
+  "updatedLabel": "May 7, 2026",
   "sections": {
     "recent": [
       { "href": "spookyluke/index.html", "icon": "🎮", "title": "SpookyLuke Application", "desc": "Brian's editor application page for SpookyLuke", "tag": "friend", "added": "2026-04-30" },
@@ -13,7 +13,7 @@
     "knowledge": [
       { "href": "serge-gatari-bw26/index.html", "icon": "🤖", "title": "Serge Gatari — AI Business", "desc": "One-person AI company framework. Playbooks, context layer, AI employees.", "tag": "knowledge", "added": "2026-04-28" },
       { "href": "ws-sync-bw26/index.html", "icon": "🔄", "title": "Workspace Sync System", "desc": "The full architecture — memory layers, automation, MCP connectors, Dispatch.", "tag": "knowledge", "added": "2026-04-28" },
-      { "href": "mmoc3-vip-bw26/index.html", "icon": "🎓", "title": "MMOC3 VIP Sessions", "desc": "Iman Gadzhi's Make Money Online Challenge 3.0. WAP marketplace, AI products.", "tag": "knowledge", "added": "2026-04-28" },
+      { "href": "mmoc3-vip-bw26/index.html", "icon": "🎓", "title": "MMOC3 VIP Sessions", "desc": "Iman Gadzhi's Make Money Online Challenge 3.0 — all 5 days + 5 VIP sessions complete.", "tag": "knowledge", "added": "2026-05-04" },
       { "href": "ip-brief-bm26/index.html", "icon": "⚖️", "title": "IP Consultation Brief", "desc": "Brian's pre-meeting brief for the May 7 IP consult with Bryce.", "tag": "knowledge", "added": "2026-04-28" }
     ],
     "clients": [
