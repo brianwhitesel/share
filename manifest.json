@@ -1,10 +1,8 @@
 {
-  "updated": "2026-05-08T21:00:00",
-  "updatedLabel": "May 8, 2026",
+  "updated": "2026-05-09T00:00:00",
+  "updatedLabel": "May 9, 2026",
   "sections": {
     "recent": [
-      { "href": "reese/hif-plan.html", "icon": "🎬", "title": "How It's Filmed — The Plan", "desc": "Reese partnership — Cinematic System course launch plan via dormant 170K HIF brand", "tag": "friend", "added": "2026-05-08" },
-      { "href": "reese/hif-legal.html", "icon": "⚖️", "title": "How It's Filmed — Legal Setup", "desc": "Step-by-step LLC reactivation + ownership/IP guardrails for the HIF relaunch", "tag": "friend", "added": "2026-05-08" },
       { "href": "spookyluke/index.html", "icon": "🎮", "title": "SpookyLuke Application", "desc": "Brian's editor application page for SpookyLuke", "tag": "friend", "added": "2026-04-30" },
       { "href": "clip-organizer/index.html", "icon": "🎬", "title": "Clip Organizer — Rocket League", "desc": "Personal Rocket League clip organizer tool", "tag": "tool", "added": "2026-04-30" },
       { "href": "greg-lav-pitch/index.html", "icon": "📖", "title": "Greg Lav — Lessons From My 20s", "desc": "Updated pitch page with section nav + mobile fixes", "tag": "friend", "added": "2026-04-30" },
@@ -12,9 +10,7 @@
     ],
     "knowledge": [
       { "href": "serge-gatari-bw26/index.html", "icon": "🤖", "title": "Serge Gatari — AI Business", "desc": "One-person AI company framework. Playbooks, context layer, AI employees.", "tag": "knowledge", "added": "2026-04-28" },
-      { "href": "ws-sync-bw26/index.html", "icon": "🔄", "title": "Workspace Sync System", "desc": "The full architecture — memory layers, automation, MCP connectors, Dispatch.", "tag": "knowledge", "added": "2026-04-28" },
-      { "href": "mmoc3-vip-bw26/index.html", "icon": "🎓", "title": "MMOC3 VIP Sessions", "desc": "Iman Gadzhi's Make Money Online Challenge 3.0 — all 5 days + 5 VIP sessions complete.", "tag": "knowledge", "added": "2026-05-04" },
-      { "href": "ip-brief-bm26/index.html", "icon": "⚖️", "title": "IP Consultation Brief", "desc": "Brian's pre-meeting brief for the May 7 IP consult with Bryce.", "tag": "knowledge", "added": "2026-04-28" }
+      { "href": "mmoc3-vip-bw26/index.html", "icon": "🎓", "title": "MMOC3 VIP Sessions", "desc": "Iman Gadzhi's Make Money Online Challenge 3.0 — all 5 days + 5 VIP sessions complete.", "tag": "knowledge", "added": "2026-05-04" }
     ],
     "clients": [
       { "href": "dustin/index.html", "name": "Dustin Whitesel", "role": "Wash Wiggle & Wag", "status": "active", "tag": "client" },
@@ -30,7 +26,7 @@
       { "href": "brewery-template/index.html", "name": "Brewery Pitch Template", "role": "Reusable Columbus brewery audit/pitch page", "status": "template", "tag": "prospect" }
     ],
     "friends": [
-      { "href": "reese/index.html", "name": "Reese White", "role": "Videographer & photographer · How It's Filmed partnership (Plan + Legal)", "tag": "friend" },
+      { "href": "reese/index.html", "name": "Reese White", "role": "Videographer & photographer", "tag": "friend" },
       { "href": "dylan/index.html", "name": "Dylan Miracle", "role": "Editor — Card Collector 2", "tag": "friend" },
       { "href": "connor/index.html", "name": "Connor McGovern", "role": "Video & social media", "tag": "friend" },
       { "href": "paige/index.html", "name": "Paige Tinnel", "role": "Photographer", "tag": "friend" },
