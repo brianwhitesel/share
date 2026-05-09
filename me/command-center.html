@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Command Center" />
+  <meta name="theme-color" content="#0e0e0e" />
+  <title>Command Center</title>
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Command%20Center%22%2C%22short_name%22%3A%22CC%22%2C%22start_url%22%3A%22.%2Fcommand-center.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230e0e0e%22%2C%22theme_color%22%3A%22%230e0e0e%22%7D" />
+  <style>
+    :root {
+      --bg: #0e0e0e;
+      --card: #1a1a1a;
+      --card2: #222;
+      --amber: #E8960F;
+      --amber-dim: rgba(232,150,15,0.15);
+      --white: #ffffff;
+      --gray: #aaaaaa;
+      --dim: #555;
+      --border: #2a2a2a;
+      --red: #e85555;
+      --green: #1e9e6b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      min-height: 100vh;
+      padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 24px);
+      max-width: 430px;
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .header-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--white);
+    }
+
+    .header-title span { color: var(--amber); }
+
+    .header-date {
+      font-size: 12px;
+      color: var(--gray);
+      text-align: right;
+      line-height: 1.5;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .stat-pill {
+      flex: 1;
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    .stat-pill .num {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .stat-pill .lbl {
+      font-size: 10px;
+      color: var(--gray);
+      margin-top: 2px;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-pill.amber .num { color: var(--amber); }
+    .stat-pill.urgent .num { color: var(--red); }
+    .stat-pill.good .num { color: var(--green); }
+
+    /* SECTION LABEL */
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--amber);
+      padding: 20px 20px 10px;
+    }
+
+    /* QUICK FIRE */
+    .quick-fire {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .qf-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--amber);
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      padding: 0 18px;
+      height: 54px;
+      width: 100%;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .qf-btn:active { opacity: 0.85; transform: scale(0.98); }
+
+    .qf-btn.secondary {
+      background: var(--card2);
+      color: var(--white);
+      border: 1px solid var(--border);
+    }
+
+    .qf-btn .emoji { font-size: 18px; line-height: 1; flex-shrink: 0; }
+    .qf-btn .btn-text { flex: 1; text-align: left; }
+    .qf-btn .arrow { font-size: 14px; opacity: 0.5; flex-shrink: 0; }
+
+    /* SNAPSHOT CARDS */
+    .snapshot {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .track-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .track-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .track-name {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+
+    .track-badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 99px;
+    }
+
+    .badge-active { background: rgba(30,158,107,0.15); color: var(--green); }
+    .badge-building { background: rgba(232,150,15,0.15); color: var(--amber); }
+    .badge-coming { background: rgba(255,255,255,0.06); color: var(--gray); }
+
+    .track-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .track-meta {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    .track-goal {
+      margin-top: 10px;
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .goal-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--gray);
+      margin-bottom: 6px;
+    }
+
+    .goal-row strong { color: var(--white); }
+
+    .progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--amber);
+      border-radius: 99px;
+      transition: width 1s ease;
+    }
+
+    /* NOTES */
+    .notes-section {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .note-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .note-header {
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gray);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .note-saved {
+      font-size: 10px;
+      color: var(--green);
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .note-saved.visible { opacity: 1; }
+
+    .note-area {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--white);
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 12px 14px;
+      resize: none;
+      min-height: 80px;
+      outline: none;
+    }
+
+    .note-area::placeholder { color: var(--dim); }
+
+    /* QUICK LINKS */
+    .links-grid {
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .link-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 14px;
+      text-decoration: none;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .link-card:active { background: var(--card2); }
+
+    .link-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .link-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .link-sub {
+      font-size: 11px;
+      color: var(--gray);
+      margin-top: 1px;
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 24px 20px 16px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--dim);
+    }
+
+    .footer span { color: var(--amber); }
+
+    /* DIVIDER */
+    .spacer { height: 4px; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="header-title">Command <span>Center</span></div>
+      <div class="header-date" id="header-date">—</div>
+    </div>
+    <div class="header-stats">
+      <div class="stat-pill amber">
+        <div class="num" id="days-free">—</div>
+        <div class="lbl">Days Free</div>
+      </div>
+      <div class="stat-pill" id="deadline-pill">
+        <div class="num" id="days-left">—</div>
+        <div class="lbl">To May 31</div>
+      </div>
+      <div class="stat-pill">
+        <div class="num" style="color:#fff;font-size:14px;">$5K</div>
+        <div class="lbl">Revenue Goal</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK FIRE -->
+  <div class="section-label">⚡ Quick Fire</div>
+  <div class="quick-fire">
+    <a class="qf-btn" id="btn-priority" href="#">
+      <span class="emoji">🎯</span>
+      <span class="btn-text">What's my priority right now?</span>
+      <span class="arrow">›</span>
+    </a>
+    <a class="qf-btn" id="btn-briefing" href="#">
+      <span class="emoji">☀️</span>
+      <span class="btn-text">Morning briefing</span>
+      <span class="arrow">›</span>
+    </a>
+    <a class="qf-btn secondary" id="btn-followup" href="#">
+      <span class="emoji">📧</span>
+      <span class="btn-text">Draft a follow-up email</span>
+      <span class="arrow">›</span>
+    </a>
+    <a class="qf-btn secondary" id="btn-overdue" href="#">
+      <span class="emoji">📋</span>
+      <span class="btn-text">What's overdue?</span>
+      <span class="arrow">›</span>
+    </a>
+    <a class="qf-btn secondary" id="btn-schedule" href="#">
+      <span class="emoji">📅</span>
+      <span class="btn-text">Today's schedule</span>
+      <span class="arrow">›</span>
+    </a>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- BUSINESS SNAPSHOT -->
+  <div class="section-label">📊 Business Snapshot</div>
+  <div class="snapshot">
+
+    <div class="track-card">
+      <div class="track-header">
+        <div class="track-name">Track 1</div>
+        <div class="track-badge badge-active">Active</div>
+      </div>
+      <div class="track-title">Columbus Retainers</div>
+      <div class="track-meta">Social media + automation services for local businesses</div>
+      <div class="track-goal">
+        <div class="goal-row">
+          <span>Monthly goal</span>
+          <strong>$5,000 / mo</strong>
+        </div>
+        <div class="goal-row" style="margin-bottom:4px;">
+          <span>Deadline</span>
+          <strong id="deadline-label">May 31, 2026</strong>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%" id="progress-t1"></div></div>
+      </div>
+    </div>
+
+    <div class="track-card">
+      <div class="track-header">
+        <div class="track-name">Track 2</div>
+        <div class="track-badge badge-building">Launching</div>
+      </div>
+      <div class="track-title">How It's Filmed</div>
+      <div class="track-meta">170K Instagram followers · The Cinematic System course · with Reese</div>
+      <div class="track-goal">
+        <div class="goal-row">
+          <span>First product</span>
+          <strong>The Cinematic System</strong>
+        </div>
+        <div class="goal-row" style="margin-bottom:4px;">
+          <span>Platform</span>
+          <strong>Whop · $97 early bird</strong>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+      </div>
+    </div>
+
+    <div class="track-card">
+      <div class="track-header">
+        <div class="track-name">Track 3</div>
+        <div class="track-badge badge-coming">Coming June</div>
+      </div>
+      <div class="track-title">1:1 Mentorship</div>
+      <div class="track-meta">Content creation + strategy coaching using 5 years of CC2 production experience as the IP</div>
+    </div>
+
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- NOTES -->
+  <div class="section-label">📝 Active Notes</div>
+  <div class="notes-section">
+    <div class="note-card">
+      <div class="note-header">
+        Track 1 — Columbus
+        <span class="note-saved" id="saved-t1">Saved</span>
+      </div>
+      <textarea class="note-area" id="note-t1" placeholder="Current clients, next steps, blockers..."></textarea>
+    </div>
+    <div class="note-card">
+      <div class="note-header">
+        Track 2 — How It's Filmed
+        <span class="note-saved" id="saved-t2">Saved</span>
+      </div>
+      <textarea class="note-area" id="note-t2" placeholder="Launch tasks, Reese updates, content ideas..."></textarea>
+    </div>
+    <div class="note-card">
+      <div class="note-header">
+        Track 3 — Mentorship
+        <span class="note-saved" id="saved-t3">Saved</span>
+      </div>
+      <textarea class="note-area" id="note-t3" placeholder="Leads, offer ideas, pricing thoughts..."></textarea>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- QUICK LINKS -->
+  <div class="section-label">🔗 Quick Links</div>
+  <div class="links-grid">
+    <a class="link-card" href="https://monday.com" target="_blank">
+      <div class="link-icon" style="background:#6161FF22;">📋</div>
+      <div>
+        <div class="link-name">Monday</div>
+        <div class="link-sub">Pipeline + tasks</div>
+      </div>
+    </a>
+    <a class="link-card" href="https://mail.google.com" target="_blank">
+      <div class="link-icon" style="background:#EA433522;">📧</div>
+      <div>
+        <div class="link-name">Gmail</div>
+        <div class="link-sub">Email</div>
+      </div>
+    </a>
+    <a class="link-card" href="https://calendar.google.com" target="_blank">
+      <div class="link-icon" style="background:#1A73E822;">📅</div>
+      <div>
+        <div class="link-name">Calendar</div>
+        <div class="link-sub">Schedule</div>
+      </div>
+    </a>
+    <a class="link-card" href="https://claude.ai" target="_blank">
+      <div class="link-icon" style="background:rgba(232,150,15,0.15);">✦</div>
+      <div>
+        <div class="link-name">Claude</div>
+        <div class="link-sub">Dispatch</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    Brian Whitesel · <span>Command Center</span> · Updated May 8, 2026
+  </div>
+
+  <script>
+    // ── DATES ──
+    const CC2_EXIT = new Date('2026-05-06');
+    const DEADLINE = new Date('2026-05-31');
+
+    function updateDates() {
+      const now = new Date();
+      const today = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      document.getElementById('header-date').textContent = today;
+
+      const daysFree = Math.floor((now - CC2_EXIT) / 86400000);
+      document.getElementById('days-free').textContent = daysFree;
+
+      const daysLeft = Math.max(0, Math.ceil((DEADLINE - now) / 86400000));
+      document.getElementById('days-left').textContent = daysLeft;
+
+      const pill = document.getElementById('deadline-pill');
+      if (daysLeft <= 7) pill.classList.add('urgent');
+      else if (daysLeft <= 14) pill.classList.add('amber');
+
+      // Progress bar — time-based proxy (days elapsed / 25 days from May 6 to May 31)
+      const totalDays = 25;
+      const elapsed = Math.min(daysFree, totalDays);
+      const pct = Math.round((elapsed / totalDays) * 100);
+      document.getElementById('progress-t1').style.width = pct + '%';
+    }
+
+    updateDates();
+
+    // ── QUICK FIRE PROMPTS ──
+    const prompts = {
+      'btn-priority': "Brian here. Give me my top 3 priorities right now. My business: Track 1 = Columbus retainers ($5K/mo goal by May 31, active outreach), Track 2 = How It's Filmed course launch with Reese (14-day story launch ready, Whop page still needed), Track 3 = 1:1 mentorship coming June. What should I be doing right now?",
+      'btn-briefing': "Give me a full morning briefing: top priorities today, what's overdue in my pipeline, any follow-ups needed, and a one-sentence focus for the day. My business: Track 1 = Columbus retainers ($5K/mo goal May 31), Track 2 = How It's Filmed course launch with Reese, Track 3 = 1:1 mentorship coming June. Pull from my connected tools if you can.",
+      'btn-followup': "Draft a professional follow-up email for a Columbus local business prospect. Context: I offer social media management and business automation services. Make it warm, reference something specific about their business, and end with a clear ask for a 20-minute discovery call.",
+      'btn-overdue': "Review my pipeline and tell me what's overdue or needs attention. Track 1: Columbus retainers — $5K/mo by May 31, who hasn't been followed up with? Track 2: HIF Cinematic System — what launch tasks are pending? Track 3: Mentorship setup. Check my Monday.com and calendar if you can access them.",
+      'btn-schedule': "Pull my Google Calendar events for today and give me a clean briefing of what's on my plate. Include any tasks from Monday.com that are due today. Give me the full picture."
+    };
+
+    Object.keys(prompts).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.href = 'https://claude.ai/new?q=' + encodeURIComponent(prompts[id]);
+        el.target = '_blank';
+      }
+    });
+
+    // ── NOTES ──
+    ['t1', 't2', 't3'].forEach(track => {
+      const ta = document.getElementById('note-' + track);
+      const saved = document.getElementById('saved-' + track);
+      const key = 'cc_note_' + track;
+
+      // Load saved
+      ta.value = localStorage.getItem(key) || '';
+
+      // Auto-save
+      let timer;
+      ta.addEventListener('input', () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          localStorage.setItem(key, ta.value);
+          saved.classList.add('visible');
+          setTimeout(() => saved.classList.remove('visible'), 1500);
+        }, 600);
+      });
+
+      // Auto-resize
+      ta.addEventListener('input', () => {
+        ta.style.height = 'auto';
+        ta.style.height = ta.scrollHeight + 'px';
+      });
+      if (ta.value) {
+        ta.style.height = 'auto';
+        ta.style.height = ta.scrollHeight + 'px';
+      }
+    });
+  </script>
+</body>
+</html>
