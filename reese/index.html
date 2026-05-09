@@ -19,7 +19,7 @@
         radial-gradient(ellipse 70% 50% at 50% -5%, rgba(108, 46, 200, 0.35) 0%, transparent 65%),
         radial-gradient(ellipse 50% 35% at 85% 85%, rgba(232, 67, 147, 0.12) 0%, transparent 55%),
         radial-gradient(ellipse 40% 30% at 10% 70%, rgba(124, 200, 50, 0.07) 0%, transparent 55%);
-      font-family: 'Inter', 'Outfit', sans-serif;
+      font-family: 'Inter', sans-serif;
       color: #e2e8f0;
       display: flex;
       flex-direction: column;
@@ -48,32 +48,44 @@
         radial-gradient(1px 1px at 20% 92%, rgba(255,255,255,0.5) 0%, transparent 100%),
         radial-gradient(2px 2px at 50% 45%, rgba(200, 180, 255, 0.4) 0%, transparent 100%),
         radial-gradient(1px 1px at 15% 35%, rgba(255,255,255,0.3) 0%, transparent 100%),
-        radial-gradient(1px 1px at 95% 40%, rgba(255,255,255,0.5) 0%, transparent 100%);
+        radial-gradient(1px 1px at 95% 40%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 5% 90%, rgba(255,255,255,0.35) 0%, transparent 100%),
+        radial-gradient(1px 1px at 33% 15%, rgba(255,255,255,0.45) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 67% 68%, rgba(200,180,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 82% 28%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 48% 88%, rgba(255,255,255,0.3) 0%, transparent 100%);
       pointer-events: none;
       z-index: 0;
     }
 
-    header, .section-label, .card-wrap, footer {
-      position: relative;
-      z-index: 1;
+    /* Twinkling animation for a few stars */
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
     }
 
+    header, main, footer {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    /* ── HEADER ── */
     header {
       text-align: center;
-      margin-bottom: 48px;
-      max-width: 540px;
-      width: 100%;
+      margin-bottom: 52px;
     }
 
     .logo-wrap {
       display: flex;
       justify-content: center;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .logo-img {
-      width: 96px;
-      height: 96px;
+      width: 88px;
+      height: 88px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid rgba(108, 46, 200, 0.5);
@@ -89,7 +101,7 @@
       font-weight: 900;
       letter-spacing: -0.03em;
       line-height: 1.1;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       background: linear-gradient(135deg, #a855f7 0%, #ec4899 40%, #7bc842 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -98,57 +110,71 @@
 
     .brand-sub {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: rgba(168, 85, 247, 0.7);
-      margin-bottom: 28px;
+      color: rgba(168, 85, 247, 0.65);
+      margin-bottom: 24px;
       font-weight: 500;
     }
 
-    .message {
-      font-size: 1rem;
-      color: #94a3b8;
-      line-height: 1.75;
-      max-width: 440px;
-      margin: 0 auto;
-    }
-
-    .message .highlight {
-      color: #c084fc;
-      font-weight: 500;
-    }
-
-    .divider {
-      width: 36px;
-      height: 2px;
-      background: linear-gradient(90deg, #7c3aed, #ec4899);
-      border-radius: 2px;
-      margin: 24px auto;
-      opacity: 0.5;
-    }
-
-    .sub-message {
-      font-size: 0.875rem;
+    .header-tagline {
+      font-size: 0.9rem;
       color: #64748b;
-      line-height: 1.65;
-      max-width: 400px;
-      margin: 0 auto;
+      line-height: 1.7;
     }
 
-    .section-label {
+    /* ── SECTION DIVIDER ── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 40px 0 28px;
+    }
+
+    .section-divider-line {
+      flex: 1;
+      height: 1px;
+    }
+
+    .section-badge {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.68rem;
-      color: rgba(168, 85, 247, 0.45);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
-      margin-bottom: 14px;
-      text-align: center;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid;
+      white-space: nowrap;
     }
 
-    .card-wrap {
-      width: 100%;
-      max-width: 460px;
+    /* HIF Section */
+    .section-divider.hif .section-divider-line {
+      background: linear-gradient(90deg, transparent, rgba(255, 51, 51, 0.4), transparent);
+    }
+
+    .section-divider.hif .section-badge {
+      color: #FF3333;
+      border-color: rgba(255, 51, 51, 0.35);
+      background: rgba(255, 51, 51, 0.08);
+      box-shadow: 0 0 16px rgba(255, 51, 51, 0.15);
+    }
+
+    /* Disc Golf Section */
+    .section-divider.disc .section-divider-line {
+      background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.4), transparent);
+    }
+
+    .section-divider.disc .section-badge {
+      color: #4CAF50;
+      border-color: rgba(76, 175, 80, 0.35);
+      background: rgba(76, 175, 80, 0.08);
+      box-shadow: 0 0 16px rgba(76, 175, 80, 0.15);
+    }
+
+    /* ── CARDS ── */
+    .card-stack {
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -158,139 +184,349 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(108, 46, 200, 0.2);
       border-radius: 18px;
-      padding: 28px;
+      padding: 24px;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      text-decoration: none;
-      color: inherit;
     }
 
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(168, 85, 247, 0.45);
-      box-shadow: 0 20px 56px rgba(108, 46, 200, 0.25);
+    /* ── STATUS CARD (HIF) ── */
+    .status-card {
+      border-color: rgba(255, 51, 51, 0.25);
+      background: rgba(255, 51, 51, 0.04);
+      position: relative;
+      overflow: hidden;
     }
 
-    .card.featured {
-      border-color: rgba(124, 200, 66, 0.3);
-      background: rgba(124, 200, 66, 0.04);
+    .status-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255, 51, 51, 0.6), transparent);
     }
 
-    .card.featured:hover {
-      border-color: rgba(124, 200, 66, 0.55);
-      box-shadow: 0 20px 56px rgba(124, 200, 66, 0.18);
-    }
-
-    .card-icon-wrap {
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(108, 46, 200, 0.18), rgba(232, 67, 147, 0.18));
-      border: 1px solid rgba(108, 46, 200, 0.25);
+    .status-header {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .status-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #FF3333;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #FF3333;
+      box-shadow: 0 0 8px rgba(255, 51, 51, 0.8);
+      animation: pulse-red 2s infinite;
+    }
+
+    @keyframes pulse-red {
+      0%, 100% { box-shadow: 0 0 8px rgba(255, 51, 51, 0.8); }
+      50% { box-shadow: 0 0 16px rgba(255, 51, 51, 0.4), 0 0 24px rgba(255, 51, 51, 0.2); }
+    }
+
+    .updated-tag {
+      font-size: 0.7rem;
+      color: #475569;
+      font-style: italic;
+    }
+
+    .status-text {
+      font-size: 0.925rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .action-note {
+      font-size: 0.82rem;
+      color: rgba(255, 200, 100, 0.85);
+      background: rgba(255, 180, 0, 0.07);
+      border: 1px solid rgba(255, 180, 0, 0.15);
+      border-radius: 10px;
+      padding: 12px 14px;
+      line-height: 1.6;
+    }
+
+    .action-note strong {
+      color: rgba(255, 220, 120, 1);
+      font-weight: 600;
+    }
+
+    /* ── LINKS ROW ── */
+    .links-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .doc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 11px 16px;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      flex: 1;
+      min-width: 140px;
       justify-content: center;
-      color: #c084fc;
+    }
+
+    .doc-link:hover {
+      transform: translateY(-2px);
+    }
+
+    .doc-link svg {
+      width: 15px;
+      height: 15px;
       flex-shrink: 0;
     }
 
-    .card.featured .card-icon-wrap {
-      background: linear-gradient(135deg, rgba(124, 200, 66, 0.18), rgba(108, 46, 200, 0.18));
-      border-color: rgba(124, 200, 66, 0.3);
-      color: #a3e635;
+    .doc-link.red {
+      color: #ff6b6b;
+      border-color: rgba(255, 51, 51, 0.3);
+      background: rgba(255, 51, 51, 0.07);
+    }
+
+    .doc-link.red:hover {
+      border-color: rgba(255, 51, 51, 0.55);
+      box-shadow: 0 8px 24px rgba(255, 51, 51, 0.18);
+    }
+
+    .doc-link.dim {
+      color: #64748b;
+      border-color: rgba(100, 116, 139, 0.2);
+      background: rgba(100, 116, 139, 0.05);
+    }
+
+    .doc-link.dim:hover {
+      border-color: rgba(100, 116, 139, 0.4);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    .doc-link.green {
+      color: #6fcf72;
+      border-color: rgba(76, 175, 80, 0.3);
+      background: rgba(76, 175, 80, 0.07);
+    }
+
+    .doc-link.green:hover {
+      border-color: rgba(76, 175, 80, 0.55);
+      box-shadow: 0 8px 24px rgba(76, 175, 80, 0.18);
+    }
+
+    /* ── INFO CARD (shared) ── */
+    .info-card {
+      border-color: rgba(108, 46, 200, 0.18);
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon.red {
+      background: rgba(255, 51, 51, 0.12);
+      border: 1px solid rgba(255, 51, 51, 0.2);
+      color: #ff6b6b;
+    }
+
+    .card-icon.green {
+      background: rgba(76, 175, 80, 0.12);
+      border: 1px solid rgba(76, 175, 80, 0.2);
+      color: #6fcf72;
+    }
+
+    .card-icon.purple {
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      color: #c084fc;
+    }
+
+    .card-icon svg {
+      width: 18px;
+      height: 18px;
     }
 
     .card-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 600;
+      font-size: 1rem;
+      font-weight: 700;
       color: #f1f5f9;
-      line-height: 1.3;
     }
 
-    .card-desc {
+    .card-body {
       font-size: 0.875rem;
       color: #94a3b8;
-      line-height: 1.65;
+      line-height: 1.7;
     }
 
-    .card-features {
+    /* ── DISC GOLF PLACEHOLDER CARD ── */
+    .disc-card {
+      border-color: rgba(76, 175, 80, 0.2);
+      background: rgba(76, 175, 80, 0.03);
+    }
+
+    .disc-card .card-body {
+      margin-bottom: 16px;
+    }
+
+    /* ── STICKY NOTES / IDEAS BOARD ── */
+    .ideas-header {
       display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
     }
 
-    .card-feature {
+    .ideas-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(76, 175, 80, 0.7);
+    }
+
+    .add-note-btn {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 4px 10px;
-      border-radius: 20px;
       font-size: 0.72rem;
-      font-weight: 500;
-      color: #7c93b0;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .card.featured .card-feature {
-      color: rgba(163, 230, 53, 0.7);
-      border-color: rgba(124, 200, 66, 0.15);
-    }
-
-    .card-feature::before {
-      content: '✓';
-      font-size: 0.65rem;
-      font-weight: 700;
-    }
-
-    .card-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.85rem;
       font-weight: 600;
-      color: #c084fc;
-      padding-top: 4px;
+      color: rgba(76, 175, 80, 0.7);
+      background: rgba(76, 175, 80, 0.1);
+      border: 1px solid rgba(76, 175, 80, 0.25);
+      border-radius: 20px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: background 0.18s, border-color 0.18s;
     }
 
-    .card.featured .card-cta {
-      color: #a3e635;
+    .add-note-btn:hover {
+      background: rgba(76, 175, 80, 0.18);
+      border-color: rgba(76, 175, 80, 0.45);
     }
 
-    .card-cta svg {
-      transition: transform 0.2s ease;
-      flex-shrink: 0;
-      width: 16px;
-      height: 16px;
+    .notes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
-    .card:hover .card-cta svg {
-      transform: translateX(4px);
+    .sticky-note {
+      background: rgba(76, 175, 80, 0.06);
+      border: 1px solid rgba(76, 175, 80, 0.18);
+      border-radius: 12px;
+      padding: 12px;
+      position: relative;
     }
 
+    .sticky-note textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      line-height: 1.6;
+      min-height: 80px;
+      caret-color: #4CAF50;
+    }
+
+    .sticky-note textarea::placeholder {
+      color: rgba(100, 116, 139, 0.5);
+    }
+
+    .sticky-note .note-delete {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(100, 116, 139, 0.35);
+      font-size: 0.75rem;
+      line-height: 1;
+      padding: 2px;
+      transition: color 0.15s;
+      display: none;
+    }
+
+    .sticky-note:hover .note-delete {
+      display: block;
+    }
+
+    .sticky-note .note-delete:hover {
+      color: rgba(255, 100, 100, 0.7);
+    }
+
+    /* ── FOOTER ── */
     footer {
       margin-top: 64px;
       text-align: center;
-      position: relative;
-      z-index: 1;
+    }
+
+    .footer-divider {
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.3), transparent);
+      margin: 0 auto 20px;
     }
 
     .signature {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.9rem;
-      color: #334155;
-      line-height: 1.8;
+      font-size: 0.85rem;
+      color: #2d3748;
+      line-height: 1.9;
     }
 
     .signature strong {
-      color: #475569;
+      color: #4a5568;
       font-weight: 600;
+    }
+
+    .last-synced {
+      font-size: 0.7rem;
+      color: #1e2a3a;
+      margin-top: 8px;
+      letter-spacing: 0.04em;
     }
 
     @media (max-width: 480px) {
@@ -301,126 +537,258 @@
       .brand-name {
         font-size: 2.6rem;
       }
+
+      .notes-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .links-row {
+        flex-direction: column;
+      }
+
+      .doc-link {
+        min-width: unset;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- ── HEADER ── -->
   <header>
     <div class="logo-wrap">
       <img src="whatsreal-logo.jpeg" alt="What's Real? Logo" class="logo-img">
     </div>
     <div class="brand-name">What's Real?</div>
-    <div class="brand-sub">Built for Reese</div>
-    <p class="message">You shoot, you edit, you post, you manage clients, you do it all — and somehow you make it look easy. I built these because you're the person who actually deserves tools that keep up with you. <span class="highlight">Three of them. You're the only one getting three.</span></p>
-    <div class="divider"></div>
-    <p class="sub-message">No logins. No subscriptions. Everything runs in your browser and saves automatically. Open them, use them, make them yours.</p>
+    <div class="brand-sub">Built for Reese · Private Portal</div>
+    <p class="header-tagline">Your window into everything Brian is building with you.</p>
   </header>
 
-  <div class="section-label">Made for you</div>
+  <main>
 
-  <div class="card-wrap">
+    <!-- ══════════════════════════════════════
+         HOW IT'S FILMED SECTION
+    ══════════════════════════════════════ -->
+    <div class="section-divider hif">
+      <div class="section-divider-line"></div>
+      <div class="section-badge">📹 How It's Filmed</div>
+      <div class="section-divider-line"></div>
+    </div>
 
-    <a href="disc-golf-scorecard.html" class="card featured">
-      <div class="card-icon-wrap">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <circle cx="12" cy="12" r="3"/>
-          <line x1="12" y1="2" x2="12" y2="5"/>
-          <line x1="12" y1="19" x2="12" y2="22"/>
-          <line x1="2" y1="12" x2="5" y2="12"/>
-          <line x1="19" y1="12" x2="22" y2="12"/>
-        </svg>
-      </div>
-      <div class="card-title">Disc Golf Scorecard</div>
-      <div class="card-desc">Track every hole, every round. Color-coded scores, running +/- vs par, front/back splits, birdie confetti, and full round history. Built for the disc golfer who keeps score seriously.</div>
-      <div class="card-features">
-        <div class="card-feature">18 holes</div>
-        <div class="card-feature">Color-coded scoring</div>
-        <div class="card-feature">Round history</div>
-        <div class="card-feature">Birdie confetti</div>
-      </div>
-      <div class="card-cta">
-        Open the scorecard
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </div>
-    </a>
+    <div class="card-stack">
 
-    <a href="../disc-golf-social.html" class="card" style="border-color:rgba(129,140,248,0.15);">
-      <div class="card-icon-wrap" style="background:linear-gradient(135deg,rgba(129,140,248,0.12),rgba(99,102,241,0.08));border-color:rgba(129,140,248,0.2);color:#818cf8;">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <!-- Status / Now Card -->
+      <div class="card status-card">
+        <div class="status-header">
+          <div class="status-label">
+            <div class="live-dot"></div>
+            What's Building Now
+          </div>
+          <div class="updated-tag">Updated May 9, 2026</div>
+        </div>
+        <div class="status-text">
+          Building the Whop store — 50 filmmaking templates launching. Light/dark HIF templates now live in Templates folder. Whop product page: <a href="https://whop.com/how-it-s-filmed?a=whitesel" style="color:#ff6b6b;text-decoration:none;border-bottom:1px solid rgba(255,107,107,0.3);" target="_blank">whop.com/how-it-s-filmed?a=whitesel</a>
+        </div>
+        <div class="action-note">
+          <strong>⚡ Action needed:</strong> Reese needs to sign operating agreement before bank account can open. EIN requires 50/50 LLC structure confirmed.
+        </div>
       </div>
-      <div class="card-title">Social Feed</div>
-      <div class="card-desc">See all rounds from Brian, Reese, and Jacob in one place. Year leaderboard, win tracking, and live stats.</div>
-      <div class="card-features">
-        <div class="card-feature">Live feed</div>
-        <div class="card-feature">2026 leaderboard</div>
-        <div class="card-feature">Win tracking</div>
-      </div>
-      <div class="card-cta" style="color:#818cf8;">
-        View social feed
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </div>
-    </a>
 
-    <a href="../Photography - Client Booking & Invoice.html" class="card">
-      <div class="card-icon-wrap">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-          <circle cx="12" cy="13" r="4"/>
-        </svg>
+      <!-- Doc Links -->
+      <div class="links-row">
+        <a href="hif-plan.html" class="doc-link red">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          Project Plan
+        </a>
+        <a href="hif-legal.html" class="doc-link dim">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <line x1="9" y1="9" x2="15" y2="9"/>
+            <line x1="9" y1="13" x2="15" y2="13"/>
+            <line x1="9" y1="17" x2="13" y2="17"/>
+          </svg>
+          Legal Docs
+        </a>
       </div>
-      <div class="card-title">Photography — Client Booking & Invoice</div>
-      <div class="card-desc">Book sessions, send invoices, and track payments without the chaos. Made for photographers who are serious about the business side, not just the creative side.</div>
-      <div class="card-features">
-        <div class="card-feature">Client management</div>
-        <div class="card-feature">Invoice tracking</div>
-        <div class="card-feature">Package builder</div>
-        <div class="card-feature">Saves locally</div>
-      </div>
-      <div class="card-cta">
-        Open the tool
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </div>
-    </a>
 
-    <a href="../Social Media - Content Planner.html" class="card">
-      <div class="card-icon-wrap">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="3" width="20" height="14" rx="2"/>
-          <line x1="8" y1="21" x2="16" y2="21"/>
-          <line x1="12" y1="17" x2="12" y2="21"/>
-        </svg>
+      <!-- HIF Context Card -->
+      <div class="card info-card">
+        <div class="card-title-row">
+          <div class="card-icon red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.5C5.12 20 12 20 12 20s6.88 0 8.59-.5a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+              <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+            </svg>
+          </div>
+          <div class="card-title">How It's Filmed</div>
+        </div>
+        <div class="card-body">170K Instagram followers · Filmmaking content · Co-owned 50/50 with Reese. Building templates, Whop store, and long-form content strategy together.</div>
       </div>
-      <div class="card-title">Social Media — Content Planner</div>
-      <div class="card-desc">Plan posts, track what's scheduled, and keep your content calendar from being a mess. One place for every platform, every idea, every deadline.</div>
-      <div class="card-features">
-        <div class="card-feature">Multi-platform</div>
-        <div class="card-feature">Post scheduling</div>
-        <div class="card-feature">Content calendar</div>
-        <div class="card-feature">Saves locally</div>
-      </div>
-      <div class="card-cta">
-        Open the planner
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </div>
-    </a>
 
-  </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════
+         DISC GOLF SECTION
+    ══════════════════════════════════════ -->
+    <div class="section-divider disc">
+      <div class="section-divider-line"></div>
+      <div class="section-badge">🥏 Disc Golf</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="card-stack">
+
+      <!-- Disc Golf Status Card -->
+      <div class="card disc-card">
+        <div class="card-title-row">
+          <div class="card-icon green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <circle cx="12" cy="12" r="3"/>
+              <line x1="12" y1="2" x2="12" y2="5"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+              <line x1="2" y1="12" x2="5" y2="12"/>
+              <line x1="19" y1="12" x2="22" y2="12"/>
+            </svg>
+          </div>
+          <div class="card-title">Content Concepts</div>
+        </div>
+        <div class="card-body">Reese has notes on disc golf concepts from a previous session — pending input. Content strategy and course concepts coming soon.</div>
+      </div>
+
+      <!-- Scorecard Link -->
+      <div class="links-row">
+        <a href="disc-golf-scorecard.html" class="doc-link green" style="flex:none;width:100%;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          Scorecard Tool
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto;">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Ideas Board -->
+      <div class="card disc-card" id="ideas-board">
+        <div class="ideas-header">
+          <div class="ideas-label">💡 Ideas Board</div>
+          <button class="add-note-btn" onclick="addNote()">+ Add note</button>
+        </div>
+        <div class="notes-grid" id="notes-grid">
+          <!-- Notes injected by JS -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
 
   <footer>
+    <div class="footer-divider"></div>
     <p class="signature">Built for you, Reese.<br>— <strong>Brian</strong></p>
+    <p class="last-synced" id="last-synced"></p>
   </footer>
+
+  <script>
+    // ── Sticky Notes (localStorage) ──
+    const STORAGE_KEY = 'reese-disc-golf-notes';
+    const DEFAULT_NOTES = [
+      { id: 1, text: '' },
+      { id: 2, text: '' },
+      { id: 3, text: '' },
+      { id: 4, text: '' },
+    ];
+
+    function loadNotes() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : DEFAULT_NOTES;
+      } catch(e) {
+        return DEFAULT_NOTES;
+      }
+    }
+
+    function saveNotes(notes) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      } catch(e) {}
+    }
+
+    function renderNotes() {
+      const notes = loadNotes();
+      const grid = document.getElementById('notes-grid');
+      grid.innerHTML = '';
+
+      notes.forEach(note => {
+        const el = document.createElement('div');
+        el.className = 'sticky-note';
+        el.dataset.id = note.id;
+
+        const ta = document.createElement('textarea');
+        ta.placeholder = 'Jot an idea…';
+        ta.value = note.text;
+        ta.rows = 4;
+        ta.addEventListener('input', () => {
+          const notes = loadNotes();
+          const found = notes.find(n => n.id === note.id);
+          if (found) found.text = ta.value;
+          saveNotes(notes);
+        });
+
+        const del = document.createElement('button');
+        del.className = 'note-delete';
+        del.textContent = '✕';
+        del.title = 'Delete note';
+        del.addEventListener('click', () => {
+          const notes = loadNotes().filter(n => n.id !== note.id);
+          saveNotes(notes);
+          renderNotes();
+        });
+
+        el.appendChild(ta);
+        el.appendChild(del);
+        grid.appendChild(el);
+      });
+    }
+
+    function addNote() {
+      const notes = loadNotes();
+      const newId = Date.now();
+      notes.push({ id: newId, text: '' });
+      saveNotes(notes);
+      renderNotes();
+      // Focus the new note
+      setTimeout(() => {
+        const grid = document.getElementById('notes-grid');
+        const last = grid.lastElementChild;
+        if (last) last.querySelector('textarea').focus();
+      }, 50);
+    }
+
+    // ── Last synced timestamp ──
+    function setLastSynced() {
+      const el = document.getElementById('last-synced');
+      const now = new Date();
+      const opts = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' };
+      el.textContent = 'Page loaded ' + now.toLocaleDateString('en-US', opts);
+    }
+
+    // Init
+    renderNotes();
+    setLastSynced();
+  </script>
+
 </body>
 </html>
