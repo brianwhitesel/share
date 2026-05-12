@@ -1204,6 +1204,51 @@
       letter-spacing: 0.04em;
     }
 
+    /* ── SYNC STATUS ── */
+    .sync-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .sync-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .sync-status.live   { color: rgba(76, 175, 80, 0.7); }
+    .sync-status.live .sync-dot {
+      background: #4CAF50;
+      box-shadow: 0 0 6px rgba(76, 175, 80, 0.9);
+      animation: pulse-green 2s infinite;
+    }
+
+    .sync-status.offline { color: #334155; }
+    .sync-status.offline .sync-dot { background: #334155; }
+
+    .sync-status.connecting { color: #475569; }
+    .sync-status.connecting .sync-dot {
+      background: #475569;
+      animation: pulse-gray 1.5s infinite;
+    }
+
+    @keyframes pulse-green {
+      0%, 100% { box-shadow: 0 0 6px rgba(76,175,80,0.9); }
+      50%       { box-shadow: 0 0 12px rgba(76,175,80,0.3); }
+    }
+
+    @keyframes pulse-gray {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 480px) {
       body { padding: 44px 16px 64px; }
@@ -1356,6 +1401,10 @@
             <div class="scoreboard-title-icon">🏆</div>
             Social Scoreboard
           </div>
+          <div id="sync-status" class="sync-status connecting">
+            <div class="sync-dot"></div>
+            <span id="sync-label">Connecting…</span>
+          </div>
         </div>
 
         <!-- Tabs -->
@@ -1506,7 +1555,111 @@
     <p class="last-synced" id="last-synced"></p>
   </footer>
 
+  <!-- Firebase Realtime Database (compat SDK — v8-style API) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <script>
+    // ═══════════════════════════════════════════════════════
+    // FIREBASE INIT
+    // Round data lives at /disc-golf/rounds/ in Realtime DB.
+    // Players (Brian, Jacob, Reese, Michael, Kenny) are stored
+    // locally only — only round data syncs to Firebase.
+    // Falls back to localStorage if Firebase is unavailable.
+    // ═══════════════════════════════════════════════════════
+    const DG_FB_CONFIG = {
+      apiKey:      "AIzaSyCquL5kjOUUhsIfDWT7OGVk43nXwV1tsYM",
+      authDomain:  "disc-golf-social-29d4e.firebaseapp.com",
+      databaseURL: "https://disc-golf-social-29d4e-default-rtdb.firebaseio.com",
+      projectId:   "disc-golf-social-29d4e"
+    };
+
+    let db = null;           // Firebase Database instance (null = offline mode)
+    let fbConnected = false; // tracks .info/connected
+    let liveRounds  = [];    // kept in sync by onValue listener
+
+    try {
+      if (!firebase.apps.length) firebase.initializeApp(DG_FB_CONFIG);
+      db = firebase.database();
+    } catch (e) {
+      console.warn('[Firebase] Init failed — running in localStorage-only mode.', e);
+    }
+
+    // ── Sync status UI ──
+    function updateSyncStatus(state) {
+      // state: 'live' | 'offline' | 'connecting'
+      const el    = document.getElementById('sync-status');
+      const label = document.getElementById('sync-label');
+      if (!el) return;
+      el.className = 'sync-status ' + state;
+      label.textContent = { live: 'Live', offline: 'Offline', connecting: 'Connecting…' }[state] || state;
+    }
+
+    // ── Subscribe to Firebase rounds (real-time) ──
+    function subscribeRounds() {
+      if (!db) {
+        // No Firebase — use localStorage once
+        liveRounds = loadRoundsLocal();
+        updateSyncStatus('offline');
+        renderLeaderboard();
+        renderRecentRounds();
+        return;
+      }
+
+      // Track connection state
+      db.ref('.info/connected').on('value', snap => {
+        fbConnected = snap.val() === true;
+        updateSyncStatus(fbConnected ? 'live' : 'offline');
+      });
+
+      // Real-time listener on all rounds, ordered by timestamp
+      db.ref('/disc-golf/rounds/')
+        .orderByChild('ts')
+        .on('value', snapshot => {
+          const data = snapshot.val() || {};
+          // Firebase returns an object keyed by push ID — convert to array, newest first
+          liveRounds = Object.entries(data)
+            .map(([fbKey, val]) => ({ fbKey, ...val }))
+            .sort((a, b) => (b.ts || 0) - (a.ts || 0));
+
+          // Mirror to localStorage as offline fallback
+          saveRoundsLocal(liveRounds);
+
+          // Re-render whichever panels need fresh data
+          renderLeaderboard();
+          const recentPanel = document.getElementById('tab-recent');
+          if (recentPanel && recentPanel.classList.contains('active')) {
+            renderRecentRounds();
+          }
+        }, err => {
+          console.warn('[Firebase] Read error — falling back to localStorage.', err);
+          liveRounds = loadRoundsLocal();
+          updateSyncStatus('offline');
+          renderLeaderboard();
+          renderRecentRounds();
+        });
+    }
+
+    // ── Round data accessors ──
+    // loadRounds() always returns the live array (Firebase or localStorage fallback)
+    function loadRounds() {
+      return liveRounds.length ? liveRounds : loadRoundsLocal();
+    }
+
+    // localStorage helpers — used as offline cache only
+    const SB_KEY = 'reese-scoreboard-rounds-v2';
+
+    function loadRoundsLocal() {
+      try {
+        const s = localStorage.getItem(SB_KEY);
+        return s ? JSON.parse(s) : [];
+      } catch(e) { return []; }
+    }
+
+    function saveRoundsLocal(rounds) {
+      try { localStorage.setItem(SB_KEY, JSON.stringify(rounds.slice(0, 200))); } catch(e) {}
+    }
+
     // ═══════════════════════════════════════════════════════
     // SCORE HELPERS
     // ═══════════════════════════════════════════════════════
@@ -1545,8 +1698,9 @@
 
     // ═══════════════════════════════════════════════════════
     // SCOREBOARD DATA
+    // Rounds: synced via Firebase (see subscribeRounds above).
+    // Players: stored locally only — no Firebase needed.
     // ═══════════════════════════════════════════════════════
-    const SB_KEY    = 'reese-scoreboard-rounds-v2';
     const PLAYER_KEY = 'reese-scoreboard-players-v2';
 
     const DEFAULT_PLAYERS = [
@@ -1566,17 +1720,6 @@
 
     function savePlayers(p) {
       try { localStorage.setItem(PLAYER_KEY, JSON.stringify(p)); } catch(e) {}
-    }
-
-    function loadRounds() {
-      try {
-        const s = localStorage.getItem(SB_KEY);
-        return s ? JSON.parse(s) : [];
-      } catch(e) { return []; }
-    }
-
-    function saveRounds(r) {
-      try { localStorage.setItem(SB_KEY, JSON.stringify(r)); } catch(e) {}
     }
 
     // ── Par input state ──
@@ -1742,8 +1885,9 @@
     }
 
     // ── Submit round ──
-    // Guests are recorded with the round for the Recent tab but never added to
-    // the members list and never appear on the main leaderboard.
+    // Pushes to Firebase when connected; writes to localStorage when offline.
+    // Guests are stored on the round object but never added to the members list
+    // and never appear on the leaderboard.
     function submitRound() {
       const playerId  = document.getElementById('round-player').value;
       const course    = document.getElementById('round-course').value.trim();
@@ -1755,23 +1899,26 @@
         return;
       }
 
-      const rounds = loadRounds();
       const entry = {
-        id:       Date.now(),
         playerId,
         course,
         date,
-        score:    parValue,
-        ts:       Date.now(),
+        score: parValue,
+        ts:    Date.now(),
       };
+      if (guestName) entry.guestName = guestName;
 
-      // Attach guest info if provided (stored on round, not in player list)
-      if (guestName) {
-        entry.guestName = guestName;
+      if (db && fbConnected) {
+        // ── Online path: push to Firebase
+        // The onValue listener will update liveRounds and re-render automatically.
+        db.ref('/disc-golf/rounds/').push(entry).catch(err => {
+          console.warn('[Firebase] Write failed — saving to localStorage.', err);
+          _saveRoundLocally(entry);
+        });
+      } else {
+        // ── Offline path: write locally, will sync when back online
+        _saveRoundLocally(entry);
       }
-
-      rounds.unshift(entry);
-      saveRounds(rounds);
 
       // Reset form
       document.getElementById('round-course').value = '';
@@ -1779,9 +1926,16 @@
       document.getElementById('round-guest').value  = '';
       parValue = 0;
       updateParDisplay();
-
-      // Switch to leaderboard
       switchTab('leaderboard');
+    }
+
+    function _saveRoundLocally(entry) {
+      const rounds = loadRoundsLocal();
+      rounds.unshift({ ...entry, id: entry.ts });
+      saveRoundsLocal(rounds);
+      liveRounds = rounds;
+      renderLeaderboard();
+      renderRecentRounds();
     }
 
     // ── Render recent rounds ──
@@ -1983,14 +2137,18 @@
     // INIT
     // ═══════════════════════════════════════════════════════
     function init() {
-      // Set today's date as default for round logging
+      // Default date for round logging
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('round-date').value = today;
 
       updateParDisplay();
       updatePlayerSelect();
-      renderLeaderboard();
       renderNotes();
+
+      // Subscribe to rounds — Firebase will call renderLeaderboard()
+      // and renderRecentRounds() reactively via onValue.
+      // If Firebase is unavailable it renders once from localStorage.
+      subscribeRounds();
 
       // Footer timestamp
       const el   = document.getElementById('last-synced');
