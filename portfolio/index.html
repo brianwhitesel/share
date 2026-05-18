@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brian Whitesel — Portfolio</title>
+  <meta name="description" content="5 years of content operations, social media management, and digital product development across 750K+ combined followers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080808;
+      --surface: #111111;
+      --surface2: #161616;
+      --border: #1e1e1e;
+      --text: #f0f0f0;
+      --muted: #888;
+      --dim: #444;
+      --accent: #FF3333;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', -apple-system, sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 48px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 32px;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--text); }
+
+    .name-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .tagline {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    /* Stat grid */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 14px;
+    }
+
+    .stat-number {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+
+    .stat-number span {
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* Platform list */
+    .platform-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .platform-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .platform-name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .platform-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .platform-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      text-align: right;
+    }
+
+    /* Responsibilities */
+    .resp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .resp-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+      position: relative;
+      padding-left: 36px;
+    }
+
+    .resp-item::before {
+      content: '→';
+      position: absolute;
+      left: 14px;
+      color: var(--accent);
+      font-size: 12px;
+    }
+
+    .resp-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* HIF card */
+    .hif-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .hif-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .hif-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .hif-name {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .hif-handle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .hif-body {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .hif-stats {
+      display: flex;
+      gap: 16px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .hif-stat {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+
+    .hif-stat strong {
+      color: var(--accent);
+      display: block;
+      font-size: 15px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+    }
+
+    .hif-stat span {
+      color: var(--muted);
+    }
+
+    /* Skills */
+    .skill-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Contact row */
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .contact-row:hover { border-color: var(--accent); color: var(--text); }
+    .contact-icon { color: var(--accent); font-size: 16px; }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 40px 0;
+    }
+
+    @media (max-width: 480px) {
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-number { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="https://brianwhitesel.github.io/share/brian/" class="back-link">← brianwhitesel</a>
+    <div class="name-row">
+      <div class="avatar">BW</div>
+      <div>
+        <h1>Brian Whitesel</h1>
+        <div class="subtitle">@BRIANWHITESEL</div>
+      </div>
+    </div>
+    <p class="tagline">5 years of content operations, social media management, and digital product development across 750K+ combined followers. Former Content Manager at CardCollector2. Co-founder of How It's Filmed.</p>
+  </div>
+
+  <!-- CardCollector2 -->
+  <div class="section">
+    <div class="section-label">Primary Role · 2021 – 2026</div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-number">592<span>K</span></div>
+        <div class="stat-label">combined CC2 followers across all platforms</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">5</div>
+        <div class="stat-label">years managing content ops</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">4<span>+</span></div>
+        <div class="stat-label">active platforms managed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Platforms -->
+  <div class="section">
+    <div class="section-label">Platforms Managed — CardCollector2</div>
+    <div class="platform-list">
+      <div class="platform-row">
+        <div>
+          <div class="platform-name">YouTube</div>
+          <div class="platform-meta">Primary platform · daily publishing</div>
+        </div>
+        <div class="platform-count">229K subs</div>
+      </div>
+      <div class="platform-row">
+        <div>
+          <div class="platform-name">Instagram</div>
+          <div class="platform-meta">Short-form content · community</div>
+        </div>
+        <div class="platform-count">173K</div>
+      </div>
+      <div class="platform-row">
+        <div>
+          <div class="platform-name">TikTok</div>
+          <div class="platform-meta">Clips · trending content · 4M likes</div>
+        </div>
+        <div class="platform-count">145.6K</div>
+      </div>
+      <div class="platform-row">
+        <div>
+          <div class="platform-name">Facebook</div>
+          <div class="platform-meta">Community · video distribution</div>
+        </div>
+        <div class="platform-count">44K</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Responsibilities -->
+  <div class="section">
+    <div class="section-label">Key Responsibilities</div>
+    <div class="resp-list">
+      <div class="resp-item"><strong>Content calendar ownership</strong> — planned and executed daily publishing schedule across all platforms for 5 consecutive years</div>
+      <div class="resp-item"><strong>Creator coordination</strong> — managed workflow between on-camera talent, editors, and brand partners from concept to publish</div>
+      <div class="resp-item"><strong>Brand partnerships</strong> — sourced, negotiated, and integrated sponsor integrations across YouTube and social channels</div>
+      <div class="resp-item"><strong>Systems & automation</strong> — built AI-assisted production workflows that cut turnaround time significantly; 100+ tools built across tenure</div>
+      <div class="resp-item"><strong>Community management</strong> — sustained engagement in a passionate, high-spending niche (sports card collecting) across platforms</div>
+      <div class="resp-item"><strong>Analytics & optimization</strong> — tracked performance metrics and iterated content strategy based on data</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- HIF -->
+  <div class="section">
+    <div class="section-label">Current Project</div>
+    <div class="hif-card">
+      <div class="hif-top">
+        <div class="hif-dot"></div>
+        <div>
+          <div class="hif-name">How It's Filmed</div>
+          <div class="hif-handle">@howitsfilmed · howitsfilmed.com</div>
+        </div>
+      </div>
+      <p class="hif-body">Co-founder and content lead. A filmmaking tools and education brand for working creators. Responsible for all content strategy, product development, and brand growth. 100+ tools built and shipped.</p>
+      <div class="hif-stats">
+        <div class="hif-stat">
+          <strong>175K</strong>
+          <span>Instagram</span>
+        </div>
+        <div class="hif-stat">
+          <strong>100+</strong>
+          <span>tools built</span>
+        </div>
+        <div class="hif-stat">
+          <strong>Active</strong>
+          <span>2021–present</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills -->
+  <div class="section">
+    <div class="section-label">Skills & Tools</div>
+    <div class="skill-chips">
+      <span class="chip">Content Strategy</span>
+      <span class="chip">Social Media Management</span>
+      <span class="chip">YouTube</span>
+      <span class="chip">Instagram</span>
+      <span class="chip">TikTok</span>
+      <span class="chip">Facebook</span>
+      <span class="chip">Editorial Calendar</span>
+      <span class="chip">Brand Partnerships</span>
+      <span class="chip">Video Production</span>
+      <span class="chip">AI Workflows</span>
+      <span class="chip">Automation</span>
+      <span class="chip">Community Management</span>
+      <span class="chip">Analytics</span>
+      <span class="chip">Creator Management</span>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="section">
+    <div class="section-label">Contact</div>
+    <a href="mailto:brianwhitesel@gmail.com" class="contact-row">
+      <span class="contact-icon">✉</span>
+      brianwhitesel@gmail.com
+    </a>
+  </div>
+
+</div>
+</body>
+</html>
