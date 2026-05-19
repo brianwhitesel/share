@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Country Wire — What's Possible</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #090806;
+      --surface: #131109;
+      --surface2: #1a1710;
+      --border: #2c2518;
+      --text: #f0ece6;
+      --muted: #7a6a54;
+      --dim: #3a3020;
+      --gold: #c9914a;
+      --gold-light: #e8b87a;
+      --gold-bg: #1a1208;
+      --gold-border: #3d2c10;
+    }
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 480px; margin: 0 auto; padding: 0 0 60px; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 48px 20px 40px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+
+    /* ── SECTION ── */
+    .section { padding: 32px 20px 0; }
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    /* ── STAT ROW ── */
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 12px;
+      text-align: center;
+    }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .gap-card {
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .gap-icon { font-size: 24px; flex-shrink: 0; }
+    .gap-text { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .gap-text strong { color: var(--text); }
+
+    /* ── MATH ── */
+    .math-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .math-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .math-row:last-child { border-bottom: none; }
+    .math-label { color: var(--muted); }
+    .math-value { font-weight: 600; color: var(--text); }
+    .math-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px;
+      background: var(--gold-bg);
+      border-top: 1px solid var(--gold-border);
+    }
+    .math-total-label { font-size: 13px; font-weight: 600; color: var(--muted); }
+    .math-total-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .math-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    /* ── SPLIT ── */
+    .split-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .split-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .split-half {
+      padding: 22px 18px;
+      text-align: center;
+    }
+    .split-half.dylan { border-right: 1px solid var(--border); }
+    .split-pct {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .split-half.dylan .split-pct { color: var(--gold); }
+    .split-half.brian .split-pct { color: var(--muted); }
+    .split-name { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px; color: var(--muted); }
+    .split-detail { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+    .split-half.dylan .split-detail { color: #a07840; }
+    .split-footer {
+      border-top: 1px solid var(--border);
+      padding: 14px 18px;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+    .split-footer strong { color: var(--text); }
+
+    /* ── WHAT YOU DO ── */
+    .role-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .role-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .role-icon { font-size: 20px; flex-shrink: 0; }
+    .role-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .role-text strong { color: var(--text); display: block; margin-bottom: 2px; font-size: 14px; }
+
+    /* ── PRODUCT ── */
+    .product-tiers {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tier-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+    .tier-card.paid { border-color: var(--gold-border); background: var(--gold-bg); }
+    .tier-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .tier-name { font-size: 14px; font-weight: 600; }
+    .tier-card.paid .tier-name { color: var(--gold-light); }
+    .tier-price { font-size: 13px; font-weight: 600; color: var(--gold); }
+    .tier-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .tier-items li {
+      font-size: 12px;
+      color: var(--muted);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .tier-items li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--dim);
+      font-size: 11px;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      margin: 32px 20px 0;
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-border);
+      border-radius: 16px;
+      padding: 28px 22px;
+      text-align: center;
+    }
+    .cta-section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .cta-section p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--gold);
+      color: #090806;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">The Country Wire</div>
+    <h1>591,000 followers.<br><span>Zero products.</span></h1>
+    <p>That's the gap. Here's what we do about it — and how you make money without changing how you create.</p>
+  </div>
+
+  <!-- Audience -->
+  <div class="section">
+    <div class="section-label">Your Audience Right Now</div>
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-number">591K</div>
+        <div class="stat-label">Instagram</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">444K</div>
+        <div class="stat-label">TikTok</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">320K</div>
+        <div class="stat-label">Facebook</div>
+      </div>
+    </div>
+    <div class="gap-card">
+      <div class="gap-icon">⚡</div>
+      <div class="gap-text"><strong>Country music fans are one of the most loyal audiences online.</strong> They follow for years, spend on merch, shows, and anything that feels like it's part of the culture. You've built the crowd. No one's ever asked them to pay for anything.</div>
+    </div>
+  </div>
+
+  <!-- Revenue Math -->
+  <div class="section">
+    <div class="section-label">The Math at 1% Conversion</div>
+    <div class="math-card">
+      <div class="math-row">
+        <span class="math-label">Instagram following</span>
+        <span class="math-value">591,000</span>
+      </div>
+      <div class="math-row">
+        <span class="math-label">Conversion rate (conservative)</span>
+        <span class="math-value">1%</span>
+      </div>
+      <div class="math-row">
+        <span class="math-label">Paid members</span>
+        <span class="math-value">5,910</span>
+      </div>
+      <div class="math-row">
+        <span class="math-label">Membership price</span>
+        <span class="math-value">$12/mo</span>
+      </div>
+      <div class="math-total">
+        <span class="math-total-label">Monthly gross revenue</span>
+        <span class="math-total-value">$70,920</span>
+      </div>
+    </div>
+    <div class="math-note">This is conservative. Country music has higher-than-average fan engagement and spend. 1% of Instagram alone — doesn't count TikTok or Facebook.</div>
+  </div>
+
+  <!-- Split -->
+  <div class="section">
+    <div class="section-label">How We Split It</div>
+    <div class="split-card">
+      <div class="split-row">
+        <div class="split-half dylan">
+          <div class="split-pct">75%</div>
+          <div class="split-name">Dylan</div>
+          <div class="split-detail">~$53K/mo at 1% conversion</div>
+        </div>
+        <div class="split-half brian">
+          <div class="split-pct">25%</div>
+          <div class="split-name">Brian</div>
+          <div class="split-detail">~$17.7K/mo</div>
+        </div>
+      </div>
+      <div class="split-footer">
+        <strong>Whop handles the split automatically.</strong> Revenue deposits to both accounts on the same day. No invoices, no awkward conversations.
+      </div>
+    </div>
+  </div>
+
+  <!-- What Dylan Does -->
+  <div class="section">
+    <div class="section-label">What You Actually Do</div>
+    <div class="role-list">
+      <div class="role-card">
+        <div class="role-icon">📱</div>
+        <div class="role-text"><strong>Post the launch content</strong>Brian writes every caption, script, and story. You review, adjust your voice if needed, and post.</div>
+      </div>
+      <div class="role-card">
+        <div class="role-icon">🎙</div>
+        <div class="role-text"><strong>Show up for the community</strong>Occasional live chats, voice notes, exclusives. The stuff you're already doing — just behind a paywall.</div>
+      </div>
+      <div class="role-card">
+        <div class="role-icon">✋</div>
+        <div class="role-text"><strong>Everything else is handled</strong>Product, platform, content strategy, launch sequence, member support, analytics — all Brian. You keep creating.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product -->
+  <div class="section">
+    <div class="section-label">What Gets Built</div>
+    <div class="product-tiers">
+      <div class="tier-card">
+        <div class="tier-header">
+          <div class="tier-name">Free Tier</div>
+          <div class="tier-price">Free</div>
+        </div>
+        <ul class="tier-items">
+          <li>Curated country playlists and artist spotlights</li>
+          <li>Weekly content drops — best of the week</li>
+          <li>Entry point to grow the paid community</li>
+        </ul>
+      </div>
+      <div class="tier-card paid">
+        <div class="tier-header">
+          <div class="tier-name">Paid Membership</div>
+          <div class="tier-price">$12–19/mo</div>
+        </div>
+        <ul class="tier-items">
+          <li>Deep-dive artist breakdowns and history</li>
+          <li>Exclusive community forum — real fans only</li>
+          <li>Live chats and early access content</li>
+          <li>"Hidden gem" recommendations — Dylan's actual picks</li>
+        </ul>
+      </div>
+      <div class="tier-card">
+        <div class="tier-header">
+          <div class="tier-name">One-Time Guide</div>
+          <div class="tier-price">$29–49</div>
+        </div>
+        <ul class="tier-items">
+          <li>The Ultimate Country Music Guide</li>
+          <li>History, must-listens by decade, the full story</li>
+          <li>Evergreen — sells forever after launch</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h3>Let's build it.</h3>
+    <p>One 20-minute call to walk through the plan. If it doesn't make sense for you, no pressure. But the gap's real and the audience is already there.</p>
+    <a class="cta-btn" href="sms:+1XXXXXXXXXX">Text Brian</a>
+  </div>
+
+</div>
+</body>
+</html>
