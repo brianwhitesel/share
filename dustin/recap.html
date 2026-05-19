@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wiggle & Wag — What We Talked About</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --surface2: #1e1e1e;
+      --border: #2a2a2a;
+      --text: #f0f0f0;
+      --dim: #888;
+      --muted: #444;
+      --green: #3dba6e;
+      --green-bg: #0d1f14;
+      --green-border: #1e4a2e;
+    }
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 480px; margin: 0 auto; padding: 0 0 60px; }
+
+    /* ── HEADER ── */
+    .header {
+      padding: 40px 20px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .header-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .header p {
+      font-size: 14px;
+      color: var(--dim);
+      line-height: 1.7;
+    }
+
+    /* ── SECTION ── */
+    .section { padding: 28px 20px 0; }
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 14px;
+    }
+
+    /* ── WHAT'S INCLUDED ── */
+    .included-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .included-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .item-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+    .item-text {}
+    .item-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .item-desc {
+      font-size: 12px;
+      color: var(--dim);
+      line-height: 1.6;
+    }
+
+    /* ── PRICE CARD ── */
+    .price-card {
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      border-radius: 14px;
+      padding: 24px 20px;
+      margin-top: 14px;
+    }
+    .price-top {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .price-amount {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+    }
+    .price-period {
+      font-size: 14px;
+      color: var(--dim);
+      margin-bottom: 4px;
+    }
+    .price-note {
+      font-size: 12px;
+      color: var(--dim);
+      line-height: 1.6;
+    }
+    .price-note span { color: var(--green); }
+
+    /* ── HOW IT WORKS ── */
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-text { font-size: 13px; color: var(--dim); line-height: 1.6; }
+    .step-text strong { color: var(--text); display: block; margin-bottom: 2px; font-size: 14px; }
+
+    /* ── CTA ── */
+    .cta-section {
+      margin: 28px 20px 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .cta-section p {
+      font-size: 14px;
+      color: var(--dim);
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+    .cta-btn {
+      display: block;
+      background: var(--green);
+      color: #0a0a0a;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      padding: 14px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      margin-bottom: 10px;
+    }
+    .cta-secondary {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 32px;
+      padding: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-eyebrow">Wiggle & Wag</div>
+    <h1>Here's everything we talked about.</h1>
+    <p>Three things built, one monthly plan. No long-term contract. Cancel any time.</p>
+  </div>
+
+  <!-- What's Included -->
+  <div class="section">
+    <div class="section-label">What You're Getting</div>
+    <div class="included-list">
+
+      <div class="included-item">
+        <div class="item-icon">📱</div>
+        <div class="item-text">
+          <div class="item-name">Custom Booking App</div>
+          <div class="item-desc">Your services, your hours, your brand. Clients book directly — no DMs, no missed calls, no back-and-forth. Already built with your real info.</div>
+        </div>
+      </div>
+
+      <div class="included-item">
+        <div class="item-icon">🌐</div>
+        <div class="item-text">
+          <div class="item-name">Business Website</div>
+          <div class="item-desc">A clean, mobile-friendly site with your services, hours, and a direct Book Now button. Looks like a real business — because it is one.</div>
+        </div>
+      </div>
+
+      <div class="included-item">
+        <div class="item-icon">🔧</div>
+        <div class="item-text">
+          <div class="item-name">Ongoing Maintenance & Support</div>
+          <div class="item-desc">Hours change? New service? I handle it. You text me, I update it. No tech headaches on your end.</div>
+        </div>
+      </div>
+
+      <div class="included-item">
+        <div class="item-icon">📲</div>
+        <div class="item-text">
+          <div class="item-name">Content Strategy Support</div>
+          <div class="item-desc">Captions, post ideas, and social help so the booking system actually gets traffic. The system only works if people see it.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="price-card">
+      <div class="price-top">
+        <div class="price-amount">$1,250</div>
+        <div class="price-period">/month</div>
+      </div>
+      <div class="price-note">Everything above, live and maintained. <span>Cancel any time — no contract.</span> If you want to start with just the booking system, we can talk about a lighter version too.</div>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <div class="section" style="margin-top: 28px;">
+    <div class="section-label">How It Works</div>
+    <div class="steps-list">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>You say go</strong>We finalize the setup and I get everything live under your brand.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>You share the link</strong>Add it to your Instagram bio, your van wrap, wherever. Clients start booking directly.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>I keep it running</strong>Updates, changes, content — all handled. You focus on the van, I handle the system.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <p>If this makes sense for Wiggle & Wag, just text me. We can get it live this week.</p>
+    <a class="cta-btn" href="sms:+16149358958">Text Brian</a>
+    <div class="cta-secondary">No pressure. Just let me know either way.</div>
+  </div>
+
+  <div class="footer">
+    Built by Brian Whitesel · brianwhitesel@gmail.com<br>
+    (614) 935-8958
+  </div>
+
+</div>
+</body>
+</html>

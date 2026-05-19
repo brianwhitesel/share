@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Understory — The Untold Story</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #08080a;
+      --surface: #111113;
+      --surface2: #181820;
+      --border: #222228;
+      --border2: #2e2e38;
+      --text: #f0eee8;
+      --dim: #7a7878;
+      --muted: #3a3838;
+      --gold: #c8a96e;
+      --gold-light: #e8cfa0;
+      --gold-bg: #130f08;
+      --gold-border: #352810;
+    }
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 480px; margin: 0 auto; padding: 0 0 60px; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 52px 20px 44px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero p {
+      font-size: 15px;
+      color: var(--dim);
+      line-height: 1.75;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+
+    /* ── SECTION ── */
+    .section { padding: 32px 20px 0; }
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    /* ── THE GAP ── */
+    .gap-card {
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .platform-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .platform-row:last-child { border-bottom: none; }
+    .platform-name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .platform-status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+    }
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot.active { background: #3dba6e; }
+    .dot.missing { background: #e05252; }
+    .dot.weak { background: #c8a96e; }
+    .status-text { color: var(--dim); }
+    .status-text.missing { color: #e05252; font-weight: 600; }
+
+    /* ── STATS ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 16px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .stat-label { font-size: 11px; color: var(--dim); margin-top: 6px; letter-spacing: 0.04em; }
+
+    /* ── WHAT I BUILD ── */
+    .deliverable-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .deliverable {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .d-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-border);
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .d-text {}
+    .d-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .d-desc { font-size: 12px; color: var(--dim); line-height: 1.6; }
+
+    /* ── MATH ── */
+    .math-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .math-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .math-row:last-child { border-bottom: none; }
+    .math-label { color: var(--dim); }
+    .math-value { font-weight: 600; }
+    .math-total {
+      background: var(--gold-bg);
+      border-top: 1px solid var(--gold-border);
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .math-total-label { font-size: 12px; color: var(--dim); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+    .math-total-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      color: var(--gold);
+    }
+    .math-note {
+      font-size: 11px;
+      color: var(--dim);
+      margin-top: 10px;
+      line-height: 1.65;
+    }
+
+    /* ── RESPECT CARD ── */
+    .respect-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 18px;
+    }
+    .respect-card p {
+      font-size: 14px;
+      color: var(--dim);
+      line-height: 1.75;
+    }
+    .respect-card p + p { margin-top: 10px; }
+    .respect-card strong { color: var(--text); }
+
+    /* ── CTA ── */
+    .cta-section {
+      margin: 32px 20px 0;
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-border);
+      border-radius: 16px;
+      padding: 28px 22px;
+      text-align: center;
+    }
+    .cta-section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .cta-section p {
+      font-size: 14px;
+      color: var(--dim);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--gold);
+      color: #08080a;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 13px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 32px;
+      padding: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">Understory Columbus</div>
+    <h1>A 1914 landmark.<br><span>Zero TikTok.</span></h1>
+    <p>You have one of the most visually striking venues in Columbus. Here's what we do with it — and why the opportunity is sitting right there.</p>
+  </div>
+
+  <!-- The Gap -->
+  <div class="section">
+    <div class="section-label">Where You Are Right Now</div>
+    <div class="gap-card">
+      <div class="platform-row">
+        <span class="platform-name">Instagram</span>
+        <span class="platform-status"><span class="dot active"></span><span class="status-text">21K followers · active</span></span>
+      </div>
+      <div class="platform-row">
+        <span class="platform-name">Facebook</span>
+        <span class="platform-status"><span class="dot weak"></span><span class="status-text">Wolf's Ridge active · Understory lighter</span></span>
+      </div>
+      <div class="platform-row">
+        <span class="platform-name">TikTok</span>
+        <span class="platform-status"><span class="dot missing"></span><span class="status-text missing">Doesn't exist</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="section" style="margin-top: 28px;">
+    <div class="section-label">Why TikTok, Why Now</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">170M+</div>
+        <div class="stat-label">TikTok US users</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3–5×</div>
+        <div class="stat-label">Higher reach vs Instagram Reels for new accounts</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$0</div>
+        <div class="stat-label">Competitors in your category on TikTok Columbus</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1914</div>
+        <div class="stat-label">The story no one has told yet</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- What Gets Built -->
+  <div class="section" style="margin-top: 28px;">
+    <div class="section-label">The 90-Day Project</div>
+    <div class="deliverable-list">
+      <div class="deliverable">
+        <div class="d-num">1</div>
+        <div class="d-text">
+          <div class="d-title">The Building Story</div>
+          <div class="d-desc">A cinematic 60–90 second TikTok about the 1914 Open Air School. Columbus Landmarks history. What it looked like. What it became. This is the kind of content that gets shared outside your current audience.</div>
+        </div>
+      </div>
+      <div class="deliverable">
+        <div class="d-num">2</div>
+        <div class="d-text">
+          <div class="d-title">The Patio Film</div>
+          <div class="d-desc">The outdoor space is a visual asset most venues would kill for. Shot at the right time of day, edited with intention — not a promo, a moment. Drives event bookings.</div>
+        </div>
+      </div>
+      <div class="deliverable">
+        <div class="d-num">3</div>
+        <div class="d-text">
+          <div class="d-title">The Craft Story (Travis Owens)</div>
+          <div class="d-desc">Your beverage director has a story. Background, process, point of view. That's not a promo. That's content people actually watch — and it builds trust faster than any ad.</div>
+        </div>
+      </div>
+      <div class="deliverable">
+        <div class="d-num">4</div>
+        <div class="d-text">
+          <div class="d-title">Live Event Coverage</div>
+          <div class="d-desc">One live event — captured and cut into a TikTok that makes people feel like they missed something. FOMO drives foot traffic. Foot traffic drives revenue.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROI Math -->
+  <div class="section" style="margin-top: 28px;">
+    <div class="section-label">The Math</div>
+    <div class="math-card">
+      <div class="math-row">
+        <span class="math-label">Average event booking value</span>
+        <span class="math-value">$800–$2,500</span>
+      </div>
+      <div class="math-row">
+        <span class="math-label">New bookings from TikTok reach (conservative)</span>
+        <span class="math-value">2–4 per month</span>
+      </div>
+      <div class="math-row">
+        <span class="math-label">Foot traffic increase from social presence</span>
+        <span class="math-value">Measurable in 60 days</span>
+      </div>
+      <div class="math-row">
+        <span class="math-label">Cost of 90-day TikTok launch project</span>
+        <span class="math-value">TBD — call to discuss</span>
+      </div>
+    </div>
+    <div class="math-note">The building story alone has viral potential in the Columbus market. One video at 100K views reaches more people than your Instagram has seen in a year. That's not a promise — it's the kind of content that earns it.</div>
+  </div>
+
+  <!-- What This Isn't -->
+  <div class="section" style="margin-top: 28px;">
+    <div class="section-label">What This Isn't</div>
+    <div class="respect-card">
+      <p>This isn't a replacement for what's already working. <strong>Instagram stays yours.</strong> Your team has built a real presence there and that doesn't get touched.</p>
+      <p>This is a <strong>separate TikTok channel</strong> — new audience, new reach, new platform — without disrupting anything currently in motion.</p>
+      <p>The goal is to make Understory the most talked-about venue in Columbus on a platform where nobody in your category has shown up yet.</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h3>20 minutes.<br>That's all this needs.</h3>
+    <p>A short call to walk through the project scope, timeline, and what makes sense for Wolf's Ridge. No commitment required.</p>
+    <a class="cta-btn" href="sms:+16149358958">Text Brian</a>
+  </div>
+
+  <div class="footer">
+    Brian Whitesel · brianwhitesel@gmail.com · (614) 935-8958
+  </div>
+
+</div>
+</body>
+</html>
