@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why Switch — Whitesel Beauty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --text: #f0f0f0;
+      --muted: #888;
+      --dim: #444;
+      --green: #3dba6e;
+      --green-bg: #0d1f14;
+      --green-border: #1e4a2e;
+      --red: #e05252;
+      --red-bg: #1f0d0d;
+      --red-border: #4a1e1e;
+    }
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 480px; margin: 0 auto; padding: 32px 16px 60px; }
+
+    .header { text-align: center; margin-bottom: 36px; }
+    .header-eyebrow {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .header p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 10px;
+      line-height: 1.7;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .price-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .price-card {
+      border-radius: 14px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .price-card.them { background: var(--red-bg); border: 1px solid var(--red-border); }
+    .price-card.us   { background: var(--green-bg); border: 1px solid var(--green-border); }
+    .price-brand { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+    .price-card.them .price-brand { color: var(--red); }
+    .price-card.us   .price-brand { color: var(--green); }
+    .price-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 44px;
+      font-weight: 600;
+      line-height: 1;
+    }
+    .price-card.them .price-amount { color: var(--red); }
+    .price-card.us   .price-amount { color: var(--green); }
+    .price-period { font-size: 12px; color: var(--muted); margin-top: 5px; }
+    .price-note { font-size: 11px; margin-top: 10px; line-height: 1.5; }
+    .price-card.them .price-note { color: #c07070; }
+    .price-card.us   .price-note { color: #5db87e; }
+
+    .compare-table {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .compare-header {
+      display: grid;
+      grid-template-columns: 1fr 72px 72px;
+      padding: 12px 16px;
+      background: #111;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-header-label { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+    .compare-header-col { font-size: 11px; text-align: center; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+    .col-them { color: var(--red); }
+    .col-us   { color: var(--green); }
+
+    .compare-row {
+      display: grid;
+      grid-template-columns: 1fr 72px 72px;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+    .compare-row:last-child { border-bottom: none; }
+    .compare-row.highlight { background: #0a150e; }
+    .feature-name { font-size: 13px; font-weight: 500; color: var(--text); }
+    .feature-sub { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+    .feature-check { text-align: center; font-size: 15px; }
+    .check-yes { color: var(--green); font-weight: 700; }
+    .check-no  { color: var(--dim); font-size: 18px; }
+
+    .ownership-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 20px;
+      margin-bottom: 24px;
+    }
+    .ownership-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .ownership-point {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .ownership-point:last-child { border-bottom: none; }
+    .ownership-icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+    .ownership-text { color: var(--muted); line-height: 1.6; }
+    .ownership-text strong { color: var(--text); }
+
+    .cta-card {
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      border-radius: 14px;
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .cta-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .cta-card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .cta-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px;
+      font-weight: 600;
+      color: var(--green);
+      margin: 16px 0 4px;
+    }
+    .cta-price-sub { font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-eyebrow">Benefits Spa &amp; Co.</div>
+    <h1>Why Switch?</h1>
+    <p>Everything GlossGenius does — branded to you,<br>no third-party logo, same price.</p>
+  </div>
+
+  <div class="section-label">The Cost</div>
+  <div class="price-row">
+    <div class="price-card them">
+      <div class="price-brand">GlossGenius</div>
+      <div class="price-amount">$40</div>
+      <div class="price-period">per month</div>
+      <div class="price-note">Their brand on your booking page</div>
+    </div>
+    <div class="price-card us">
+      <div class="price-brand">Yours</div>
+      <div class="price-amount">$40</div>
+      <div class="price-period">per month</div>
+      <div class="price-note">Your name. Your brand. No setup fee.</div>
+    </div>
+  </div>
+
+  <div class="section-label">Feature by Feature</div>
+  <div class="compare-table">
+    <div class="compare-header">
+      <div class="compare-header-label">Feature</div>
+      <div class="compare-header-col col-them">GG</div>
+      <div class="compare-header-col col-us">Yours</div>
+    </div>
+
+    <div class="compare-row">
+      <div><div class="feature-name">Online booking</div><div class="feature-sub">Clients book 24/7</div></div>
+      <div class="feature-check check-yes">✓</div>
+      <div class="feature-check check-yes">✓</div>
+    </div>
+    <div class="compare-row">
+      <div><div class="feature-name">Automated reminders</div><div class="feature-sub">Text clients before appointment</div></div>
+      <div class="feature-check check-yes">✓</div>
+      <div class="feature-check check-yes">✓</div>
+    </div>
+    <div class="compare-row">
+      <div><div class="feature-name">Brandi + Chloe on same link</div><div class="feature-sub">Clients choose their stylist</div></div>
+      <div class="feature-check check-yes">✓</div>
+      <div class="feature-check check-yes">✓</div>
+    </div>
+    <div class="compare-row">
+      <div><div class="feature-name">Full service menu</div><div class="feature-sub">Hair, brows, add-ons with pricing</div></div>
+      <div class="feature-check check-yes">✓</div>
+      <div class="feature-check check-yes">✓</div>
+    </div>
+    <div class="compare-row">
+      <div><div class="feature-name">Client notes</div><div class="feature-sub">Remember preferences per client</div></div>
+      <div class="feature-check check-yes">✓</div>
+      <div class="feature-check check-yes">✓</div>
+    </div>
+    <div class="compare-row">
+      <div><div class="feature-name">Payment processing</div><div class="feature-sub">Tap-to-pay at appointment</div></div>
+      <div class="feature-check check-yes">✓</div>
+      <div class="feature-check check-yes">✓</div>
+    </div>
+    <div class="compare-row highlight">
+      <div><div class="feature-name">Your brand on the page</div><div class="feature-sub">No "Powered by GlossGenius"</div></div>
+      <div class="feature-check check-no">—</div>
+      <div class="feature-check check-yes">✓</div>
+    </div>
+    <div class="compare-row highlight">
+      <div><div class="feature-name">Custom look &amp; feel</div><div class="feature-sub">Colors, fonts, photos — all yours</div></div>
+      <div class="feature-check check-no">—</div>
+      <div class="feature-check check-yes">✓</div>
+    </div>
+    <div class="compare-row highlight">
+      <div><div class="feature-name">You own the code</div><div class="feature-sub">Not dependent on a third-party platform</div></div>
+      <div class="feature-check check-no">—</div>
+      <div class="feature-check check-yes">✓</div>
+    </div>
+    <div class="compare-row highlight">
+      <div><div class="feature-name">Price locked in</div><div class="feature-sub">GlossGenius raised prices twice since 2022</div></div>
+      <div class="feature-check check-no">—</div>
+      <div class="feature-check check-yes">✓</div>
+    </div>
+  </div>
+
+  <div class="section-label">What You're Actually Getting</div>
+  <div class="ownership-card">
+    <h3>Your brand. Your data. Your app.</h3>
+    <div class="ownership-point">
+      <div class="ownership-icon">🏷</div>
+      <div class="ownership-text"><strong>No third-party branding.</strong> When clients book, they see "Benefits Spa &amp; Co." — not GlossGenius. Your name builds your reputation.</div>
+    </div>
+    <div class="ownership-point">
+      <div class="ownership-icon">📱</div>
+      <div class="ownership-text"><strong>Add it to the home screen.</strong> One tap to open. Works offline. Feels like a real app — because it is one.</div>
+    </div>
+    <div class="ownership-point">
+      <div class="ownership-icon">🔒</div>
+      <div class="ownership-text"><strong>You own the client list.</strong> GlossGenius owns their platform. If they shut down or raise prices again, you lose everything. Your app is yours forever.</div>
+    </div>
+    <div class="ownership-point">
+      <div class="ownership-icon">✏️</div>
+      <div class="ownership-text"><strong>Change anything, anytime.</strong> New service? New price? Add a stylist? Updated same day. No waiting on support.</div>
+    </div>
+  </div>
+
+  <div class="cta-card">
+    <h3>Same price. Your brand.</h3>
+    <p>You're already paying $40/month. This gets you that — plus everything that makes it actually yours.</p>
+    <div class="cta-price">$40<span style="font-size:22px; color:var(--muted)">/mo</span></div>
+    <div class="cta-price-sub">No setup fee · No contract · Cancel anytime</div>
+  </div>
+
+</div>
+</body>
+</html>

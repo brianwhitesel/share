@@ -1,8 +1,24 @@
 {
-  "updated": "2026-05-17T21:00:00",
-  "updatedLabel": "May 17, 2026",
+  "updated": "2026-05-18T21:00:00",
+  "updatedLabel": "May 18, 2026",
   "sections": {
     "recent": [
+      {
+        "href": "portfolio/index.html",
+        "icon": "\ud83c\udf93",
+        "title": "Brian Whitesel \u2014 Portfolio",
+        "desc": "5 years of content ops, social, and digital product across 750K+ followers.",
+        "tag": "personal",
+        "added": "2026-05-18"
+      },
+      {
+        "href": "brian/index.html",
+        "icon": "\ud83d\udc4b",
+        "title": "Brian Whitesel \u2014 Landing",
+        "desc": "Personal landing page \u2014 content strategy, AI systems, digital tools.",
+        "tag": "personal",
+        "added": "2026-05-14"
+      },
       {
         "href": "spookyluke/index.html",
         "icon": "\ud83c\udfae",
