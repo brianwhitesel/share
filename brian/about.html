@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Brian Whitesel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --bg: #08080a; --bg2: #0f0f12;
+      --surface: rgba(255,255,255,0.04); --surface2: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+      --text: #f0f0f0; --dim: #888; --muted: #444;
+      --red: #FF3333; --red-dark: #cc2222;
+      --red-bg: rgba(255,51,51,0.07); --red-border: rgba(255,51,51,0.2);
+      --max: 860px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    .page { padding-top: 60px; }
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 60px; background: rgba(8,8,10,0.88); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 32px; gap: 0;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; margin-right: auto; }
+    .nav-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+    .nav-links { display: flex; gap: 28px; align-items: center; margin-right: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--dim); font-weight: 500; transition: color 0.15s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-cta { background: var(--red); color: white; font-size: 13px; font-weight: 700; padding: 8px 18px; border-radius: 7px; transition: background 0.15s; }
+    .nav-cta:hover { background: var(--red-dark); }
+    @media(max-width:600px) { .nav { padding: 0 20px; } .nav-links { display: none; } }
+    .section { max-width: var(--max); margin: 0 auto; padding: 72px 32px; border-bottom: 1px solid var(--border); }
+    .eyebrow { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--red); }
+    h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 20px; }
+    h1 em { color: var(--red); font-style: normal; }
+    .lead { font-size: 16px; color: var(--dim); line-height: 1.8; max-width: 540px; margin-bottom: 36px; }
+    .btn-primary { display: inline-block; background: var(--red); color: white; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; padding: 13px 26px; border-radius: 8px; transition: background 0.15s; }
+    .btn-primary:hover { background: var(--red-dark); }
+    .btn-secondary { display: inline-block; background: var(--surface); border: 1px solid var(--border2); color: var(--text); font-size: 14px; font-weight: 500; padding: 13px 26px; border-radius: 8px; transition: all 0.15s; }
+    .btn-secondary:hover { background: var(--surface2); }
+    footer { max-width: var(--max); margin: 0 auto; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
+    .footer-logo { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 12px; color: var(--muted); }
+    .footer-links a:hover { color: var(--dim); }
+    @media(max-width:600px) { .section { padding: 48px 20px; } footer { padding: 24px 20px; } }
+
+    .hero { max-width: var(--max); margin: 0 auto; padding: 88px 32px 72px; border-bottom: 1px solid var(--border); }
+    .story-blocks { display: flex; flex-direction: column; gap: 32px; }
+    .story-block { border-left: 2px solid var(--red); padding-left: 24px; }
+    .story-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--red); font-weight: 600; margin-bottom: 10px; }
+    .story-body { font-size: 15px; color: var(--dim); line-height: 1.8; }
+    .values-row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .value-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px 20px; flex: 1 1 200px; }
+    .value-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .value-desc { font-size: 13px; color: var(--dim); line-height: 1.65; }
+    .cta-block { max-width: var(--max); margin: 0 auto; padding: 48px 32px; text-align: center; border-top: 1px solid var(--border); }
+    .cta-block h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .cta-block p { font-size: 14px; color: var(--dim); margin-bottom: 28px; }
+    @media(max-width:600px) { .hero { padding: 64px 20px 48px; } .cta-block { padding: 40px 20px; } }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-logo">
+      <div class="nav-dot"></div>
+      BRIAN WHITESEL
+    </div>
+    <ul class="nav-links">
+      <li><a href="work.html">Work</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="services.html">Services</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Let's Talk</a>
+  </nav>
+
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">About</div>
+      <h1>Built from scratch.</h1>
+      <p class="lead">Delaware, Ohio → 750K followers → building AI systems. Here's how it happened.</p>
+    </div>
+
+    <div class="section">
+      <div class="story-blocks">
+        <div class="story-block">
+          <div class="story-label">Where It Started</div>
+          <p class="story-body">I started flipping Instagram theme pages and trading accounts at 14. Not because someone told me to — because I was bored in a small town and the internet had rules I could figure out. By the time I graduated, I'd already learned more about audience growth than most marketing classes teach.</p>
+        </div>
+        <div class="story-block">
+          <div class="story-label">Five Years in the Trenches</div>
+          <p class="story-body">In 2021 I joined CardCollector2 as a one-person content operation. Over five years I built and ran the full social media engine — strategy, production, scheduling, analytics, and systems — for a sports media channel that grew to 750K+ combined followers. I did it without a team and without a playbook.</p>
+        </div>
+        <div class="story-block">
+          <div class="story-label">Building on the Side</div>
+          <p class="story-body">While running CC2, I co-founded How It's Filmed with Reese White. We grew it to 175K Instagram followers, built 100+ production tools, and built a fully gated app. Every piece of it was built in evenings and weekends. None of it was handed to us.</p>
+        </div>
+        <div class="story-block">
+          <div class="story-label">What I'm Building Now</div>
+          <p class="story-body">I left CC2 in May 2026 to go fully independent. I'm taking on Columbus retainer clients for content strategy and custom digital tools, building AI-powered workflows, and developing creator revenue systems. The same scrappy approach — just pointed at my own thing.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="eyebrow">Values</div>
+      <div class="values-row">
+        <div class="value-card">
+          <div class="value-title">Speed over perfection</div>
+          <div class="value-desc">Shipping something real beats planning something perfect. Always.</div>
+        </div>
+        <div class="value-card">
+          <div class="value-title">Systems over guesswork</div>
+          <div class="value-desc">If you can't repeat it, it isn't a strategy. It's luck.</div>
+        </div>
+        <div class="value-card">
+          <div class="value-title">Honest work over overpromising</div>
+          <div class="value-desc">I'll tell you what I can actually deliver and what's not in scope.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-block">
+      <h2>Ready to work together?</h2>
+      <p>I take on a small number of clients at a time. If it's a fit, we'll know quickly.</p>
+      <a href="contact.html" class="btn-primary">Let's Talk →</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">
+      <div class="nav-dot"></div>
+      BRIAN WHITESEL
+    </div>
+    <div class="footer-links">
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </footer>
+</body>
+</html>

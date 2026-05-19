@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services — Brian Whitesel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --bg: #08080a; --bg2: #0f0f12;
+      --surface: rgba(255,255,255,0.04); --surface2: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+      --text: #f0f0f0; --dim: #888; --muted: #444;
+      --red: #FF3333; --red-dark: #cc2222;
+      --red-bg: rgba(255,51,51,0.07); --red-border: rgba(255,51,51,0.2);
+      --max: 860px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    .page { padding-top: 60px; }
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 60px; background: rgba(8,8,10,0.88); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 32px; gap: 0;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; margin-right: auto; }
+    .nav-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+    .nav-links { display: flex; gap: 28px; align-items: center; margin-right: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--dim); font-weight: 500; transition: color 0.15s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-cta { background: var(--red); color: white; font-size: 13px; font-weight: 700; padding: 8px 18px; border-radius: 7px; transition: background 0.15s; }
+    .nav-cta:hover { background: var(--red-dark); }
+    @media(max-width:600px) { .nav { padding: 0 20px; } .nav-links { display: none; } }
+    .section { max-width: var(--max); margin: 0 auto; padding: 72px 32px; border-bottom: 1px solid var(--border); }
+    .eyebrow { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--red); }
+    h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 20px; }
+    h1 em { color: var(--red); font-style: normal; }
+    .lead { font-size: 16px; color: var(--dim); line-height: 1.8; max-width: 540px; margin-bottom: 36px; }
+    .btn-primary { display: inline-block; background: var(--red); color: white; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; padding: 13px 26px; border-radius: 8px; transition: background 0.15s; }
+    .btn-primary:hover { background: var(--red-dark); }
+    .btn-secondary { display: inline-block; background: var(--surface); border: 1px solid var(--border2); color: var(--text); font-size: 14px; font-weight: 500; padding: 13px 26px; border-radius: 8px; transition: all 0.15s; }
+    .btn-secondary:hover { background: var(--surface2); }
+    footer { max-width: var(--max); margin: 0 auto; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
+    .footer-logo { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 12px; color: var(--muted); }
+    .footer-links a:hover { color: var(--dim); }
+    @media(max-width:600px) { .section { padding: 48px 20px; } footer { padding: 24px 20px; } }
+
+    .hero { max-width: var(--max); margin: 0 auto; padding: 88px 32px 72px; border-bottom: 1px solid var(--border); }
+    .services-wrap { max-width: var(--max); margin: 0 auto; padding: 48px 32px; border-bottom: 1px solid var(--border); }
+    .service-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px 28px; margin-bottom: 14px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
+    .service-card.featured { border-color: var(--red-border); background: var(--red-bg); }
+    .service-name { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .service-price { font-size: 13px; color: var(--red); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 14px; }
+    .service-desc { font-size: 14px; color: var(--dim); line-height: 1.75; margin-bottom: 18px; }
+    .service-includes { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 20px; }
+    .service-includes li { font-size: 13px; color: var(--dim); padding-left: 16px; position: relative; line-height: 1.5; }
+    .service-includes li::before { content: '→'; position: absolute; left: 0; color: var(--red); font-size: 11px; }
+    .service-right { text-align: right; }
+    .service-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    @media(max-width:600px) { .service-card { grid-template-columns: 1fr; } .service-right { text-align: left; } .services-wrap { padding: 32px 20px; } }
+    .faq { max-width: var(--max); margin: 0 auto; padding: 48px 32px; }
+    .faq h2 { font-size: 22px; font-weight: 800; margin-bottom: 20px; letter-spacing: -0.02em; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { padding: 18px 0; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+    .faq-q::after { content: '+'; font-size: 18px; color: var(--red); font-weight: 300; transition: transform 0.2s; }
+    .faq-item.open .faq-q::after { content: '−'; }
+    .faq-a { font-size: 13px; color: var(--dim); line-height: 1.75; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s; }
+    .faq-item.open .faq-a { max-height: 200px; padding-bottom: 18px; }
+    @media(max-width:600px) { .faq { padding: 32px 20px; } .hero { padding: 64px 20px 48px; } }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-logo">
+      <div class="nav-dot"></div>
+      BRIAN WHITESEL
+    </div>
+    <ul class="nav-links">
+      <li><a href="work.html">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html" class="active">Services</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Let's Talk</a>
+  </nav>
+
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Services</div>
+      <h1>How we work together.</h1>
+      <p class="lead">Three ways to engage — monthly retainer, project-based, or revenue share. Pick the one that fits.</p>
+    </div>
+
+    <div class="services-wrap">
+      <div class="service-card featured">
+        <div class="service-left">
+          <div class="service-name">Content Strategy &amp; Social Media</div>
+          <div class="service-price">$1,250–$2,500/mo</div>
+          <div class="service-desc">I build and run your content system. Strategy, posting, captions, analytics — all of it. You focus on your business.</div>
+          <ul class="service-includes">
+            <li>Content calendar and strategy</li>
+            <li>Caption writing and scheduling</li>
+            <li>Platform management (Instagram, TikTok, Facebook)</li>
+            <li>Monthly analytics review</li>
+            <li>Custom landing tools as needed</li>
+          </ul>
+          <a href="contact.html" class="btn-primary">Book a Discovery Call</a>
+        </div>
+        <div class="service-right">
+          <div class="service-tag">Monthly Retainer</div>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-left">
+          <div class="service-name">Custom Digital Tools</div>
+          <div class="service-price">From $1,500 · project-based</div>
+          <div class="service-desc">Custom booking apps, client portals, and mobile-first tools built for how your business actually runs. Not off-the-shelf — yours.</div>
+          <ul class="service-includes">
+            <li>Custom booking and scheduling systems</li>
+            <li>Mobile-first design</li>
+            <li>Built to match your brand</li>
+            <li>Monthly maintenance available</li>
+          </ul>
+          <a href="contact.html" class="btn-secondary">Tell Me What You Need</a>
+        </div>
+        <div class="service-right">
+          <div class="service-tag">Project-Based</div>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-left">
+          <div class="service-name">Creator Revenue Systems</div>
+          <div class="service-price">25% revenue share · no upfront cost</div>
+          <div class="service-desc">You have the audience. I build the product, set up the platform, and handle the backend. You keep creating. We split what comes in.</div>
+          <ul class="service-includes">
+            <li>Product build (membership, guide, or digital download)</li>
+            <li>Whop platform setup and management</li>
+            <li>Member support and backend operations</li>
+            <li>Revenue tracked and split automatically</li>
+          </ul>
+          <a href="contact.html" class="btn-secondary">See If It's a Fit</a>
+        </div>
+        <div class="service-right">
+          <div class="service-tag">Revenue Share</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq">
+      <h2>Common questions</h2>
+      <div class="faq-item">
+        <div class="faq-q">How quickly can you start?</div>
+        <div class="faq-a">Most projects kick off within 1–2 weeks of our first call. If you need something faster, just say so — I'll tell you what's possible.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do you work with businesses outside Columbus?</div>
+        <div class="faq-a">Yes. Digital tools and content strategy work anywhere. I prefer Columbus for in-person work when possible, but remote is fully available.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is there a minimum commitment?</div>
+        <div class="faq-a">Retainer clients are month-to-month — no long-term contract required. Project work has its own scope and timeline that we agree on upfront.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">
+      <div class="nav-dot"></div>
+      BRIAN WHITESEL
+    </div>
+    <div class="footer-links">
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.faq-q').forEach(q => q.addEventListener('click', () => q.parentElement.classList.toggle('open')));
+  </script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work — Brian Whitesel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --bg: #08080a; --bg2: #0f0f12;
+      --surface: rgba(255,255,255,0.04); --surface2: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+      --text: #f0f0f0; --dim: #888; --muted: #444;
+      --red: #FF3333; --red-dark: #cc2222;
+      --red-bg: rgba(255,51,51,0.07); --red-border: rgba(255,51,51,0.2);
+      --max: 860px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    .page { padding-top: 60px; }
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 60px; background: rgba(8,8,10,0.88); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 32px; gap: 0;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; margin-right: auto; }
+    .nav-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+    .nav-links { display: flex; gap: 28px; align-items: center; margin-right: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--dim); font-weight: 500; transition: color 0.15s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-cta { background: var(--red); color: white; font-size: 13px; font-weight: 700; padding: 8px 18px; border-radius: 7px; transition: background 0.15s; }
+    .nav-cta:hover { background: var(--red-dark); }
+    @media(max-width:600px) { .nav { padding: 0 20px; } .nav-links { display: none; } }
+    .section { max-width: var(--max); margin: 0 auto; padding: 72px 32px; border-bottom: 1px solid var(--border); }
+    .eyebrow { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--red); }
+    h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 20px; }
+    h1 em { color: var(--red); font-style: normal; }
+    .lead { font-size: 16px; color: var(--dim); line-height: 1.8; max-width: 540px; margin-bottom: 36px; }
+    .btn-primary { display: inline-block; background: var(--red); color: white; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; padding: 13px 26px; border-radius: 8px; transition: background 0.15s; }
+    .btn-primary:hover { background: var(--red-dark); }
+    .btn-secondary { display: inline-block; background: var(--surface); border: 1px solid var(--border2); color: var(--text); font-size: 14px; font-weight: 500; padding: 13px 26px; border-radius: 8px; transition: all 0.15s; }
+    .btn-secondary:hover { background: var(--surface2); }
+    footer { max-width: var(--max); margin: 0 auto; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
+    .footer-logo { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 12px; color: var(--muted); }
+    .footer-links a:hover { color: var(--dim); }
+    @media(max-width:600px) { .section { padding: 48px 20px; } footer { padding: 24px 20px; } }
+
+    .hero { max-width: var(--max); margin: 0 auto; padding: 88px 32px 72px; border-bottom: 1px solid var(--border); }
+    .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .work-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 20px; display: flex; flex-direction: column; gap: 10px; transition: border-color 0.15s, transform 0.15s; }
+    .work-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+    .work-tag { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); font-weight: 600; }
+    .work-title { font-size: 17px; font-weight: 700; line-height: 1.2; }
+    .work-desc { font-size: 13px; color: var(--dim); line-height: 1.65; flex: 1; }
+    .work-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+    .pill { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; font-size: 10px; letter-spacing: 0.04em; color: var(--muted); }
+    @media(max-width:540px) { .work-grid { grid-template-columns: 1fr; } }
+    .cta-block { max-width: var(--max); margin: 0 auto; padding: 48px 32px; text-align: center; }
+    .cta-block p { font-size: 15px; color: var(--dim); margin-bottom: 24px; }
+    @media(max-width:600px) { .hero { padding: 64px 20px 48px; } .cta-block { padding: 40px 20px; } }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-logo">
+      <div class="nav-dot"></div>
+      BRIAN WHITESEL
+    </div>
+    <ul class="nav-links">
+      <li><a href="work.html" class="active">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Let's Talk</a>
+  </nav>
+
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Selected Work</div>
+      <h1>Five years of real work.</h1>
+      <p class="lead">From filmmaker tools to content operations to custom digital builds — each project started with a real problem.</p>
+    </div>
+
+    <div class="section">
+      <div class="work-grid">
+        <div class="work-card">
+          <div class="work-tag">Product · Co-Founder</div>
+          <div class="work-title">How It's Filmed</div>
+          <div class="work-desc">Built a filmmaker production tool platform from zero. 175K Instagram, 100+ tools, fully gated app. Active since 2021 alongside co-founder Reese White.</div>
+          <div class="work-pills">
+            <span class="pill">Product Build</span>
+            <span class="pill">Co-Founder</span>
+            <span class="pill">Active</span>
+          </div>
+        </div>
+        <div class="work-card">
+          <div class="work-tag">Content Operations</div>
+          <div class="work-title">CardCollector2</div>
+          <div class="work-desc">5 years running social strategy and content production for a top sports media channel. 750K+ combined following built and managed as a one-person operation.</div>
+          <div class="work-pills">
+            <span class="pill">Social Strategy</span>
+            <span class="pill">Production</span>
+            <span class="pill">750K+ Followers</span>
+          </div>
+        </div>
+        <div class="work-card">
+          <div class="work-tag">Tool · Client Work</div>
+          <div class="work-title">Custom Booking App</div>
+          <div class="work-desc">Built a fully branded booking system replacing off-the-shelf software for a Columbus business. Mobile-first, custom services and hours, full confirmation flow.</div>
+          <div class="work-pills">
+            <span class="pill">Web App</span>
+            <span class="pill">Local Business</span>
+            <span class="pill">2026</span>
+          </div>
+        </div>
+        <div class="work-card">
+          <div class="work-tag">Strategy · Production</div>
+          <div class="work-title">Understory Columbus</div>
+          <div class="work-desc">90-day TikTok launch project for Wolf's Ridge Brewing's venue. 4 cinematic videos. Zero TikTok presence positioned for high organic reach.</div>
+          <div class="work-pills">
+            <span class="pill">Content Strategy</span>
+            <span class="pill">TikTok</span>
+            <span class="pill">Columbus</span>
+          </div>
+        </div>
+        <div class="work-card">
+          <div class="work-tag">AI Systems</div>
+          <div class="work-title">AI Workspace System</div>
+          <div class="work-desc">A complete AI-powered personal workspace that runs locally in HTML. Cross-device, persistent memory, trigger-library driven. Currently packaging as a sellable product.</div>
+          <div class="work-pills">
+            <span class="pill">AI Systems</span>
+            <span class="pill">IP Protected</span>
+            <span class="pill">In Progress</span>
+          </div>
+        </div>
+        <div class="work-card">
+          <div class="work-tag">Shadow Operator Tool</div>
+          <div class="work-title">Creator Vetting Scorecard</div>
+          <div class="work-desc">10-criteria scoring system for vetting creator partnerships. 30 points, Go/Hold/Pass verdict, built-in pipeline tracker. Available on Whop.</div>
+          <div class="work-pills">
+            <span class="pill">Tool</span>
+            <span class="pill">Creator Economy</span>
+            <span class="pill">Whop</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-block">
+      <p>Have a project in mind? Let's talk.</p>
+      <a href="contact.html" class="btn-primary">Get in Touch →</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">
+      <div class="nav-dot"></div>
+      BRIAN WHITESEL
+    </div>
+    <div class="footer-links">
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </footer>
+</body>
+</html>
