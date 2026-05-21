@@ -1,27 +1,43 @@
 {
-  "updated": "2026-05-18T21:00:00",
-  "updatedLabel": "May 18, 2026",
+  "updated": "2026-05-20T21:00:00",
+  "updatedLabel": "May 20, 2026",
   "sections": {
     "recent": [
       {
+        "href": "understory/index.html",
+        "icon": "🌿",
+        "title": "Understory — The Untold Story",
+        "desc": "Prospect pitch page for Understory (Columbus). Editorial dark theme.",
+        "tag": "prospect",
+        "added": "2026-05-19"
+      },
+      {
+        "href": "agency/index.html",
+        "icon": "✂️",
+        "title": "Custom Booking Apps for Salons — $40/mo",
+        "desc": "Productized salon-booking app offer page (Dustin pivot positioning).",
+        "tag": "prospect",
+        "added": "2026-05-19"
+      },
+      {
         "href": "portfolio/index.html",
-        "icon": "\ud83c\udf93",
-        "title": "Brian Whitesel \u2014 Portfolio",
+        "icon": "🎓",
+        "title": "Brian Whitesel — Portfolio",
         "desc": "5 years of content ops, social, and digital product across 750K+ followers.",
         "tag": "personal",
         "added": "2026-05-18"
       },
       {
         "href": "brian/index.html",
-        "icon": "\ud83d\udc4b",
-        "title": "Brian Whitesel \u2014 Landing",
-        "desc": "Personal landing page \u2014 content strategy, AI systems, digital tools.",
+        "icon": "👋",
+        "title": "Brian Whitesel — Landing",
+        "desc": "Personal landing page — content strategy, AI systems, digital tools.",
         "tag": "personal",
         "added": "2026-05-14"
       },
       {
         "href": "spookyluke/index.html",
-        "icon": "\ud83c\udfae",
+        "icon": "🎮",
         "title": "SpookyLuke Application",
         "desc": "Brian's editor application page for SpookyLuke",
         "tag": "friend",
@@ -29,43 +45,27 @@
       },
       {
         "href": "clip-organizer/index.html",
-        "icon": "\ud83c\udfac",
-        "title": "Clip Organizer \u2014 Rocket League",
+        "icon": "🎬",
+        "title": "Clip Organizer — Rocket League",
         "desc": "Personal Rocket League clip organizer tool",
         "tag": "tool",
         "added": "2026-04-30"
-      },
-      {
-        "href": "greg-lav-pitch/index.html",
-        "icon": "\ud83d\udcd6",
-        "title": "Greg Lav \u2014 Lessons From My 20s",
-        "desc": "Updated pitch page with section nav + mobile fixes",
-        "tag": "friend",
-        "added": "2026-04-30"
-      },
-      {
-        "href": "serge-gatari-bw26/index.html",
-        "icon": "\ud83e\udd16",
-        "title": "Serge Gatari \u2014 AI Business",
-        "desc": "One-person AI company framework mapped to Brian's build",
-        "tag": "knowledge",
-        "added": "2026-04-28"
       }
     ],
     "knowledge": [
       {
         "href": "serge-gatari-bw26/index.html",
-        "icon": "\ud83e\udd16",
-        "title": "Serge Gatari \u2014 AI Business",
+        "icon": "🤖",
+        "title": "Serge Gatari — AI Business",
         "desc": "One-person AI company framework. Playbooks, context layer, AI employees.",
         "tag": "knowledge",
         "added": "2026-04-28"
       },
       {
         "href": "mmoc3-vip-bw26/index.html",
-        "icon": "\ud83c\udf93",
+        "icon": "🎓",
         "title": "MMOC3 VIP Sessions",
-        "desc": "Iman Gadzhi's Make Money Online Challenge 3.0 \u2014 all 5 days + 5 VIP sessions complete.",
+        "desc": "Iman Gadzhi's Make Money Online Challenge 3.0 — all 5 days + 5 VIP sessions complete.",
         "tag": "knowledge",
         "added": "2026-05-04"
       }
@@ -87,7 +87,7 @@
       },
       {
         "href": "dmd/index.html",
-        "name": "Derek \u2014 DMD Renovation",
+        "name": "Derek — DMD Renovation",
         "role": "Renovation & construction",
         "status": "June 2026",
         "tag": "client"
@@ -116,16 +116,30 @@
     ],
     "prospects": [
       {
+        "href": "understory/index.html",
+        "name": "Understory",
+        "role": "Columbus · pitch page live May 19",
+        "status": "ready to send",
+        "tag": "prospect"
+      },
+      {
+        "href": "agency/index.html",
+        "name": "Salon Booking Apps — $40/mo",
+        "role": "Productized offer page (Dustin pivot positioning)",
+        "status": "live",
+        "tag": "prospect"
+      },
+      {
         "href": "elevator/index.html",
         "name": "Elevator Brewery",
-        "role": "Columbus \u00b7 outreach sent Apr 19",
+        "role": "Columbus · outreach sent Apr 19",
         "status": "sent",
         "tag": "prospect"
       },
       {
         "href": "land-grant/index.html",
         "name": "Land-Grant Brewing",
-        "role": "Columbus \u00b7 outreach sent Apr 19",
+        "role": "Columbus · outreach sent Apr 19",
         "status": "sent",
         "tag": "prospect"
       },
@@ -147,7 +161,7 @@
       {
         "href": "dylan/index.html",
         "name": "Dylan Miracle",
-        "role": "Editor \u2014 Card Collector 2",
+        "role": "Editor — Card Collector 2",
         "tag": "friend"
       },
       {
@@ -165,7 +179,7 @@
       {
         "href": "jacobmanken/index.html",
         "name": "Jacob Manken",
-        "role": "Disc golf \u00b7 shared tools",
+        "role": "Disc golf · shared tools",
         "tag": "friend"
       },
       {
@@ -189,7 +203,7 @@
       {
         "href": "greg-lav-pitch/index.html",
         "name": "Greg Lav",
-        "role": "Lessons From My 20s \u2014 pitch page",
+        "role": "Lessons From My 20s — pitch page",
         "tag": "friend"
       },
       {
@@ -202,44 +216,44 @@
     "tools": [
       {
         "href": "Photography - Client Booking & Invoice.html",
-        "icon": "\ud83d\udcf7",
-        "title": "Photography \u2014 Booking & Invoice",
+        "icon": "📷",
+        "title": "Photography — Booking & Invoice",
         "desc": "Track client sessions, packages, and payments."
       },
       {
         "href": "Videography - Production Tracker.html",
-        "icon": "\ud83c\udfac",
-        "title": "Videography \u2014 Production Tracker",
+        "icon": "🎬",
+        "title": "Videography — Production Tracker",
         "desc": "Manage shoots, deliverables, and billing."
       },
       {
         "href": "Social Media - Content Planner.html",
-        "icon": "\ud83d\udcf1",
-        "title": "Social Media \u2014 Content Planner",
+        "icon": "📱",
+        "title": "Social Media — Content Planner",
         "desc": "Plan, schedule, and track posts across platforms."
       },
       {
         "href": "disc-golf-scorecard.html",
-        "icon": "\ud83e\udd4f",
-        "title": "Disc Golf \u2014 Scorecard",
+        "icon": "🥏",
+        "title": "Disc Golf — Scorecard",
         "desc": "Brian's personal disc golf scorecard."
       },
       {
         "href": "disc-golf-ptp.html",
-        "icon": "\ud83e\udd4f",
-        "title": "Disc Golf \u2014 Pass the Phone",
-        "desc": "Group scorecard mode \u2014 pass-the-phone scoring."
+        "icon": "🥏",
+        "title": "Disc Golf — Pass the Phone",
+        "desc": "Group scorecard mode — pass-the-phone scoring."
       },
       {
         "href": "disc-golf-social.html",
-        "icon": "\ud83e\udd4f",
-        "title": "Disc Golf \u2014 Brian, Reese, Jacob",
+        "icon": "🥏",
+        "title": "Disc Golf — Brian, Reese, Jacob",
         "desc": "Social round tracker for the regular crew."
       },
       {
         "href": "clip-organizer/index.html",
-        "icon": "\ud83c\udfae",
-        "title": "Clip Organizer \u2014 Rocket League",
+        "icon": "🎮",
+        "title": "Clip Organizer — Rocket League",
         "desc": "Personal RL clip tagger and organizer."
       }
     ]

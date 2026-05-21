@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dylan Lowe — Opportunity Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0c;
+    --surface: #111114;
+    --card: #16161a;
+    --border: #242428;
+    --gold: #c9a227;
+    --gold-dim: rgba(201,162,39,0.10);
+    --gold-border: rgba(201,162,39,0.22);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.10);
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.10);
+    --text: #e8e8ec;
+    --dim: #888;
+    --muted: #555;
+  }
+  html { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  body { padding: 0 20px 80px; }
+  .container { max-width: 680px; margin: 0 auto; }
+
+  /* HEADER */
+  .header { padding: 52px 0 36px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--gold); background: var(--gold-dim); border: 1px solid var(--gold-border);
+    padding: 4px 12px; border-radius: 100px; margin-bottom: 18px;
+  }
+  .title { font-size: clamp(26px, 6vw, 38px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 10px; }
+  .title .gold { color: var(--gold); }
+  .subtitle { font-size: 15px; color: var(--dim); line-height: 1.65; max-width: 560px; }
+  .meta { font-size: 12px; color: var(--muted); margin-top: 14px; }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* SECTION */
+  .section { margin-bottom: 36px; }
+  .section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em;
+    color: var(--gold); margin-bottom: 14px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px; margin-bottom: 10px;
+  }
+  .card-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .card-body { font-size: 14px; color: #aaa; line-height: 1.65; }
+
+  /* STAT ROW */
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
+  .stat {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; text-align: center;
+  }
+  .stat-value { font-size: 22px; font-weight: 800; color: var(--gold); line-height: 1; }
+  .stat-label { font-size: 11px; color: var(--dim); margin-top: 5px; }
+
+  /* MATH BLOCK */
+  .math-block {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden; margin-bottom: 10px;
+  }
+  .math-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px; border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 14px;
+  }
+  .math-row:last-child { border-bottom: none; }
+  .math-label { color: var(--dim); }
+  .math-value { font-weight: 600; }
+  .math-total {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px; background: var(--gold-dim);
+    border-top: 1px solid var(--gold-border);
+  }
+  .math-total-label { font-size: 13px; font-weight: 700; color: var(--gold); }
+  .math-total-value { font-size: 20px; font-weight: 800; color: var(--gold); }
+
+  /* SPLIT */
+  .split-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .split-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; text-align: center;
+  }
+  .split-who { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dim); margin-bottom: 6px; }
+  .split-pct { font-size: 28px; font-weight: 800; }
+  .split-note { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+  /* ALERT */
+  .alert {
+    padding: 14px 16px; border-radius: 10px; font-size: 13px;
+    line-height: 1.65; margin-bottom: 12px;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .alert-gold { background: var(--gold-dim); border: 1px solid var(--gold-border); color: var(--gold); }
+  .alert-green { background: var(--green-dim); border: 1px solid rgba(34,197,94,0.25); color: var(--green); }
+  .alert-blue { background: var(--blue-dim); border: 1px solid rgba(59,130,246,0.25); color: var(--blue); }
+
+  /* TIMELINE */
+  .timeline { list-style: none; }
+  .timeline li {
+    display: flex; gap: 14px; padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 14px; color: #bbb; align-items: flex-start;
+  }
+  .timeline li:last-child { border-bottom: none; }
+  .tl-date { font-size: 12px; font-weight: 700; color: var(--gold); min-width: 72px; padding-top: 2px; }
+  .tl-event { line-height: 1.55; }
+
+  /* PRODUCT CARDS */
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .product-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px;
+  }
+  .product-card.tbd { border-style: dashed; border-color: rgba(201,162,39,0.3); background: transparent; }
+  .product-num { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin-bottom: 6px; }
+  .product-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .product-price { font-size: 12px; color: var(--gold); font-weight: 600; margin-bottom: 6px; }
+  .product-desc { font-size: 13px; color: #888; line-height: 1.5; }
+
+  /* CONTEXT BOX */
+  .context-box {
+    background: #0d0d10; border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 18px; font-size: 13px;
+    color: #999; line-height: 1.7; font-style: italic;
+    border-left: 3px solid var(--gold);
+  }
+
+  @media (max-width: 520px) {
+    .stat-row { grid-template-columns: repeat(3, 1fr); }
+    .product-grid { grid-template-columns: 1fr; }
+    .split-row { grid-template-columns: 1fr 1fr; }
+    .stat-value { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="eyebrow">UpLevel · Peer Review</div>
+    <div class="title">Dylan Lowe<br><span class="gold">Fan Community Opportunity</span></div>
+    <div class="subtitle">Shadow Operator deal I'm working — would love your take on the approach before I send the pitch. Quick read, 3–4 minutes.</div>
+    <div class="meta">Shared by Brian Whitesel · May 2026</div>
+  </div>
+
+  <!-- WHO IS DYLAN -->
+  <div class="section">
+    <div class="section-label">Who He Is</div>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-value">591K</div>
+        <div class="stat-label">Instagram</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">444K</div>
+        <div class="stat-label">TikTok</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">1M+</div>
+        <div class="stat-label">Combined Reach</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">The Setup</div>
+      <div class="card-body">Dylan Lowe is a country music creator (@thecountrywire) with 1M+ combined reach in one of the most purchase-ready niches on social. He's built the audience entirely through organic content — lifestyle, culture, music discovery — and he's currently making the move to Nashville. Zero owned digital products. No paid community. No email list. All of his income is brand deals — one-time checks that don't compound.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">The Opening</div>
+      <div class="card-body">I reached out cold as a Shadow Operator — someone who builds the product, handles the launch, and splits revenue. His reply: "Haven't looked into that yet" followed by "What product did you build?" That's the door. He's curious, he's receptive, and he has no competing product or existing operator relationship.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- THE PIVOT -->
+  <div class="section">
+    <div class="section-label">The Pitch — What I'm Building</div>
+
+    <div class="alert alert-gold">
+      💡 <div><strong>Key insight:</strong> His audience are fans, not aspiring creators. The wrong move is a "how I built 500K" course. The right move is a private community where fans pay for closer access to him and the music.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Country Wire — Fan Community on Whop</div>
+      <div class="card-body">A private membership community hosted on Whop. Founding members join at $9/mo locked for life — price rises after the 3-day launch window closes. Products are partially TBD — to be discovered with Dylan based on what he wants to include — but the anchor feature is already clear.</div>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-num">Anchor Feature</div>
+        <div class="product-name">Curated Playlist Library</div>
+        <div class="product-price">Included with membership</div>
+        <div class="product-desc">Old country, new country, rising artists — hand-picked. Paywalled. Something fans can't get anywhere else.</div>
+      </div>
+      <div class="product-card">
+        <div class="product-num">Community Space</div>
+        <div class="product-name">Behind the Scenes</div>
+        <div class="product-price">Included with membership</div>
+        <div class="product-desc">Nashville content, music finds, things that don't make it to the public feed.</div>
+      </div>
+      <div class="product-card tbd" style="grid-column:1/-1;">
+        <div class="product-num">Products TBD</div>
+        <div class="product-name" style="color:rgba(201,162,39,0.7);">Whatever Dylan Wants to Include</div>
+        <div class="product-desc" style="color:rgba(201,162,39,0.5);">Discover with Dylan. He knows his audience better than anyone. We build what he's excited about.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- REVENUE MATH -->
+  <div class="section">
+    <div class="section-label">The Math</div>
+
+    <div class="math-block">
+      <div class="math-row">
+        <span class="math-label">WhatsApp waitlist (~1% of combined audience)</span>
+        <span class="math-value">~10,000 people</span>
+      </div>
+      <div class="math-row">
+        <span class="math-label">Floor conversion (2% join @ $9/mo)</span>
+        <span class="math-value">$1,800/mo</span>
+      </div>
+      <div class="math-row">
+        <span class="math-label">Conservative (5% join @ $9/mo)</span>
+        <span class="math-value">$4,500/mo</span>
+      </div>
+      <div class="math-row">
+        <span class="math-label">Strong (10% join @ $9/mo)</span>
+        <span class="math-value">$9,000/mo</span>
+      </div>
+      <div class="math-total">
+        <span class="math-total-label">Launch target range</span>
+        <span class="math-total-value">$1,800–$4,500/mo</span>
+      </div>
+    </div>
+
+    <div class="split-row">
+      <div class="split-card">
+        <div class="split-who">Dylan</div>
+        <div class="split-pct" style="color:var(--gold);">70%</div>
+        <div class="split-note">$1,260–$3,150/mo<br>floor → conservative</div>
+      </div>
+      <div class="split-card">
+        <div class="split-who">Brian (me)</div>
+        <div class="split-pct" style="color:var(--green);">30%</div>
+        <div class="split-note">$540–$1,350/mo<br>recurring, every month</div>
+      </div>
+    </div>
+
+    <div class="alert alert-green">
+      ↑ <div>Unlike a one-time product launch, this number compounds. The community grows, the MRR grows. Nothing resets to zero after the window closes.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- LAUNCH APPROACH -->
+  <div class="section">
+    <div class="section-label">Launch Approach — 6 Phases, ~3 Weeks</div>
+
+    <div class="card">
+      <div class="card-title">The Model (Layla Greenhill / Iman framework)</div>
+      <div class="card-body">Validate before building. Move Dylan's audience from Instagram → WhatsApp waitlist → Whop community. No product fully built before demand is confirmed. 3-day enrollment window with founding member price lock as the urgency mechanism. Dylan posts — I script, build, and execute. He has nothing to lose.</div>
+    </div>
+
+    <ul class="timeline">
+      <li><span class="tl-date">Phase 1</span><span class="tl-event">Instagram Stories build-up — test demand, tease something's coming, screenshot DM flood</span></li>
+      <li><span class="tl-date">Phase 2</span><span class="tl-event">Move interested followers into a private WhatsApp waitlist group via story link</span></li>
+      <li><span class="tl-date">Phase 3</span><span class="tl-event">Welcome message + voice note from Dylan inside the group — set exact dates, tease founding rate</span></li>
+      <li><span class="tl-date">Phase 4</span><span class="tl-event">Full offer breakdown day before launch — $9/mo founding rate revealed, open time set</span></li>
+      <li><span class="tl-date">Phase 5</span><span class="tl-event">Enrollment opens — drop link, poll the group on objections, message every person who voted</span></li>
+      <li><span class="tl-date">Phase 6</span><span class="tl-event">Urgency close — 12 hrs, 3 hrs, 1 hr countdown. Follow through on every deadline</span></li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <!-- WHERE WE ARE -->
+  <div class="section">
+    <div class="section-label">Where Things Stand</div>
+
+    <div class="context-box">
+      Dylan replied to my initial outreach. He said he "hasn't looked into" owned products — then asked what I built. That's the opening. I haven't sent the pitch yet. The pitch page and the community landing page are both built and ready. I'm sending Message 1 to answer his question, then dropping the link same day after he replies.
+    </div>
+
+    <div class="alert alert-blue" style="margin-top:12px;">
+      📋 <div>What's built: a full operator pitch doc (revenue math, 6-phase launch plan, DM sequence), a fan community landing page (waitlist email capture, vision layout), and this summary. Waiting on Dylan's reply to send the pitch.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ASK -->
+  <div class="section">
+    <div class="section-label">My Ask</div>
+    <div class="card">
+      <div class="card-title">Looking for your take on a few things</div>
+      <div class="card-body" style="line-height:2;">
+        1. Does the community-first framing feel right for this audience, or would you push a different product type?<br>
+        2. Is 30/70 in Dylan's favor the right starting split to propose — or would you anchor differently?<br>
+        3. The $9/mo founding rate — too low to be taken seriously, or right for a launch-window price lock?<br>
+        4. Anything you'd tighten in the 6-phase sequence based on what's worked for you?
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
