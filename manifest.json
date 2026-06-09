@@ -1,8 +1,16 @@
 {
-  "updated": "2026-05-20T21:00:00",
-  "updatedLabel": "May 20, 2026",
+  "updated": "2026-06-08T21:00:00",
+  "updatedLabel": "June 8, 2026",
   "sections": {
     "recent": [
+      {
+        "href": "chloe-brandi/index.html",
+        "icon": "💇",
+        "title": "Chloe & Brandi — Social Media Packages",
+        "desc": "Salon social media management proposal (Benefits Spa & Co.) — on-site shoots, 3 monthly packages from $500/mo. Includes booking page.",
+        "tag": "prospect",
+        "added": "2026-06-07"
+      },
       {
         "href": "understory/index.html",
         "icon": "🌿",
@@ -116,6 +124,13 @@
     ],
     "prospects": [
       {
+        "href": "chloe-brandi/index.html",
+        "name": "Chloe & Brandi",
+        "role": "Benefits Spa & Co. · social media packages pitch live Jun 7",
+        "status": "ready to send",
+        "tag": "prospect"
+      },
+      {
         "href": "understory/index.html",
         "name": "Understory",
         "role": "Columbus · pitch page live May 19",
@@ -210,6 +225,12 @@
         "href": "spookyluke/index.html",
         "name": "SpookyLuke",
         "role": "Editor application page",
+        "tag": "friend"
+      },
+      {
+        "href": "jared/index.html",
+        "name": "Jared",
+        "role": "Feedback request — Dylan Lowe shadow-operator pitch",
         "tag": "friend"
       }
     ],

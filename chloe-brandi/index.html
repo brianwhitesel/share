@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media Packages — Chloe & Brandi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080c12;
+    --surface: rgba(255,255,255,0.04);
+    --surface-2: rgba(255,255,255,0.07);
+    --card: #111318;
+    --border: rgba(255,255,255,0.08);
+    --border-2: rgba(255,255,255,0.14);
+    --text: #f0f0f5;
+    --text-muted: #8a8a9a;
+    --text-dim: #4a4a5a;
+    --accent: #e41e2b;
+    --accent-dim: rgba(228,30,43,0.12);
+    --gold: #c9a227;
+    --gold-dim: rgba(201,162,39,0.12);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.10);
+    --purple: #8b5cf6;
+    --purple-dim: rgba(139,92,246,0.12);
+    --radius: 14px;
+    --font: 'Inter', sans-serif;
+  }
+
+  [data-theme="light"] {
+    --bg: #f4f5f7;
+    --surface: rgba(255,255,255,0.9);
+    --surface-2: rgba(255,255,255,1);
+    --card: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --border-2: rgba(0,0,0,0.14);
+    --text: #0d0d14;
+    --text-muted: #5a5a6a;
+    --text-dim: #9a9aaa;
+    --accent-dim: rgba(228,30,43,0.08);
+    --gold-dim: rgba(201,162,39,0.08);
+    --green-dim: rgba(34,197,94,0.08);
+    --purple-dim: rgba(139,92,246,0.08);
+  }
+
+  html { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; transition: background 0.2s, color 0.2s; }
+  body { padding: 0 16px 80px; }
+  .container { max-width: 720px; margin: 0 auto; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 0 0; }
+  .topbar-brand { font-size: 13px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+  .theme-toggle {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: border-color 0.15s;
+  }
+  .theme-toggle:hover { border-color: var(--border-2); }
+  .theme-toggle svg { width: 16px; height: 16px; stroke: var(--text-muted); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-moon { display: block; }
+  .icon-sun { display: none; }
+  [data-theme="light"] .icon-moon { display: none; }
+  [data-theme="light"] .icon-sun { display: block; }
+
+  /* ── HERO ── */
+  .hero { padding: 44px 0 36px; text-align: center; }
+  .hero-eyebrow {
+    display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--accent); background: var(--accent-dim);
+    border: 1px solid rgba(228,30,43,0.2); padding: 4px 14px; border-radius: 100px;
+    margin-bottom: 18px;
+  }
+  .hero-title { font-size: clamp(26px, 6vw, 38px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 12px; }
+  .hero-sub { font-size: 15px; color: var(--text-muted); max-width: 480px; margin: 0 auto 10px; line-height: 1.65; }
+  .hero-note { font-size: 12px; color: var(--text-dim); }
+
+  /* ── HOW IT WORKS ── */
+  .how-section { margin-bottom: 40px; }
+  .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-dim); margin-bottom: 14px; }
+  .how-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .how-step {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .how-num {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    background: var(--accent-dim); border: 1px solid rgba(228,30,43,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--accent);
+  }
+  .how-text { font-size: 13px; color: var(--text-muted); line-height: 1.45; }
+  .how-text strong { color: var(--text); display: block; font-weight: 600; margin-bottom: 1px; }
+
+  /* ── PACKAGES ── */
+  .packages { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+
+  .pkg {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .pkg:hover { border-color: var(--border-2); }
+  .pkg.popular { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold-dim); }
+
+  .pkg-header {
+    padding: 20px 22px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  }
+  .pkg-name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-dim); margin-bottom: 5px; }
+  .pkg-price { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+  .pkg-price span { font-size: 14px; font-weight: 500; color: var(--text-muted); letter-spacing: 0; }
+  .pkg-desc { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
+
+  .pkg-badge {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 4px 10px; border-radius: 100px; white-space: nowrap; flex-shrink: 0;
+  }
+  .badge-popular { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,162,39,0.3); }
+  .badge-best    { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(139,92,246,0.3); }
+  .badge-entry   { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+
+  .pkg-body { padding: 18px 22px 20px; }
+  .pkg-shoot-banner {
+    background: var(--accent-dim); border: 1px solid rgba(228,30,43,0.18);
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .pkg-shoot-banner svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .pkg-shoot-text { font-size: 13px; font-weight: 600; color: var(--text); }
+  .pkg-shoot-sub { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+  .pkg-features { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .pkg-features li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; color: var(--text-muted); line-height: 1.45;
+  }
+  .feat-icon { flex-shrink: 0; margin-top: 1px; }
+  .feat-icon svg { width: 15px; height: 15px; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .feat-check svg { stroke: var(--green); }
+  .feat-star svg { stroke: var(--gold); }
+  .feat-plus svg { stroke: var(--purple); }
+
+  .pkg-divider { height: 1px; background: var(--border); margin: 14px 0; }
+
+  .pkg-platforms { display: flex; flex-wrap: wrap; gap: 7px; }
+  .platform-tag {
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 6px;
+    background: var(--surface); border: 1px solid var(--border); color: var(--text-muted);
+  }
+
+  @media (min-width: 680px) {
+    .packages { display: grid; grid-template-columns: 1fr 1fr; }
+    .pkg.wide { grid-column: 1 / -1; }
+    .how-steps { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  /* ── BOOKING CTA ── */
+  .cta-section { text-align: center; padding: 8px 0 0; }
+  .cta-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .cta-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+  .cta-btn {
+    display: inline-block; background: var(--accent); color: #fff;
+    font-family: var(--font); font-size: 15px; font-weight: 700;
+    padding: 14px 36px; border-radius: 10px; text-decoration: none;
+    border: none; cursor: pointer; transition: opacity 0.15s, transform 0.1s;
+  }
+  .cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .cta-note { font-size: 12px; color: var(--text-dim); margin-top: 12px; }
+
+  .footer { text-align: center; padding: 40px 0 0; font-size: 12px; color: var(--text-dim); }
+  .footer strong { color: var(--text-muted); }
+
+  @media (max-width: 480px) {
+    .how-steps { grid-template-columns: 1fr 1fr; }
+    .pkg-header { flex-direction: column; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="topbar">
+    <div class="topbar-brand">Social Media Packages</div>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Proposal · Chloe & Brandi</div>
+    <div class="hero-title">Social Media Management<br>Packages</div>
+    <div class="hero-sub">We come to you — shoot professional video and photo content at the salon every 1–2 weeks, then handle all editing, posting, and strategy.</div>
+    <div class="hero-note">All packages include on-site shoots. No long-term contracts required.</div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-section">
+    <div class="section-label">How it works</div>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <div class="how-text"><strong>We show up</strong>Come to the salon on a scheduled shoot day — no prep needed from you</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <div class="how-text"><strong>We capture</strong>Film transformations, process shots, behind-the-scenes, and styled final looks</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <div class="how-text"><strong>We edit</strong>Cut Reels, color-grade photos, write captions — everything on-brand</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">4</div>
+        <div class="how-text"><strong>We post</strong>Scheduled to your platforms at the best times. You approve if you want to</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PACKAGES -->
+  <div class="section-label">Choose your package</div>
+  <div class="packages">
+
+    <!-- $500 -->
+    <div class="pkg">
+      <div class="pkg-header">
+        <div>
+          <div class="pkg-name">Starter</div>
+          <div class="pkg-price">$500<span>/mo</span></div>
+          <div class="pkg-desc">One shoot a month, consistent presence built from real salon footage.</div>
+        </div>
+        <div class="pkg-badge badge-entry">Entry</div>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-shoot-banner">
+          <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          <div>
+            <div class="pkg-shoot-text">1 shoot/month</div>
+            <div class="pkg-shoot-sub">Up to 2 hours on-site</div>
+          </div>
+        </div>
+        <div class="pkg-platforms">
+          <span class="platform-tag">Instagram</span>
+        </div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>8–10 edited posts from shoot footage</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Before &amp; after transformation posts</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Caption copywriting + hashtags</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Monthly content calendar</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- $750 -->
+    <div class="pkg">
+      <div class="pkg-header">
+        <div>
+          <div class="pkg-name">Essential</div>
+          <div class="pkg-price">$750<span>/mo</span></div>
+          <div class="pkg-desc">Longer shoot session with Reels content and two-platform coverage.</div>
+        </div>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-shoot-banner">
+          <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          <div>
+            <div class="pkg-shoot-text">1 shoot/month</div>
+            <div class="pkg-shoot-sub">Up to 3 hours on-site</div>
+          </div>
+        </div>
+        <div class="pkg-platforms">
+          <span class="platform-tag">Instagram</span>
+          <span class="platform-tag">Facebook</span>
+        </div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>12–14 edited posts from shoot footage</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><strong>2 finished Reels/month</strong> cut from shoot</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Before &amp; after transformations</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Caption copywriting + hashtags</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Monthly content calendar</li>
+          <li><span class="feat-icon feat-star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Monthly reach &amp; engagement snapshot</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- $1,000 POPULAR -->
+    <div class="pkg popular">
+      <div class="pkg-header">
+        <div>
+          <div class="pkg-name">Pro</div>
+          <div class="pkg-price">$1,000<span>/mo</span></div>
+          <div class="pkg-desc">Bi-weekly shoots keep your feed fresh and your audience engaged year-round.</div>
+        </div>
+        <div class="pkg-badge badge-popular">Most Popular</div>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-shoot-banner">
+          <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          <div>
+            <div class="pkg-shoot-text">2 shoots/month — bi-weekly</div>
+            <div class="pkg-shoot-sub">~2 hours per shoot</div>
+          </div>
+        </div>
+        <div class="pkg-platforms">
+          <span class="platform-tag">Instagram</span>
+          <span class="platform-tag">Facebook</span>
+          <span class="platform-tag">Google Business</span>
+        </div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>16–20 edited posts/month (photos + clips)</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><strong>4 finished Reels/month</strong></li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Stories 3×/week from shoot content</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Before &amp; after series</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Caption copywriting + hashtags</li>
+          <li><span class="feat-icon feat-star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Monthly analytics report</li>
+          <li><span class="feat-icon feat-star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Google Business updates + posts</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- $1,500 -->
+    <div class="pkg">
+      <div class="pkg-header">
+        <div>
+          <div class="pkg-name">Growth</div>
+          <div class="pkg-price">$1,500<span>/mo</span></div>
+          <div class="pkg-desc">Multi-platform push with TikTok repurposing and a monthly strategy call.</div>
+        </div>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-shoot-banner">
+          <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          <div>
+            <div class="pkg-shoot-text">2 shoots/month — bi-weekly</div>
+            <div class="pkg-shoot-sub">~3 hours per shoot, BTS capture included</div>
+          </div>
+        </div>
+        <div class="pkg-platforms">
+          <span class="platform-tag">Instagram</span>
+          <span class="platform-tag">Facebook</span>
+          <span class="platform-tag">Google Business</span>
+          <span class="platform-tag">TikTok</span>
+        </div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>24–28 posts/month across all platforms</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><strong>6 Reels/month</strong> + TikTok repurposing</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Daily stories from shoot content</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Behind-the-scenes series</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Caption copywriting + hashtags</li>
+          <li><span class="feat-icon feat-star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Monthly strategy call</li>
+          <li><span class="feat-icon feat-star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Monthly analytics report</li>
+          <li><span class="feat-icon feat-star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Competitor content audit</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- $2,500 BEST VALUE -->
+    <div class="pkg wide">
+      <div class="pkg-header">
+        <div>
+          <div class="pkg-name">Full Service</div>
+          <div class="pkg-price">$2,500<span>/mo</span></div>
+          <div class="pkg-desc">Weekly or near-weekly shoots, full multi-platform content operation, and managed paid ads.</div>
+        </div>
+        <div class="pkg-badge badge-best">Best Value</div>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-shoot-banner">
+          <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          <div>
+            <div class="pkg-shoot-text">3–4 shoots/month — weekly cadence</div>
+            <div class="pkg-shoot-sub">Full production setup each visit</div>
+          </div>
+        </div>
+        <div class="pkg-platforms">
+          <span class="platform-tag">Instagram</span>
+          <span class="platform-tag">Facebook</span>
+          <span class="platform-tag">Google Business</span>
+          <span class="platform-tag">TikTok</span>
+          <span class="platform-tag">YouTube Shorts</span>
+        </div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>30+ posts/month + daily stories across all platforms</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><strong>8 Reels/month</strong> + YouTube Shorts repurposing</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Full transformation + BTS + styled-look content</li>
+          <li><span class="feat-icon feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Caption copywriting + hashtag strategy</li>
+          <li><span class="feat-icon feat-plus"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>Paid social ad management ($500 ad spend included)</li>
+          <li><span class="feat-icon feat-plus"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>Weekly performance reports</li>
+          <li><span class="feat-icon feat-plus"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>Monthly strategy call + competitor analysis</li>
+          <li><span class="feat-icon feat-plus"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>48-hour priority turnaround on all deliverables</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-title">Ready to get started?</div>
+    <div class="cta-sub">Pick a package and let's get a first shoot on the calendar.</div>
+    <a href="mailto:brianwhitesel@gmail.com?subject=Social Media Package — Benefits Spa" class="cta-btn">Get in Touch</a>
+    <div class="cta-note">Questions? Send a message and we'll get back to you same day.</div>
+  </div>
+
+  <div class="footer">
+    <p>Put together by <strong>Brian Whitesel</strong> · brianwhitesel.com</p>
+  </div>
+
+</div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+}
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+</script>
+</body>
+</html>

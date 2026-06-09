@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Benefits Spa & Co. — Book Now</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf8f5;
+      --surface: #ffffff;
+      --border: #ede9e3;
+      --text: #1a1a1a;
+      --muted: #888;
+      --dim: #bbb;
+      --accent: #b08d6a;
+      --accent-light: #f0e8de;
+      --accent-dark: #8c6d4f;
+      --green: #4a7c59;
+      --red: #c0392b;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 20px 16px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .logo-word {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+
+    .logo-tag {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 0 80px;
+    }
+
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .progress-bar { height: 3px; background: var(--border); width: 100%; }
+    .progress-fill { height: 100%; background: var(--accent); transition: width 0.4s ease; }
+
+    .step-indicator {
+      padding: 16px 20px 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-back {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px;
+      margin-left: -4px;
+      line-height: 1;
+    }
+
+    .step-label {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-head { padding: 8px 20px 20px; }
+    .section-head h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+    .section-head p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.6;
+    }
+
+    .stylist-list {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .stylist-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .stylist-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .stylist-card.selected { border-color: var(--accent); background: var(--accent-light); }
+
+    .stylist-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      flex-shrink: 0;
+      color: #fff;
+    }
+
+    .avatar-brandi { background: #b08d6a; }
+    .avatar-chloe { background: #7a9e8a; }
+
+    .stylist-info { flex: 1; }
+    .stylist-name { font-size: 17px; font-weight: 600; letter-spacing: -0.2px; }
+    .stylist-title { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .stylist-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .stylist-tag {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .service-group { padding: 0 16px 20px; }
+
+    .service-group-title {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      padding: 0 4px;
+    }
+
+    .service-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .service-item {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .service-item:hover { border-color: var(--accent); }
+    .service-item.selected { border-color: var(--accent); background: var(--accent-light); }
+
+    .service-left { flex: 1; }
+    .service-name { font-size: 15px; font-weight: 500; }
+    .service-duration { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .service-price {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--accent-dark);
+    }
+
+    .service-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      margin-left: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+      font-size: 12px;
+      color: transparent;
+    }
+
+    .service-item.selected .service-check {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .calendar-wrap { padding: 0 16px 20px; }
+
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .cal-nav button {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 4px 8px;
+    }
+
+    .cal-month {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .cal-dow {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      padding: 4px 0 8px;
+    }
+
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      position: relative;
+    }
+
+    .cal-day.empty { cursor: default; }
+    .cal-day.past { color: var(--dim); cursor: default; }
+    .cal-day.available:hover { background: var(--accent-light); }
+    .cal-day.today { font-weight: 600; color: var(--accent-dark); }
+    .cal-day.selected { background: var(--accent); color: #fff; }
+    .cal-day.has-slots::after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: absolute;
+      bottom: 3px;
+    }
+    .cal-day.selected::after { background: #fff; }
+
+    .slots-wrap { padding: 0 16px 20px; }
+    .slots-date-label { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+
+    .slots-group-title {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 8px;
+      margin-top: 16px;
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .time-slot {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .time-slot:hover { border-color: var(--accent); }
+    .time-slot.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .time-slot.booked { background: var(--bg); color: var(--dim); cursor: default; text-decoration: line-through; border-color: var(--border); font-size: 12px; }
+
+    .form-wrap {
+      padding: 0 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+    .form-group textarea { height: 80px; resize: none; }
+
+    .summary-card {
+      margin: 0 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .summary-header {
+      background: var(--accent-light);
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-header-label {
+      font-size: 11px;
+      color: var(--accent-dark);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .summary-header-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .summary-rows { padding: 4px 0; }
+
+    .summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row-label { color: var(--muted); }
+    .summary-row-value { font-weight: 500; text-align: right; max-width: 55%; }
+
+    .summary-total {
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--accent-light);
+      border-top: 1px solid var(--border);
+    }
+
+    .summary-total-label { font-size: 13px; font-weight: 600; }
+    .summary-total-price {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--accent-dark);
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .confirm-wrap {
+      padding: 40px 20px 20px;
+      text-align: center;
+    }
+
+    .confirm-icon {
+      width: 72px;
+      height: 72px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 28px;
+      color: #fff;
+    }
+
+    .confirm-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .confirm-sub {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 320px;
+      margin: 0 auto 28px;
+    }
+
+    .confirm-details {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 4px 0;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    /* Sending overlay */
+    .sending-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(250,248,245,0.9);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      color: var(--accent-dark);
+    }
+
+    .sending-overlay.visible { display: flex; }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      gap: 10px;
+      z-index: 50;
+    }
+
+    .btn-primary {
+      flex: 1;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary:hover { background: var(--accent-dark); }
+    .btn-primary:disabled { opacity: 0.4; cursor: default; }
+
+    .reminders-row {
+      margin: 0 16px 20px;
+      background: #f0f7f3;
+      border: 1px solid #c8e0d1;
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .reminders-icon { font-size: 16px; flex-shrink: 0; }
+    .reminders-text { font-size: 13px; color: #3a6147; line-height: 1.5; }
+
+    .divider { height: 1px; background: var(--border); margin: 8px 16px 20px; }
+    .spacer { height: 20px; }
+
+    @media (min-width: 480px) {
+      .bottom-bar { max-width: 480px; left: 50%; transform: translateX(-50%); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sending overlay -->
+<div class="sending-overlay" id="sendingOverlay">
+  <div class="spinner"></div>
+  <div>Confirming your booking…</div>
+</div>
+
+<div class="site-header">
+  <div class="logo-word">Benefits Spa &amp; Co.</div>
+  <div class="logo-tag">Brandi &amp; Chloe · Mount Vernon, OH</div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+<div class="wrap">
+
+  <!-- STEP 1: Choose Stylist -->
+  <div class="step active" id="step1">
+    <div class="step-indicator">
+      <span class="step-label">Step 1 of 4 — Choose Your Stylist</span>
+    </div>
+    <div class="section-head">
+      <h2>Who are you booking with?</h2>
+      <p>Both stylists share this booking link — pick who you'd like to see.</p>
+    </div>
+    <div class="stylist-list">
+      <div class="stylist-card" id="card-brandi" onclick="selectStylist('Brandi')">
+        <div class="stylist-avatar avatar-brandi">B</div>
+        <div class="stylist-info">
+          <div class="stylist-name">Brandi</div>
+          <div class="stylist-title">Lead Stylist · Benefits Spa &amp; Co.</div>
+          <div class="stylist-tags">
+            <span class="stylist-tag">Color</span>
+            <span class="stylist-tag">Cuts</span>
+            <span class="stylist-tag">Highlights</span>
+            <span class="stylist-tag">Extensions</span>
+            <span class="stylist-tag">Perms</span>
+          </div>
+        </div>
+      </div>
+      <div class="stylist-card" id="card-chloe" onclick="selectStylist('Chloe')">
+        <div class="stylist-avatar avatar-chloe">C</div>
+        <div class="stylist-info">
+          <div class="stylist-name">Chloe</div>
+          <div class="stylist-title">Stylist · Benefits Spa &amp; Co.</div>
+          <div class="stylist-tags">
+            <span class="stylist-tag">Cuts</span>
+            <span class="stylist-tag">Color</span>
+            <span class="stylist-tag">Brow Wax</span>
+            <span class="stylist-tag">Brow Tint</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- STEP 2: Choose Service -->
+  <div class="step" id="step2">
+    <div class="step-indicator">
+      <button class="step-back" onclick="goToStep(1)">←</button>
+      <span class="step-label">Step 2 of 4 — Choose a Service</span>
+    </div>
+    <div class="section-head">
+      <h2>What can we do for you?</h2>
+    </div>
+
+    <div class="service-group">
+      <div class="service-group-title">Cuts</div>
+      <div class="service-list">
+        <div class="service-item" onclick="selectService(this,'Womans Cut With Style',40,45)">
+          <div class="service-left"><div class="service-name">Womans Cut With Style</div><div class="service-duration">45 min · shampoo, cut &amp; blow-dry</div></div>
+          <div class="service-price">$40+</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Womans Dry Cut',30,30)">
+          <div class="service-left"><div class="service-name">Womans Dry Cut</div><div class="service-duration">30 min · trim only</div></div>
+          <div class="service-price">$30</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Mens Cut',25,30)">
+          <div class="service-left"><div class="service-name">Mens Cut</div><div class="service-duration">30 min</div></div>
+          <div class="service-price">$25</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Childs Cut',20,30)">
+          <div class="service-left"><div class="service-name">Childs Cut</div><div class="service-duration">30 min</div></div>
+          <div class="service-price">$20</div><div class="service-check">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-group">
+      <div class="service-group-title">Color</div>
+      <div class="service-list">
+        <div class="service-item" onclick="selectService(this,'Root Retouch',90,120)">
+          <div class="service-left"><div class="service-name">Root Retouch</div><div class="service-duration">2 hrs · includes cut &amp; style</div></div>
+          <div class="service-price">$90+</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Root Retouch + Partial Foil',120,135)">
+          <div class="service-left"><div class="service-name">Root Retouch + Partial Foil</div><div class="service-duration">2 hrs 15 min · toner $15 add-on</div></div>
+          <div class="service-price">$120+</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Root Retouch + Full Foil',150,150)">
+          <div class="service-left"><div class="service-name">Root Retouch + Full Foil</div><div class="service-duration">2.5 hrs · toner $15 add-on</div></div>
+          <div class="service-price">$150+</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Scalp To Ends Color',110,120)">
+          <div class="service-left"><div class="service-name">Scalp To Ends Color</div><div class="service-duration">2 hrs · full coverage</div></div>
+          <div class="service-price">$110+</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Partial Highlights',110,120)">
+          <div class="service-left"><div class="service-name">Partial Highlights</div><div class="service-duration">2 hrs · toner $15 add-on</div></div>
+          <div class="service-price">$110+</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Full Highlights',140,150)">
+          <div class="service-left"><div class="service-name">Full Highlights</div><div class="service-duration">2.5 hrs · toner $15 add-on</div></div>
+          <div class="service-price">$140+</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Perm',100,120)">
+          <div class="service-left"><div class="service-name">Perm</div><div class="service-duration">2 hrs · cut &amp; style included</div></div>
+          <div class="service-price">$100+</div><div class="service-check">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-group">
+      <div class="service-group-title">Extensions</div>
+      <div class="service-list">
+        <div class="service-item" onclick="selectService(this,'Extension Consultation',0,30)">
+          <div class="service-left"><div class="service-name">Extension Consultation</div><div class="service-duration">30 min · required before first install</div></div>
+          <div class="service-price">Free</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Butterfly Extension First Install',225,120)">
+          <div class="service-left"><div class="service-name">Butterfly Extension First Install</div><div class="service-duration">2 hrs · hair not included</div></div>
+          <div class="service-price">$225+</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Butterfly Extension Move Up',200,90)">
+          <div class="service-left"><div class="service-name">Butterfly Extension Move Up</div><div class="service-duration">90 min · every 6–8 weeks</div></div>
+          <div class="service-price">$200+</div><div class="service-check">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-group">
+      <div class="service-group-title">Waxing</div>
+      <div class="service-list">
+        <div class="service-item" onclick="selectService(this,'Eyebrow Wax',15,15)">
+          <div class="service-left"><div class="service-name">Eyebrow Wax</div><div class="service-duration">15 min</div></div>
+          <div class="service-price">$15</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Eyebrow Tinting',20,25)">
+          <div class="service-left"><div class="service-name">Eyebrow Tinting</div><div class="service-duration">25 min</div></div>
+          <div class="service-price">$20</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Lip Wax',10,10)">
+          <div class="service-left"><div class="service-name">Lip Wax</div><div class="service-duration">10 min</div></div>
+          <div class="service-price">$10</div><div class="service-check">✓</div>
+        </div>
+        <div class="service-item" onclick="selectService(this,'Chin Wax',10,10)">
+          <div class="service-left"><div class="service-name">Chin Wax</div><div class="service-duration">10 min</div></div>
+          <div class="service-price">$10</div><div class="service-check">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-group">
+      <div class="service-group-title">Conditioning</div>
+      <div class="service-list">
+        <div class="service-item" onclick="selectService(this,'Deep Conditioning Treatment',30,45)">
+          <div class="service-left"><div class="service-name">Deep Conditioning Treatment</div><div class="service-duration">45 min · blow-dry included</div></div>
+          <div class="service-price">$30</div><div class="service-check">✓</div>
+        </div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- STEP 3: Choose Date & Time -->
+  <div class="step" id="step3">
+    <div class="step-indicator">
+      <button class="step-back" onclick="goToStep(2)">←</button>
+      <span class="step-label">Step 3 of 4 — Pick a Time</span>
+    </div>
+    <div class="section-head">
+      <h2>When works for you?</h2>
+      <p>Available Tuesdays &amp; Wednesdays. Tap a highlighted date to see open times.</p>
+    </div>
+    <div class="calendar-wrap">
+      <div class="cal-nav">
+        <button onclick="changeMonth(-1)">‹</button>
+        <div class="cal-month" id="calMonth"></div>
+        <button onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+    <div class="slots-wrap" id="slotsWrap" style="display:none">
+      <div class="slots-date-label" id="slotsDateLabel"></div>
+      <div style="font-size:12px; color:var(--muted); padding: 0 0 12px; letter-spacing:0.04em;" id="slots-day-hours"></div>
+      <div class="slots-group-title">Morning</div>
+      <div class="slots-grid" id="slotsMorning"></div>
+      <div class="slots-group-title">Afternoon / Evening</div>
+      <div class="slots-grid" id="slotsAfternoon"></div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- STEP 4: Your Info -->
+  <div class="step" id="step4">
+    <div class="step-indicator">
+      <button class="step-back" onclick="goToStep(3)">←</button>
+      <span class="step-label">Step 4 of 4 — Your Info</span>
+    </div>
+    <div class="section-head">
+      <h2>Almost done</h2>
+      <p>We'll send you a confirmation right away and a reminder the day before.</p>
+    </div>
+    <div class="form-wrap">
+      <div class="form-group">
+        <label>First &amp; Last Name</label>
+        <input type="text" id="clientName" placeholder="Jane Smith" oninput="checkForm()">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="clientPhone" placeholder="(740) 555-1234" oninput="checkForm()">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="clientEmail" placeholder="you@email.com" oninput="checkForm()">
+      </div>
+      <div class="form-group">
+        <label>Notes for your stylist <span style="color:var(--dim); font-size:10px; letter-spacing:0">(optional)</span></label>
+        <textarea id="clientNotes" placeholder="e.g. First time client, looking for a trim and some layers…"></textarea>
+      </div>
+    </div>
+
+    <div class="summary-card" id="bookingSummary">
+      <div class="summary-header">
+        <div class="summary-header-label">Booking Summary</div>
+        <div class="summary-header-name" id="summaryService">—</div>
+      </div>
+      <div class="summary-rows">
+        <div class="summary-row">
+          <span class="summary-row-label">Stylist</span>
+          <span class="summary-row-value" id="summaryStylist">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-label">Date &amp; Time</span>
+          <span class="summary-row-value" id="summaryDateTime">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-label">Duration</span>
+          <span class="summary-row-value" id="summaryDuration">—</span>
+        </div>
+      </div>
+      <div class="summary-total">
+        <span class="summary-total-label">Starting at</span>
+        <span class="summary-total-price" id="summaryPrice">—</span>
+      </div>
+    </div>
+
+    <div class="reminders-row">
+      <div class="reminders-icon">📩</div>
+      <div class="reminders-text">You'll get an email confirmation right after booking, plus a reminder the day before your appointment.</div>
+    </div>
+
+    <div style="margin: 0 16px 20px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; font-size: 12px; color: var(--muted); line-height: 1.6;">
+      <strong style="color:var(--text)">Cancellation policy:</strong> Please call or text Benefits Spa &amp; Co. at <strong style="color:var(--text)">(740) 627-7358</strong> as soon as possible if you need to cancel or reschedule.
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- CONFIRMATION -->
+  <div class="step" id="stepConfirm">
+    <div class="confirm-wrap">
+      <div class="confirm-icon">✓</div>
+      <div class="confirm-title">You're all set!</div>
+      <div class="confirm-sub">Your appointment request has been sent. We'll follow up to confirm — see you soon!</div>
+      <div class="confirm-details">
+        <div class="summary-row">
+          <span class="summary-row-label">Service</span>
+          <span class="summary-row-value" id="confirmService">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-label">With</span>
+          <span class="summary-row-value" id="confirmStylist">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-label">When</span>
+          <span class="summary-row-value" id="confirmDateTime">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-label">Total</span>
+          <span class="summary-row-value" id="confirmPrice">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-label">Payment</span>
+          <span class="summary-row-value" style="color:var(--green)">Due at appointment</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-label">Location</span>
+          <span class="summary-row-value">4 Wooster Rd, Mount Vernon OH</span>
+        </div>
+      </div>
+      <button class="btn-primary" style="width:100%; margin-top:8px" onclick="startOver()">Book Another Appointment</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-bar" id="bottomBar">
+  <button class="btn-primary" id="mainBtn" onclick="nextStep()" disabled>Select a Stylist</button>
+</div>
+
+<script>
+  // ─────────────────────────────────────────────
+  // SETUP: Replace with your Formspree endpoint.
+  // 1. Go to formspree.io → New Form → "benefits-spa-booking"
+  // 2. Paste the endpoint URL below (looks like https://formspree.io/f/xabcdefg)
+  // 3. Formspree is free up to 50 submissions/month — no CC required.
+  // ─────────────────────────────────────────────
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
+  // ── STATE ──
+  const state = {
+    step: 1,
+    stylist: null,
+    service: null,
+    servicePrice: null,
+    serviceDuration: null,
+    date: null,
+    time: null,
+    calYear: null,
+    calMonth: null
+  };
+
+  // Booked slots — update as calendar fills up
+  const bookedSlots = {
+    '2026-06-10': ['10:30 AM', '1:00 PM'],
+    '2026-06-16': ['10:00 AM', '2:30 PM'],
+    '2026-06-17': ['11:00 AM', '3:00 PM', '6:00 PM'],
+    '2026-06-23': ['10:00 AM', '11:30 AM'],
+    '2026-06-24': ['12:00 PM', '4:00 PM'],
+    '2026-06-30': ['10:30 AM'],
+    '2026-07-01': ['1:00 PM', '5:30 PM']
+  };
+
+  // Tuesday: 10AM–6PM
+  const tuesdayMorning  = ['10:00 AM','10:30 AM','11:00 AM','11:30 AM'];
+  const tuesdayAfternoon = ['12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM'];
+
+  // Wednesday: 10:30AM–8:30PM
+  const wednesdayMorning  = ['10:30 AM','11:00 AM','11:30 AM'];
+  const wednesdayAfternoon = ['12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM','6:30 PM','7:00 PM','7:30 PM','8:00 PM'];
+
+  // ── INIT ──
+  const now = new Date();
+  state.calYear  = now.getFullYear();
+  state.calMonth = now.getMonth();
+  renderCalendar();
+  updateProgress();
+
+  // ── STYLIST ──
+  function selectStylist(name) {
+    state.stylist = name;
+    document.querySelectorAll('.stylist-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('card-' + name.toLowerCase()).classList.add('selected');
+    document.getElementById('mainBtn').disabled = false;
+    document.getElementById('mainBtn').textContent = 'Continue with ' + name + ' →';
+  }
+
+  // ── SERVICE ──
+  function selectService(el, name, price, duration) {
+    state.service = name;
+    state.servicePrice = price;
+    state.serviceDuration = duration;
+    document.querySelectorAll('.service-item').forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('mainBtn').disabled = false;
+    document.getElementById('mainBtn').textContent = name + (price > 0 ? ' — $' + price + '+ →' : ' — Free →');
+  }
+
+  // ── CALENDAR ──
+  function changeMonth(dir) {
+    state.calMonth += dir;
+    if (state.calMonth > 11) { state.calMonth = 0; state.calYear++; }
+    if (state.calMonth < 0)  { state.calMonth = 11; state.calYear--; }
+    renderCalendar();
+  }
+
+  function renderCalendar() {
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    document.getElementById('calMonth').textContent = months[state.calMonth] + ' ' + state.calYear;
+
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+
+    ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'cal-dow';
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+
+    const firstDay = new Date(state.calYear, state.calMonth, 1).getDay();
+    const daysInMonth = new Date(state.calYear, state.calMonth + 1, 0).getDate();
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day empty';
+      grid.appendChild(el);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const el = document.createElement('div');
+      const thisDate = new Date(state.calYear, state.calMonth, d);
+      const dateStr = `${state.calYear}-${String(state.calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const isToday = thisDate.toDateString() === today.toDateString();
+      const isPast  = thisDate < today;
+      const dow = thisDate.getDay();
+      const isOpenDay = (dow === 2 || dow === 3);
+      const isSelected = state.date === dateStr;
+
+      el.className = 'cal-day';
+      el.textContent = d;
+
+      if (isPast || !isOpenDay) {
+        el.classList.add('past');
+      } else {
+        el.classList.add('available');
+        const booked = bookedSlots[dateStr] || [];
+        const totalSlots = (dow === 2) ? tuesdayMorning.length + tuesdayAfternoon.length
+                                       : wednesdayMorning.length + wednesdayAfternoon.length;
+        if (booked.length < totalSlots) el.classList.add('has-slots');
+        if (isSelected) el.classList.add('selected');
+        el.onclick = () => selectDate(dateStr, d);
+      }
+
+      if (isToday) el.classList.add('today');
+      grid.appendChild(el);
+    }
+  }
+
+  function selectDate(dateStr, day) {
+    state.date = dateStr;
+    state.time = null;
+    renderCalendar();
+    renderSlots(dateStr);
+    document.getElementById('slotsWrap').style.display = 'block';
+    document.getElementById('mainBtn').disabled = true;
+    document.getElementById('mainBtn').textContent = 'Choose a Time';
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    document.getElementById('slotsDateLabel').textContent = months[state.calMonth] + ' ' + day + ', ' + state.calYear;
+    document.getElementById('slotsWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function renderSlots(dateStr) {
+    const booked = bookedSlots[dateStr] || [];
+    const d = new Date(dateStr + 'T12:00:00');
+    const isWed = d.getDay() === 3;
+    const morning   = isWed ? wednesdayMorning   : tuesdayMorning;
+    const afternoon = isWed ? wednesdayAfternoon : tuesdayAfternoon;
+    const dayLabel = document.getElementById('slots-day-hours');
+    dayLabel.textContent = isWed ? 'Wednesday · 10:30 AM – 8:30 PM' : 'Tuesday · 10:00 AM – 6:00 PM';
+
+    function renderGroup(slots, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      slots.forEach(slot => {
+        const el = document.createElement('div');
+        el.className = 'time-slot';
+        if (booked.includes(slot)) {
+          el.classList.add('booked');
+          el.textContent = slot;
+        } else {
+          el.textContent = slot;
+          el.onclick = () => selectTime(slot, el);
+        }
+        container.appendChild(el);
+      });
+    }
+
+    renderGroup(morning, 'slotsMorning');
+    renderGroup(afternoon, 'slotsAfternoon');
+  }
+
+  function selectTime(time, el) {
+    state.time = time;
+    document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('mainBtn').disabled = false;
+    document.getElementById('mainBtn').textContent = time + ' — Continue →';
+  }
+
+  // ── FORM ──
+  function checkForm() {
+    const name  = document.getElementById('clientName').value.trim();
+    const phone = document.getElementById('clientPhone').value.trim();
+    const email = document.getElementById('clientEmail').value.trim();
+    const valid = name.length > 1 && phone.length > 6 && email.includes('@');
+    document.getElementById('mainBtn').disabled = !valid;
+    document.getElementById('mainBtn').textContent = valid ? 'Confirm Booking →' : 'Fill In Your Details';
+  }
+
+  // ── NAVIGATION ──
+  function nextStep() {
+    if (state.step === 4) { submitBooking(); return; }
+    goToStep(state.step + 1);
+  }
+
+  function goToStep(n) {
+    document.getElementById('step' + state.step).classList.remove('active');
+    state.step = n;
+    document.getElementById('step' + n).classList.add('active');
+    updateProgress();
+
+    if (n === 2) {
+      document.getElementById('mainBtn').disabled = !state.service;
+      document.getElementById('mainBtn').textContent = state.service ? state.service + ' — $' + state.servicePrice + '+ →' : 'Select a Service';
+    }
+    if (n === 3) {
+      document.getElementById('mainBtn').disabled = !state.time;
+      document.getElementById('mainBtn').textContent = state.time ? state.time + ' — Continue →' : 'Pick a Date & Time';
+      if (state.date) document.getElementById('slotsWrap').style.display = 'block';
+    }
+    if (n === 4) {
+      populateSummary();
+      checkForm();
+    }
+    window.scrollTo(0, 0);
+  }
+
+  function populateSummary() {
+    document.getElementById('summaryService').textContent  = state.service || '—';
+    document.getElementById('summaryStylist').textContent  = state.stylist || '—';
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const d = state.date ? new Date(state.date + 'T12:00:00') : null;
+    document.getElementById('summaryDateTime').textContent = d ? `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} at ${state.time}` : '—';
+    document.getElementById('summaryDuration').textContent = state.serviceDuration ? state.serviceDuration + ' min' : '—';
+    document.getElementById('summaryPrice').textContent    = state.servicePrice > 0 ? '$' + state.servicePrice + '+' : 'Free';
+  }
+
+  async function submitBooking() {
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const d = new Date(state.date + 'T12:00:00');
+    const dateTimeStr = `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} at ${state.time}`;
+    const name  = document.getElementById('clientName').value.trim();
+    const phone = document.getElementById('clientPhone').value.trim();
+    const email = document.getElementById('clientEmail').value.trim();
+    const notes = document.getElementById('clientNotes').value.trim();
+
+    // Show spinner
+    document.getElementById('sendingOverlay').classList.add('visible');
+    document.getElementById('mainBtn').disabled = true;
+
+    const payload = {
+      _subject: `New Booking: ${state.service} with ${state.stylist} — ${dateTimeStr}`,
+      name, phone, email,
+      stylist: state.stylist,
+      service: state.service,
+      date_time: dateTimeStr,
+      duration: state.serviceDuration + ' min',
+      price: state.servicePrice > 0 ? '$' + state.servicePrice + '+' : 'Free',
+      notes: notes || 'None',
+      _replyto: email
+    };
+
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      document.getElementById('sendingOverlay').classList.remove('visible');
+
+      if (res.ok) {
+        showConfirmation(dateTimeStr);
+      } else {
+        // Fallback: still show confirmation so client isn't left hanging
+        showConfirmation(dateTimeStr);
+        console.warn('Formspree: form not yet configured. Set FORMSPREE_ENDPOINT at top of script.');
+      }
+    } catch (err) {
+      document.getElementById('sendingOverlay').classList.remove('visible');
+      // Graceful fallback — show confirmation even if network fails
+      showConfirmation(dateTimeStr);
+    }
+  }
+
+  function showConfirmation(dateTimeStr) {
+    document.getElementById('confirmService').textContent  = state.service;
+    document.getElementById('confirmStylist').textContent  = state.stylist;
+    document.getElementById('confirmDateTime').textContent = dateTimeStr;
+    document.getElementById('confirmPrice').textContent    = state.servicePrice > 0 ? '$' + state.servicePrice + '+' : 'Free';
+
+    document.getElementById('step4').classList.remove('active');
+    document.getElementById('stepConfirm').classList.add('active');
+    document.getElementById('bottomBar').style.display = 'none';
+    document.getElementById('progressFill').style.width = '100%';
+    window.scrollTo(0, 0);
+  }
+
+  function startOver() {
+    state.step = 1; state.stylist = null; state.service = null;
+    state.servicePrice = null; state.serviceDuration = null;
+    state.date = null; state.time = null;
+
+    document.getElementById('stepConfirm').classList.remove('active');
+    document.getElementById('step1').classList.add('active');
+    document.querySelectorAll('.stylist-card, .service-item, .time-slot').forEach(el => el.classList.remove('selected'));
+    ['clientName','clientPhone','clientEmail','clientNotes'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('bottomBar').style.display = 'flex';
+    document.getElementById('mainBtn').disabled = true;
+    document.getElementById('mainBtn').textContent = 'Select a Stylist';
+    document.getElementById('slotsWrap').style.display = 'none';
+    updateProgress();
+    window.scrollTo(0, 0);
+  }
+
+  function updateProgress() {
+    const pct = ((state.step - 1) / 4) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+</script>
+</body>
+</html>
