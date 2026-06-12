@@ -1,8 +1,16 @@
 {
-  "updated": "2026-06-08T21:00:00",
-  "updatedLabel": "June 8, 2026",
+  "updated": "2026-06-11T21:00:00",
+  "updatedLabel": "June 11, 2026",
   "sections": {
     "recent": [
+      {
+        "href": "creator-vetting-scorecard/index.html",
+        "icon": "🎯",
+        "title": "Creator Vetting Scorecard — Shadow Operator",
+        "desc": "Score a creator prospect on 10 criteria. Instant go / pass / hold verdict. Public page for the $17 Whop product.",
+        "tag": "tool",
+        "added": "2026-06-09"
+      },
       {
         "href": "chloe-brandi/index.html",
         "icon": "💇",
@@ -235,6 +243,12 @@
       }
     ],
     "tools": [
+      {
+        "href": "creator-vetting-scorecard/index.html",
+        "icon": "🎯",
+        "title": "Creator Vetting Scorecard",
+        "desc": "Score a creator prospect on 10 criteria. Instant go / pass / hold verdict."
+      },
       {
         "href": "Photography - Client Booking & Invoice.html",
         "icon": "📷",
