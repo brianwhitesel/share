@@ -1,8 +1,16 @@
 {
-  "updated": "2026-06-11T21:00:00",
-  "updatedLabel": "June 11, 2026",
+  "updated": "2026-06-17T21:00:00",
+  "updatedLabel": "June 17, 2026",
   "sections": {
     "recent": [
+      {
+        "href": "grandma/index.html",
+        "icon": "💛",
+        "title": "Happy Anniversary — Grandma & Grandpa",
+        "desc": "Personal anniversary tribute page for Brian's grandparents.",
+        "tag": "personal",
+        "added": "2026-06-12"
+      },
       {
         "href": "creator-vetting-scorecard/index.html",
         "icon": "🎯",

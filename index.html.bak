@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brian Whitesel — Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+/* BW Design System v1 — do not edit manually, maintained by design-system-enforcer */
+:root {
+  --bg: #080c14;
+  --surface: rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.07);
+  --surface3: rgba(255,255,255,0.10);
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #f1f5f9;
+  --dim: #94a3b8;
+  --muted: #4b5e78;
+  --accent: #e41e2b;
+  --blue: #3b82f6;
+  --green: #34d369;
+  --teal: #14b8a6;
+  --amber: #f59e0b;
+  --purple: #8b5cf6;
+  --font-head: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.15s ease;
+}
+html.light {
+  --bg: #f0f2f5;
+  --surface: rgba(255,255,255,0.85);
+  --surface2: rgba(255,255,255,0.95);
+  --surface3: #ffffff;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+  --text: #0d1117;
+  --dim: #475569;
+  --muted: #94a3b8;
+}
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --bg: #0a0a0c;
+      --surface: rgba(255,255,255,0.04);
+      --surface2: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.14);
+      --text: #f0f0f0;
+      --dim: #888;
+      --muted: #444;
+      --red: #FF3333;
+      --red-bg: rgba(255,51,51,0.07);
+      --red-border: rgba(255,51,51,0.25);
+      --green: #3dba6e;
+      --green-bg: rgba(61,186,110,0.07);
+      --amber: #f0a429;
+      --amber-bg: rgba(240,164,41,0.07);
+      --blue: #4a9eff;
+      --blue-bg: rgba(74,158,255,0.07);
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ── PASSWORD GATE ── */
+    #gate {
+      position: fixed; inset: 0; z-index: 1000;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .gate-box {
+      width: 100%; max-width: 360px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border2);
+      border-radius: 16px;
+      padding: 36px 28px;
+      text-align: center;
+    }
+    .gate-lock {
+      width: 44px; height: 44px;
+      background: var(--red-bg);
+      border: 1px solid var(--red-border);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 20px;
+    }
+    .gate-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .gate-sub { font-size: 13px; color: var(--dim); margin-bottom: 24px; }
+    .gate-input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 16px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.12em;
+      text-align: center;
+      outline: none;
+      margin-bottom: 12px;
+      transition: border-color 0.2s;
+    }
+    .gate-input:focus { border-color: var(--red); }
+    .gate-input.shake {
+      animation: shake 0.3s ease;
+      border-color: var(--red);
+    }
+    @keyframes shake {
+      0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)}
+    }
+    .gate-btn {
+      width: 100%;
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: opacity 0.2s;
+    }
+    .gate-btn:hover { opacity: 0.88; }
+    .gate-error {
+      font-size: 12px;
+      color: var(--red);
+      margin-top: 8px;
+      height: 16px;
+    }
+
+    /* ── MAIN CONTENT ── */
+    #main { display: none; }
+    #main.visible { display: block; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(10,10,12,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.06em; color: var(--text);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%; background: var(--red);
+    }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-filter {
+      display: flex; gap: 4px;
+    }
+    .filter-btn {
+      background: none; border: 1px solid var(--border);
+      border-radius: 6px; padding: 5px 10px;
+      font-size: 11px; font-weight: 500; color: var(--dim);
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: all 0.15s;
+      letter-spacing: 0.04em;
+    }
+    .filter-btn:hover { border-color: var(--border2); color: var(--text); }
+    .filter-btn.active { background: var(--red-bg); border-color: var(--red-border); color: var(--red); }
+    .nav-lock-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 16px; padding: 4px;
+      transition: color 0.15s;
+    }
+    .nav-lock-btn:hover { color: var(--red); }
+    @media(max-width: 500px) {
+      .nav-filter { display: none; }
+    }
+
+    /* ── WRAP ── */
+    .wrap { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+
+    /* ── SEARCH ── */
+    .search-wrap {
+      margin-bottom: 28px;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 16px 11px 42px;
+      font-size: 14px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 14px center;
+    }
+    .search-input::placeholder { color: var(--muted); }
+    .search-input:focus { border-color: var(--border2); }
+
+    /* ── SECTION ── */
+    .section { margin-bottom: 36px; }
+    .section[data-cat].hidden { display: none; }
+    .section-head {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 14px;
+    }
+    .section-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--dim);
+      white-space: nowrap;
+    }
+    .section-line {
+      flex: 1; height: 1px;
+      background: var(--border);
+    }
+    .section-count {
+      font-size: 10px; color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── CARD GRID ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+    }
+    .card-grid.list { grid-template-columns: 1fr; }
+
+    /* ── CARD ── */
+    .card {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.15s, background 0.15s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      border-color: var(--border2);
+      background: var(--surface2);
+      transform: translateY(-1px);
+    }
+    .card.hot { border-color: var(--red-border); background: var(--red-bg); }
+    .card.hot:hover { border-color: rgba(255,51,51,0.45); }
+    .card-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+    }
+    .card-body { flex: 1; min-width: 0; }
+    .card-title {
+      font-size: 13px; font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+    .card-desc {
+      font-size: 11px; color: var(--dim); line-height: 1.4;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .card-badge {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 7px; border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .badge-hot  { background: var(--red-bg);   border: 1px solid var(--red-border);           color: var(--red); }
+    .badge-new  { background: var(--green-bg);  border: 1px solid rgba(61,186,110,0.25);       color: var(--green); }
+    .badge-sent { background: var(--blue-bg);   border: 1px solid rgba(74,158,255,0.25);       color: var(--blue); }
+    .badge-wait { background: var(--amber-bg);  border: 1px solid rgba(240,164,41,0.25);       color: var(--amber); }
+    .badge-done { background: rgba(255,255,255,0.04); border: 1px solid var(--border);         color: var(--muted); }
+    .badge-tool { background: rgba(139,92,246,0.07); border: 1px solid rgba(139,92,246,0.25); color: #a78bfa; }
+
+    /* ── NO RESULTS ── */
+    .no-results {
+      text-align: center; padding: 40px;
+      font-size: 13px; color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+    }
+    .footer-brand { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .footer-brand .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--red); }
+    .footer-updated { font-size: 11px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-lock">🔒</div>
+    <div class="gate-title">Brian's Hub</div>
+    <div class="gate-sub">Enter access code to continue</div>
+    <input type="password" class="gate-input" id="gateInput" placeholder="••••••" autocomplete="off" />
+    <button class="gate-btn" onclick="checkPass()">Unlock</button>
+    <div class="gate-error" id="gateError"></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+
+  <nav class="nav">
+    <div class="nav-brand">
+      <div class="nav-dot"></div>
+      BRIAN WHITESEL
+    </div>
+    <div class="nav-right">
+      <div class="nav-filter">
+        <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">All</button>
+        <button class="filter-btn" data-filter="clients" onclick="setFilter('clients', this)">Clients</button>
+        <button class="filter-btn" data-filter="projects" onclick="setFilter('projects', this)">Projects</button>
+        <button class="filter-btn" data-filter="tools" onclick="setFilter('tools', this)">Tools</button>
+        <button class="filter-btn" data-filter="personal" onclick="setFilter('personal', this)">Personal</button>
+      </div>
+      <button class="nav-lock-btn" onclick="lockHub()" title="Lock">🔒</button>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div class="search-wrap">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search pages, people, tools..." oninput="handleSearch()" />
+    </div>
+
+    <div id="content"><!-- rendered by JS --></div>
+    <div class="no-results" id="noResults" style="display:none">No pages match that search.</div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-brand"><div class="dot"></div>BRIAN WHITESEL · COLUMBUS OH</div>
+    <div class="footer-updated" id="updatedLabel">—</div>
+  </footer>
+
+</div>
+
+<script>
+// ── PASSWORD ──────────────────────────────────────────
+const PASS = 'bw2026';
+
+function checkPass() {
+  const val = document.getElementById('gateInput').value.trim().toLowerCase();
+  if (val === PASS) {
+    sessionStorage.setItem('bwhub_auth', '1');
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('main').classList.add('visible');
+    loadContent();
+  } else {
+    const inp = document.getElementById('gateInput');
+    document.getElementById('gateError').textContent = 'Incorrect code.';
+    inp.classList.add('shake');
+    inp.value = '';
+    setTimeout(() => inp.classList.remove('shake'), 350);
+  }
+}
+
+document.getElementById('gateInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkPass();
+});
+
+function lockHub() {
+  sessionStorage.removeItem('bwhub_auth');
+  location.reload();
+}
+
+// Auto-unlock if session is still valid
+if (sessionStorage.getItem('bwhub_auth') === '1') {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('main').classList.add('visible');
+}
+
+// ── DATA ──────────────────────────────────────────────
+const PAGES = [
+  // ── HOT / ACTIVE ──────────────────────────────────
+  { cat: 'clients', title: 'Dustin — May 24 Demo', desc: 'Wiggle & Wag · booking app + why-switch + website', href: 'dustin/index.html', badge: 'hot', icon: '🐾' },
+  { cat: 'clients', title: 'Dylan Lowe — Country Wire Pitch', desc: '591K followers · zero products · pitch sent May 18', href: 'dylan/pitch.html', badge: 'sent', icon: '🎸' },
+  { cat: 'projects', title: 'Understory Columbus Pitch', desc: 'Wolf\'s Ridge · TikTok gap · Bob Szuter contact', href: 'understory/index.html', badge: 'new', icon: '🍺' },
+  { cat: 'projects', title: 'Agency Landing Page', desc: 'Sell custom booking apps to salons · $40/mo', href: 'agency/index.html', badge: 'new', icon: '🏢' },
+
+  // ── DUSTIN SUITE ──────────────────────────────────
+  { cat: 'clients', title: 'Dustin — Why Switch', desc: 'Dark sales page · vs GlossGenius', href: 'dustin/why-switch.html', badge: 'done', icon: '📄' },
+  { cat: 'clients', title: 'Dustin — Booking Demo', desc: 'Benefits Spa & Co. custom booking app', href: 'dustin/booking-demo.html', badge: 'done', icon: '📅' },
+  { cat: 'clients', title: 'Dustin — Full Website', desc: 'Benefits Spa & Co. full site', href: 'dustin/website.html', badge: 'done', icon: '🌐' },
+  { cat: 'clients', title: 'Dustin — Post-Meeting Recap', desc: '$1,250/mo · text after May 24 meeting', href: 'dustin/recap.html', badge: 'new', icon: '📋' },
+
+  // ── OTHER CLIENTS / PROSPECTS ─────────────────────
+  { cat: 'clients', title: 'DMD Renovation', desc: 'Derek Dinovo · Cyle connection · June 2026', href: 'dmd/index.html', badge: 'wait', icon: '🏗' },
+  { cat: 'clients', title: 'Designery of Columbus', desc: 'Mike Mayers · cold outreach · one more touch', href: 'designery/index.html', badge: 'wait', icon: '🎨' },
+  { cat: 'clients', title: 'Chase — Geddis Soccer', desc: 'Social media audit angle · re-engage May 2026', href: 'chase/index.html', badge: 'wait', icon: '⚽' },
+  { cat: 'clients', title: 'Sam Townsend', desc: 'Contractor · follow up May', href: 'sam/index.html', badge: 'wait', icon: '🔨' },
+  { cat: 'clients', title: 'Land Grant Brewing', desc: 'Columbus brewery prospect', href: 'land-grant/index.html', badge: 'wait', icon: '🍻' },
+  { cat: 'clients', title: 'Kollin McKee', desc: 'Columbus pizza · advisor/friend', href: 'kollin/index.html', badge: 'done', icon: '🍕' },
+
+  // ── FRIENDS / COLLABORATORS ───────────────────────
+  { cat: 'personal', title: 'Reese White', desc: 'HIF co-founder · videographer', href: 'reese/index.html', badge: 'done', icon: '🎬' },
+  { cat: 'personal', title: 'Dylan Miracle', desc: 'Editor · CC2', href: 'dylan/index.html', badge: 'done', icon: '✂️' },
+  { cat: 'personal', title: 'Luke', desc: 'Photography tools · wedding collab', href: 'luke/index.html', badge: 'done', icon: '📷' },
+  { cat: 'personal', title: 'Abby', desc: 'Personal page · anniversary May 17', href: 'abby/index.html', badge: 'done', icon: '💌' },
+  { cat: 'personal', title: 'Connor McGovern', desc: 'Video & social media', href: 'connor/index.html', badge: 'done', icon: '🎥' },
+  { cat: 'personal', title: 'Greg Lav', desc: 'Lessons From My 20s pitch page', href: 'greg-lav-pitch/index.html', badge: 'done', icon: '📖' },
+  { cat: 'personal', title: 'Bryce', desc: 'Patent / IP attorney intro', href: 'bryce/index.html', badge: 'done', icon: '⚖️' },
+  { cat: 'personal', title: 'Paige Tinnel', desc: 'Photographer', href: 'paige/index.html', badge: 'done', icon: '📸' },
+  { cat: 'personal', title: 'Jacob Manken', desc: 'Disc golf · shared tools', href: 'jacobmanken/index.html', badge: 'done', icon: '🥏' },
+  { cat: 'personal', title: 'JD', desc: 'Personal demo', href: 'jd/index.html', badge: 'done', icon: '👤' },
+
+  // ── KNOWLEDGE ─────────────────────────────────────
+  { cat: 'projects', title: 'MMOC3 — Iman Gadzhi Sessions', desc: 'All 10 sessions processed · master summary', href: 'mmoc3-vip-bw26/index.html', badge: 'done', icon: '🎓' },
+  { cat: 'projects', title: 'Serge Gatari — AI Business', desc: 'One-person AI company framework', href: 'serge-gatari-bw26/index.html', badge: 'done', icon: '🤖' },
+  { cat: 'projects', title: 'IP Brief — BM26', desc: 'IP protection brief', href: 'ip-brief-bm26/index.html', badge: 'done', icon: '🔐' },
+  { cat: 'projects', title: 'WS Sync — BW26', desc: 'Workspace sync brief', href: 'ws-sync-bw26/index.html', badge: 'done', icon: '🔄' },
+  { cat: 'projects', title: 'Elevator Pitch', desc: 'Brian\'s elevator pitch page', href: 'elevator/index.html', badge: 'done', icon: '🗣' },
+  { cat: 'projects', title: 'SpookyLuke Application', desc: 'Editor application page', href: 'spookyluke/index.html', badge: 'done', icon: '🎮' },
+
+  // ── PERSONAL BRAND ────────────────────────────────
+  { cat: 'personal', title: 'Brian Whitesel — Personal Site', desc: 'Landing page · content strategy + AI tools', href: 'brian/index.html', badge: 'done', icon: '👤' },
+  { cat: 'personal', title: 'Portfolio', desc: '5 years of content ops · 750K+ followers', href: 'portfolio/index.html', badge: 'done', icon: '💼' },
+
+  // ── TOOLS ─────────────────────────────────────────
+  { cat: 'tools', title: 'Creator Vetting Scorecard', desc: 'Shadow Operator · score & vet creator prospects', href: '../Business/Shadow Operator/Creator Vetting Scorecard.html', badge: 'tool', icon: '📊' },
+  { cat: 'tools', title: 'Clip Organizer — Rocket League', desc: 'Personal RL clip tagger', href: 'clip-organizer/index.html', badge: 'tool', icon: '🎮' },
+  { cat: 'tools', title: 'Photography — Booking & Invoice', desc: 'Track client sessions and payments', href: 'Photography - Client Booking & Invoice.html', badge: 'tool', icon: '📷' },
+  { cat: 'tools', title: 'Videography — Production Tracker', desc: 'Shoots, deliverables, billing', href: 'Videography - Production Tracker.html', badge: 'tool', icon: '🎬' },
+  { cat: 'tools', title: 'Social Media — Content Planner', desc: 'Plan and track posts across platforms', href: 'Social Media - Content Planner.html', badge: 'tool', icon: '📱' },
+  { cat: 'tools', title: 'Disc Golf — Scorecard', desc: 'Personal scorecard', href: 'disc-golf-scorecard.html', badge: 'tool', icon: '🥏' },
+  { cat: 'tools', title: 'Disc Golf — Pass the Phone', desc: 'Group scoring mode', href: 'disc-golf-ptp.html', badge: 'tool', icon: '🥏' },
+  { cat: 'tools', title: 'Disc Golf — Brian, Reese, Jacob', desc: 'Social round tracker', href: 'disc-golf-social.html', badge: 'tool', icon: '🥏' },
+  { cat: 'tools', title: 'Reese — Disc Golf Scorecard', desc: 'Shared scorecard with Reese', href: 'reese/disc-golf-scorecard.html', badge: 'tool', icon: '🥏' },
+];
+
+// ── RENDER ───────────────────────────────────────────
+const SECTION_CONFIG = [
+  { cat: 'clients',  label: 'Clients & Prospects' },
+  { cat: 'projects', label: 'Projects & Knowledge' },
+  { cat: 'tools',    label: 'Tools' },
+  { cat: 'personal', label: 'Personal' },
+];
+
+let currentFilter = 'all';
+let currentSearch = '';
+
+function badgeHtml(badge) {
+  if (!badge || badge === 'done') return '';
+  const map = { hot:'Hot', new:'New', sent:'Sent', wait:'Pending', tool:'Tool' };
+  const cls  = { hot:'badge-hot', new:'badge-new', sent:'badge-sent', wait:'badge-wait', tool:'badge-tool' };
+  return `<span class="card-badge ${cls[badge] || 'badge-done'}">${map[badge] || badge}</span>`;
+}
+
+function renderContent() {
+  const q = currentSearch.toLowerCase();
+  const content = document.getElementById('content');
+  let anyVisible = false;
+  let html = '';
+
+  SECTION_CONFIG.forEach(({ cat, label }) => {
+    if (currentFilter !== 'all' && currentFilter !== cat) return;
+
+    let items = PAGES.filter(p => p.cat === cat);
+    if (q) items = items.filter(p =>
+      p.title.toLowerCase().includes(q) ||
+      p.desc.toLowerCase().includes(q)
+    );
+    if (!items.length) return;
+
+    anyVisible = true;
+    const hotFirst = [...items].sort((a, b) => {
+      const order = { hot: 0, new: 1, sent: 2, wait: 3, tool: 4, done: 5 };
+      return (order[a.badge]??5) - (order[b.badge]??5);
+    });
+
+    html += `<div class="section" data-cat="${cat}">
+      <div class="section-head">
+        <div class="section-label">${label}</div>
+        <div class="section-line"></div>
+        <div class="section-count">${items.length}</div>
+      </div>
+      <div class="card-grid">
+        ${hotFirst.map(p => `
+          <a href="${p.href}" class="card${p.badge === 'hot' ? ' hot' : ''}">
+            <div class="card-icon">${p.icon}</div>
+            <div class="card-body">
+              <div class="card-title">${p.title}</div>
+              <div class="card-desc">${p.desc}</div>
+            </div>
+            ${badgeHtml(p.badge)}
+          </a>`).join('')}
+      </div>
+    </div>`;
+  });
+
+  content.innerHTML = html;
+  document.getElementById('noResults').style.display = anyVisible ? 'none' : 'block';
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderContent();
+}
+
+function handleSearch() {
+  currentSearch = document.getElementById('searchInput').value;
+  renderContent();
+}
+
+function loadContent() {
+  document.getElementById('updatedLabel').textContent = 'Updated May 19, 2026';
+  renderContent();
+}
+
+// Auto-load if already unlocked
+if (sessionStorage.getItem('bwhub_auth') === '1') {
+  loadContent();
+}
+</script>
+</body>
+</html>
